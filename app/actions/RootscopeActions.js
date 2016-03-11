@@ -47,18 +47,10 @@ var RootscopeActions = {
 		)
 		.then(response => {
 			if (response.data && response.data.data) {
-				if (response.data.data.contexts) {
-					AppDispatcher.handleServerAction({
-						actionType: appConstants.EXAMPLE_ACTION_CONSTANT,
-						data: response.data.data
-					});
-				}
-				if (response.data.data.contextSet) {
-					AppDispatcher.handleServerAction({
-						actionType: appConstants.EXAMPLE_ACTION_CONSTANT,
-						data: response.data.data
-					});
-				}
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.EXAMPLE_ACTION_CONSTANT,
+					data: response.data.data
+				});
 			} else {
 				if (response.data && response.data.error) {
 					console.error('[RootscopeActions] failed to post foo, error:');
@@ -90,8 +82,16 @@ var RootscopeActions = {
 			console.log('foo item fail:');
 			console.log(data);
 		}
-	}
+	},
 	
+	// think: emptyCart()
+	exampleBasicAction() {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.EXAMPLE_ACTION_CONSTANT,
+			data: null
+		});
+	},
+
 };
 
 module.exports = RootscopeActions;
