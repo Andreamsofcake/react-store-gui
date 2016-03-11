@@ -39,7 +39,16 @@ var AppDispatcher = require('../dispatcher/AppDispatcher')
 		},
 
 		config: {
-
+			bShowLanguageFlag: false,
+      bShowLanguage: false,
+      bShowCredit: false,
+      bCashless: false,
+      bDualMachine: false,
+      itemsInCart: 0,
+      bInsufficientFunds: false,
+      bDisplayCgryNavigation: false,
+      bDisplayCgryNavigation2: false,
+      categories: [],
 		}
 	}
 

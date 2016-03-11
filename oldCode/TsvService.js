@@ -181,14 +181,14 @@ import axios from 'axios'
     // tsv.session.categories = null;
     // tsv.session.products = null;
 
-    tsv.cache = {};
-    tsv.cache.shoppingCart = {};
-    tsv.cache.productList = {};
-    tsv.cache.planogram = {};
-    tsv.cache.machineSettings = {};
-    tsv.cache.custommachinesettings = {};
-    tsv.cache.machineList = {};
-    tsv.cache.prdHashTable = {};
+    // tsv.cache = {};
+    // tsv.cache.shoppingCart = {};
+    // tsv.cache.productList = {};
+    // tsv.cache.planogram = {};
+    // tsv.cache.machineSettings = {};
+    // tsv.cache.custommachinesettings = {};
+    // tsv.cache.machineList = {};
+    // tsv.cache.prdHashTable = {};
 
 /**** METHODS below here still need refactoring, Kent is working on it *****/
     // override emptyCart so it clears any items from cached cart first
