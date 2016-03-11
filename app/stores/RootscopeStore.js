@@ -48,7 +48,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher')
       bInsufficientFunds: false,
       bDisplayCgryNavigation: false,
       bDisplayCgryNavigation2: false,
-      categories: [],
+      categories: []
 		}
 	}
 
