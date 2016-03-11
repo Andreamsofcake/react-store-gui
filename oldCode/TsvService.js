@@ -160,25 +160,26 @@ import axios from 'axios'
     // RootscopeStore._store.cache
     // etc
 
-    tsv.session = {};
-    tsv.session.cashMsg = translate.translate("Cash_Vending", "HintMessageInsertCash");
-    tsv.session.cardMsg = translate.translate("Card_Vending", "InstructionMessage");
-    tsv.session.vendErrorMsg1 = "vendErrorMsg1";
-    tsv.session.vendErrorMsg2 = "vendErrorMsg2";
-    tsv.session.vendSettleTotal = 0;
-    tsv.session.creditBalance = 0;
-    tsv.session.discount = 0;
-    //tsv.session.thankyouTimer;
-    //tsv.session.vendErrorTimer;
-    //tsv.session.paymentTimer;
-    //tsv.session.generalIdleTimer;
-    //tsv.session.cardErrorTimer;
-    tsv.session.bRunningAutoMap = false;
-    tsv.session.machineID = 0;
-    //tsv.session.currentView;
-    tsv.session.bVendedOldCredit = false;
-    tsv.session.categories = null;
-    tsv.session.products = null;
+//*Andrea refactor 3/11
+    // tsv.session = {};
+    // tsv.session.cashMsg = translate.translate("Cash_Vending", "HintMessageInsertCash");
+    // tsv.session.cardMsg = translate.translate("Card_Vending", "InstructionMessage");
+    // tsv.session.vendErrorMsg1 = "vendErrorMsg1";
+    // tsv.session.vendErrorMsg2 = "vendErrorMsg2";
+    // tsv.session.vendSettleTotal = 0;
+    // tsv.session.creditBalance = 0;
+    // tsv.session.discount = 0;
+    // //tsv.session.thankyouTimer;
+    // //tsv.session.vendErrorTimer;
+    // //tsv.session.paymentTimer;
+    // //tsv.session.generalIdleTimer;
+    // //tsv.session.cardErrorTimer;
+    // tsv.session.bRunningAutoMap = false;
+    // tsv.session.machineID = 0;
+    // //tsv.session.currentView;
+    // tsv.session.bVendedOldCredit = false;
+    // tsv.session.categories = null;
+    // tsv.session.products = null;
 
     tsv.cache = {};
     tsv.cache.shoppingCart = {};

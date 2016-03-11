@@ -8,21 +8,38 @@ var AppDispatcher = require('../dispatcher/AppDispatcher')
 	, _store = {
 		foo: [],
 		bar: {
-		
+
 		},
 
 		session: {
 			cashMsg: translate.translate("Cash_Vending", "HintMessageInsertCash"),
 			bVendedOldCredit: false,
 			bVendingInProcess: false,
+			cardMsg: translate.translate("Card_Vending", "InstructionMessage"),
+	    vendErrorMsg1: "vendErrorMsg1",
+	    vendErrorMsg2: "vendErrorMsg2",
+	    vendSettleTotal: 0,
+	    creditBalance: 0,
+	    discount: 0,
+	    bRunningAutoMap: false,
+	    machineID: 0,
+	    bVendedOldCredit: false,
+	    categories: null,
+	    products: null
 		},
 
 		cache: {
-			shoppingCart: {}
+			shoppingCart: {},
+			productList: {},
+	    planogram: {},
+	    machineSettings: {},
+	    custommachinesettings: {},
+	    machineList: {},
+	    prdHashTable: {}
 		},
 
 		config: {
-		
+
 		}
 	}
 
@@ -54,7 +71,7 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 	removeChangeListener: function(cb) {
 		this.removeListener(CHANGE_EVENT, cb);
 	},
-	
+
 	emitChange: function() {
 		this.emit(CHANGE_EVENT);
 	},
@@ -65,7 +82,7 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 
 	getBar: function(key) {
 		if (path) {
-			return _store.bar[path]; 
+			return _store.bar[path];
 		}
 		return _store.bar;
 	}
