@@ -9,6 +9,20 @@ var AppDispatcher = require('../dispatcher/AppDispatcher')
 		foo: [],
 		bar: {
 		
+		},
+
+		session: {
+			cashMsg: translate.translate("Cash_Vending", "HintMessageInsertCash"),
+			bVendedOldCredit: false,
+			bVendingInProcess: false,
+		},
+
+		cache: {
+			shoppingCart: {}
+		},
+
+		config: {
+		
 		}
 	}
 
