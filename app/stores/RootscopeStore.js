@@ -39,6 +39,9 @@ var AppDispatcher = require('../dispatcher/AppDispatcher')
 		},
 
 		config: {
+			failing:true,
+			failCount:0,
+			eventSubscriptions:{},
 			bShowLanguageFlag: false,
       bShowLanguage: false,
       bShowCredit: false,

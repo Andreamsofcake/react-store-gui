@@ -104,9 +104,9 @@ import axios from 'axios'
     ];
 
     var tsv = {};
-
-    tsv.failing = true;
-    tsv.failCount = 0;
+    // *Andrea reconfigure 3/11
+    // tsv.failing = true;
+    // tsv.failCount = 0;
 
     function doRequest(args) {
 
@@ -208,7 +208,8 @@ import axios from 'axios'
 
 /*** EVENTS, SUBSCRIPTIONS ***/
     // FIXME: change out eventSubscriptions here with utils/PubSub when ready
-    tsv.eventSubscriptions = {};
+    //Andrea reconfigure 3/11
+    // tsv.eventSubscriptions = {};
 
     tsv.isSubscribed = function(eventName, namespace) {
         var chain = tsv.eventSubscriptions[eventName];
