@@ -17,6 +17,11 @@ var keyMirror = function(obj) {
 // simply mirrors the key to the value, so you don't have to type doubles all the time... :)
 var appConstants = keyMirror({
 
+// Root section updaters:
+	UPDATE_ROOT_CONFIG: null,
+	UPDATE_ROOT_CACHE: null,
+	UPDATE_ROOT_SESSION: null,
+
 // Foo Section Describer (optional)
 	EXAMPLE_ACTION_CONSTANT: null,
 
