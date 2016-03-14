@@ -7,12 +7,13 @@ import RootscopeStore from '../store/RootscopeStore'
 class Page_Idle extends Component {
 
   constructor(props, context) {
-  	// MUST call super() before any this.*
-  	super(props, context);
+    // MUST call super() before any this.*
+    super(props, context);
     
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.setConfig('bShowCredit', RootscopeStore.getCache('credit') && true);
     
+    // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
     TSVService.disableLoginDevices();
   }
 
@@ -42,6 +43,6 @@ class Page_Idle extends Component {
   	TSVService.idleClicked();
   }
 
-});
+}
 
 export default Page_Idle
