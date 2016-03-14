@@ -94,11 +94,11 @@ class Product_Search extends Component {
 
             // extra navigation controls
             <ul className="flex-container">
-                {Object.keys(products).map(function(product){
+                {products.map((product, $index) => {
                   return (
-                    <li className={'flex-item' + this.isActive($index) ? ' active'} style={{ opacity: this.setOpacity(stockCount) }}>
+                    <li key={$index} className={'flex-item' + this.isActive($index) ? ' active'} style={{ opacity: this.setOpacity(stockCount) }}>
 
-                        <figure id="prdImg{$index}" onClick={this.setPrdSelected.bind(this, product)}>
+                        <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
 
                             <figcaption>{product.productName}</figcaption>
 
@@ -130,7 +130,7 @@ class Product_Search extends Component {
   renderBackBtn() {
     if (this.state.bShowBackButton) {
       <img className="regularBtn" id="back" src={Translate.localizedImage('back.png')} alt="back" onClick={this.back()}/>
-    }    
+    }
   }
 
   renderCategoryTable() {
@@ -140,7 +140,7 @@ class Product_Search extends Component {
 
           <tr class="nav">
 
-            {Object.keys(categories).map((category, $index) => {
+             {categories.map( (category, $index) => { {
               return (
                 <td key={$index} className={'gallery'+ this.isActive($index) ? ' active'}>
 
