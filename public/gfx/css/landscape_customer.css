@@ -1,0 +1,5 @@
+.coil_keypad #coilInput{
+    position: absolute;
+    top:400px;
+    left:325px;
+}

@@ -1,41 +1,42 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher')
-	, appConstants = require('../constants/appConstants')
-	, objectAssign = require('react/lib/Object.assign')
-	, EventEmitter = require('events').EventEmitter
-	, CHANGE_EVENT = 'change'
+import AppDispatcher from '../dispatcher/AppDispatcher'
+import appConstants from '../constants/appConstants'
+import TsvService from '../lib/TsvService'
+import { * } as Translate from '../lib/Translate'
+
+import objectAssign from 'react/lib/Object.assign'
+import { EventEmitter } from 'events'
+import muDB from '../../lib/muDB'
+
+var CHANGE_EVENT = 'change'
 
 // example state vars:
 	, _store = {
-		foo: [],
-		bar: {
-
-		},
 
 		session: {
-			cashMsg: translate.translate("Cash_Vending", "HintMessageInsertCash"),
+			cashMsg: Translate.translate("Cash_Vending", "HintMessageInsertCash"),
+			cardMsg: Translate.translate("Card_Vending", "InstructionMessage"),
 			bVendedOldCredit: false,
 			bVendingInProcess: false,
-			cardMsg: translate.translate("Card_Vending", "InstructionMessage"),
-	    vendErrorMsg1: "vendErrorMsg1",
-	    vendErrorMsg2: "vendErrorMsg2",
-	    vendSettleTotal: 0,
-	    creditBalance: 0,
-	    discount: 0,
-	    bRunningAutoMap: false,
-	    machineID: 0,
-	    bVendedOldCredit: false,
-	    categories: null,
-	    products: null
+			vendErrorMsg1: "vendErrorMsg1",
+			vendErrorMsg2: "vendErrorMsg2",
+			vendSettleTotal: 0,
+			creditBalance: 0,
+			discount: 0,
+			bRunningAutoMap: false,
+			machineID: 0,
+			bVendedOldCredit: false,
+			categories: null,
+			products: null
 		},
 
 		cache: {
 			shoppingCart: {},
 			productList: {},
-	    planogram: {},
-	    machineSettings: {},
-	    custommachinesettings: {},
-	    machineList: {},
-	    prdHashTable: {}
+			planogram: {},
+			machineSettings: {},
+			custommachinesettings: {},
+			machineList: {},
+			prdHashTable: {}
 		},
 
 		config: {
@@ -43,19 +44,22 @@ var AppDispatcher = require('../dispatcher/AppDispatcher')
 			failCount:0,
 			eventSubscriptions:{},
 			bShowLanguageFlag: false,
-      bShowLanguage: false,
-      bShowCredit: false,
-      bCashless: false,
-      bDualMachine: false,
-      itemsInCart: 0,
-      bInsufficientFunds: false,
-      bDisplayCgryNavigation: false,
-      bDisplayCgryNavigation2: false,
-      categories: []
+			bShowLanguage: false,
+			bShowCredit: false,
+			bCashless: false,
+			bDualMachine: false,
+			itemsInCart: 0,
+			bInsufficientFunds: false,
+			bDisplayCgryNavigation: false,
+			bDisplayCgryNavigation2: false,
+			categories: []
 		}
 	}
-
+	
+	, _storeDB = new muDB()
 	;
+
+_storeDB.setDB(_store);
 
 // example updater functions (triggered by Dispatch + appConstant listeners)
 function setFoo(data) {
@@ -88,15 +92,16 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 		this.emit(CHANGE_EVENT);
 	},
 
-	getFoo: function() {
-		return _store.foo;
+	getConfig: function(path) {
+		return _storeDB.get('config.' + path);
 	},
 
-	getBar: function(key) {
-		if (path) {
-			return _store.bar[path];
-		}
-		return _store.bar;
+	getCache: function(path) {
+		return _storeDB.get('cache.' + path);
+	},
+
+	getSession: function(path) {
+		return _storeDB.get('session.' + path);
 	}
 
 });
@@ -105,6 +110,21 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 	var action = payload.action;
 	switch(action.actionType) {
 
+		case appConstants.UPDATE_ROOT_CONFIG:
+			_storeDB.set('config.' + action.data.path, action.data.value);
+			RootscopeStore.emitChange();
+			break;
+			
+		case appConstants.UPDATE_ROOT_CACHE:
+			_storeDB.set('cache.' + action.data.path, action.data.value);
+			RootscopeStore.emitChange();
+			break;
+			
+		case appConstants.UPDATE_ROOT_SESSION:
+			_storeDB.set('session.' + action.data.path, action.data.value);
+			RootscopeStore.emitChange();
+			break;
+			
 		case appConstants.EXAMPLE_ACTION_CONSTANT:
 			if (action.data) {
 				setFoo(action.data);

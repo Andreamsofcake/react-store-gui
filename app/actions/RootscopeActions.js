@@ -92,6 +92,29 @@ var RootscopeActions = {
 		});
 	},
 
+// setters for RootscopeStore:
+
+	setConfig(path, value) {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.UPDATE_ROOT_CONFIG,
+			data: { path, value }
+		});
+	},
+	
+	setCache(path, value) {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.UPDATE_ROOT_CACHE,
+			data: { path, value }
+		});
+	},
+
+	setSession(path, value) {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.UPDATE_ROOT_SESSION,
+			data: { path, value }
+		});
+	},
+
 };
 
 module.exports = RootscopeActions;

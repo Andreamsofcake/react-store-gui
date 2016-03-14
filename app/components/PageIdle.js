@@ -1,7 +1,8 @@
 import React from 'react'
-import RootscopeActions from '../actions/RootscopeActions'
 import TsvService from '../lib/TsvService'
-import Translate from '../lib/Translate'
+import { * } as Translate from '../lib/Translate'
+
+import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../store/RootscopeStore'
 
 class Page_Idle extends Component {
@@ -14,11 +15,14 @@ class Page_Idle extends Component {
     RootscopeActions.setConfig('bShowCredit', RootscopeStore.getCache('credit') && true);
     
     // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
-    TSVService.disableLoginDevices();
-  }
+    TsvService.disableLoginDevices();
 
-  getInitialState() {
-    return {};
+	var binders = [
+		'idleClicked',
+	];
+	binders.forEach(B => {
+		if (this[B]) { this[B] = this[B].bind(this); }
+	});
   }
 
   // Add change listeners to stores
@@ -39,8 +43,8 @@ class Page_Idle extends Component {
   
   idleClicked(e) {
   	e.preventDefault();
-  	// probably triggers a route change, according to the current TSVService func
-  	TSVService.idleClicked();
+  	// probably triggers a route change, according to the current TsvService func
+  	TsvService.idleClicked();
   }
 
 }
