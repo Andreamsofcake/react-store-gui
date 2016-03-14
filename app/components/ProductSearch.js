@@ -113,7 +113,7 @@ class Product_Search extends Component {
                 })}
             </ul>
           </div>
-          {this.renderBackButton()}
+          {this.renderBackBtn()}
 
       </div>
     );
@@ -128,7 +128,7 @@ class Product_Search extends Component {
   // }
 
   renderBackBtn() {
-    if (this.state.bShowBackButton) {
+    if (this.state.bShowBackBtn) {
       <img className="regularBtn" id="back" src={Translate.localizedImage('back.png')} alt="back" onClick={this.back()}/>
     }
   }
@@ -138,7 +138,7 @@ class Product_Search extends Component {
     return (
       <table  id="displayCategories">
 
-          <tr class="nav">
+          <tr className="nav">
 
              {categories.map( (category, $index) => { {
               return (
