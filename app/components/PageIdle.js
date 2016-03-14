@@ -1,6 +1,7 @@
 import React from 'react'
 import RootscopeActions from '../actions/RootscopeActions'
 import TsvService from '../lib/TsvService'
+import Translate from '../lib/Translate'
 import RootscopeStore from '../store/RootscopeStore'
 
 class Page_Idle extends Component {
@@ -30,7 +31,7 @@ class Page_Idle extends Component {
   render() {
     return (
       <div className="Page_Idle" onClick={this.idleClicked}>
-      	<img id="idleImg" ng-src="{{localizedImage('idle.png')}}" alt="IdlePage" />
+      	<img id="idleImg" src={Translate.localizedImage('idle.png')} alt="IdlePage" />
       </div>
     );
   }
