@@ -10,8 +10,8 @@ class Product_Search extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    this.state {
-      bShowBackBtn = false;
+    this.state = {
+      bShowBackBtn : false
     }
 
     RootscopeActions.setConfig('bDisplayCgry', false);
@@ -26,9 +26,7 @@ class Product_Search extends Component {
       this.state.bShowBackBtn = true;
     }
 
-    this.state {
-      _Index = 0;
-    }
+    this.state._Index = 0
   }
 
   setOpacity() {
@@ -98,15 +96,15 @@ class Product_Search extends Component {
             <ul class="flex-container">
                 {Object.keys(products).map(function(product){
                   return (
-                    <li class = "flex-item" ng-class="{'active':isActive($index)}" style={{ opacity: this.setOpacity(stockCount) }}>
+                    <li class = "flex-item" className={this.isActive($index) ? ‘ active’} style={{ opacity: this.setOpacity(stockCount) }}>
 
-                        <figure id="prdImg{{$index}}" onClick={this.setPrdSelected.bind(this, product)}>
+                        <figure id="prdImg{$index}" onClick={this.setPrdSelected.bind(this, product)}>
 
-                            <figcaption>{{product.productName}}</figcaption>
+                            <figcaption>{product.productName}</figcaption>
 
-                            <img src="{{product.imagePath}}" alt="{{product.description}}" title="{{product.description}}" />
+                            <img src={product.imagePath} alt={product.description} title={product.description} />
 
-                            <p class="prdPrice">{{ currencyFilter(product.price) }}</p>
+                            <p class="prdPrice">{ Translate.currencyFilter(product.price) }</p>
 
                         </figure>
 
@@ -116,7 +114,7 @@ class Product_Search extends Component {
             </ul>
           </div>
           {if bShowBackBtn}
-            <img class="regularBtn" id="backImg" id="back" src="back.png" alt="back" onClick={back()}>
+            <img class="regularBtn" id="backImg" id="back" src={Translate.localizedImage('back.png')} alt="back" onClick={back()}>
           {/if}
       </div>
     );
@@ -137,11 +135,11 @@ class Product_Search extends Component {
 
           <tr class="nav">
 
-            {Object.keys(categories).map(function(category){
+            {Object.keys(categories).map((category, $index) => {
               return (
-                <td class = "gallery" ng-class="{'active':isActive($index)}">
+                <td key={$index} className={“gallery”+ this.isActive($index) ? ‘ active’}>
 
-                    <img src="{{category.imagePath}}" alt="{{category.description}}" title="{{category.description}}" onClick="updateCategory({{category.categoryID}});" />
+                    <img src={category.imagePath} alt={category.description} title={category.description} onClick={this.updateCategory.bind(this, category.categoryID)} />
 
                 </td>
               )
@@ -151,12 +149,6 @@ class Product_Search extends Component {
 
       </table>
     )
-  }
-
-  idleClicked(e) {
-  	e.preventDefault();
-  	// probably triggers a route change, according to the current TSVService func
-  	TSVService.idleClicked();
   }
 
 }
