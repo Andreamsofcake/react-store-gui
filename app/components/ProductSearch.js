@@ -7,7 +7,7 @@ import RootscopeStore from '../store/RootscopeStore'
 class Product_Search extends Component {
 
   constructor(props, context) {
-    // MUST call super() before any this.*
+    {/* MUST call super() before any this.*/}
     super(props, context);
 
     this.state = {
@@ -48,7 +48,7 @@ class Product_Search extends Component {
   setPrdSelected(product, e) {
     if(product.stockCount > 0){
       RootscopeActions.setConfig('pvr', TSVService.addToCartByProductID(product.productID));
-      // $location.path("/view2");
+      {/* $location.path("/view2");*/}
 
     }
   }
@@ -65,11 +65,11 @@ class Product_Search extends Component {
       browserHistory.push("/Category_Search");
   }
 
-  // Add change listeners to stores
+  {/* Add change listeners to stores*/}
   componentDidMount() {
   }
 
-  // Remove change listers from stores
+  {/* Remove change listers from stores*/}
   componentWillUnmount() {
   }
 
@@ -82,17 +82,18 @@ class Product_Search extends Component {
 
       <h2>{Translate.translate('SelectProduct')}</h2>
 
-        // slider container
+        {/* slider container*/}
         <div class="container_slider">
 
-            // enumerate all photos
-            // { this.renderImageSlider(products)}
+            {/* enumerate all photos
+            { this.renderImageSlider(products)}
 
-            // prev / next controls
-            // <div class="arrow prev" href="#" onClick=(this.showPrev()}></div>
-            // <div class="arrow next" href="#" onClick=(this.showNext()}></div>
+            prev / next controls
+            <div class="arrow prev" href="#" onClick=(this.showPrev()}></div>
+            <div class="arrow next" href="#" onClick=(this.showNext()}></div>
 
-            // extra navigation controls
+            extra navigation controls*/}
+
             <ul className="flex-container">
                 {products.map((product, $index) => {
                   return (
@@ -119,16 +120,16 @@ class Product_Search extends Component {
     );
   }
 
-  // renderImageSlider(products) {
-  //   {Object.keys(products).map(function(product){
-  //     return (
-  //        <img class="slide" ng-swipe-right={showPrev()} ng-swipe-left={showNext()} ng-show="isActive($index)" src="{{product.imagePath}}" />
-  //     )
-  //   })}
-  // }
+  {/* renderImageSlider(products) {
+    {Object.keys(products).map(function(product){
+      return (
+         <img class="slide" ng-swipe-right={showPrev()} ng-swipe-left={showNext()} ng-show="isActive($index)" src="{{product.imagePath}}" />
+      )
+    })}
+  } */}
 
   renderBackBtn() {
-    if (this.state.bShowBackBtn) {
+    if (this.state.bShowBackButton) {
       <img className="regularBtn" id="back" src={Translate.localizedImage('back.png')} alt="back" onClick={this.back()}/>
     }
   }
