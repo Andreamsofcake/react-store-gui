@@ -19,7 +19,7 @@ class Product_Search extends Component {
     RootscopeActions.setSession('creditBalance', RootscopeStore.getCache('credit') && true)
     RootscopeActions.setSession('Product_Search');
 
-    if (RootscopeStore.getCache(‘custommachinesettings.bCategoryView’) === false) {
+    if (RootscopeStore.getCache('custommachinesettings.bCategoryView') === false) {
       this.state.products = TSVService.fetchProduct();
     } else {
       this.state.products = RootscopeStore.getProducts();
@@ -80,7 +80,7 @@ class Product_Search extends Component {
       <div className="Product_Search" >
       { if (this.state.bDisplayCgry) { this.renderCategoryTable() } }
 
-      <h2>{{translate('SelectProduct')}}</h2>
+      <h2>{Translate.translate('SelectProduct')}</h2>
 
         // slider container
         <div class="container_slider">
@@ -93,10 +93,10 @@ class Product_Search extends Component {
             // <div class="arrow next" href="#" onClick=(this.showNext()}></div>
 
             // extra navigation controls
-            <ul class="flex-container">
+            <ul className="flex-container">
                 {Object.keys(products).map(function(product){
                   return (
-                    <li class = "flex-item" className={this.isActive($index) ? ‘ active’} style={{ opacity: this.setOpacity(stockCount) }}>
+                    <li className={'flex-item' + this.isActive($index) ? ' active'} style={{ opacity: this.setOpacity(stockCount) }}>
 
                         <figure id="prdImg{$index}" onClick={this.setPrdSelected.bind(this, product)}>
 
@@ -104,7 +104,7 @@ class Product_Search extends Component {
 
                             <img src={product.imagePath} alt={product.description} title={product.description} />
 
-                            <p class="prdPrice">{ Translate.currencyFilter(product.price) }</p>
+                            <p className="prdPrice"> {Translate.currencyFilter(product.price) }</p>
 
                         </figure>
 
@@ -113,9 +113,8 @@ class Product_Search extends Component {
                 })}
             </ul>
           </div>
-          {if bShowBackBtn}
-            <img class="regularBtn" id="backImg" id="back" src={Translate.localizedImage('back.png')} alt="back" onClick={back()}>
-          {/if}
+          {this.renderBackButton()}
+
       </div>
     );
   }
@@ -128,6 +127,12 @@ class Product_Search extends Component {
   //   })}
   // }
 
+  renderBackBtn() {
+    if (this.state.bShowBackButton) {
+      <img className="regularBtn" id="back" src={Translate.localizedImage('back.png')} alt="back" onClick={this.back()}/>
+    }    
+  }
+
   renderCategoryTable() {
     var categories = RootscopeStore.getProductCategories();
     return (
@@ -137,7 +142,7 @@ class Product_Search extends Component {
 
             {Object.keys(categories).map((category, $index) => {
               return (
-                <td key={$index} className={“gallery”+ this.isActive($index) ? ‘ active’}>
+                <td key={$index} className={'gallery'+ this.isActive($index) ? ' active'}>
 
                     <img src={category.imagePath} alt={category.description} title={category.description} onClick={this.updateCategory.bind(this, category.categoryID)} />
 
