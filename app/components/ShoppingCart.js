@@ -194,11 +194,11 @@ class Shopping_Cart extends Component {
 
                                 <tr>
 
-                                    <td><img className="smallImg" src="../Images/minus.png" ng-click="minusQty(prd.coilNumber)"></td>
+                                    <td><img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}></td>
 
                                     <td id="qty">{ prd.qtyInCart}</td>
 
-                                    <td><img className="smallImg" src="../Images/add.png" ng-click="addQty(prd.coilNumber)"></td>
+                                    <td><img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}></td>
 
                                 </tr>
 
@@ -206,10 +206,11 @@ class Shopping_Cart extends Component {
 
                         </td>
 
-                        <td className="cart"><img className="smallImg" src="../Images/remove.png" ng-click="removeAllQty(prd.coilNumber, prd.qtyInCart)"></td>
+                        <td className="cart"><img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}></td>
                       </tr>
                     );
                   }
+                )}
 
 
 
@@ -237,11 +238,15 @@ class Shopping_Cart extends Component {
   }
 
   renderCouponButton() {
-    <img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon"/> {/*err-src="../Images/coupon.png" */}
+    return (
+      <img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon"/> {/*err-src="../Images/coupon.png" */}
+    )
   }
 
   renderShowTax() {
-    <p>{Translate.translate('Tax', 'Tax')}: { TsvService.currencyFilter(salesTaxAmount) }</p>
+    return (
+     <p>{Translate.translate('Tax', 'Tax')}: { TsvService.currencyFilter(salesTaxAmount) }</p>
+    )
   }
 
 export default Shopping_Cart
