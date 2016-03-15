@@ -30,40 +30,58 @@ class Category_Search extends Component {
 
           <h2>{Translate.translate('Select_Category', 'SelectCategory')}</h2>
 
-          <img className="arrow next" src="Images/next.png" alt="next" ng-click="showNext()">-->
+          <img className="arrow next" src="Images/next.png" alt="next" onClick={this.showNext()}/>
 
           {/*slider container*/}
           <div className="container_slider">
 
               <ul className="nav">
 
-                  <li className = "gallery" ng-repeat="category in categories">
+              {categories.map((category, $index) => {
+                return (
+                  <li key={$index} className = "gallery" >
 
-                      <figure ng-click="setPrdSelected({{product.productID}});">
+                      <figure onClick={this.setPrdSelected.bind(this, product.productID)} />
 
-                          <figcaption ng-if="bShowCgryTitle">{{category.categoryName}}</figcaption>
+                          { if (this.state.bShowCgryTitle) { this.renderCategoryName() } }
 
-                          <img id="img{{$index}}" ng-src="{{category.imagePath}}" alt="{{category.description}}" title="{{category.description}}" ng-click="fetchCategory({{category.categoryID}});" />
+                          <img id={$index} src={category.imagePath} alt={category.description} title={category.description} onClick={this.fetchCategory.bind(this, category.categoryID) />
 
                       </figure>
 
                   </li>
+                )
+              })
 
               </ul>
 
           </div>
 
-          <img className="regularBtn" id="backImg" ng-show="bSubCgry" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="back()">
+          { if (this.state.bSubCgry) { this.renderSubCgry()} }
 
       </div>
     );
   }
 
-renderAdminButton() {
-  return (
-    <button id="adminBtn" noClick={this.admin()}></button>
-  )
-}
+  renderSubCgry() {
+    return (
+      <img className="regularBtn" id="backImg" ng-show="bSubCgry" src={Translate.localizedImage('back.png')} noClick={this.back()} /> {/*err-src="../Images/back.png" */}
+    )
+  }
+
+  renderAdminButton() {
+    return (
+      <button id="adminBtn" noClick={this.admin()}></button>
+    )
+  }
+
+  renderCategoryName() {
+    return (
+        <figcaption>{{category.categoryName}}</figcaption>
+    )
+  }
+
+
 
 }
 
