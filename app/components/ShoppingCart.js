@@ -24,7 +24,7 @@ class Shopping_Cart extends Component {
       bShowTax: false,
       bShowCouponBtn: false
     };
-    
+
     RootscopeActions.setConfig('summary', this.state.summary);
 
     if (this.state.salesTaxAmount > 0) {
@@ -42,12 +42,14 @@ class Shopping_Cart extends Component {
   }
 
   cancel(){
-    RootscopeActions.emptyCart();
-    RootscopeActions.setConfig('itemsInCart', 0)
-    RootscopeActions.gotoDefaultIdlePage();
+    TsvService.emptyCart();
+    RootscopeActions.setConfig('itemsInCart', 0);
+    TsvService.gotoDefaultIdlePage();
 
   }
-  shopmore() {}
+  shopmore() {
+    TsvService.gotoDefaultIdlePage();
+  }
 
   minusQty(coil) {
 	TsvService.removeFromCartByCoilNo(coil, (err, ok) {
@@ -56,7 +58,7 @@ class Shopping_Cart extends Component {
 
 			if (err) throw err;
 			RootscopeActions.setCache('shoppingCart', data);
-		
+
 			if (!data.detail || !data.detail.length) {
 				TsvService.gotoDefaultIdlePage();
 			} else {
@@ -66,7 +68,7 @@ class Shopping_Cart extends Component {
 					emptyCart: data.detail.length <= 0
 				});
 			}
-	
+
 		});
 	});
   }
@@ -78,12 +80,12 @@ class Shopping_Cart extends Component {
 
 			if (err) throw err;
 			RootscopeActions.setCache('shoppingCart', data);
-		
+
 			this.setState({
 				cart: data.detail,
 				totalPrice: data.summary.TotalPrice
 			});
-	
+
 		});
 	});
 	/*
@@ -141,6 +143,14 @@ class Shopping_Cart extends Component {
 		}
   }
 
+  cardTransactionHandler(level) {
+    if(!RootscopeStore.getSession.bVendingInProcess){
+      if(RootscopeStore.getCache('currentLocation') != "/Card_Vending") {
+        browserHistory.push( "/Card_Vending" );
+      }
+      TsvService.cardTransaction(level);
+    }
+  }
 
   {/* Add change listeners to stores*/}
   componentDidMount() {
