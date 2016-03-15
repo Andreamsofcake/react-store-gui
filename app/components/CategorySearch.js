@@ -38,21 +38,21 @@ class Category_Search extends Component {
               <ul className="nav">
 
               {categories.map((category, $index) => {
-                return (
-                  <li key={$index} className = "gallery" >
+                  return (
+                    <li key={$index} className = "gallery" >
 
-                      <figure onClick={this.setPrdSelected.bind(this, product.productID)} />
+                        <figure onClick={this.setPrdSelected.bind(this, product.productID)} />
 
-                          { if (this.state.bShowCgryTitle) { this.renderCategoryName() } }
+                            { if (this.state.bShowCgryTitle) {this.renderCategoryName()} }
 
-                          <img id={$index} src={category.imagePath} alt={category.description} title={category.description} onClick={this.fetchCategory.bind(this, category.categoryID) />
+                            <img id={$index} src={category.imagePath} alt={category.description} title={category.description} onClick={this.fetchCategory.bind(this, category.categoryID)} />
 
-                      </figure>
+                        </figure>
 
-                  </li>
-                )
-              })
-
+                    </li>
+                  )
+                }
+              )}
               </ul>
 
           </div>
