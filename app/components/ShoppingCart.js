@@ -175,74 +175,69 @@ class Shopping_Cart extends Component {
 
                 <tr className="cart"><th></th><th></th><th className="cart">{Translate.translate('Price','Price')}</th><th className="cart">{Translate.translate('Qty','Qty')}</th><th></th></tr>
 
-                <tr className="cart" ng-repeat="prd in cart" className="shoppingCart">
+                {cart.map((prd, $index) => {
+                    return (
+                      <tr key={$index} className="cart" className="shoppingCart">
+                        <td className="cart">
 
-                    <td className="cart">
+                            <img id="prdImg" src={prd.imagePath} /> {/*err-src="../Images/ProductImageNotFound.png"*/}
 
-                        <img id="prdImg" src={prd.imagePath} /> {/*<div id="additionalInfo">*/}
+                        </td>
 
-                            <p ng-show="bShowTax">{Translate.translate('Tax','Tax')}: { currencyFilter(salesTaxAmount) }</p>
+                        <td className="cart">{ prd.productName }</td>
 
-                            <p>{{translate('TotalPrice')}}: {{ currencyFilter(totalPrice) }}</p>
+                        <td className="cart">{ TsvService.currencyFilter(prd.price*prd.qtyInCart) }</td>
 
-                        </div>
+                        <td className="cart">
 
-                        <img class="regularBtn" alt="ShopMore" id="shopMoreImg" ng-src="{{localizedImage('ShopMore.png')}}" err-src="../Images/ShopMore.png" ng-click="shopmore()">
+                            <table className="qty">
 
-                        <img class="regularBtn" alt="Check Out" id="checkoutImg" ng-src="{{localizedImage('checkout.png')}}" err-src="../Images/checkout.png" ng-click="checkout()">
+                                <tr>
 
-                        <p><img class="regularBtn" alt="Cancel" id="cancelImg" ng-src="{{localizedImage('cancel.png')}}" err-src="../Images/cancel.png" ng-click="cancel()"></p>
+                                    <td><img className="smallImg" src="../Images/minus.png" ng-click="minusQty(prd.coilNumber)"></td>
 
-                        <img ng-if="bShowCouponBtn" class="regularBtn" id="couponImg" ng-src="{{localizedImage('coupon.png')}}" err-src="../Images/coupon.png" ng-click="coupon()" alt="Coupon">}
+                                    <td id="qty">{ prd.qtyInCart}</td>
 
-                    </td>
+                                    <td><img className="smallImg" src="../Images/add.png" ng-click="addQty(prd.coilNumber)"></td>
 
-                    <td className="cart">{{ prd.productName }}</td>
+                                </tr>
 
-                    <td className="cart">{{ currencyFilter(prd.price*prd.qtyInCart) }}</td>
+                            </table>
 
-                    <td className="cart">
+                        </td>
 
-                        <table className="qty">
+                        <td className="cart"><img className="smallImg" src="../Images/remove.png" ng-click="removeAllQty(prd.coilNumber, prd.qtyInCart)"></td>
+                      </tr>
+                    );
+                  }
 
-                            <tr>
 
-                                <td><img className="smallImg" ng-src="../Images/minus.png" ng-click="minusQty(prd.coilNumber)"></td>
-
-                                <td id="qty">{{ prd.qtyInCart}}</td>
-
-                                <td><img className="smallImg" ng-src="../Images/add.png" ng-click="addQty(prd.coilNumber)"></td>
-
-                            </tr>
-
-                        </table>
-
-                    </td>
-
-                    <td className="cart"><img className="smallImg" ng-src="../Images/remove.png" ng-click="removeAllQty(prd.coilNumber, prd.qtyInCart)"></td>
-
-                </tr>
 
             </table>
             <div id="additionalInfo">
 
-                <p ng-show="bShowTax">{{translate('Tax')}}: {{ currencyFilter(salesTaxAmount) }}</p>
+                <p ng-show="bShowTax">{Translate.translate('Tax')}: { TsvService.currencyFilter(salesTaxAmount) }</p>
 
-                <p>{{translate('TotalPrice')}}: {{ currencyFilter(totalPrice) }}</p>
+                <p>{Translate.translate('Total_Price','TotalPrice')}: { TsvService.currencyFilter(totalPrice) }</p>
 
             </div>
 
-            <img className="regularBtn" alt="ShopMore" id="shopMoreImg" ng-src="{{localizedImage('ShopMore.png')}}" err-src="../Images/ShopMore.png" ng-click="shopmore()">
+            <img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} err-src="../Images/ShopMore.png" ng-click="shopmore()">
 
-            <img className="regularBtn" alt="Check Out" id="checkoutImg" ng-src="{{localizedImage('checkout.png')}}" err-src="../Images/checkout.png" ng-click="checkout()">
+            <img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} err-src="../Images/checkout.png" ng-click="checkout()">
 
-            <p><img className="regularBtn" alt="Cancel" id="cancelImg" ng-src="{{localizedImage('cancel.png')}}" err-src="../Images/cancel.png" ng-click="cancel()"></p>
+            <p><img className="regularBtn" alt="Cancel" id="cancelImg" src={Translate.localizedImage('cancel.png')} err-src="../Images/cancel.png" ng-click="cancel()"></p>
 
-            <img ng-if="bShowCouponBtn" className="regularBtn" id="couponImg" ng-src="{{localizedImage('coupon.png')}}" err-src="../Images/coupon.png" ng-click="coupon()" alt="Coupon">
+            { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
+
         </div>
 
       </div>
     );
+  }
+
+  renderCouponButton() {
+    <img ng-if="bShowCouponBtn" className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} err-src="../Images/coupon.png" ng-click="coupon()" alt="Coupon">}
   }
 
 export default Shopping_Cart
