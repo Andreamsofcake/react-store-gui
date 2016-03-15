@@ -216,17 +216,17 @@ class Shopping_Cart extends Component {
             </table>
             <div id="additionalInfo">
 
-                <p ng-show="bShowTax">{Translate.translate('Tax')}: { TsvService.currencyFilter(salesTaxAmount) }</p>
+                { if (this.state.bShowTax) { this.renderShowTax() } }
 
                 <p>{Translate.translate('Total_Price','TotalPrice')}: { TsvService.currencyFilter(totalPrice) }</p>
 
             </div>
 
-            <img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} err-src="../Images/ShopMore.png" ng-click="shopmore()">
+            <img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} onClick={this.shopmore()}/> {/*err-src="../Images/ShopMore.png"*/}
 
-            <img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} err-src="../Images/checkout.png" ng-click="checkout()">
+            <img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/> {/*err-src="../Images/checkout.png"*/}
 
-            <p><img className="regularBtn" alt="Cancel" id="cancelImg" src={Translate.localizedImage('cancel.png')} err-src="../Images/cancel.png" ng-click="cancel()"></p>
+            <p><img className="regularBtn" alt="Cancel" id="cancelImg" src={Translate.localizedImage('cancel.png')} onClick={this.cancel()}></p> {/*err-src=""../Images/cancel.png"*/}
 
             { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
 
@@ -237,7 +237,11 @@ class Shopping_Cart extends Component {
   }
 
   renderCouponButton() {
-    <img ng-if="bShowCouponBtn" className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} err-src="../Images/coupon.png" ng-click="coupon()" alt="Coupon">}
+    <img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon"/> {/*err-src="../Images/coupon.png" */}
+  }
+
+  renderShowTax() {
+    <p>{Translate.translate('Tax', 'Tax')}: { TsvService.currencyFilter(salesTaxAmount) }</p>
   }
 
 export default Shopping_Cart
