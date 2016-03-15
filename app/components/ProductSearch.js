@@ -11,22 +11,28 @@ class Product_Search extends Component {
     super(props, context);
 
     this.state = {
-      bShowBackBtn : false
+      bShowBackBtn: false,
+      _Index: 0
     }
 
     RootscopeActions.setConfig('bDisplayCgry', false);
     RootscopeActions.updateCredit(); //unsure
-    RootscopeActions.setSession('creditBalance', RootscopeStore.getCache('credit') && true)
-    RootscopeActions.setSession('Product_Search');
+    //RootscopeActions.setSession('creditBalance', RootscopeStore.getCache('credit') && true)
+    RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance'))
+    RootscopeActions.setSession('currentView', 'Product_Search');
 
     if (RootscopeStore.getCache('custommachinesettings.bCategoryView') === false) {
-      this.state.products = TSVService.fetchProduct();
+      /*this.state.products = */TsvService.fetchProduct(null, function(err, products) {
+      	this.setState({
+      		products: products
+      	});
+      });
+
     } else {
       this.state.products = RootscopeStore.getProducts();
       this.state.bShowBackBtn = true;
     }
 
-    this.state._Index = 0
   }
 
   setOpacity() {
@@ -47,7 +53,7 @@ class Product_Search extends Component {
 
   setPrdSelected(product, e) {
     if(product.stockCount > 0){
-      RootscopeActions.setConfig('pvr', TSVService.addToCartByProductID(product.productID));
+      RootscopeActions.setConfig('pvr', TsvService.addToCartByProductID(product.productID));
       {/* $location.path("/view2");*/}
 
     }
@@ -58,7 +64,7 @@ class Product_Search extends Component {
   }
 
   updateCategory(categoryID) {
-      RootscopeStore.getProducts(TSVService.fetchProductByCategory(categoryID));
+      RootscopeStore.getProducts(TsvService.fetchProductByCategory(categoryID));
   }
 
   back() {
@@ -105,7 +111,7 @@ class Product_Search extends Component {
 
                             <img src={product.imagePath} alt={product.description} title={product.description} />
 
-                            <p className="prdPrice"> {Translate.currencyFilter(product.price) }</p>
+                            <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
 
                         </figure>
 
