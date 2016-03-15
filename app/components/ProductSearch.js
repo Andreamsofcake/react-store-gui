@@ -147,7 +147,7 @@ class Product_Search extends Component {
 
           <tr className="nav">
 
-             {categories.map( (category, $index) => { {
+             {categories.map( (category, $index) => {
               return (
                 <td key={$index} className={'gallery'+ this.isActive($index) ? ' active'}>
 
@@ -160,9 +160,8 @@ class Product_Search extends Component {
           </tr>
 
       </table>
-    )
-  }
-
+    )}
 }
+
 
 export default Product_Search

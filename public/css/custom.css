@@ -1,3 +1,23 @@
+/** Category_Search **/
+
+.Category_Search{
+		overflow-x: hidden;
+		overflow-y: hidden;
+}
+
+.img{
+		display: inline;
+}
+
+.Category_Search div.img img {
+		display: inline;
+		margin: 5px;
+		width:250px;
+		height: 250px;
+}
+
+/** end Category_Search **/
+
 /* from keyboard */
 .keyboard .btns{
 	display: inline-block;
