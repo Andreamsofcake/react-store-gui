@@ -1,5 +1,5 @@
 'use strict';
-
+{/* Andrea refactor 3/14.*/}
 angular.module('myApp.Product_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
 
     .config(['$routeProvider', function($routeProvider) {

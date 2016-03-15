@@ -22,7 +22,7 @@ angular.module('myApp.Shopping_Cart', ['ngRoute'])
             $scope.totalPrice = TSVService.cache.shoppingCart.summary.TotalPrice;
             $scope.cart = TSVService.cache.shoppingCart.detail;
             $scope.salesTaxAmount = TSVService.cache.shoppingCart.summary.salesTaxAmount;
-            //$rootScope.summary = $scope.summary;
+            $rootScope.summary = $scope.summary;
             $scope.emptyCart = false;
             $scope.bShowTax = $scope.salesTaxAmount > 0;
 
