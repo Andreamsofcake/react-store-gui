@@ -169,6 +169,78 @@ class Shopping_Cart extends Component {
 
       <div className="Shopping_Cart" >
         <h2>{Translate.translate('Shopping_Cart', 'ShoppingCart')}</h2>
+        <div id="wrapper">
+
+            <table className="cart">
+
+                <tr className="cart"><th></th><th></th><th className="cart">{Translate.translate('Price','Price')}</th><th className="cart">{Translate.translate('Qty','Qty')}</th><th></th></tr>
+
+                <tr className="cart" ng-repeat="prd in cart" className="shoppingCart">
+
+                    <td className="cart">
+
+                        <img id="prdImg" src={prd.imagePath} /> {/*<div id="additionalInfo">*/}
+
+                            <p ng-show="bShowTax">{Translate.translate('Tax','Tax')}: { currencyFilter(salesTaxAmount) }</p>
+
+                            <p>{{translate('TotalPrice')}}: {{ currencyFilter(totalPrice) }}</p>
+
+                        </div>
+
+                        <img class="regularBtn" alt="ShopMore" id="shopMoreImg" ng-src="{{localizedImage('ShopMore.png')}}" err-src="../Images/ShopMore.png" ng-click="shopmore()">
+
+                        <img class="regularBtn" alt="Check Out" id="checkoutImg" ng-src="{{localizedImage('checkout.png')}}" err-src="../Images/checkout.png" ng-click="checkout()">
+
+                        <p><img class="regularBtn" alt="Cancel" id="cancelImg" ng-src="{{localizedImage('cancel.png')}}" err-src="../Images/cancel.png" ng-click="cancel()"></p>
+
+                        <img ng-if="bShowCouponBtn" class="regularBtn" id="couponImg" ng-src="{{localizedImage('coupon.png')}}" err-src="../Images/coupon.png" ng-click="coupon()" alt="Coupon">}
+
+                    </td>
+
+                    <td className="cart">{{ prd.productName }}</td>
+
+                    <td className="cart">{{ currencyFilter(prd.price*prd.qtyInCart) }}</td>
+
+                    <td className="cart">
+
+                        <table className="qty">
+
+                            <tr>
+
+                                <td><img className="smallImg" ng-src="../Images/minus.png" ng-click="minusQty(prd.coilNumber)"></td>
+
+                                <td id="qty">{{ prd.qtyInCart}}</td>
+
+                                <td><img className="smallImg" ng-src="../Images/add.png" ng-click="addQty(prd.coilNumber)"></td>
+
+                            </tr>
+
+                        </table>
+
+                    </td>
+
+                    <td className="cart"><img className="smallImg" ng-src="../Images/remove.png" ng-click="removeAllQty(prd.coilNumber, prd.qtyInCart)"></td>
+
+                </tr>
+
+            </table>
+            <div id="additionalInfo">
+
+                <p ng-show="bShowTax">{{translate('Tax')}}: {{ currencyFilter(salesTaxAmount) }}</p>
+
+                <p>{{translate('TotalPrice')}}: {{ currencyFilter(totalPrice) }}</p>
+
+            </div>
+
+            <img className="regularBtn" alt="ShopMore" id="shopMoreImg" ng-src="{{localizedImage('ShopMore.png')}}" err-src="../Images/ShopMore.png" ng-click="shopmore()">
+
+            <img className="regularBtn" alt="Check Out" id="checkoutImg" ng-src="{{localizedImage('checkout.png')}}" err-src="../Images/checkout.png" ng-click="checkout()">
+
+            <p><img className="regularBtn" alt="Cancel" id="cancelImg" ng-src="{{localizedImage('cancel.png')}}" err-src="../Images/cancel.png" ng-click="cancel()"></p>
+
+            <img ng-if="bShowCouponBtn" className="regularBtn" id="couponImg" ng-src="{{localizedImage('coupon.png')}}" err-src="../Images/coupon.png" ng-click="coupon()" alt="Coupon">
+        </div>
+
       </div>
     );
   }
