@@ -5,7 +5,7 @@ import axios from 'axios'
 import { browserHistory } from 'react-router'
 
 import TsvService from '../lib/TsvService'
-import { * } as Translate from '../lib/Translate'
+import * as Translate from '../lib/Translate'
 
 import RootscopeStore from '../store/RootscopeStore'
 

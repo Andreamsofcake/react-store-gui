@@ -48,10 +48,83 @@ class Shopping_Cart extends Component {
     RootscopeActions.gotoDefaultIdlePage();
 
   }
-  shopmore(){}
-  minusQty(coil){}
-  addQty(coil){}
-  removeAllQty(coil, qty){}
+  shopmore() {}
+
+  minusQty(coil) {
+	TsvService.removeFromCartByCoilNo(coil, (err, ok) {
+		if (err) throw err;
+		TsvService.fetchShoppingCart2(null, (err, data) => {
+
+			if (err) throw err;
+			RootscopeActions.setCache('shoppingCart', data);
+		
+			if (!data.detail || !data.detail.length) {
+				TsvService.gotoDefaultIdlePage();
+			} else {
+				this.setState({
+					cart: data.detail,
+					totalPrice: data.summary.TotalPrice,
+					emptyCart: data.detail.length <= 0
+				});
+			}
+	
+		});
+	});
+  }
+
+  addQty(coil) {
+	TsvService.addToCartByCoil(coil, (err, ok) {
+		if (err) throw err;
+		TsvService.fetchShoppingCart2(null, (err, data) => {
+
+			if (err) throw err;
+			RootscopeActions.setCache('shoppingCart', data);
+		
+			this.setState({
+				cart: data.detail,
+				totalPrice: data.summary.TotalPrice
+			});
+	
+		});
+	});
+  }
+
+  removeAllQty(coil, qty) {
+	TsvService.fetchShoppingCart2(null, (err, data) => {
+
+		if (err) throw err;
+		RootscopeActions.setCache('shoppingCart', data);
+
+		function removeQty(qty) {
+			if (qty > 0) {
+				qty -= 1;
+				TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
+					if (err) throw err;
+					TsvService.fetchShoppingCart2(null, (err, data) => {
+						if (err) throw err;
+						RootscopeActions.setCache('shoppingCart', data);
+						removeQty(qty);
+					});
+				});
+			} else {
+				TsvService.fetchShoppingCart2(null, (err, data) => {
+					if (err) throw err;
+					RootscopeActions.setCache('shoppingCart', data);
+
+					if (!data.detail || !data.detail.length) {
+						TsvService.gotoDefaultIdlePage();
+					} else {
+						this.setState({
+							cart: data.detail,
+							totalPrice: data.summary.TotalPrice,
+							emptyCart: data.detail.length <= 0
+						});
+					}
+
+				});
+			}
+		}
+  }
 
 
   {/* Add change listeners to stores*/}

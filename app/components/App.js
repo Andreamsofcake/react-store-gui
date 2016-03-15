@@ -5,7 +5,7 @@ import { Link } from 'react-router'
 import { isClient } from '../utils'
 
 import TsvService from '../lib/TsvService'
-import { * } as Translate from '../lib/Translate'
+import * as Translate from '../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../store/RootscopeStore'
