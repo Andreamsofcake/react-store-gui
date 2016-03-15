@@ -19,22 +19,21 @@ class Shopping_Cart extends Component {
       cart: RootscopeStore.getCache('shoppingCart.detail'),
       salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
       emptyCart: false,
-      bShowCgryNav: true
+      bShowCgryNav: true,
+      summary: RootscopeStore.getCache('shoppingCart.summary'),
+      bShowTax: false,
+      bShowCouponBtn: false
     };
-
-    RootscopeActions.setState('summary', 'this.state.summary') {/* What?*/}
+    
+    RootscopeActions.setConfig('summary', this.state.summary);
 
     if (this.state.salesTaxAmount > 0) {
-      bShowTax: true;
+		this.state.bShowTax = true;
     };
 
-    if ( RootscopeStore.getCache('custommachinesettings.bHasCouponCodes' ){
-        if(RootscopeStore.getCache('custommachinesettings.bHasCouponCodes.toLowerCase()' === true){
-            this.state = {
-              bShowCouponBtn: true
-            }
-       }
-    };
+    if (RootscopeStore.getCache('custommachinesettings.bHasCouponCodes')) {
+        this.state.bShowCouponBtn = true;
+    }
 
   }
 
@@ -87,6 +86,22 @@ class Shopping_Cart extends Component {
 	
 		});
 	});
+	/*
+	TsvService.addToCartByCoilAsync(coil)
+	.then( ok => {
+		TsvService.fetchShoppingCart2Async()
+	})
+	.then( data => {
+		RootscopeActions.setCache('shoppingCart', data);
+		this.setState({
+			cart: data.detail,
+			totalPrice: data.summary.TotalPrice
+		});
+	})
+	.catch( (e) => {
+		throw e
+	})
+	*/
   }
 
   removeAllQty(coil, qty) {
