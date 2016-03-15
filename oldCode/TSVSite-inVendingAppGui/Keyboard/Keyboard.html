@@ -1,0 +1,127 @@
+<div class="keyboard">
+
+    <!--<img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="back()">-->
+
+    <div class="animate-switch-container" ng-switch on="keyboardView">
+
+        <!--Enter Email Address-->
+        <div class="animate-switch" ng-switch-when="Enter_Email">
+
+            <h3>{{translate(keyboardTitle)}}</h3>
+
+            <div class="kb">
+
+                <form name="myForm" class="form" novalidate>
+
+                    <!--<input type="email" id="kbInput" name="email" value={{prompt()}} ng-model="email" ng-virtual-keyboard="{deadkeysOn: false, enterSubmit:enter}" required>-->
+                    <input type="email" id="kbInput" name="email" value={{prompt()}} required>
+
+                    <div style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+
+                        <span ng-show="myForm.email.$error.required">Email Address is Required.</span>
+
+                        <span ng-show="myForm.email.$error.email">Invalid email address.</span>
+
+                    </div>
+
+                </form>
+
+                <div id="keyboard" ng-include="'../myKeyboard.html'"></div>
+
+            </div>
+
+            <div class=btns"">
+
+                <button ng-click="no()">No</button>
+
+                <button ng-click="enter()">Submit</button>
+
+            </div>
+
+        </div>
+
+        <!--Enter Coupon Code-->
+        <div class="animate-switch" ng-switch-when="Enter_Coupon">
+
+            <h3>{{translate('EnterCouponCode')}}</h3>
+
+            <form name="myForm" novalidate>
+
+                <p>Email: <input type="email" id="kbInput" name="coupon" value={{coupon}} ng-model="coupon" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:enter}" required></p>
+
+                <div style="color:red" ng-show="myForm.coupon.$dirty && myForm.coupon.$invalid">
+
+                    <span ng-show="myForm.coupon.$error.required">Coupon Code is Required.</span>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="animate-switch" ng-switch-default>
+             <!-- -->
+        </div>
+
+    </div>
+
+    <div ng-if="bShowCgryNav">
+
+    </div>
+
+</div>
+
+<style>
+    .keyboard .btns{
+        display: inline-block;
+    }
+    #keyboard{
+        margin-top:300px;
+    }
+    .keyboard{
+        text-align: center;
+    }
+    .kb{
+        background-color: greenyellow;
+    }
+
+    .keyboard #keyboard{
+    }
+    .keyboard #kbInput{
+        width: 90%;;
+        text-align: center;
+        font-size: 20pt;
+        background-color:white;
+        color:black;
+        position: fixed;
+        top: 25%;
+        left: 5%;
+        right :5%;
+    }
+
+    .keyboard .form input.ng-invalid.ng-touched{
+         background-color: #FA787E;
+     }
+    .keyboard .form input.ng-valid.ng-touched{
+        background-color: #78FA89;
+    }
+
+    .keyboard span{
+        font-size: 20px;
+    }
+
+    .keyboard button{
+        display: inline-block;
+    }
+
+    .keyboard #btns{
+        text-align: center;
+        position: fixed;
+        top: 60%;
+        left: 0;
+        right: 0;
+    }
+
+
+
+</style>

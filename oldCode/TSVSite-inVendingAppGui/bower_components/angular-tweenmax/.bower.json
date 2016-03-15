@@ -1,0 +1,29 @@
+{
+  "name": "angular-tweenmax",
+  "version": "0.0.5",
+  "authors": [
+    "Pepijn Senders <p.senders92@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "greensock": "~1.14.2"
+  },
+  "homepage": "https://github.com/PepijnSenders/angular-tweenmax",
+  "_release": "0.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.0.5",
+    "commit": "9c28cb36291dce930370c7c734854b4fdaeb6dcc"
+  },
+  "_source": "git://github.com/PepijnSenders/angular-tweenmax.git",
+  "_target": "~0.0.5",
+  "_originalSource": "angular-tweenmax",
+  "_direct": true
+}

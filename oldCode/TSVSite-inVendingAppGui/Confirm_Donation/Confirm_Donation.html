@@ -1,0 +1,45 @@
+<div class="Confirm_Donation">
+
+    <h2>{{translate(instructionMessage)}}</h2>
+    <table><tr><td>{{donation}}</td></tr></table>
+
+    <button id="btnNo" ng-click="cancel()">No</button>
+
+    <button id="btnYes" ng-click="ok()">Yes</button>
+
+</div>
+
+        <style>
+            .Confirm_Donation{
+                color: white;
+            }
+
+            .Confirm_Donation button{
+                font-size: 40px;
+            }
+
+            .Confirm_Donation  #container{
+                margin: 0 auto;
+                margin-top: 400px;
+                text-align: center;
+            }
+
+            .Confirm_Donation #btnYes{
+                position: absolute;
+                right:100px;
+                top:400px;
+            }
+            .Confirm_Donation #btnNo{
+                position: absolute;
+                left:100px;
+                top:400px;
+            }
+
+            .Confirm_Donation table{
+                text-align: center;
+                font-size:40px;
+                position: absolute;
+                top:175px;
+                width:100%;
+            }
+        </style>

@@ -1,0 +1,32 @@
+<div class="automap">
+
+    <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
+
+    <h2>{{ status }}</h2>
+
+    <table class="maps">
+
+        <tr>
+            <td><button id="machine0" src="" data-ng-click="mapMachine(0)">{{translate("Map1")}}</button></td>
+
+            <td ng-show="bShowMachine2"><button id="machine1" src="" data-ng-click="mapMachine(1)">{{translate("Map2")}}</button></td>
+        </tr>
+
+    </table>
+
+    <div id="wrapper">
+        <table id="mapTable"></table>
+
+        <!--<table id="mapTable">
+            <tr class="trayCoils"><td class='coilNumber'>11</td><td class='coilNumber'>12</td><td class='coilNumber'>13</td><td class='coilNumber'>14</td></tr>
+            <tr class="trayCoils"><td class='coilNumber'>21</td><td class='coilNumber'>22</td><td class='coilNumber'>23</td><td class='coilNumber'>24</td></tr>
+            <tr class="trayCoils"><td class='coilNumber'>31</td><td class='coilNumber'>32</td><td class='coilNumber'>33</td><td class='coilNumber'>34</td></tr>
+            <tr class="trayCoils"><td class='coilNumber'>41</td><td class='coilNumber'>42</td><td class='coilNumber'>43</td><td class='coilNumber'>44</td></tr>
+            <tr class="trayCoils"><td class='coilNumber'>51</td><td class='coilNumber'>52</td><td class='coilNumber'>53</td><td class='coilNumber'>54</td><td class='coilNumber'>55</td></tr>
+            <tr class="trayCoils"><td class='coilNumber'>61</td><td class='coilNumber'>62</td><td class='coilNumber'>63</td><td class='coilNumber'>64</td><td class='coilNumber'>65</td><td class='coilNumber'>66</td><td class='coilNumber'>67</td><td class='coilNumber'>65</td><td class='coilNumber'>66</td><td class='coilNumber'>67</td></tr>
+            <tr class="trayCoils"><td class='coilNumber'>71</td><td class='coilNumber'>72</td><td class='coilNumber'>73</td><td class='coilNumber'>74</td><td class='coilNumber'>75</td></tr>
+        </table>-->
+
+    </div>
+
+</div>

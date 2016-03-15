@@ -1,0 +1,21 @@
+var trans2 = angular.module('translation', []);
+
+trans2.service('translationService', function($http) {
+    this.getTranslation = function($scope, language) {
+        var languageFilePath = 'Translation_Service/Languages/translation_' + language + '.json';
+<<<<<<< HEAD
+        console.log("Hi Ping "+languageFilePath);
+
+        if (!("translation" in $scope)) {
+            $scope.translation = {};
+        }
+=======
+
+>>>>>>> 91ef40db7a719d1abe5a15577c07927203667113
+        $http.get(languageFilePath)
+            .then(function(response){
+                console.log(response.data);
+                $scope.translation = response.data;
+        });
+    };
+});

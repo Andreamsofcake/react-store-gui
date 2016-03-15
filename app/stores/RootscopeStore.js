@@ -92,16 +92,49 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 		this.emit(CHANGE_EVENT);
 	},
 
-	getConfig: function(path) {
-		return _storeDB.get('config.' + path);
+	getConfig: function(path, dflt) {
+		path = path ? 'config.' + path : 'config';
+		var result = _storeDB.get(path);
+		if (typeof result !== 'undefined') {
+			return result;
+		}
+		return dflt;
 	},
 
-	getCache: function(path) {
-		return _storeDB.get('cache.' + path);
+	getCache: function(path, dflt) {
+		path = path ? 'cache.' + path : 'cache';
+		var result = _storeDB.get(path);
+		if (typeof result !== 'undefined') {
+			return result;
+		}
+		return dflt;
 	},
 
-	getSession: function(path) {
-		return _storeDB.get('session.' + path);
+	getSession: function(path, dflt) {
+		path = path ? 'session.' + path : 'session';
+		var result = _storeDB.get(path);
+		if (typeof result !== 'undefined') {
+			return result;
+		}
+		return dflt;
+	},
+	
+	getCreditMessage = function() {
+		if (_storeDB.get('config.bCashless')) {
+			return Translate.translate("BalanceLabel") + ":" + '\n' + TsvService.currencyFilter( _storeDB.get('config.fundsAvailable') );
+		}else {
+			return Translate.translate("CreditLabel") + ":"  + '\n'+  TsvService.currencyFilter( _storeDB.get('config.credit') );
+		}
+	},
+	
+	getShowCredit = function() {
+		if (_storeDB.get('config.bCashless')) {
+			var fundsA = _storeDB.get('config.fundsAvailable');
+			return typeof fundsA !== 'undefined' && fundsA !== 0 && _storeDB.get('config.bShowCredit');
+		} else {
+			var credit = _storeDB.get('config.credit');
+			return typeof credit !== 'undefined' && credit !== 0 && _storeDB.get('config.bShowCredit');
+		}
 	}
 
 });

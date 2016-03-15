@@ -11,5 +11,7 @@ App "init" module (probably App.js) should:
 - language files in old\_code/Translation\_Service are out of date, better ones in Images/languages
 
 - $location.path() => RootscopeStore.getCache('currentLocation')
-- $location.path( PATHNAME ) => browserHistory.push( PATHNAME )
+- $location.path( PATHNAME ) => browserHistory.push( PATHNAME )  
 	=> requires "import { browserHistory } from 'react-router'"
+
+- tsv.customSetting(name, dflt) => RootscopeStore.getConfig('customSetting.'+name, dflt)

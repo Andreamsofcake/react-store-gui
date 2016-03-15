@@ -1,0 +1,89 @@
+<div class="prdDetail">
+
+    <!--<img class="logo" id="smallLogo" ng-src='Images/logo.png' ng-click="logoClicked()">-->
+
+    <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="back()">
+
+    <img class="regularBtn" ng-if="bShowCheckout" id="checkoutImg" ng-src="{{ checkoutOrAddToCartUrl }}" err-src="../Images/checkout.png" ng-click="checkout()">
+
+    <img ng-if="bShowCouponBtn" class="regularBtn" id="couponImg" ng-src="{{localizedImage('coupon.png')}}" err-src="../Images/coupon.png" ng-click="coupon()" alt="Coupon">
+
+
+     <div id="view2Title">
+
+          <h1 data-fittext="1" data-fittext-min="20" data-fittext-max="36">{{translate(instructionMessage)}}</h1>
+
+     </div>
+
+     <div id="prdWrapper">
+
+         <table class="detail">
+
+            <tr class="detail">
+
+               <td class="detail" id="tdImg">
+                   <a id="aImg" class="fancyboxNutrition0" rel="group" ng-href="{{ imagePath2 }}" ><img id="prdDetailImage" ng-src="{{ imagePath }}" err-src="../Images/ProductImageNotFound.png" imageonload="doThis()" /></a>
+               </td>
+
+               <td class="detail">
+
+                    <table class="detail">
+
+                        <tr class="detail">
+                            <p>{{ currencyFilter(item.price)}}</p>
+                        </tr>
+
+                        <tr class="detail">
+                            <a class="fancyboxNutrition2" rel="group" ng-href="{{ nutritionFactsUrl }}"><p ng-show="bShowCalories">{{calories}}</p></a>
+                        </tr>
+
+                        <tr class="detail">
+                            <a class="fancyboxNutrition1" rel="group" ng-href="{{ nutritionFactsUrl }}"><img ng-show="{{ bShowNutritionFactsBtn }}" id="nutritionFactsBtn" ng-src="{{localizedImage('nutritionFactsBtn.png')}}" err-src="../Images/nutritionFactsBtn.png"></a>
+                        </tr>
+
+                    </table>
+
+               </td>
+
+           </tr>
+
+       </table>
+
+    </div>
+
+    <p id="prdName">{{ productName }}</p>
+
+    <div class="navGallery" ng-if="bDisplayPrdGalleryOnDetailPage">
+
+        <p id="navCgryTitle">{{ navCgryTitle }}</p>
+
+        <div class="container_slider">
+
+            <!-- prev / next controls
+            <div class="arrow prev" href="#" ng-click="showPrev()"></div>
+            <div class="arrow next" href="#" ng-click="showNext()"></div>-->
+
+            <!-- extra navigation controls-->
+            <ul class="flex-container">
+
+                <li class = "flex-item" ng-repeat="product in products" ng-class="{'active':isActive($index)}">
+
+                    <figure ng-click="setPrdSelected({{product.productID}});">
+
+                        <figcaption>{{product.productName}}</figcaption>
+
+                        <img ng-src="{{product.imagePath}}" alt="{{product.description}}" title="{{product.description}}" />
+
+                        <p>{{ currencyFilter(product.price) }}</p>
+
+                    </figure>
+
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+ </div>

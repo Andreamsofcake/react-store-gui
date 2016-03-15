@@ -59,3 +59,21 @@ export function cleanString(str, nodash) {
 		return clean;
 	}
 }
+
+/**
+ * moneyformat(amount, n, x, s, c)
+ * 
+ * @param number  amount to format
+ * @param integer n: length of decimal
+ * @param mixed   s: sections delimiter
+ * @param mixed   c: decimal delimiter
+ * @param integer x: length of whole part
+ *
+ * borrowed from: http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
+ */
+export function moneyformat = function(amount, n, s, c, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+        num = amount.toFixed(Math.max(0, ~~n));
+
+    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+};

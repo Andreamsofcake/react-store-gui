@@ -1,0 +1,29 @@
+<div class="check_faults">
+
+    <select id="selectMachine" data-ng-show="bShowDropDownForMachines"></select>
+
+    <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
+
+    <div id="wrapper">
+
+        <table class="faults">
+
+            <tr class="faults">
+                <th class="faults">{{translate("FaultCode")}}</th>
+                <th class="faults">{{translate("EventID")}}</th>
+                <th class="faults">{{translate("Description")}}</th>
+            </tr>
+
+            <tr class="faults" ng-repeat='fault in faults'>
+                <td class="faults">{{ fault.faultCode }}</td>
+                <td class="faults">{{ fault.vmsEventID }}</td>
+                <td style="word-break: break-all" class="faults">{{ fault.faultDescription }}</td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <button data-ng-click="clearFaults()">{{translate("Clear")}}</button>
+
+</div>

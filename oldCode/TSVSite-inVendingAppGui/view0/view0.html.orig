@@ -1,0 +1,9 @@
+<div class="view0">
+    <button id="adminBtn" ng-show="true" ng-dblclick="admin()"></button>
+<<<<<<< HEAD
+    <h2>Resetting.<br>Please Wait...</h2>
+=======
+
+    <h2>Checking Internet Connection<br>Please Wait...</h2>
+>>>>>>> d369490c0fb367c782ec912be9b0df9bc97a0729
+</div>
