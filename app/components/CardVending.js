@@ -24,21 +24,39 @@ class Card_Vending extends Component {
       showCancelBtn: true
       cardTransactionResponse: Translate.translate('Card_Vending', 'InstructionMessage')
     };
-      TsvService.resetPaymentTimer();
+    TsvService.resetPaymentTimer();
 
     if(RootscopeStore.getSession('cardMsg')!= Translate.translate('ProcessingMessage')
       && RootscopeStore.getSession('cardMsg')!= Translate.translate('VendingMessage')
       && RootscopeStore.getSession('cardMsg')!= Translate.translate('InstructionMessage')
       ){
       TsvService.startCardErrorTimer();
-       }
+     }
 
-     if(RootscopeStore.getSession('bVendingInProcess')){
-         this.state.showSpinner = true;
-         this.state.cardTransactionResponse = Translate.translate('Card_Vending', "VendingMessage");
-         this.state.showCancelBtnCash = false;
-       }
+    if(RootscopeStore.getSession('bVendingInProcess')){
+       this.state.showSpinner = true;
+       this.state.cardTransactionResponse = Translate.translate('Card_Vending', "VendingMessage");
+       this.state.showCancelBtnCash = false;
+     }
 
+    if (this.summary.TotalPrice < 0.01) {
+ 			console.log("this.summary.TotalPrice: "+ this.summary.TotalPrice);
+ 			console.log("this.summary.TotalPrice less than 0.01 should start vend");
+ 			startVend();
+ 		}
+
+  }
+
+  startVend() {
+      this.state.cardTransactionResponse = Translate.translate("Vending", "Vending");
+      TsvServicesService.disablePaymentDevice();
+      TsvService.killTimers();
+      this.state.showSpinner = true;
+      this.state.showCancelBtn = false;
+      RootscopeStore.getSession('cardMsg') = Translate.translate("Vending", "Vending");
+      TsvService.debug("Card Approved should vend...");
+      TsvService.startVend();
+      TsvService.setVendingInProcessFlag();
   }
 
 
@@ -89,6 +107,7 @@ class Card_Vending extends Component {
         }
       }
     };
+
     TsvService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cardVending");
     TsvService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
   }
@@ -124,7 +143,7 @@ class Card_Vending extends Component {
 
         <p id = "cardResponse">{ this.state.cardTransactionResponse }</p>
 
-        <img id="creditCards" src="../Images/creditcards.png" alt="creditcards">
+        <img id="creditCards" src="../Images/creditcards.png" alt="creditcards" />
 
         { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
 
