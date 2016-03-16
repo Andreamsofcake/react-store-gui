@@ -94,6 +94,23 @@ angular.module('myApp.Card_Vending', ['ngRoute'])
             $timeout.cancel(TSVService.session.paymentTimer);
         }
 
+        /****
+        
+			KENT NOTE: TsvService.startVend() is called in other numerous places,
+			and is usually ONLY wrapped in a function,
+			that is triggered on an event after a TsvService.subscribe() call
+			
+			this is the only place where there is an optional no-event-driven startVend()
+			see below, this looks suspect:
+				if ($scope.summary.TotalPrice < 0.01) {
+			
+			seems weird that the TotalPrice can sneak up on the app and suddenly be completed,
+			
+			probably bad logic surrounding the Credit Card processing etc,
+				and assume it will be solved with better state management that we're doing.
+
+        ****/
+
         function startVend() {
             console.log("Hi Ping Debug card_vending card_approved and start to vend");
             $scope.cardTransactionResponse = translate.translate("Vending", "Vending");
@@ -144,30 +161,30 @@ angular.module('myApp.Card_Vending', ['ngRoute'])
                         $scope.cardTransactionResponse = $scope.translate("ErrorMessage");
                         startCardErrorTimer();
                         break;
-                    }
-                }
-            };
+				}
+			}
+		};
 
-            TSVService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cardVending");
+		TSVService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cardVending");
 
-            $scope.$on('$destroy', function() {
-                TSVService.unsubscribe("cardTransactionResponse", "app.cardVending");
-            });
+		$scope.$on('$destroy', function() {
+			TSVService.unsubscribe("cardTransactionResponse", "app.cardVending");
+		});
 
-            var vendResponseHandler = function(processStatus){
-                TSVService.vendResponse(processStatus, $location);
-                stopPaymentTimer();
-            };
+		var vendResponseHandler = function(processStatus){
+			TSVService.vendResponse(processStatus, $location);
+			stopPaymentTimer();
+		};
 
-            TSVService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
+		TSVService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
 
-            $scope.$on('$destroy', function() {
-                TSVService.unsubscribe("vendResponse", "app.cardVending");
-            });
+		$scope.$on('$destroy', function() {
+			TSVService.unsubscribe("vendResponse", "app.cardVending");
+		});
 
-            if ($scope.summary.TotalPrice < 0.01) {
-                console.log("$scope.summary.TotalPrice: "+$scope.summary.TotalPrice);
-                console.log("$scope.summary.TotalPrice less than 0.01 should start vend");
-                startVend();
-            }
-        }]);
+		if ($scope.summary.TotalPrice < 0.01) {
+			console.log("$scope.summary.TotalPrice: "+$scope.summary.TotalPrice);
+			console.log("$scope.summary.TotalPrice less than 0.01 should start vend");
+			startVend();
+		}
+	}]);

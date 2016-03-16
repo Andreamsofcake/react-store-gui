@@ -71,6 +71,7 @@ angular.module('myApp.cash', ['ngRoute'])
             window.setInterval(draw, 1000 / 30);
         }
 
+        // KENT NOTE: pass "view1" to the TsvService.startPaymentTimer() here
         function startPaymentTimer(){
             console.log("Hi Ping Debug startPaymentTimer");
             TSVService.session.paymentTimer = $timeout(function(){

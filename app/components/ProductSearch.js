@@ -2,7 +2,7 @@ import React from 'react'
 import RootscopeActions from '../actions/RootscopeActions'
 import TsvService from '../lib/TsvService'
 import Translate from '../lib/Translate'
-import RootscopeStore from '../store/RootscopeStore'
+import RootscopeStore from '../stores/RootscopeStore'
 
 class Product_Search extends Component {
 

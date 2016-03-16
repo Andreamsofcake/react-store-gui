@@ -71,7 +71,7 @@ export function cleanString(str, nodash) {
  *
  * borrowed from: http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
  */
-export function moneyformat = function(amount, n, s, c, x) {
+export function moneyformat(amount, n, s, c, x) {
     var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
         num = amount.toFixed(Math.max(0, ~~n));
 
