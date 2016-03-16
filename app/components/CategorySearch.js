@@ -13,6 +13,7 @@ class Category_Search extends Component {
     super(props, context);
 
     this.state = {
+      // bClickedOnce: false,
       bShowCgryTitle: true,
       bShowPrevArrow: false,
       bShowNextArrow: false,
@@ -24,15 +25,30 @@ class Category_Search extends Component {
     RootscopeActions.setSession('currentView', 'Category_Search');
     RootscopeActions.setConfig('categories', TsvService.fetchProductCategoriesByParentCategoryID(0));
 
-
+    if (RootscopeStore.getConfig('customSetting.txtIdleScene', txtIdleScene) === "category_search")
+      || !TsvService.isCartEmpty() ){
+        TsvService.startGeneralIdleTimer();
+      }
 
   }
-  
+
   back(){
 
   }
 
   admin() {
+    if (bClickedOnce) {
+      this.setState({
+        bClickedOnce: false,
+				bShowLanguage: false,
+				bShowCredit: false
+			})
+      browserHistory.push("/Admin_Login");
+    }else{
+      this.setState({
+        bClickedOnce: true
+      })
+    }
 
   }
 

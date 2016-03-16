@@ -22,11 +22,11 @@ angular.module('myApp.Category_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
             var color= 'red';
             $scope.myStyle = {'position':'absolute','left':leftOffset, 'top':topOffset};
 
-            if(TSVService.customSetting('txtIdleScene', 'category_search').toLowerCase() === "category_search"
-                || !TSVService.isCartEmpty()) {
-                console.log("Hi Ping Debug TSVService.session.generalIdleTimer is null and restart it");
-                TSVService.startGeneralIdleTimer($location, $rootScope);
-            }
+            // if(TSVService.customSetting('txtIdleScene', txtIdleScene).toLowerCase() === "category_search"
+            //     || !TSVService.isCartEmpty()) {
+            //     console.log("Hi Ping Debug TSVService.session.generalIdleTimer is null and restart it");
+            //     TSVService.startGeneralIdleTimer($location, $rootScope);
+            // }
 
             // $scope.translate = function(name){
             //     return translate.translate("Category_Search", name);
