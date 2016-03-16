@@ -12,6 +12,40 @@ class Category_Search extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
+    this.state = {
+      bShowCgryTitle: true,
+      bShowPrevArrow: false,
+      bShowNextArrow: false,
+      _Index: 0
+    }
+
+    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
+    RootscopeActions.updateCredit();
+    RootscopeActions.setSession('currentView', 'Category_Search');
+    RootscopeActions.setConfig('categories', TsvService.fetchProductCategoriesByParentCategoryID(0));
+
+
+
+  }
+  
+  back(){
+
+  }
+
+  admin() {
+
+  }
+
+  isActive() {
+
+  }
+
+  showPrev() {
+
+  }
+
+  showNext() {
+
   }
 
   // Add change listeners to stores

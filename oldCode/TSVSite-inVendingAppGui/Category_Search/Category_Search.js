@@ -11,9 +11,9 @@ angular.module('myApp.Category_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
 
     .controller('Category_SearchCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
         function($scope, $rootScope, $timeout, $location, TSVService, translate) {
-            $rootScope.bDisplayCgryNavigation = false;
+            // $rootScope.bDisplayCgryNavigation = false;
             var bClickedOnce = false;
-            $scope.bShowCgryTitle = true;
+            // $scope.bShowCgryTitle = true;
             var topOffset = '500px';
             var col = 2;
             var row = 2;
@@ -28,16 +28,16 @@ angular.module('myApp.Category_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
                 TSVService.startGeneralIdleTimer($location, $rootScope);
             }
 
-            $scope.translate = function(name){
-                return translate.translate("Category_Search", name);
-            };
+            // $scope.translate = function(name){
+            //     return translate.translate("Category_Search", name);
+            // };
 
-            $rootScope.updateCredit();
-            TSVService.session.currentView = "Category_Search";
-            $rootScope.cgryNavTitle = $scope.translate('SelectCategory');
-            $scope.bShowPrevArrow = false;//true;//false;
-            $scope.bShowNextArrow = false;//true;//false;
-            $rootScope.categories = TSVService.fetchProductCategoriesByParentCategoryID(0);
+            // $rootScope.updateCredit();
+            // TSVService.session.currentView = "Category_Search";
+            // $rootScope.cgryNavTitle = $scope.translate('SelectCategory');
+            // $scope.bShowPrevArrow = false;//true;//false;
+            // $scope.bShowNextArrow = false;//true;//false;
+            // $rootScope.categories = TSVService.fetchProductCategoriesByParentCategoryID(0);
 
             $scope.back = function(){
                  //need to go back to the parent category page

@@ -16,8 +16,7 @@ class Product_Search extends Component {
     }
 
     RootscopeActions.setConfig('bDisplayCgry', false);
-    RootscopeActions.updateCredit(); //unsure
-    //RootscopeActions.setSession('creditBalance', RootscopeStore.getCache('credit') && true)
+    RootscopeActions.updateCredit();
     RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance'))
     RootscopeActions.setSession('currentView', 'Product_Search');
 
