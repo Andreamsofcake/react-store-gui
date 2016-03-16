@@ -12,7 +12,7 @@ import RootscopeStore from '../store/RootscopeStore'
 
 class App extends Component {
 	
-	construct(props, context) {
+	constructor(props, context) {
 		super(props, context);
 		
 		TsvService.registerKF();

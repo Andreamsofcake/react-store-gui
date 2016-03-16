@@ -121,6 +121,9 @@ angular.module('myApp.CC_VENDING', ['ngRoute'])
             $timeout.cancel(promise);
         }
 
+        // KENT NOTE: isFullSuccessVendResult() is also in TsvServices, identical.
+        // please call that one instead of this local one, remove local one.
+
         //to handle partial vend error for multi-vending
         function isFullSuccessVendResult(){
             console.log("Hi Ping Debug isFullSuccessVendResult() is called!");
@@ -136,6 +139,7 @@ angular.module('myApp.CC_VENDING', ['ngRoute'])
             return true;
         }
 
+        // KENT NOTE: pass "view1" to the TsvService.startPaymentTimer() here
         function startPaymentTimer(){
             console.log("Hi Ping Debug startPaymentTimer");
             TSVService.session.paymentTimer = $timeout(function(){

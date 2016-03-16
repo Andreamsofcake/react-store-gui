@@ -119,7 +119,7 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 		return dflt;
 	},
 	
-	getCreditMessage = function() {
+	getCreditMessage: function() {
 		if (_storeDB.get('config.bCashless')) {
 			return Translate.translate("BalanceLabel") + ":" + '\n' + TsvService.currencyFilter( _storeDB.get('config.fundsAvailable') );
 		}else {
@@ -127,7 +127,7 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 		}
 	},
 	
-	getShowCredit = function() {
+	getShowCredit: function() {
 		if (_storeDB.get('config.bCashless')) {
 			var fundsA = _storeDB.get('config.fundsAvailable');
 			return typeof fundsA !== 'undefined' && fundsA !== 0 && _storeDB.get('config.bShowCredit');

@@ -130,7 +130,7 @@ var RootscopeActions = {
 		}
 	},
 
-	gotoPayment = function(){
+	gotoPayment(){
 		//TsvService.debug("gotoPayment() called");
 		
 		var TotalPrice = RootscopeStore.getCache('shoppingCart.summary.TotalPrice', 0);
