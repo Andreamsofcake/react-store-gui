@@ -40,7 +40,7 @@ class Cash extends Component {
   cancel(){
     TsvService.emptyCart();
     this.insertedAmount = 0;
-    stopPaymentTimer();
+    TsvService.stopPaymentTimer();
     browserHistory.push("/view1");
   }
 
