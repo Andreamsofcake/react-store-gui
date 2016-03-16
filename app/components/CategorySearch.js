@@ -25,7 +25,7 @@ class Category_Search extends Component {
     RootscopeActions.setSession('currentView', 'Category_Search');
     RootscopeActions.setConfig('categories', TsvService.fetchProductCategoriesByParentCategoryID(0));
 
-    if (RootscopeStore.getConfig('customSetting.txtIdleScene', txtIdleScene) === "category_search")
+    if (RootscopeStore.getConfig('customSetting.txtIdleScene') === "category_search")
       || !TsvService.isCartEmpty() ){
         TsvService.startGeneralIdleTimer();
       }
@@ -33,35 +33,20 @@ class Category_Search extends Component {
   }
 
   back(){
-
+    browserHistory.push("/Product_Search");
   }
 
-  admin() {
-    if (bClickedOnce) {
-      this.setState({
-        bClickedOnce: false,
-				bShowLanguage: false,
-				bShowCredit: false
-			})
-      browserHistory.push("/Admin_Login");
-    }else{
-      this.setState({
-        bClickedOnce: true
-      })
+  isActive(index) {
+    return this.state._Index === index;
+  }
+
+  fetchCategory(categoryID) {
+    RootscopeActions.setConfig('categories', TsvService.fetchProductCategoriesByParentCategoryID(categoryID));
+
+    if(RootscopeStore.getCache('categories').length == 0) {
+      RootscopeActions.setConfig('products', TSVService.fetchProductByCategory(categoryID));
+      browserHistory.push("/Product_Search");
     }
-
-  }
-
-  isActive() {
-
-  }
-
-  showPrev() {
-
-  }
-
-  showNext() {
-
   }
 
   // Add change listeners to stores
@@ -75,12 +60,10 @@ class Category_Search extends Component {
   render() {
     return (
       <div className="Category_Search">
-          { if (this.state.adminBtn) { this.renderAdminButton() } }
 
 
           <h2>{Translate.translate('Select_Category', 'SelectCategory')}</h2>
 
-          <img className="arrow next" src="Images/next.png" alt="next" onClick={this.showNext()}/>
 
           {/*slider container*/}
           <div className="container_slider">
@@ -91,7 +74,7 @@ class Category_Search extends Component {
                   return (
                     <li key={$index} className = "gallery" >
 
-                        <figure onClick={this.setPrdSelected.bind(this, product.productID)} />
+                        <figure>
 
                             { if (this.state.bShowCgryTitle) {this.renderCategoryName()} }
 
@@ -116,12 +99,6 @@ class Category_Search extends Component {
   renderSubCgry() {
     return (
       <img className="regularBtn" id="backImg" ng-show="bSubCgry" src={Translate.localizedImage('back.png')} noClick={this.back()} /> {/*err-src="../Images/back.png" */}
-    )
-  }
-
-  renderAdminButton() {
-    return (
-      <button id="adminBtn" noClick={this.admin()}></button>
     )
   }
 

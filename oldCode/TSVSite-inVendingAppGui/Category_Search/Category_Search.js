@@ -22,22 +22,22 @@ angular.module('myApp.Category_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
             var color= 'red';
             $scope.myStyle = {'position':'absolute','left':leftOffset, 'top':topOffset};
 
-            // if(TSVService.customSetting('txtIdleScene', txtIdleScene).toLowerCase() === "category_search"
-            //     || !TSVService.isCartEmpty()) {
-            //     console.log("Hi Ping Debug TSVService.session.generalIdleTimer is null and restart it");
-            //     TSVService.startGeneralIdleTimer($location, $rootScope);
-            // }
+            if(TSVService.customSetting('txtIdleScene', txtIdleScene).toLowerCase() === "category_search"
+                || !TSVService.isCartEmpty()) {
+                console.log("Hi Ping Debug TSVService.session.generalIdleTimer is null and restart it");
+                TSVService.startGeneralIdleTimer($location, $rootScope);
+            }
 
-            // $scope.translate = function(name){
-            //     return translate.translate("Category_Search", name);
-            // };
+            $scope.translate = function(name){
+                return translate.translate("Category_Search", name);
+            };
 
-            // $rootScope.updateCredit();
-            // TSVService.session.currentView = "Category_Search";
-            // $rootScope.cgryNavTitle = $scope.translate('SelectCategory');
-            // $scope.bShowPrevArrow = false;//true;//false;
-            // $scope.bShowNextArrow = false;//true;//false;
-            // $rootScope.categories = TSVService.fetchProductCategoriesByParentCategoryID(0);
+            $rootScope.updateCredit();
+            TSVService.session.currentView = "Category_Search";
+            $rootScope.cgryNavTitle = $scope.translate('SelectCategory');
+            $scope.bShowPrevArrow = false;//true;//false;
+            $scope.bShowNextArrow = false;//true;//false;
+            $rootScope.categories = TSVService.fetchProductCategoriesByParentCategoryID(0);
 
             $scope.back = function(){
                  //need to go back to the parent category page
