@@ -47,6 +47,23 @@ class Card_Vending extends Component {
 
   }
 
+  /****
+
+    KENT NOTE: TsvService.startVend() is called in other numerous places,
+    and is usually ONLY wrapped in a function,
+    that is triggered on an event after a TsvService.subscribe() call
+
+    this is the only place where there is an optional no-event-driven startVend()
+    see below, this looks suspect:
+      if ($scope.summary.TotalPrice < 0.01) {
+
+    seems weird that the TotalPrice can sneak up on the app and suddenly be completed,
+
+    probably bad logic surrounding the Credit Card processing etc,
+      and assume it will be solved with better state management that we're doing.
+
+  ****/
+
   startVend() {
       this.state.cardTransactionResponse = Translate.translate("Vending", "Vending");
       TsvServicesService.disablePaymentDevice();
