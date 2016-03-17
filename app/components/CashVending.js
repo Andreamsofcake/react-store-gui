@@ -89,6 +89,16 @@ class Cash_Vending extends Component {
         });
     });
 
+    TsvService.subscribe("cardTransactionRespose", (level) => {
+        if(!TsvService.getSession('bVendingInProcess') {
+            if(browserHistory.push() != "/Card_Vending"){
+                browserHistory.push("/Card_Vending");
+            }
+
+            TsvService.cardTransaction(level);
+        }
+    }
+
     TsvService.subscribe("vendResponse",(processStatus) =>{
       TsvService.vendResponse(processStatus);
       TsvService.stopPaymentTimer();
@@ -98,6 +108,7 @@ class Cash_Vending extends Component {
 
   // Remove change listers from stores
   componentWillUnmount() {
+    TsvService.unsubscribe("cardTransactionResponse", "app.cashVending")
     TsvService.unsubscribe("creditBalanceChanged", "app.cashVending");
     TsvService.unsubscribe("vendResponse", "app.cashVending")
   }
@@ -106,12 +117,16 @@ class Cash_Vending extends Component {
     return (
       <div className="Cash" >
 
-        <img id="prdImg" src={ item.imagePath} alt="productImage" />
+      {cart.map((prd, $index) => {
+          return (
+        <img key={$index} id="prdImg" src={ prd.imagePath} alt="productImage" />
+        )}
+      }
 
-        <div id = "cashMsg">
-            <p>Total: { summary.TotalPrice }</p>
+      <div id = "cashMsg">
+            <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(summary.TotalPrice) }</p>
 
-            <p>Inserted: {this.insertedAmount }</p>
+            <p>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} {TsvService.currencyFilter(this.insertedAmount) }</p>
         </div>
 
         <p id="hint">{ this.hintMsg }</p>
