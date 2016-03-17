@@ -21,8 +21,13 @@
 
             <tr class="detail">
 
+<!-- KENT SAYS: no fancybox nutrition facts: 
                <td class="detail" id="tdImg">
                    <a id="aImg" class="fancyboxNutrition0" rel="group" ng-href="{{ imagePath2 }}" ><img id="prdDetailImage" ng-src="{{ imagePath }}" err-src="../Images/ProductImageNotFound.png" imageonload="doThis()" /></a>
+               </td>
+-->
+               <td class="detail"><!-- id="tdImg"-->
+                   <img id="prdDetailImage" ng-src="{{ imagePath }}" err-src="../Images/ProductImageNotFound.png" />
                </td>
 
                <td class="detail">
@@ -33,6 +38,7 @@
                             <p>{{ currencyFilter(item.price)}}</p>
                         </tr>
 
+<!-- KENT SAYS: no fancybox nutrition facts: 
                         <tr class="detail">
                             <a class="fancyboxNutrition2" rel="group" ng-href="{{ nutritionFactsUrl }}"><p ng-show="bShowCalories">{{calories}}</p></a>
                         </tr>
@@ -40,7 +46,7 @@
                         <tr class="detail">
                             <a class="fancyboxNutrition1" rel="group" ng-href="{{ nutritionFactsUrl }}"><img ng-show="{{ bShowNutritionFactsBtn }}" id="nutritionFactsBtn" ng-src="{{localizedImage('nutritionFactsBtn.png')}}" err-src="../Images/nutritionFactsBtn.png"></a>
                         </tr>
-
+-->
                     </table>
 
                </td>

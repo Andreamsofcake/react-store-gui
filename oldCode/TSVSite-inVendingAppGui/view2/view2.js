@@ -9,6 +9,9 @@ app.config(['$routeProvider', function($routeProvider) {
   });
 }]);
 
+// KENT SAYS: no imageonload directives...
+// NOTE: this is to automagically resize an image to optimally fit in a box on the screen.
+/*
 app.directive('imageonload', function() {
     return {
         restrict: 'A',
@@ -79,6 +82,7 @@ app.directive('imageonload', function() {
         }
     };
 });
+*/
 
 app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TSVService', "translate",
     function($scope, $rootScope, $timeout, $location, TSVService, translate) {
@@ -188,6 +192,8 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
                 }
             }
 
+            // Kent says: skip these two if's:
+            /*
             if(('NutritionalFactsImages' in $scope.item.Attributes) && ($scope.item.Attributes.NutritionalFactsImages != null)){
                 console.log("NutritionFactImageURL: "+$scope.item.Attributes.NutritionalFactsImages[0]);
 
@@ -210,8 +216,13 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
                 $scope.bShowCalories = true;
                 $scope.calories = $scope.item.Attributes.Calories[0] + " Cal";
             }
+            */
         }
 
+
+
+		// KENT SAYS: skip all this jquery stuff:
+		/*
         $(document).ready(function() {
 
             if(typeof $.fancybox !== "undefined"){
@@ -288,6 +299,7 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
                 });
             }
         });
+        */
 
         $scope.back = function() {
             if(TSVService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "false"){
