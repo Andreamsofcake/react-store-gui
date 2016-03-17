@@ -12,11 +12,26 @@ class Cash_Card extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
+    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.setSession('currentView', 'Cash_Card');
-    this.state = {
-      activationKey: '',
-      serialNumber: TsvService.machineSetting('MachineSerialNumber')
-    };
+    RootscopeActions.updateCredit();
+
+  };
+
+  cancel(){
+    TsvService.emptyCart();
+    TsvService.gotoDefaultIdlePage();
+  }
+
+  cash() {
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+    browserHistory.push("/Cash_Vending");
+  }
+
+  card() {
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+    browserHistory.push("/Card_Vending");
+  }
 
   // Add change listeners to stores
   componentDidMount() {
@@ -51,16 +66,10 @@ class Cash_Card extends Component {
 
       </div>
 
-      { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
+      <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />
 
       </div>
     );
-  }
-
-  renderCancelBtnCash(){
-    return(
-      <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />
-    )
   }
 
 }
