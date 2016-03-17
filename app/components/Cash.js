@@ -24,22 +24,25 @@ class Cash extends Component {
       summary: RootscopeStore.getCache('shoppingCart.summary'),
       item: RootscopeStore.getCache('shoppingCart.detail')[0]
     };
-      TsvService.startPaymentTimer();
+      
 
     if(RootscopeStore.getSession('bVendingInProcess')){
 
-        this.state.showSpinner = true;
         TSVService.stopPaymentTimer();
+
+        this.state.showSpinner = true;
         this.state.hintMsg = "Vending...";
         this.state.showCancelBtnCash = false;
+      } else {
+      	TsvService.startPaymentTimer();
       }
 
   }
 
 
   cancel(){
+    RootscopeActions.setSession('insertedAmount', 0);
     TsvService.emptyCart();
-    this.insertedAmount = 0;
     TsvService.stopPaymentTimer();
     browserHistory.push("/view1");
   }
@@ -47,12 +50,12 @@ class Cash extends Component {
   checkBalance(){
       var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice');
 
-      if((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail').length > 0){
+      if((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail', []).length > 0){
           TSVService.disablePaymentDevice();
           if(!RootscopeStore.getSession('bVendingInProcess')){
-              TsvService.startVend();
               RootscopeActions.setSession('bVendingInProcess', true);
-
+              TsvService.startVend();
+              
               this.setState({
                 hintMsg: "Vending...",
                 showCancelBtnCash: false,
@@ -73,8 +76,9 @@ class Cash extends Component {
         RootscopeActions.setSession('inserted', balance/100.00);
         RootscopeActions.setSession('creditBalance', this.state.summary.TotalPrice - balance/100.00);
 
-        this.checkBalance();
         TsvService.resetPaymentTimer();
+
+        this.checkBalance();
         this.setState({
             insertedAmount: balance/100.00
         });
