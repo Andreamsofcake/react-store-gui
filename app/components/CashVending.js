@@ -14,96 +14,120 @@ class Cash_Vending extends Component {
     super(props, context);
 
     RootscopeActions.setSession('currentView', 'Cash_Vending');
+    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.updateCredit();
-    TsvService.enablePaymentDevice();
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+
     this.state = {
       insertedAmount: RootscopeStore.getSession('creditBalance')
       summary: RootscopeStore.getCache('shoppingCart.summary'),
       hintMsg: Translate.translate('Cash_Vending', 'HintMessageInsertCash'),
-      salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
+      // only in cash.js:
+      //salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
       showCancelBtnCash: true,
       cart: RootscopeStore.getCache('shoppingCart.detail'),
-      item: RootscopeStore.getCache('shoppingCart.detail')[0]
+      // only in cash.js:
+      //item: RootscopeStore.getCache('shoppingCart.detail')[0]
     };
 
     TsvService.resetPaymentTimer();
-    RootscopeActions.setSession
+    
+    // KENT note: this session var I believe is not used in Shopping Cart regime, and checkBalance only returns a boolean
+    RootscopeActions.setSession('bVendedOldCredit', this.checkBalance());
 
-
-    if(RootscopeStore.getSession('bVendingInProcess')){
+    if (RootscopeStore.getSession('bVendingInProcess')) {
 
         TSVService.stopPaymentTimer();
 
         this.state.showSpinner = true;
         this.state.hintMsg = Translate.translate('Cash_Vending','HintMessageVending');
         this.state.showCancelBtnCash = false;
+
       } else {
       	TsvService.startPaymentTimer();
       }
 
   }
 
-
   cancel(){
-    RootscopeActions.setSession('insertedAmount', 0);
+  	// only in cash.js:
+    //RootscopeActions.setSession('insertedAmount', 0);
     TsvService.emptyCart();
     TsvService.stopPaymentTimer();
-    browserHistory.push("/view1");
+  	// only in cash.js:
+    //browserHistory.push("/view1");
+    TsvService.gotoDefaultIdlePage();
   }
 
   checkBalance(){
-      var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice');
+	  var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice');
 
-      if((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail', []).length > 0){
-          TSVService.disablePaymentDevice();
-          if(!RootscopeStore.getSession('bVendingInProcess')){
-              RootscopeActions.setSession('bVendingInProcess', true);
-              TsvService.startVend();
+	  // cash.js logic:
+	  //if ((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail', []).length > 0){
+	  if (RootscopeStore.getCache('creditBalance') >= total && RootscopeStore.getCache('shoppingCart.detail', []).length > 0) {
+	
+		  TsvService.disablePaymentDevice();
 
-              this.setState({
-                hintMsg: Translate.translate('Cash_Vending','HintMessageVending'),
-                showCancelBtnCash: false,
-                showSpinner: true
-              });
-          }
-          return false;
-      }
-      return false;
+		  if(!RootscopeStore.getSession('bVendingInProcess')){
+			  // only in cash.js:
+			  //RootscopeActions.setSession('bVendingInProcess', true);
+			  TsvService.startVend();
+
+			  this.setState({
+				  hintMsg: Translate.translate('Cash_Vending','HintMessageVending'),
+				  showCancelBtnCash: false,
+				  showSpinner: true
+			  });
+		  }
+		  return false;
+	  }
+	  return false;
   }
-
 
   // Add change listeners to stores
   componentDidMount() {
 
     TvsService.subscribe("creditBalanceChanged", (ins, balance) => {
-        if(RootscopeStore.getSession('currentView') != "Cash")    return;
+    	// only in cash.js:
+        //if (RootscopeStore.getSession('currentView') != "Cash") return;
 
-        RootscopeActions.setSession('inserted', balance/100.00);
-        RootscopeActions.setSession('creditBalance', this.state.summary.TotalPrice - balance/100.00);
+        RootscopeActions.setSession('creditBalance', balance/100.00);
+        // only in cash.js:
+        //RootscopeActions.setSession('creditBalance', this.state.summary.TotalPrice - balance/100.00);
+
+        var state = {
+        	insertedAmount: balance/100.00
+        };
+        
+        if (!RootscopeStore.getSession('bVendingInProcess')) {
+        	state.hintMsg = Translate.translate('Cash_Vending','HintMessageVending');
+        	state.showSpinner = true;
+        	state.showCancelBtnCash = false;
+        }
+
+        // only in cash.js:
+        //this.checkBalance();
 
         TsvService.resetPaymentTimer();
-
-        this.checkBalance();
-        this.setState({
-            insertedAmount: balance/100.00
-        });
-    });
+        this.setState(state);
+    }, 'app.cashVending');
 
     TsvService.subscribe("cardTransactionRespose", (level) => {
-        if(!TsvService.getSession('bVendingInProcess') {
-            if(browserHistory.push() != "/Card_Vending"){
+        if(!RootscopeStore.getSession('bVendingInProcess')) {
+
+            if (RootscopeStore.getCache('currentLocation') != "/Card_Vending"){
                 browserHistory.push("/Card_Vending");
             }
 
             TsvService.cardTransaction(level);
         }
-    }
+    }, 'app.cashVending');
 
     TsvService.subscribe("vendResponse",(processStatus) =>{
       TsvService.vendResponse(processStatus);
       TsvService.stopPaymentTimer();
 
-    });
+    }, 'app.cashVending');
   }
 
   // Remove change listers from stores
@@ -115,18 +139,23 @@ class Cash_Vending extends Component {
 
   render() {
     return (
-      <div className="Cash" >
+      <div className="Cash_Vending" >
 
-      {cart.map((prd, $index) => {
+    <table class="cart">
+        <tr>
+      {cart.map( (prd, $index) => {
           return (
-        <img key={$index} id="prdImg" src={ prd.imagePath} alt="productImage" />
-        )}
+        	<td key={$index}><img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" /></td>
+          )
+        })
       }
+        </tr>
+    </table>
 
       <div id = "cashMsg">
-            <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(summary.TotalPrice) }</p>
+            <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(this.state.summary.TotalPrice) }</p>
 
-            <p>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} {TsvService.currencyFilter(this.insertedAmount) }</p>
+            <p>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} {TsvService.currencyFilter(this.state.insertedAmount) }</p>
         </div>
 
         <p id="hint">{ this.hintMsg }</p>
@@ -142,13 +171,13 @@ class Cash_Vending extends Component {
 
   renderCancelBtnCash(){
     return(
-      <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />
+      <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
     )
   }
 
   renderSpinner(){
     return(
-      <_E.Spinner size="md" type="inverted"   />
+      <_E.Spinner size="md" type="inverted" />
     )
   }
 

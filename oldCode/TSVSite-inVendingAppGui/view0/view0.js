@@ -27,6 +27,9 @@ angular.module('myApp.view0', ['ngRoute'])
 
             TSVService.startGeneralIdleTimer($location, $rootScope);
 
+            // KENT SAYS: we're not using jQuery, replace this document.ready with:
+            console.error('<<<<        FIXME: need to attach events to click and mouseover globally to TsvService.resetGeneralIdleTimer()        >>>>');
+            /*
             (function ($) {
                 $(document).ready(function () {
                     $(document).bind('click mousemove', function() {
@@ -35,7 +38,10 @@ angular.module('myApp.view0', ['ngRoute'])
                     });
                 });
             }) (jQuery);
+            */
 
+            // KENT SAYS: replace the "$rootScope.gotoDefaultIdlePage" call with "TsvService.gotoDefaultIdlePage()"
+            /*
             $rootScope.gotoDefaultIdlePage = function() {
                 console.log("gotoDefaultIdlePage");
 
@@ -74,6 +80,7 @@ angular.module('myApp.view0', ['ngRoute'])
                     }
                 }
             };
+			*/
 
             TSVService.subscribe("noEvent", function() {
                 console.log("Got event noEvent");
