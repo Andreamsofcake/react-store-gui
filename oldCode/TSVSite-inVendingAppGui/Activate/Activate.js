@@ -53,7 +53,7 @@ activateApp.controller('ActivateCtrl', ['$scope', '$rootScope', '$timeout', '$lo
 
         $scope.activationKey = '';
 
-        $scope.serialNumber = TSVService.machineSetting('MachineSerialNumber');
+        $scope.serialNumber = TSVService`.machineSetting`('MachineSerialNumber');
 
         setTimeout(function () {
 
