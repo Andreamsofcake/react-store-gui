@@ -1,7 +1,7 @@
 var path = require("path")
 	, webpack = require("webpack")
-	, assetsPath = path.join(__dirname, "public", "assets");
-	, serverAssetsPath = path.join(__dirname, "app", "server-assets");
+	, assetsPath = path.join(__dirname, "public", "assets")
+	, serverAssetsPath = path.join(__dirname, "app", "server-assets")
 	, publicPath = "assets/"
 
 	, commonLoaders = [

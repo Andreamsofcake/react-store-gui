@@ -1,7 +1,7 @@
 import React from 'react'
 import RootscopeActions from '../actions/RootscopeActions'
-import TsvService from '../lib/TsvService'
-import Translate from '../lib/Translate'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
 
 class Product_Search extends Component {
@@ -85,7 +85,7 @@ class Product_Search extends Component {
       <div className="Product_Search" >
       { if (this.state.bDisplayCgry) { this.renderCategoryTable() } }
 
-      <h2>{Translate.translate('SelectProduct')}</h2>
+      <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
 
         {/* slider container*/}
         <div class="container_slider">

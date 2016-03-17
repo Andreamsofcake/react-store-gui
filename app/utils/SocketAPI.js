@@ -7,7 +7,7 @@ if (isClient) {
 	//localStorage.debug = '*';
 
 	/* set up websocket connection */
-	var io = require('ioClient')
+	var io = require('socket.io-client')
 		, socket_connected = false
 	//	, debug = true
 		, websocket

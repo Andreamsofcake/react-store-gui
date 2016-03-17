@@ -1,7 +1,7 @@
 import React from 'react'
 import RootscopeActions from '../actions/RootscopeActions'
-import TsvService from '../lib/TsvService'
-import Translate from '../lib/Translate'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
 
 class Shopping_Cart extends Component {
@@ -173,7 +173,7 @@ class Shopping_Cart extends Component {
 
             <table className="cart">
 
-                <tr className="cart"><th></th><th></th><th className="cart">{Translate.translate('Price','Price')}</th><th className="cart">{Translate.translate('Qty','Qty')}</th><th></th></tr>
+                <tr className="cart"><th></th><th></th><th className="cart">{Translate.translate('Shopping_Cart','Price')}</th><th className="cart">{Translate.translate('Shopping_Cart','Qty')}</th><th></th></tr>
 
                 {cart.map((prd, $index) => {
                     return (
@@ -219,7 +219,7 @@ class Shopping_Cart extends Component {
 
                 { if (this.state.bShowTax) { this.renderShowTax() } }
 
-                <p>{Translate.translate('Total_Price','TotalPrice')}: { TsvService.currencyFilter(totalPrice) }</p>
+                <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { TsvService.currencyFilter(totalPrice) }</p>
 
             </div>
 
@@ -245,7 +245,7 @@ class Shopping_Cart extends Component {
 
   renderShowTax() {
     return (
-     <p>{Translate.translate('Tax', 'Tax')}: { TsvService.currencyFilter(salesTaxAmount) }</p>
+     <p>{Translate.translate('Shopping_Cart', 'Tax')}: { TsvService.currencyFilter(salesTaxAmount) }</p>
     )
   }
 
