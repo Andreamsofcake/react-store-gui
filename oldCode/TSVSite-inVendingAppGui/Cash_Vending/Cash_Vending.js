@@ -11,7 +11,7 @@ angular.module('myApp.Cash_Vending', ['ngRoute'])
 
     .controller('Cash_VendingCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
         function($scope, $rootScope, $timeout, $location, TSVService, translate) {
-	
+
             $rootScope.bDisplayCgryNavigation = false;
 
             $scope.translate = function(name){
@@ -34,7 +34,8 @@ angular.module('myApp.Cash_Vending', ['ngRoute'])
 
                 resetPaymentTimer();
 
-                TSVService.session.bVendedOldCredit = checkBalance();
+
+                RootscopeActions.setSession(‘bVendedOldCredit’, this.checkBalance())
 
                 if(TSVService.session.bVendingInProcess){
                     TSVService.debug("TSVService.session.bVendingInProcess: "+TSVService.session.bVendingInProcess);

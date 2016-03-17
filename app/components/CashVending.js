@@ -7,31 +7,35 @@ import RootscopeStore from '../store/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
 
-class Cash extends Component {
+class Cash_Vending extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Cash');
-    TsvService.enablePaymentDevice()
+    RootscopeActions.setSession('currentView', 'Cash_Vending');
+    RootscopeActions.updateCredit();
+    TsvService.enablePaymentDevice();
     this.state = {
-      insertedAmount: RootscopeStore.getSession('inserted')
+      insertedAmount: RootscopeStore.getSession('creditBalance')
       summary: RootscopeStore.getCache('shoppingCart.summary'),
-      hintMsg: "Insert Cash Now....",
+      hintMsg: Translate.translate('Cash_Vending', 'HintMessageInsertCash'),
       salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
       showCancelBtnCash: true,
-      summary: RootscopeStore.getCache('shoppingCart.summary'),
+      cart: RootscopeStore.getCache('shoppingCart.detail'),
       item: RootscopeStore.getCache('shoppingCart.detail')[0]
     };
-      
+
+    TsvService.resetPaymentTimer();
+    RootscopeActions.setSession
+
 
     if(RootscopeStore.getSession('bVendingInProcess')){
 
         TSVService.stopPaymentTimer();
 
         this.state.showSpinner = true;
-        this.state.hintMsg = "Vending...";
+        this.state.hintMsg = Translate.translate('Cash_Vending','HintMessageVending');
         this.state.showCancelBtnCash = false;
       } else {
       	TsvService.startPaymentTimer();
@@ -55,17 +59,18 @@ class Cash extends Component {
           if(!RootscopeStore.getSession('bVendingInProcess')){
               RootscopeActions.setSession('bVendingInProcess', true);
               TsvService.startVend();
-              
+
               this.setState({
-                hintMsg: "Vending...",
+                hintMsg: Translate.translate('Cash_Vending','HintMessageVending'),
                 showCancelBtnCash: false,
                 showSpinner: true
               });
           }
-          return 1;
+          return false;
       }
-      return -1;
+      return false;
   }
+
 
   // Add change listeners to stores
   componentDidMount() {
@@ -83,10 +88,18 @@ class Cash extends Component {
             insertedAmount: balance/100.00
         });
     });
+
+    TsvService.subscribe("vendResponse",(processStatus) =>{
+      TsvService.vendResponse(processStatus);
+      TsvService.stopPaymentTimer();
+
+    });
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
+    TsvService.unsubscribe("creditBalanceChanged", "app.cashVending");
+    TsvService.unsubscribe("vendResponse", "app.cashVending")
   }
 
   render() {
@@ -126,4 +139,4 @@ class Cash extends Component {
 
 }
 
-export default Cash
+export default Cash_Vending
