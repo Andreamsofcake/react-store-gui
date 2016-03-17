@@ -21,7 +21,7 @@ class Card_Vending extends Component {
       cart: RootscopeStore.getCache('shoppingCart.detail'),
       item: RootscopeStore.getCache('shoppingCart.detail')[0],
       summary: RootscopeStore.getCache('shoppingCart.summary'),
-      showCancelBtn: true
+      showCancelBtn: true,
       cardTransactionResponse: Translate.translate('Card_Vending', 'InstructionMessage')
     };
     TsvService.resetPaymentTimer();
@@ -39,10 +39,10 @@ class Card_Vending extends Component {
        this.state.showCancelBtnCash = false;
      }
 
-    if (this.summary.TotalPrice < 0.01) {
+    if (this.state.summary.TotalPrice < 0.01) {
  			console.log("this.summary.TotalPrice: "+ this.summary.TotalPrice);
  			console.log("this.summary.TotalPrice less than 0.01 should start vend");
- 			startVend();
+ 			this.startVend();
  		}
 
   }
@@ -65,17 +65,18 @@ class Card_Vending extends Component {
   ****/
 
   startVend() {
-      this.state.cardTransactionResponse = Translate.translate("Vending", "Vending");
       TsvServicesService.disablePaymentDevice();
       TsvService.killTimers();
-      this.state.showSpinner = true;
-      this.state.showCancelBtn = false;
-      RootscopeStore.getSession('cardMsg') = Translate.translate("Vending", "Vending");
-      TsvService.debug("Card Approved should vend...");
+      RootscopeActions.setSession('cardMsg', Translate.translate("Vending", "Vending"));
+      //TsvService.debug("Card Approved should vend...");
       TsvService.startVend();
       TsvService.setVendingInProcessFlag();
+      this.setState({
+        cardTransactionRespose: Translate.translate("Vending", "Vending"),
+        showSpinner: true,
+        showCancelBtn: false
+      })
   }
-
 
   cancel(){
     TsvService.stopPaymentTimer();
@@ -84,51 +85,71 @@ class Card_Vending extends Component {
   }
 
   // Add change listeners to stores
-  componentDidMount() {
-      var cardTransactionHandler = function(level) {
-          TsvService.killCardErrorTimer();
-          TsvService.resetPaymentTimer();
+	cardTransactionHandler(level) {
 
-            if(!RootscopeStore.getSession('bVendingInProcess'){
-                switch(level){
-                    case "CARD_INSERTED":
-                        this.state.cardTransactionResponse = Translate.translate("ProcessingMessage");
-                        break;
-                    case "CARD_PROCESSING":
-                        this.state.cardTransactionResponse = Translate.translate("ProcessingMessage");
-                        break;
-                    case "CARD_APPROVED":
-                        startVend();
-                        break;
-                    case "CARD_INVALID_READ":
-                        this.state.cardTransactionResponse = Translate.translate("CardInvalidMessage");
-                        TsvService.startCardErrorTimer();
-                        break;
-                    case "CARD_DECLINED":
-                        this.state.cardTransactionResponse =  Translate.translate("CardDeclinedMessage");
-                        TsvService.startCardErrorTimer();
-                        break;
-                    case "CARD_CONNECTION_FAILURE":
-                        this.state.cardTransactionResponse = Translate.translate("CardConnectionErrorMessage");
-                        TsvService.startCardErrorTimer();
-                        break;
-                    case "CARD_UNKNOWN_ERROR":
-                        this.state.cardTransactionResponse = Translate.translate("CardUnknownErrorMessage");
-                        TsvService.startCardErrorTimer();
-                        break;
-                    default:
-                        console.log("Card_Vending Got event cardTransactionResponse()default: "+level);
-                        this.state.cardTransactionResponse = Translate.translate("ErrorMessage");
-                        TsvService.startCardErrorTimer();
-                        break;
-        }
-      }
-    };
+		TsvService.killCardErrorTimer();
+		TsvService.resetPaymentTimer();
+		var msg;
 
-    TsvService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cardVending");
-    TsvService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
+		if (!RootscopeStore.getSession('bVendingInProcess')) {
+
+			switch(level){
+				case "CARD_INSERTED":
+					msg = Translate.translate("ProcessingMessage");
+					break;
+
+				case "CARD_PROCESSING":
+					msg = Translate.translate("ProcessingMessage");
+					break;
+
+				case "CARD_APPROVED":
+					startVend();
+					break;
+
+				case "CARD_INVALID_READ":
+					msg = Translate.translate("CardInvalidMessage");
+					TsvService.startCardErrorTimer();
+					break;
+
+				case "CARD_DECLINED":
+					msg =  Translate.translate("CardDeclinedMessage");
+					TsvService.startCardErrorTimer();
+					break;
+
+				case "CARD_CONNECTION_FAILURE":
+					msg = Translate.translate("CardConnectionErrorMessage");
+					TsvService.startCardErrorTimer();
+					break;
+
+				case "CARD_UNKNOWN_ERROR":
+					msg = Translate.translate("CardUnknownErrorMessage");
+					TsvService.startCardErrorTimer();
+					break;
+
+				default:
+					console.log("Card_Vending Got event cardTransactionResponse()default: "+level);
+					msg = Translate.translate("ErrorMessage");
+					TsvService.startCardErrorTimer();
+					break;
+			}
+			
+			this.setState({
+				cardTransactionResponse: msg
+			});
+		}
   }
 
+	componentDidMount() {
+
+		// this function has no ties to "this", so can be anonymous:
+		var vendResponseHandler = function(processStatus){
+			TsvService.vendResponse(processStatus);
+			TsvService.stopPaymentTimer();
+	  };
+    TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.cardVending");
+    TsvService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
+	}
+  
   // Remove change listers from stores
   componentWillUnmount() {
     TsvService.unsubscribe("cardTransactionResponse", "app.cardVending");
@@ -183,7 +204,7 @@ class Card_Vending extends Component {
 
   renderSpinner(){
     return(
-      <_E.Spinner size="md" type="inverted"   />
+      <_E.Spinner size="md" type="inverted" />
     )
   }
 
