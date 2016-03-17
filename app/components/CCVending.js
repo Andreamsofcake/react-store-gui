@@ -6,7 +6,7 @@ import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 
-class CC_VENDING extends Component {
+class CcVending extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
@@ -26,36 +26,36 @@ class CC_VENDING extends Component {
     return (
       <div className="ccVending">
 
-          <table className="cart">
+        <img id="prdImg" src={ item.imagePath } alt="productImage" />
 
-              <tr>
+        <p>Total Price: { summary.TotalPrice | currency }</p>
 
-                  <td data-ng-repeat="prd in cart">
+        <p>{ this.state.cardTransactionResponse }</p>
 
-                      <img id="prdImg" ng-src="{{ prd.imagePath }}" err-src="../Images/ProductImageNotFound.png" alt="productImage">
+        <img src="../Images/creditcards.png" alt="creditcards" width="461" height="73"/>
 
-                  </td>
+        <img id="creditCards" src="../Images/creditcards.png" alt="creditcards" />
 
-              </tr>
+        { if (this.state.showCancelBtn) { this.renderCancelBtn()} }
 
-          </table>
-
-          <p ng-if="summary.TotalPrice >= 1">{{ translate('TotalPriceLabel') }}{{ currencyFilter(summary.TotalPrice) }}</p>
-
-          <p id = "cardResponse">{{ cardTransactionResponse }}</p>
-
-          <img id="creditCards" src="../Images/creditcards.png" alt="creditcards">
-
-          <p><img className="regularBtn" id="cancelImg" ng-src="{{localizedImage('cancel.png')}}" err-src="../Images/cancel.png" ng-show="showCancelBtn" ng-click="cancel()"></p>
-
-          <canvas id="spinner"></canvas>
-
+        { if (this.state.showSpinner) { this.renderSpinner()} }
       </div>
-
     );
+  }
+
+  renderCancelBtn(){
+    return(
+      <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />
+    )
+  }
+
+  renderSpinner(){
+    return(
+      <_E.Spinner size="md" type="inverted" />
+    )
   }
 
 
 }
 
-export default CC_VENDING
+export default CcVending
