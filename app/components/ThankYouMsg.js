@@ -14,13 +14,9 @@ class THANKYOU_MSG extends Component {
 
     RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
     RootscopeActions.updateCredit();
-    RootscopeActions.setSession('thankyouTimer', thankyouTimeout, RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ));
+    RootscopeActions.setSession('thankyouTimer', () => { TsvService.gotoDefaultIdlePage() }), RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ));
 
   };
-
-  vendErrorTimeout(){
-      TsvService.gotoDefaultIdlePage();
-  }
 
   // Add change listeners to stores
   componentDidMount() {
