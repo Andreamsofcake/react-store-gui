@@ -29,7 +29,7 @@ class Cash_Card extends Component {
   }
 
   card() {
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
     browserHistory.push("/Card_Vending");
   }
 
