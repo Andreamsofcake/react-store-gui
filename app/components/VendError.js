@@ -2,6 +2,8 @@ import React from 'react'
 import TsvService from '../lib/TsvService'
 import * as Translate from '../lib/Translate'
 
+import * as _E from 'elemental'
+
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
@@ -31,6 +33,15 @@ class Vend_Error extends Component {
   }
 
   render() {
+  	return (
+      <_E.Row className="VendError">
+      	<_E.Col>
+			<p>{this.errorMsg1}</p>
+			<p>{this.errorMsg2}</p>
+      	</_E.Col>
+      </_E.Row>
+  	);
+  	/*
     return (
       <div className="VendError">
         <p>{this.errorMsg1}</p>
@@ -38,6 +49,7 @@ class Vend_Error extends Component {
         <p>{this.errorMsg2}</p>
       </div>
     );
+    */
   }
 
 }
