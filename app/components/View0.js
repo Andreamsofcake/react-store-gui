@@ -17,10 +17,6 @@ class View0 extends Component {
     console.error('<<<<        FIXME: need to attach events to click and mouseover globally to TsvService.resetGeneralIdleTimer()        >>>>');
   };
 
-  reloadPage(){
-    window.location..reload(); //Not sure about this
-  }
-
   admin( ){
       {/* skipped admin because we skipped it else where */}
   };
@@ -34,12 +30,16 @@ class View0 extends Component {
     }, "app.view0");
 
     TsvService.subscribe("linkDown", function() {
-        window.location.href = "http://localhost:8085/index.html#/view0"; //Not sure about this
+        //window.location.href = "http://localhost:8085/index.html#/view0"; //Not sure about this
+        // Kent edit: going to idle page is essentially same as going to /view0 ... let's say no hard-coded url links.
+        TsvService.gotoDefaultIdlePage();
     }, "app.view0");
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
+    TsvService.unsubscribe("linkDown","app.view0");
+    TsvService.unsubscribe("noEvent","app.view0");
   }
 
   render() {
