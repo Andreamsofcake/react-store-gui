@@ -66,7 +66,7 @@ class Cash_Card extends Component {
 
       </div>
 
-      <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />
+      <img id="cancelImg" src={Translate.localizedImage('cancel.png')} onClick={this.cancel()} />
 
       </div>
     );
@@ -74,4 +74,4 @@ class Cash_Card extends Component {
 
 }
 
-export default Activate
+export default Cash_Card
