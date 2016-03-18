@@ -18,13 +18,9 @@ class Vend_Error extends Component {
       errorMsg1: RootscopeStore.getSession('vendErrorMsg1'),
       errorMsg2: RootscopeStore.getSession('vendErrorMsg2')
     }
-    RootscopeActions.setSession('vendErrorTimer', vendErrorTimeout, 10000);
+    RootscopeActions.setSession('vendErrorTimer', () => { TsvService.gotoDefaultIdlePage() }, 10000);
 
   };
-
-  vendErrorTimeout(){
-      TsvService.gotoDefaultIdlePage();
-  }
 
   // Add change listeners to stores
   componentDidMount() {
