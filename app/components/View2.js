@@ -15,15 +15,27 @@ class View2 extends Component {
     RootscopeActions.setSession('currentView', 'View2');
     TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
     TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
-    RootscopeActions.setCache('shoppingCart', TsvService.fetchShoppingCart2());
+    TsvService.fetchShoppingCart2(null, function(err, cart) {
+    	if (err) throw err;
+    	RootscopeActions.setCache('shoppingCart', cart);
+    })
+    
     RootscopeActions.updateCredit();
+    var item = RootscopeStore.getConfig('pvr');
+
+    // moved up here, closer to the actual declaration
+    //if (!RootscopeStore.getConfig('pvr')) {
+    if (!item) {
+        TsvService.gotoDefaultIdlePage();
+        //return;
+    }
 
     this.state = {
-      item: RootscopeStore.getConfig('pvr'),
+      item: item,
       path: RootscopeStore.getCache('currentLocation'),
       bShowCouponBtn: false,
       imagePath: item.imagePath,
-      imagePath2: this.imagePath,
+      imagePath2: item.imagePath, // yes, same var being set in two locations. meh
       summary: RootscopeStore.getCache('shoppingCart.summary'),
       nutritionFactsUrl: "",
       bShowNutritionFactsBtn: false
@@ -36,46 +48,36 @@ class View2 extends Component {
 
     };
 
-    if(this.item.description == ""){
+    if (this.item.description == "") {
         this.state.bShowDesc = false;
     }
 
-    if((RootscopeStore.getCache('custommachinesettings.bDisplayPrdGalleryOnDetailPage'))
-    {
+    if (RootscopeStore.getCache('custommachinesettings.bDisplayPrdGalleryOnDetailPage')) {
         this.state.bDisplayPrdGalleryOnDetailPage = true;
     }
 
-    if (!RootscopeStore.getConfig('pvr')) {
-        TsvService.gotoDefaultIdlePage();
-        return;
-    }
-
-    if(RootscopeStore.getCache('custommachinesettings.bHasShoppingCart')){
-      this.setState({
-				checkoutOrAddToCartUrl: Translate.localizedImage('addToCart.png')
-      })
-    }else{
-      this.setState({
-        checkoutOrAddToCartUrl: Translate.localizedImage('checkout.png')
-      })
-        if((RootscopeStore.getCache('custommachinesettings.bHasCouponCodes' )){
+    if (RootscopeStore.getCache('custommachinesettings.bHasShoppingCart')) {
+    	this.state.checkoutOrAddToCartUrl = Translate.localizedImage('addToCart.png');
+    } else {
+        this.state.checkoutOrAddToCartUrl = Translate.localizedImage('checkout.png');
+        if (RootscopeStore.getCache('custommachinesettings.bHasCouponCodes' )) {
           this.state.bShowCouponBtn = true;
         }
     }
 
-    if(this.item.Attributes) && (this.item.Attributes.AltLangImageGroup != null){
-      for (var i=0; i<Object.keys(this.item.Attributes.AltLangImageGroup).length; i++){
-        if(this.item.Attributes.AltLangImageGroup[i]
-          .toLowerCase()
-          .indexOf(RootscopeActions.getCache('selectLanguage').toLowerCase()) > -1) {
-            this.state.imagePath = "../Images/Products/ " + this.item.productID + " " + this.item.Attributes.AltLangImageGroup[i];
-            this.state.imagePath2 = this.imagePath;
+    if ((this.state.item.Attributes) && (this.state.item.Attributes.AltLangImageGroup != null)) {
+      for (var i=0; i < this.state.item.Attributes.AltLangImageGroup.length; i++) {
+        if (this.state.item.Attributes.AltLangImageGroup[i]
+          	.toLowerCase()
+          	.indexOf(RootscopeStore.getCache('selectLanguage').toLowerCase()) > -1) {
+            this.state.imagePath = "../Images/Products/ " + this.state.item.productID + " " + this.state.item.Attributes.AltLangImageGroup[i];
+            this.state.imagePath2 = this.state.imagePath;
             break;
         }
       }
     }
 
-  };
+  }
 
   back() {
       if(RootscopeStore.getCache('custommachinesettings.bHasShoppingCart'){
@@ -87,16 +89,17 @@ class View2 extends Component {
 
   cardTransactionHandler(level) {
 
-      {/*what? $.fancybox.close();*/}
+      // call to close any open fancybox's in the interface, we don't have fancyboxes so ok to comment out.
+      /*what? $.fancybox.close();*/
 
-      if (RootscopeStore.getCache('currentLocation') != this.path) {
+      if (RootscopeStore.getCache('currentLocation') != RootscopeStore.getCache('currentLocation')) {
           console.log("Path doesn't match. Not for view2, ignoring")
           return;
       }
 
       TsvService.cardTransaction(level);
 
-      if(!RootscopeStore.getSession('bVendingInProcess')) {
+      if (!RootscopeStore.getSession('bVendingInProcess')) {
           switch(level){
               case "CARD_INVALID_READ":
               case "CARD_DECLINED":
@@ -117,17 +120,17 @@ class View2 extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-    TSVService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.view2");
+    TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.view2");
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
+    TsvService.subscribe("cardTransactionResponse", "app.view2");
   }
 
   render() {
     return (
-      <div className="view0">
-
+    		<h3>Dev warning: this may be a broken component, old code had disconnections in it</h3>
           <div className="prdDetail">
 
               <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} ng-click="back()">
@@ -176,8 +179,6 @@ class View2 extends Component {
            </div>
 
         </div>
-
-      </div>
 
     );
   }
