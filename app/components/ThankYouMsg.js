@@ -5,6 +5,7 @@ import * as Translate from '../lib/Translate'
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
+import * as _E from 'elemental'
 
 class THANKYOU_MSG extends Component {
 
@@ -28,11 +29,12 @@ class THANKYOU_MSG extends Component {
 
   render() {
     return (
-      <div className="thankyou">
+      <_E.Row className="thankyou">
+        <_E.Col>
 
           <img id="thankyouImg" src={Translate.localizedImage('thankyou.png')} alt="thankyou">
-
-      </div>
+        </_E.Col>
+      </_E.Row>
 
     );
   }

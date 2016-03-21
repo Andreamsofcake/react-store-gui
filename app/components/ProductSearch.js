@@ -82,46 +82,51 @@ class Product_Search extends Component {
     var products = RootscopeStore.getProducts();
     return (
 
-      <div className="Product_Search" >
-      { if (this.state.bDisplayCgry) { this.renderCategoryTable() } }
+      <_E.Row className="Product_Search" >
 
-      <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
+        <_E.Col>
+          { if (this.state.bDisplayCgry) { this.renderCategoryTable() } }
 
+        <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
+        </_E.Col>
         {/* slider container*/}
-        <div class="container_slider">
+        <_E.Row class="container_slider">
+          <_E.Col>
 
-            {/* enumerate all photos
-            { this.renderImageSlider(products)}
+              {/* enumerate all photos
+              { this.renderImageSlider(products)}
 
-            prev / next controls
-            <div class="arrow prev" href="#" onClick=(this.showPrev()}></div>
-            <div class="arrow next" href="#" onClick=(this.showNext()}></div>
+              prev / next controls
+              <div class="arrow prev" href="#" onClick=(this.showPrev()}></div>
+              <div class="arrow next" href="#" onClick=(this.showNext()}></div>
 
-            extra navigation controls*/}
+              extra navigation controls*/}
 
-            <ul className="flex-container">
-                {products.map((product, $index) => {
-                  return (
-                    <li key={$index} className={'flex-item' + this.isActive($index) ? ' active'} style={{ opacity: this.setOpacity(stockCount) }}>
+              <ul className="flex-container">
+                  {products.map((product, $index) => {
+                    return (
+                      <li key={$index} className={'flex-item' + this.isActive($index) ? ' active'} style={{ opacity: this.setOpacity(stockCount) }}>
 
-                        <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
+                          <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
 
-                            <figcaption>{product.productName}</figcaption>
+                              <figcaption>{product.productName}</figcaption>
 
-                            <img src={product.imagePath} alt={product.description} title={product.description} />
+                              <img src={product.imagePath} alt={product.description} title={product.description} />
 
-                            <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
+                              <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
 
-                        </figure>
+                          </figure>
 
-                    </li>
-                  )
-                })}
-            </ul>
-          </div>
+                      </li>
+                    )
+                  })}
+              </ul>
+            </_E.Col>
+          </_E.Row>
+          
           {this.renderBackBtn()}
 
-      </div>
+      </_E.Row>
     );
   }
 

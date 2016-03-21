@@ -132,7 +132,7 @@ class Card_Vending extends Component {
 					TsvService.startCardErrorTimer();
 					break;
 			}
-			
+
 			this.setState({
 				cardTransactionResponse: msg
 			});
@@ -149,7 +149,7 @@ class Card_Vending extends Component {
     TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.cardVending");
     TsvService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
 	}
-  
+
   // Remove change listers from stores
   componentWillUnmount() {
     TsvService.unsubscribe("cardTransactionResponse", "app.cardVending");
@@ -158,41 +158,43 @@ class Card_Vending extends Component {
 
   render() {
     return (
-      <div className="Card_Vending" >
-        <h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
-        <table className="cart">
+      <_E.Row className="Card_Vending" >
+        <_E.Col>
+          <_E.h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
+          <table className="cart">
 
-            <tr>
-              {cart.map((prd, $index) => {
-                return(
-                  <td key={$index}>
+              <tr>
+                {cart.map((prd, $index) => {
+                  return(
+                    <td key={$index}>
 
-                      <img id="prdImg" src={ prd.imagePath } alt="productImage"/> {/*err-src="../Images/ProductImageNotFound.png"*/}
+                        <img id="prdImg" src={ prd.imagePath } alt="productImage"/> {/*err-src="../Images/ProductImageNotFound.png"*/}
 
-                  </td>
+                    </td>
+                  )}
                 )}
-              )}
 
-            </tr>
+              </tr>
 
-        </table>
+          </table>
 
-        { if (this.state.summary.TotalPrice >= 1) { this.renderTotalPriceLabel()} }
+          { if (this.state.summary.TotalPrice >= 1) { this.renderTotalPriceLabel()} }
 
-        <p id = "cardResponse">{ this.state.cardTransactionResponse }</p>
+          <p id = "cardResponse">{ this.state.cardTransactionResponse }</p>
 
-        <img id="creditCards" src="../Images/creditcards.png" alt="creditcards" />
+          <img id="creditCards" src="../Images/creditcards.png" alt="creditcards" />
 
-        { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
+          { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
 
-        { if (this.state.showSpinner) { this.renderSpinner()} }
-      </div>
+          { if (this.state.showSpinner) { this.renderSpinner()} }
+        </_E.Col>
+      </_E.Row>
     );
   }
 
   renderCancelBtnCash(){
     return(
-      <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />
+      <_E.Button type="warning" id="cancelImg" onClick={this.cancel()}>Cancel</_E.Button>
     )
   }
 

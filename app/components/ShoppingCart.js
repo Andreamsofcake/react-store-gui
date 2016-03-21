@@ -3,6 +3,7 @@ import RootscopeActions from '../actions/RootscopeActions'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
+import * as _E from 'elemental'
 
 class Shopping_Cart extends Component {
 

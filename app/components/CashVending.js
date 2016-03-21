@@ -31,7 +31,7 @@ class Cash_Vending extends Component {
     };
 
     TsvService.resetPaymentTimer();
-    
+
     // KENT note: this session var I believe is not used in Shopping Cart regime, and checkBalance only returns a boolean
     RootscopeActions.setSession('bVendedOldCredit', this.checkBalance());
 
@@ -65,7 +65,7 @@ class Cash_Vending extends Component {
 	  // cash.js logic:
 	  //if ((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail', []).length > 0){
 	  if (RootscopeStore.getCache('creditBalance') >= total && RootscopeStore.getCache('shoppingCart.detail', []).length > 0) {
-	
+
 		  TsvService.disablePaymentDevice();
 
 		  if(!RootscopeStore.getSession('bVendingInProcess')){
@@ -98,7 +98,7 @@ class Cash_Vending extends Component {
         var state = {
         	insertedAmount: balance/100.00
         };
-        
+
         if (!RootscopeStore.getSession('bVendingInProcess')) {
         	state.hintMsg = Translate.translate('Cash_Vending','HintMessageVending');
         	state.showSpinner = true;
@@ -139,24 +139,24 @@ class Cash_Vending extends Component {
 
   render() {
     return (
-      <div className="Cash_Vending" >
-
-    <table class="cart">
-        <tr>
-      {cart.map( (prd, $index) => {
-          return (
-        	<td key={$index}><img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" /></td>
-          )
-        })
-      }
-        </tr>
-    </table>
-
-      <div id = "cashMsg">
+      <_E.Row className="Cash_Vending" >
+        <_E.Col>
+          <table class="cart">
+              <tr>
+            {cart.map( (prd, $index) => {
+                return (
+              	<td key={$index}><img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" /></td>
+                )
+              })
+            }
+              </tr>
+          </table>
+        </_E.Col>
+      <_E.Row id = "cashMsg">
             <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(this.state.summary.TotalPrice) }</p>
 
             <p>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} {TsvService.currencyFilter(this.state.insertedAmount) }</p>
-        </div>
+        </_E.Row>
 
         <p id="hint">{ this.hintMsg }</p>
 
@@ -165,13 +165,13 @@ class Cash_Vending extends Component {
 
         { if (this.state.showSpinner) { this.renderSpinner()} }
 
-      </div>
+      </_E.Row>
     );
   }
 
   renderCancelBtnCash(){
     return(
-      <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
+      <_E.Button type="warning" id="cancelImg" onClick={this.cancel.bind(this)} />Cancel</_E.Button>
     )
   }
 

@@ -5,6 +5,7 @@ import * as Translate from '../lib/Translate'
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
+import * as _E from 'elemental'
 
 class View0 extends Component {
 
@@ -44,11 +45,12 @@ class View0 extends Component {
 
   render() {
     return (
-      <div className="view0">
+      <_E.Row className="view0">
           {/* skipped admin because we skipped it else where <button id="adminBtn" onClick=(this.admin()}></button>*/}
-
-          <h2>{Translate.translate('View0', 'Resetting')}<br>{Translate.translate('View0', 'PleaseWait')}</h2>
-      </div>
+        <_E.Col>
+          <_E.h2>{Translate.translate('View0', 'Resetting')}<br>{Translate.translate('View0', 'PleaseWait')}</_E.h2>
+        </_E.Col>
+      </_E.Row>
 
     );
   }

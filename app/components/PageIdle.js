@@ -5,6 +5,7 @@ import * as Translate from '../../lib/Translate'
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
+import * as _E from 'elemental'
 
 class Page_Idle extends Component {
 
@@ -36,9 +37,11 @@ class Page_Idle extends Component {
 
   render() {
     return (
-      <div className="Page_Idle" onClick={this.idleClicked}>
+      <_E.Row className="Page_Idle" onClick={this.idleClicked}>
+        <_E.Col>
       	<img id="idleImg" src={Translate.localizedImage('idle.png')} alt="IdlePage" />
-      </div>
+        </_E.Col>
+      </_E.Row>
     );
   }
 

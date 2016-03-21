@@ -59,15 +59,15 @@ class Category_Search extends Component {
 
   render() {
     return (
-      <div className="Category_Search">
-
+      <_E.Row className="Category_Search">
+        <_E.Col>
 
           <h2>{Translate.translate('Select_Category', 'SelectCategory')}</h2>
-
+        </_E.Col>
 
           {/*slider container*/}
-          <div className="container_slider">
-
+          <_E.Row className="container_slider">
+            <_E.Col>
               <ul className="nav">
 
               {categories.map((category, $index) => {
@@ -87,12 +87,12 @@ class Category_Search extends Component {
                 }
               )}
               </ul>
-
-          </div>
+            </_E.Col>
+          </_E.Row>
 
           { if (this.state.bSubCgry) { this.renderSubCgry()} }
 
-      </div>
+      </_E.Row>
     );
   }
 

@@ -5,6 +5,7 @@ import * as Translate from '../lib/Translate'
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
+import * as _E from 'elemental'
 
 class View2 extends Component {
 
@@ -19,7 +20,7 @@ class View2 extends Component {
     	if (err) throw err;
     	RootscopeActions.setCache('shoppingCart', cart);
     })
-    
+
     RootscopeActions.updateCredit();
     var item = RootscopeStore.getConfig('pvr');
 
@@ -131,21 +132,20 @@ class View2 extends Component {
   render() {
     return (
     		<h3>Dev warning: this may be a broken component, old code had disconnections in it</h3>
-          <div className="prdDetail">
-
+          <_E.Row className="prdDetail">
+            <_E.Col>
               <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} ng-click="back()">
 
               <img className="regularBtn" ng-if="bShowCheckout" id="checkoutImg" src={ checkoutOrAddToCartUrl } ng-click="checkout()">
 
               { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
-
-               <div id="view2Title">
+               <_E.Row id="view2Title">
 
                     <h1>{Translate.translate('View2', 'instructionMessage')}</h1> {/*what are these: data-fittext="1" data-fittext-min="20" data-fittext-max="36" */}
 
-               </div>
+               </_E.Row>
 
-               <div id="prdWrapper">
+               <_E.Row id="prdWrapper">
 
                    <table className="detail">
 
@@ -170,22 +170,22 @@ class View2 extends Component {
 
                   </table>
 
-               </div>
+               </_E.Row>
 
-               <p id="prdName">{ this.productName }</p> 
+               <p id="prdName">{ this.productName }</p>
 
                {if (this.bDisplayPrdGalleryOnDetailPage){ this.renderPrdGalleryOnDetailPage()}}
 
-           </div>
-
-        </div>
+           </_E.Row>
+          </_E.Col>
+        </_E.Row>
 
     );
   }
 
   renderPrdGalleryOnDetailPage() {
     return (
-      <div className="navGallery">
+      <_E.Row className="navGallery">
 
           <p id="navCgryTitle">{{ navCgryTitle }}</p>
 
@@ -213,7 +213,7 @@ class View2 extends Component {
 
           </ul>
 
-      </div>
+      </_E.Row>
     )
   }
 
