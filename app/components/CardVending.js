@@ -164,7 +164,7 @@ class Card_Vending extends Component {
               <_E.Row>
                 {cart.map((prd, $index) => {
                   return(
-                    <_E.Col basis="x%" key={$index}>
+                    <_E.Col basis="33%" key={$index}>
 
                         <img id="prdImg" src={ prd.imagePath } alt="productImage"/> /*err-src="../Images/ProductImageNotFound.png"*/
 
