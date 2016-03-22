@@ -173,7 +173,7 @@ class Shopping_Cart extends Component {
         <_E.Col id="wrapper">
                 <_E.Row className="cart"><th></th><th></th><th className="cart">{Translate.translate('Shopping_Cart','Price')}</th><th className="cart">{Translate.translate('Shopping_Cart','Qty')}</th><th></th></tr>
 
-                {cart.map((prd, $index) => {
+                {this.state.cart.map((prd, $index) => {
                     return (
                       <_E.Row key={$index} className="cart" className="shoppingCart">
                         <_E.Col className="cart">
@@ -184,25 +184,28 @@ class Shopping_Cart extends Component {
 
                         <_E.Col className="cart">{ prd.productName }</_E.Col>
 
-                        <_E.Col className="cart">{ TsvService.currencyFilter(prd.price*prd.qtyInCart) }</_E.Col>
+                        <_E.Col className="cart">{ TsvService.currencyFilter(prd.price * prd.qtyInCart) }</_E.Col>
 
                         <_E.Col className="cart">
 
 
                                 <_E.Row>
 
-                                    <_E.Col><img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}></_E.Col>
+                                    <_E.Col><_E.Button type="primary" onClick={this.minusQty.bind(this, prd.coilNumber)} /><Glyph icon="dash" /></_E.Button></_E.Col>
+                                    {/*<img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}>*/}
 
                                     <_E.Col id="qty">{ prd.qtyInCart}</_E.Col>
 
-                                    <_E.Col><img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}></_E.Col>
+                                    <_E.Col><_E.Button type="primary" onClick={this.addQty.bind(this, prd.coilNumber)} /><Glyph icon="plus" /></_E.Button></_E.Col>
+                                    {/*<img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}>*/}
 
                                 </_E.Row>
 
 
                         </_E.Col>
 
-                        <_E.Col className="cart"><img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}></_E.Col>
+                        <_E.Col className="cart"><_E.Button type="danger" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)} /><Glyph icon="circle-slash" /></_E.Button></_E.Col>
+                        {/*<img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}>*/}
                       </_E.Row>
                     );
                   }
@@ -215,13 +218,13 @@ class Shopping_Cart extends Component {
                 <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { TsvService.currencyFilter(totalPrice) }</p>
 
             </_E.Row>
-
-
+{/*
                 <_E.Col basis="1/4"><img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} onClick={this.shopmore()}/></_E.Col>
-
                 <_E.Col basis="1/4"><img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/></_E.Col>
-
-                <_E.Col basis="1/4"><_E.Button type="warning" id="cancelImg" onClick={this.cancel()} />Cancel</_E.Button></_E.Col>
+*/}
+                <_E.Col basis="1/4"><_E.Button type="primary" onClick={this.shopmore} />{Translate.translate('Shopping_Cart','Shop More')}</_E.Button></_E.Col>
+                <_E.Col basis="1/4"><_E.Button type="success" onClick={this.checkout} />{Translate.translate('Shopping_Cart','Checkout')}</_E.Button></_E.Col>
+                <_E.Col basis="1/4"><_E.Button type="warning" onClick={this.cancel} />{Translate.translate('Shopping_Cart','Cancel')}</_E.Button></_E.Col>
 
                 { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
 
@@ -303,8 +306,9 @@ class Shopping_Cart extends Component {
   }
 
   renderCouponButton() {
+    // <img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon"/>
     return (
-        <_E.Col basis="1/4"><img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon"/></_E.Col> {/*err-src="../Images/coupon.png" */}
+        <_E.Col basis="1/4"><_E.Button type="primary" onClick={this.coupon} />{Translate.translate('Shopping_Cart','Coupon')}</_E.Button></_E.Col>
     )
   }
 
