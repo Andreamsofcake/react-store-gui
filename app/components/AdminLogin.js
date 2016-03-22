@@ -24,42 +24,40 @@ class Admin_Login extends Component {
   }
 
   enter() {
-    var res = RootscopeStore.getConfig('validateAdminPassword', this.state.num); //unsure about get call
+    TsvService.validateAdminPassword(this.state.num, res => {
+      switch(res.result){
+          case "VALID":
+              browserHistory.path("/Admin_Home");
+              break;
+          default:
+              this.setState({
+                instructionMessage : Translate.translate('Admin_Login', 'InvalidPassword'),
+                num: ""
+              }) //"Invalid Password";
+              break;
+      }
 
-    switch(res.result){
-        case "VALID":
-            browserHistory.path("/Admin_Home");
-            break;
-        default:
-            this.state.instructionMessage = Translate.translate('Admin_Login', 'InvalidPassword'); //"Invalid Password";
-            break;
-    }
+    } );
 
   }
 
   clear() {
-    this.state.instructionMessage = Translate.translate('Admin_Login', 'Password')
-    this.state.num = ""
+    this.setState({
+      instructionMessage : Translate.translate('Admin_Login', 'Password'),
+      num: ""
+    })
   }
 
-  press() {
+  press(digit) {
     if(this.state.num.length < this.state.maxChars){
-        this.state.num += digit;  //What?
-    }else{
-        this.state.num = "";
-        this.state.num += digit;
+        this.setState({
+          num: this.state.num + digit
+        })
     }
-  }
-
-  prompt(){
-    if(this.state.num.length != 0){
-        return this.state.num;
-    }
-    return "";
   }
 
   back() {
-    browserHistory.push("/view1");
+    TsvService.gotoDefaultIdlePage();
   }
     // Add change listeners to stores
   componentDidMount() {
@@ -74,32 +72,32 @@ class Admin_Login extends Component {
       <_E.Row className="Admin_Login" >
         <_E.Col>
 
-          <_E.h2 id="instruction">{ this.instructionMessage }</_E.h2>
+          <h2 id="instruction">{ this.instructionMessage }</h2>
 
           <_E.Button id="back" onClick={this.back}>Back</_E.Button>
 
           <_E.Row>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(1)}>1</_E.Button></_E.Col>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(2)}>2</_E.Button></_E.Col>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(3)}>3</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
           </_E.Row>
           <_E.Row>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(4)}>4</_E.Button></_E.Col>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(5)}>5</_E.Button></_E.Col>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(6)}>6</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
           </_E.Row>
           <_E.Row>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(7)}>7</_E.Button></_E.Col>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(8)}>8</_E.Button></_E.Col>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(9)}>9</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
           </_E.Row>
           <_E.Row>
-              <_E.Col basis="1/4"><_E.Button type="warning" onClick={this.clear}>Clear</_E.Button></_E.Col>
-              <_E.Col basis="1/4"><_E.Button  onClick={this.press(0)}>0</_E.Button></_E.Col>
-              <_E.Col basis="1/4"><_E.Button type="primary" onClick={this.enter}>Enter</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button type="warning" onClick={this.clear}>Clear</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
+              <_E.Col basis="1/3"><_E.Button type="primary" onClick={this.enter}>Enter</_E.Button></_E.Col>
           </_E.Row>>
 
-          <input id="coilInput" type="password" value={this.prompt()} onChange={this.num.bind(this)}> //unsure
+          <input id="coilInput" type="password" value={this.state.num} />
 
           </_E.Col>
       </_E.Row>
