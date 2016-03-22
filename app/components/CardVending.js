@@ -161,22 +161,37 @@ class Card_Vending extends Component {
       <_E.Row className="Card_Vending" >
         <_E.Col>
           <_E.h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
-          <table className="cart">
-
-              <tr>
+              <_E.Row>
                 {cart.map((prd, $index) => {
                   return(
-                    <td key={$index}>
+                    <_E.Col basis=“x%” key={$index}>
 
-                        <img id="prdImg" src={ prd.imagePath } alt="productImage"/> {/*err-src="../Images/ProductImageNotFound.png"*/}
+                        <img id="prdImg" src={ prd.imagePath } alt="productImage"/> /*err-src="../Images/ProductImageNotFound.png"*/
 
-                    </td>
+                    </_E.Col>
                   )}
                 )}
 
-              </tr>
+              </_E.Row>
 
-          </table>
+        /*
+        <table className="cart">
+
+            <tr>
+              {cart.map((prd, $index) => {
+                return(
+                  <td key={$index}>
+
+                      <img id="prdImg" src={ prd.imagePath } alt="productImage"/> err-src="../Images/ProductImageNotFound.png"
+
+                  </td>
+                )}
+              )}
+
+            </tr>
+
+        </table>
+        */
 
           { if (this.state.summary.TotalPrice >= 1) { this.renderTotalPriceLabel()} }
 
@@ -190,11 +205,44 @@ class Card_Vending extends Component {
         </_E.Col>
       </_E.Row>
     );
+    /*
+    <div className="Card_Vending" >
+        <h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
+        <table className="cart">
+
+            <tr>
+              {cart.map((prd, $index) => {
+                return(
+                  <td key={$index}>
+
+                      <img id="prdImg" src={ prd.imagePath } alt="productImage"/>
+
+                  </td>
+                )}
+              )}
+
+            </tr>
+
+        </table>
+
+        { if (this.state.summary.TotalPrice >= 1) { this.renderTotalPriceLabel()} }
+
+        <p id = "cardResponse">{ this.state.cardTransactionResponse }</p>
+
+        <img id="creditCards" src="../Images/creditcards.png" alt="creditcards" />
+
+        { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
+
+        { if (this.state.showSpinner) { this.renderSpinner()} }
+      </div>
+
+
+    */
   }
 
   renderCancelBtnCash(){
     return(
-      <_E.Button type="warning" id="cancelImg" onClick={this.cancel()}>Cancel</_E.Button>
+      <_E.Button type="warning" id="cancelImg" onClick={this.cancel()}>Cancel</_E.Button> /*<img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />*/
     )
   }
 
