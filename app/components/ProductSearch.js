@@ -123,20 +123,60 @@ class Product_Search extends Component {
               </ul>
             </_E.Col>
           </_E.Row>
-          
+
           {this.renderBackBtn()}
 
       </_E.Row>
     );
+
+    /*
+    <div className="Product_Search" >
+    { if (this.state.bDisplayCgry) { this.renderCategoryTable() } }
+
+    <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
+
+      {slider container}
+      <div class="container_slider">
+
+           enumerate all photos
+          { this.renderImageSlider(products)}
+          prev / next controls
+          <div class="arrow prev" href="#" onClick=(this.showPrev()}></div>
+          <div class="arrow next" href="#" onClick=(this.showNext()}></div>
+          extra navigation controls
+
+          <ul className="flex-container">
+              {products.map((product, $index) => {
+                return (
+                  <li key={$index} className={'flex-item' + this.isActive($index) ? ' active'} style={{ opacity: this.setOpacity(stockCount) }}>
+
+                      <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
+
+                          <figcaption>{product.productName}</figcaption>
+
+                          <img src={product.imagePath} alt={product.description} title={product.description} />
+
+                          <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
+
+                      </figure>
+
+                  </li>
+                )
+              })}
+          </ul>
+        </div>
+
+    */
+
   }
 
-  {/* renderImageSlider(products) {
+  /* renderImageSlider(products) {
     {Object.keys(products).map(function(product){
       return (
          <img class="slide" ng-swipe-right={showPrev()} ng-swipe-left={showNext()} ng-show="isActive($index)" src="{{product.imagePath}}" />
       )
     })}
-  } */}
+  } */
 
   renderBackBtn() {
     if (this.state.bShowBackButton) {
@@ -147,6 +187,22 @@ class Product_Search extends Component {
   renderCategoryTable() {
     var categories = RootscopeStore.getProductCategories();
     return (
+        <_E.Row>
+
+             {categories.map( (category, $index) => {
+              return (
+                <_E.Col basis="x%" key={$index} className={'gallery'+ this.isActive($index) ? ' active'}>
+
+                    <img src={category.imagePath} alt={category.description} title={category.description} onClick={this.updateCategory.bind(this, category.categoryID)} />
+
+                </_E.Col>
+              )
+            })}
+
+        </_E.Row>
+    )
+
+    /*
       <table  id="displayCategories">
 
           <tr className="nav">
@@ -164,7 +220,9 @@ class Product_Search extends Component {
           </tr>
 
       </table>
-    )}
+    */
+
+  }
 }
 
 
