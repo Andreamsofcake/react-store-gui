@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
@@ -24,11 +24,13 @@ class Category_Search extends Component {
     RootscopeActions.updateCredit();
     RootscopeActions.setSession('currentView', 'Category_Search');
     RootscopeActions.setConfig('categories', TsvService.fetchProductCategoriesByParentCategoryID(0));
+    
+    TsvService.isCartEmpty( isEmpty => {
+		if (RootscopeStore.getCache('custommachinesettings.txtIdleScene') === "category_search" || !isEmpty ) {
+			TsvService.startGeneralIdleTimer();
+		}
+    })
 
-    if (RootscopeStore.getConfig('customSetting.txtIdleScene') === "category_search")
-      || !TsvService.isCartEmpty() ){
-        TsvService.startGeneralIdleTimer();
-      }
 
   }
 
@@ -76,7 +78,7 @@ class Category_Search extends Component {
 
                         <figure>
 
-                            { if (this.state.bShowCgryTitle) {this.renderCategoryName()} }
+                            { this.state.bShowCgryTitle ? (<figcaption>{category.categoryName}</figcaption>) : null }
 
                             <img id={$index} src={category.imagePath} alt={category.description} title={category.description} onClick={this.fetchCategory.bind(this, category.categoryID)} />
 
@@ -90,7 +92,7 @@ class Category_Search extends Component {
             </_E.Col>
           </_E.Row>
 
-          { if (this.state.bSubCgry) { this.renderSubCgry()} }
+          { this.state.bSubCgry ? this.renderSubCgry() : null }
 
       </_E.Row>
     );
@@ -98,13 +100,7 @@ class Category_Search extends Component {
 
   renderSubCgry() {
     return (
-      <img className="regularBtn" id="backImg" ng-show="bSubCgry" src={Translate.localizedImage('back.png')} noClick={this.back()} /> {/*err-src="../Images/back.png" */}
-    )
-  }
-
-  renderCategoryName() {
-    return (
-        <figcaption>{{category.categoryName}}</figcaption>
+      <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} onClick={this.back} />
     )
   }
 

@@ -1,9 +1,9 @@
-import React from 'react'
-import TsvService from '../lib/TsvService'
-import * as Translate from '../lib/Translate'
+import React, { Component } from 'react'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../store/RootscopeStore'
+import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
 
@@ -160,7 +160,7 @@ class Card_Vending extends Component {
     return (
       <_E.Row className="Card_Vending" >
         <_E.Col>
-          <_E.h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
+          <h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
               <_E.Row>
                 {cart.map((prd, $index) => {
                   return(
@@ -193,15 +193,15 @@ class Card_Vending extends Component {
         </table>
         */
 
-          { if (this.state.summary.TotalPrice >= 1) { this.renderTotalPriceLabel()} }
+          { this.state.summary.TotalPrice >= 1 ? this.renderTotalPriceLabel() : null }
 
           <p id = "cardResponse">{ this.state.cardTransactionResponse }</p>
 
           <img id="creditCards" src="../Images/creditcards.png" alt="creditcards" />
 
-          { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
+          { this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null }
 
-          { if (this.state.showSpinner) { this.renderSpinner()} }
+          { this.state.showSpinner ? this.renderSpinner() : null }
         </_E.Col>
       </_E.Row>
     );
@@ -242,13 +242,13 @@ class Card_Vending extends Component {
 
   renderCancelBtnCash(){
     return(
-      <_E.Button type="warning" id="cancelImg" onClick={this.cancel()}>Cancel</_E.Button> /*<img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />*/
+      <_E.Button type="warning" id="cancelImg" onClick={this.cancel}>Cancel</_E.Button> /*<img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel()} />*/
     )
   }
 
   renderTotalPriceLabel() {
     return(
-      <p { Translate.translate('Card_Vending', 'TotalPriceLabel')}{TsvService.currencyFilter(this.summary.TotalPrice) }</p>
+      <p> { Translate.translate('Card_Vending', 'TotalPriceLabel')}{TsvService.currencyFilter(this.summary.TotalPrice) }</p>
     )
   }
 

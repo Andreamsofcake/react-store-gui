@@ -1,6 +1,6 @@
-import React from 'react'
-import TsvService from '../lib/TsvService'
-import * as Translate from '../lib/Translate'
+import React, { Component } from 'react'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'

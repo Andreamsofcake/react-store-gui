@@ -1,6 +1,6 @@
-import React from 'react'
-import TsvService from '../lib/TsvService'
-import * as Translate from '../lib/Translate'
+import React, { Component } from 'react'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
@@ -15,7 +15,9 @@ class THANKYOU_MSG extends Component {
 
     RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
     RootscopeActions.updateCredit();
-    RootscopeActions.setSession('thankyouTimer', () => { TsvService.gotoDefaultIdlePage() }), RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ));
+
+    var timer = setTimeout( () => { TsvService.gotoDefaultIdlePage() }, RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ) );
+    RootscopeActions.setSession('thankyouTimer', timer);
 
   };
 
@@ -32,7 +34,7 @@ class THANKYOU_MSG extends Component {
       <_E.Row className="thankyou">
         <_E.Col>
 
-          <img id="thankyouImg" src={Translate.localizedImage('thankyou.png')} alt="thankyou">
+          <img id="thankyouImg" src={Translate.localizedImage('thankyou.png')} alt="thankyou" />
         </_E.Col>
       </_E.Row>
 

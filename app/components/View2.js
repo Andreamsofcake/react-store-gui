@@ -1,6 +1,6 @@
-import React from 'react'
-import TsvService from '../lib/TsvService'
-import * as Translate from '../lib/Translate'
+import React, { Component } from 'react'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
@@ -39,7 +39,7 @@ class View2 extends Component {
       imagePath2: item.imagePath, // yes, same var being set in two locations. meh
       summary: RootscopeStore.getCache('shoppingCart.summary'),
       nutritionFactsUrl: "",
-      bShowNutritionFactsBtn: false
+      bShowNutritionFactsBtn: false,
       bShowCalories: false,
       calories: "0 Cal",
       bShowDesc: false,
@@ -81,7 +81,7 @@ class View2 extends Component {
   }
 
   back() {
-      if(RootscopeStore.getCache('custommachinesettings.bHasShoppingCart'){
+      if (RootscopeStore.getCache('custommachinesettings.bHasShoppingCart')) {
           TsvService.emptyCart();
           RootscopeActions.setConfig('itemsInCart', 0);
       }
@@ -131,14 +131,14 @@ class View2 extends Component {
 
   render() {
     return (
-    		<h3>Dev warning: this may be a broken component, old code had disconnections in it</h3>
           <_E.Row className="prdDetail">
+    		<h3>Dev warning: this may be a broken component, old code had disconnections in it</h3>
             <_E.Col>
-              <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} ng-click="back()">
+              <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} ng-click="back()" />
 
-              <img className="regularBtn" ng-if="bShowCheckout" id="checkoutImg" src={ checkoutOrAddToCartUrl } ng-click="checkout()">
+              <img className="regularBtn" ng-if="bShowCheckout" id="checkoutImg" src={ checkoutOrAddToCartUrl } ng-click="checkout()" />
 
-              { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
+              { this.state.bShowCouponBtn ? this.renderCouponButton() : null }
                <_E.Row id="view2Title">
 
                     <h1>{Translate.translate('View2', 'instructionMessage')}</h1> {/*what are these: data-fittext="1" data-fittext-min="20" data-fittext-max="36" */}
@@ -167,9 +167,8 @@ class View2 extends Component {
 
                <p id="prdName">{ this.productName }</p>
 
-               {if (this.bDisplayPrdGalleryOnDetailPage){ this.renderPrdGalleryOnDetailPage()}}
+               { this.bDisplayPrdGalleryOnDetailPage ? this.renderPrdGalleryOnDetailPage() : null }
 
-           </_E.Row>
           </_E.Col>
         </_E.Row>
 
@@ -238,9 +237,9 @@ class View2 extends Component {
 
           <_E.Row className="flex-container">
 
-            {products.map((product, $index) => {
+            { this.state.products.map((product, $index) => {
               return (
-                <_E.Col key={$index} className={'flex-item' + this.isActive($index) ? ' active'} >
+                <_E.Col key={$index} className={'flex-item' + (this.isActive($index) ? ' active' : '' )} >
 
                     <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
 
@@ -265,15 +264,15 @@ class View2 extends Component {
     /*
       <div className="navGallery">
 
-          <p id="navCgryTitle">{{ navCgryTitle }}</p>
+          <p id="navCgryTitle">{this.state.navCgryTitle || 'No navCgryTitle'}</p>
 
           <div className="container_slider">
 
           <ul className="flex-container">
 
-            {products.map((product, $index) => {
+            {products.map( (product, $index) => {
               return (
-                <li key={$index} className={'flex-item' + this.isActive($index) ? ' active'} >
+                <li key={$index} className={'flex-item' + (this.isActive($index) ? ' active' : '' )} >
 
                     <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
 
@@ -291,14 +290,15 @@ class View2 extends Component {
 
           </ul>
 
+	      </div>
       </div>
     */
   }
-
+  
   renderCouponButton() {
-    return (
-      <img className="regularBtn" id="couponImg" src={Tanslate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon">
-    )
+	return (
+	  <img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon} alt="Coupon" />
+	)
   }
 
 }

@@ -1,9 +1,9 @@
-import React from 'react'
-import TsvService from '../lib/TsvService'
-import * as Translate from '../lib/Translate'
+import React, { Component } from 'react'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../store/RootscopeStore'
+import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
 
@@ -19,7 +19,7 @@ class Cash_Vending extends Component {
     TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
 
     this.state = {
-      insertedAmount: RootscopeStore.getSession('creditBalance')
+      insertedAmount: RootscopeStore.getSession('creditBalance'),
       summary: RootscopeStore.getCache('shoppingCart.summary'),
       hintMsg: Translate.translate('Cash_Vending', 'HintMessageInsertCash'),
       // only in cash.js:
@@ -163,9 +163,9 @@ class Cash_Vending extends Component {
         <p id="hint">{ this.hintMsg }</p>
 
 
-        { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
+        { this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null }
 
-        { if (this.state.showSpinner) { this.renderSpinner()} }
+        { this.state.showSpinner ? this.renderSpinner() : null }
 
       </_E.Row>
     );
@@ -205,7 +205,7 @@ class Cash_Vending extends Component {
   renderCancelBtnCash(){
     // <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
     return(
-      <_E.Button type="warning" id="cancelImg" onClick={this.cancel.bind(this)} />Cancel</_E.Button>
+      <_E.Button type="warning" id="cancelImg" onClick={this.cancel.bind(this)}><_E.Glyph icon="cancel-slash" /></_E.Button>
     )
   }
 

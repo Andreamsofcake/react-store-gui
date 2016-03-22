@@ -1,6 +1,6 @@
-import React from 'react'
-import TsvService from '../lib/TsvService'
-import * as Translate from '../lib/Translate'
+import React, { Component } from 'react'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
@@ -48,10 +48,9 @@ class View0 extends Component {
       <_E.Row className="view0">
           {/* skipped admin because we skipped it else where <button id="adminBtn" onClick=(this.admin()}></button>*/}
         <_E.Col>
-          <_E.h2>{Translate.translate('View0', 'Resetting')}<br>{Translate.translate('View0', 'PleaseWait')}</_E.h2>
+          <h2>{Translate.translate('View0', 'Resetting')}<br />{Translate.translate('View0', 'PleaseWait')}</h2>
         </_E.Col>
       </_E.Row>
-
     );
   }
 

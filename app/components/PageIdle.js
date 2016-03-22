@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 

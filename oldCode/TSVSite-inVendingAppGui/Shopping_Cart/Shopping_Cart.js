@@ -75,7 +75,6 @@ angular.module('myApp.Shopping_Cart', ['ngRoute'])
                 TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
                 $scope.cart = TSVService.cache.shoppingCart.detail;
 
-
                 while(qty > 0){
                     console.log("Removed!");
                     TSVService.removeFromCartByCoilNo(coil);

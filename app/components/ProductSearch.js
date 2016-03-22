@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import RootscopeActions from '../actions/RootscopeActions'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
@@ -70,11 +70,11 @@ class Product_Search extends Component {
       browserHistory.push("/Category_Search");
   }
 
-  {/* Add change listeners to stores*/}
+  // Add change listeners to stores
   componentDidMount() {
   }
 
-  {/* Remove change listers from stores*/}
+  // Remove change listers from stores
   componentWillUnmount() {
   }
 
@@ -85,7 +85,7 @@ class Product_Search extends Component {
       <_E.Row className="Product_Search" >
 
         <_E.Col>
-          { if (this.state.bDisplayCgry) { this.renderCategoryTable() } }
+          { this.state.bDisplayCgry ? this.renderCategoryTable() : null }
 
         <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
         </_E.Col>
@@ -105,7 +105,7 @@ class Product_Search extends Component {
               <ul className="flex-container">
                   {products.map((product, $index) => {
                     return (
-                      <li key={$index} className={'flex-item' + this.isActive($index) ? ' active'} style={{ opacity: this.setOpacity(stockCount) }}>
+                      <li key={$index} className={'flex-item' + (this.isActive($index) ? ' active' : '')} style={{ opacity: this.setOpacity(stockCount) }}>
 
                           <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
 
@@ -180,7 +180,7 @@ class Product_Search extends Component {
 
   renderBackBtn() {
     if (this.state.bShowBackButton) {
-      <img className="regularBtn" id="back" src={Translate.localizedImage('back.png')} alt="back" onClick={this.back()}/>
+      <img className="regularBtn" id="back" src={Translate.localizedImage('back.png')} alt="back" onClick={this.back} />
     }
   }
 
@@ -191,7 +191,7 @@ class Product_Search extends Component {
 
              {categories.map( (category, $index) => {
               return (
-                <_E.Col basis="33%" key={$index} className={'gallery'+ this.isActive($index) ? ' active'}>
+                <_E.Col basis="33%" key={$index} className={'gallery'+ (this.isActive($index) ? ' active' : '')}>
 
                     <img src={category.imagePath} alt={category.description} title={category.description} onClick={this.updateCategory.bind(this, category.categoryID)} />
 

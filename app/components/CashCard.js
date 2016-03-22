@@ -1,6 +1,6 @@
-import React from 'react'
-import TsvService from '../lib/TsvService'
-import * as Translate from '../lib/Translate'
+import React, { Component } from 'react'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 
 import * as _E from 'elemental'
 
@@ -62,16 +62,16 @@ class Cash_Card extends Component {
 		  <h2>{Translate.translate('Cash_Card', 'InstructionMessage')}</h2>
 		  <_E.Row>
 			  <_E.Col lg="1/2">
-				  <img className="paymentMethod" onClick={this.cash()} src={Translate.localizedImage('cash.png')} alt="cash">
+				  <img className="paymentMethod" onClick={this.cash} src={Translate.localizedImage('cash.png')} alt="cash" />
 				</_E.Col>
 			  <_E.Col lg="1/2">
-				  <img className="paymentMethod" onClick={this.card()} src={Translate.localizedImage('card.png')} alt="card">
+				  <img className="paymentMethod" onClick={this.card} src={Translate.localizedImage('card.png')} alt="card" />
 			  </_E.Col>
 		  </_E.Row>
 
 		  <_E.Row>
 			  <_E.Col>
-				  <img id="cancelImg" src={Translate.localizedImage('cancel.png')} onClick={this.cancel()} />
+				  <img id="cancelImg" src={Translate.localizedImage('cancel.png')} onClick={this.cancel} />
 			  </_E.Col>
 		  </_E.Row>
       </_E.Col>
