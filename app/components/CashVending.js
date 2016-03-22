@@ -141,16 +141,18 @@ class Cash_Vending extends Component {
     return (
       <_E.Row className="Cash_Vending" >
         <_E.Col>
-          <table class="cart">
-              <tr>
+
+              <_E.Row>
             {cart.map( (prd, $index) => {
                 return (
-              	<td key={$index}><img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" /></td>
+              	<_E.Col basic="x%" key={$index}>
+                  <img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" />
+                </_E.Col>
                 )
               })
             }
-              </tr>
-          </table>
+              </_E.Row>
+
         </_E.Col>
       <_E.Row id = "cashMsg">
             <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(this.state.summary.TotalPrice) }</p>
@@ -167,11 +169,42 @@ class Cash_Vending extends Component {
 
       </_E.Row>
     );
+
+    /*
+      <div className="Cash_Vending" >
+
+        <table class="cart">
+            <tr>
+          {cart.map( (prd, $index) => {
+              return (
+              <td key={$index}><img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" /></td>
+              )
+            })
+          }
+            </tr>
+        </table>
+
+          <div id = "cashMsg">
+                <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(this.state.summary.TotalPrice) }</p>
+
+                <p>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} {TsvService.currencyFilter(this.state.insertedAmount) }</p>
+            </div>
+
+            <p id="hint">{ this.hintMsg }</p>
+
+
+            { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
+
+            { if (this.state.showSpinner) { this.renderSpinner()} }
+
+      </div>
+
+    */
   }
 
   renderCancelBtnCash(){
     return(
-      <_E.Button type="warning" id="cancelImg" onClick={this.cancel.bind(this)} />Cancel</_E.Button>
+      <_E.Button type="warning" id="cancelImg" onClick={this.cancel.bind(this)} />Cancel</_E.Button> /* <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel.bind(this)} /> */
     )
   }
 
