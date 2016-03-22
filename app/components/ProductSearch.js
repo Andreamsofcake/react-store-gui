@@ -191,7 +191,7 @@ class Product_Search extends Component {
 
              {categories.map( (category, $index) => {
               return (
-                <_E.Col basis="x%" key={$index} className={'gallery'+ this.isActive($index) ? ' active'}>
+                <_E.Col basis="33%" key={$index} className={'gallery'+ this.isActive($index) ? ' active'}>
 
                     <img src={category.imagePath} alt={category.description} title={category.description} onClick={this.updateCategory.bind(this, category.categoryID)} />
 
