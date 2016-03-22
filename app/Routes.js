@@ -5,6 +5,8 @@ import App from './components/App'
 import View0 from './components/View0'
 import View2 from './components/View2'
 
+import AdminLogin from './components/AdminLogin'
+
 import CardVending from './components/CardVending'
 import CashVending from './components/CashVending'
 import CashCard from './components/CashCard'
@@ -21,6 +23,8 @@ export default (
 	<Route path='/' component={App}>
 		<Route path='View0' component={View0} />
 		<Route path='View2' component={View2} />
+
+		<Route path='Admin_Login' component={AdminLogin} />
 
 		<Route path='Card_Vending' component={CardVending} />
 		<Route path='Cash_Vending' component={CashVending} />
