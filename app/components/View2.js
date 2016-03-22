@@ -147,28 +147,21 @@ class View2 extends Component {
 
                <_E.Row id="prdWrapper">
 
-                   <table className="detail">
+                      <_E.Row className="detail">
 
-                      <tr className="detail">
+                        <_E.Col lg="50%" className="detail">
+                            <img id="prdDetailImage" src={ this.imagePath } />
+                        </_E.Col>
 
-                      <td className="detail">
-                          <img id="prdDetailImage" src={ this.imagePath } />
-                      </td>
+                        <_E.Col lg="50%" className="detail">
 
-                      <td className="detail">
+                                 <_E.Row className="detail">
+                                     <p>{ TsvService.currencyFilter(item.price)}</p>
+                                 </_E.Row>
 
-                           <table className="detail">
+                        </_E.Col>
 
-                               <tr className="detail">
-                                   <p>{ TsvService.currencyFilter(item.price)}</p>
-                               </tr>
-                               </table>
-
-                          </td>
-
-                      </tr>
-
-                  </table>
+                      </_E.Row>
 
                </_E.Row>
 
@@ -181,11 +174,96 @@ class View2 extends Component {
         </_E.Row>
 
     );
+
+    /*
+    <h3>Dev warning: this may be a broken component, old code had disconnections in it</h3>
+        <div className="prdDetail">
+
+            <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} ng-click="back()">
+
+            <img className="regularBtn" ng-if="bShowCheckout" id="checkoutImg" src={ checkoutOrAddToCartUrl } ng-click="checkout()">
+
+            { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
+
+             <div id="view2Title">
+
+                  <h1>{Translate.translate('View2', 'instructionMessage')}</h1> {/*what are these: data-fittext="1" data-fittext-min="20" data-fittext-max="36" }
+
+             </div>
+
+             <div id="prdWrapper">
+
+                 <table className="detail">
+
+                    <tr className="detail">
+
+                    <td className="detail">
+                        <img id="prdDetailImage" src={ this.imagePath } />
+                    </td>
+
+                    <td className="detail">
+
+                         <table className="detail">
+
+                             <tr className="detail">
+                                 <p>{ TsvService.currencyFilter(item.price)}</p>
+                             </tr>
+                             </table>
+
+                        </td>
+
+                    </tr>
+
+                </table>
+
+             </div>
+
+             <p id="prdName">{ this.productName }</p>
+
+             {if (this.bDisplayPrdGalleryOnDetailPage){ this.renderPrdGalleryOnDetailPage()}}
+
+         </div>
+
+      </div>
+
+
+    */
   }
 
   renderPrdGalleryOnDetailPage() {
     return (
       <_E.Row className="navGallery">
+
+          <p id="navCgryTitle">{{ navCgryTitle }}</p>
+
+          <_E.Row className="flex-container">
+
+            {products.map((product, $index) => {
+              return (
+                <_E.Col key={$index} className={'flex-item' + this.isActive($index) ? ' active'} >
+
+                    <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
+
+                        <figcaption>{product.productName}</figcaption>
+
+                        <img src={product.imagePath} alt={product.description} title={product.description} />
+
+                        <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
+
+                    </figure>
+
+                </_E.Col>
+              )
+            })}
+
+          </_E.Row >
+
+      </_E.Row>
+    );
+
+
+    /*
+      <div className="navGallery">
 
           <p id="navCgryTitle">{{ navCgryTitle }}</p>
 
@@ -213,8 +291,8 @@ class View2 extends Component {
 
           </ul>
 
-      </_E.Row>
-    )
+      </div>
+    */
   }
 
   renderCouponButton() {

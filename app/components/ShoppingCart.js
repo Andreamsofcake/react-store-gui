@@ -168,79 +168,143 @@ class Shopping_Cart extends Component {
 
     return (
 
-      <div className="Shopping_Cart" >
+      <_E.Row className="Shopping_Cart" >
         <h2>{Translate.translate('Shopping_Cart', 'ShoppingCart')}</h2>
-        <div id="wrapper">
-
-            <table className="cart">
-
-                <tr className="cart"><th></th><th></th><th className="cart">{Translate.translate('Shopping_Cart','Price')}</th><th className="cart">{Translate.translate('Shopping_Cart','Qty')}</th><th></th></tr>
+        <_E.Col id="wrapper">
+                <_E.Row className="cart"><th></th><th></th><th className="cart">{Translate.translate('Shopping_Cart','Price')}</th><th className="cart">{Translate.translate('Shopping_Cart','Qty')}</th><th></th></tr>
 
                 {cart.map((prd, $index) => {
                     return (
-                      <tr key={$index} className="cart" className="shoppingCart">
-                        <td className="cart">
+                      <_E.Row key={$index} className="cart" className="shoppingCart">
+                        <_E.Col className="cart">
 
                             <img id="prdImg" src={prd.imagePath} /> {/*err-src="../Images/ProductImageNotFound.png"*/}
 
-                        </td>
+                        </_E.Col>
 
-                        <td className="cart">{ prd.productName }</td>
+                        <_E.Col className="cart">{ prd.productName }</_E.Col>
 
-                        <td className="cart">{ TsvService.currencyFilter(prd.price*prd.qtyInCart) }</td>
+                        <_E.Col className="cart">{ TsvService.currencyFilter(prd.price*prd.qtyInCart) }</_E.Col>
 
-                        <td className="cart">
+                        <_E.Col className="cart">
 
-                            <table className="qty">
 
-                                <tr>
+                                <_E.Row>
 
-                                    <td><img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}></td>
+                                    <_E.Col><img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}></_E.Col>
 
-                                    <td id="qty">{ prd.qtyInCart}</td>
+                                    <_E.Col id="qty">{ prd.qtyInCart}</_E.Col>
 
-                                    <td><img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}></td>
+                                    <_E.Col><img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}></_E.Col>
 
-                                </tr>
+                                </_E.Row>
 
-                            </table>
 
-                        </td>
+                        </_E.Col>
 
-                        <td className="cart"><img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}></td>
-                      </tr>
+                        <_E.Col className="cart"><img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}></_E.Col>
+                      </_E.Row>
                     );
                   }
                 )}
 
-
-
-            </table>
-            <div id="additionalInfo">
+            <_E.Row id="additionalInfo">
 
                 { if (this.state.bShowTax) { this.renderShowTax() } }
 
                 <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { TsvService.currencyFilter(totalPrice) }</p>
 
-            </div>
+            </_E.Row>
 
-            <img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} onClick={this.shopmore()}/> {/*err-src="../Images/ShopMore.png"*/}
 
-            <img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/> {/*err-src="../Images/checkout.png"*/}
+                <_E.Col basis="1/4"><img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} onClick={this.shopmore()}/></_E.Col>
 
-            <p><img className="regularBtn" alt="Cancel" id="cancelImg" src={Translate.localizedImage('cancel.png')} onClick={this.cancel()}></p> {/*err-src=""../Images/cancel.png"*/}
+                <_E.Col basis="1/4"><img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/></_E.Col>
 
-            { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
+                <_E.Col basis="1/4"><_E.Button type="warning" id="cancelImg" onClick={this.cancel()} />Cancel</_E.Button></_E.Col>
 
-        </div>
+                { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
+
+            </_E.Col>
+
+      </_E.Row>
+    );
+
+    /*
+    <div className="Shopping_Cart" >
+      <h2>{Translate.translate('Shopping_Cart', 'ShoppingCart')}</h2>
+      <div id="wrapper">
+
+          <table className="cart">
+
+              <tr className="cart"><th></th><th></th><th className="cart">{Translate.translate('Shopping_Cart','Price')}</th><th className="cart">{Translate.translate('Shopping_Cart','Qty')}</th><th></th></tr>
+
+              {cart.map((prd, $index) => {
+                  return (
+                    <tr key={$index} className="cart" className="shoppingCart">
+                      <td className="cart">
+
+                          <img id="prdImg" src={prd.imagePath} /> {/*err-src="../Images/ProductImageNotFound.png"}
+
+                      </td>
+
+                      <td className="cart">{ prd.productName }</td>
+
+                      <td className="cart">{ TsvService.currencyFilter(prd.price*prd.qtyInCart) }</td>
+
+                      <td className="cart">
+
+                          <table className="qty">
+
+                              <tr>
+
+                                  <td><img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}></td>
+
+                                  <td id="qty">{ prd.qtyInCart}</td>
+
+                                  <td><img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}></td>
+
+                              </tr>
+
+                          </table>
+
+                      </td>
+
+                      <td className="cart"><img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}></td>
+                    </tr>
+                  );
+                }
+              )}
+
+
+
+          </table>
+          <div id="additionalInfo">
+
+              { if (this.state.bShowTax) { this.renderShowTax() } }
+
+              <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { TsvService.currencyFilter(totalPrice) }</p>
+
+          </div>
+
+          <img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} onClick={this.shopmore()}/> {/*err-src="../Images/ShopMore.png"}
+
+          <img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/> {/*err-src="../Images/checkout.png"}
+
+          <p><img className="regularBtn" alt="Cancel" id="cancelImg" src={Translate.localizedImage('cancel.png')} onClick={this.cancel()}></p> {/*err-src=""../Images/cancel.png"}
+
+          { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
 
       </div>
-    );
+
+    </div>
+
+    */
   }
 
   renderCouponButton() {
     return (
-      <img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon"/> {/*err-src="../Images/coupon.png" */}
+        <_E.Col basis="1/4"><img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon"/></_E.Col> {/*err-src="../Images/coupon.png" */}
     )
   }
 
