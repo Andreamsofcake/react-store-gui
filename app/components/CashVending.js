@@ -145,7 +145,7 @@ class Cash_Vending extends Component {
               <_E.Row>
             {cart.map( (prd, $index) => {
                 return (
-              	<_E.Col basic="x%" key={$index}>
+              	<_E.Col basic="33%" key={$index}>
                   <img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" />
                 </_E.Col>
                 )
@@ -203,8 +203,9 @@ class Cash_Vending extends Component {
   }
 
   renderCancelBtnCash(){
+    // <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
     return(
-      <_E.Button type="warning" id="cancelImg" onClick={this.cancel.bind(this)} />Cancel</_E.Button> /* <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel.bind(this)} /> */
+      <_E.Button type="warning" id="cancelImg" onClick={this.cancel.bind(this)} />Cancel</_E.Button>
     )
   }
 
