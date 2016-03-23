@@ -19,44 +19,44 @@ class Admin_Home extends Component {
 
   backhome(){
       TsvService.gotoDefaultIdlePage();
-  };
+  }
 
   inventory(){
       browserHistory.push("/Admin_Inventory");
-  };
+  }
 
   // jofemarExerciser(){
-  //     browserHistory.push("/Admin_Jofemar_Exerciser");
-  // };
+  //     browserHistory.push("/Admin_Jofemar_Exerciser"); What is this?
+  // }
 
   machineSettings(){
       browserHistory.push("/Admin_Settings");
-  };
+  }
 
   systemInfo(){
       browserHistory.push("/Admin_System_Info");
-  };
+  }
 
   vms(){
       browserHistory.push("/Admin_Vms");
-  };
+  }
 
   checkFaults(){
       browserHistory.push("/Admin_Check_Faults");
-  };
+  }
 
   autoMap(){
       browserHistory.push("/Admin_Auto_Map");
-  };
+  }
 
   restart(){
       TsvService.restart();
       browserHistory.push("/view0");
-  };
+  }
 
   shutdown(){
       TsvService.shutdown();
-  };
+  }
 
 
   // Add change listeners to stores
@@ -90,11 +90,11 @@ class Admin_Home extends Component {
 
               </_E.Button>
 
-              <_E.Button onClick={this.jofemarExerciser}>
+              {/*<_E.Button onClick={this.jofemarExerciser}>
 
                   {Translate.translate('Admin_Home','JofemarExerciser')}
 
-              </_E.Button>
+              </_E.Button>*/}
 
               <_E.Button onClick={this.machineSettings}>
 
