@@ -134,9 +134,9 @@ class View2 extends Component {
           <_E.Row className="prdDetail">
     		<h3>Dev warning: this may be a broken component, old code had disconnections in it</h3>
             <_E.Col>
-              <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} ng-click="back()" />
+              <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} onClick={this.back} />
 
-              <img className="regularBtn" ng-if="bShowCheckout" id="checkoutImg" src={ checkoutOrAddToCartUrl } ng-click="checkout()" />
+              { this.state.bShowCheckout ? this.renderShowCheckout() : null }
 
               { this.state.bShowCouponBtn ? this.renderCouponButton() : null }
                <_E.Row id="view2Title">
@@ -294,11 +294,17 @@ class View2 extends Component {
       </div>
     */
   }
-  
+
   renderCouponButton() {
 	return (
 	  <img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon} alt="Coupon" />
 	)
+  }
+
+  renderShowCheckout() {
+    return (
+      <img className="regularBtn" id="checkoutImg" src={ this.checkoutOrAddToCartUrl } onClick={this.checkout} />
+    )
   }
 
 }
