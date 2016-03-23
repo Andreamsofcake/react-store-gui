@@ -16,20 +16,20 @@ class Admin_Settings extends Component {
     RootscopeActions.setSession('currentView', 'Admin_Settings');
     this.state = {
       defaultLanguage: RootscopeStore.getCache('machineSettings.defaultLanguage'),
-      ccProcessorMode: RootscopeStore.getCache('machineSettings.CProcessorMode'),
-      machineSerialNumber: RootscopeStore.getCache('machineSettings.achineSerialNumber'),
-      merchantKey: RootscopeStore.getCache('machineSettings.CMerchantKey'),
-      merchantID: RootscopeStore.getCache('machineSettings.CMerchantID'),
-      dropSensorAttached: RootscopeStore.getCache('machineSettings.ropSensorAttached'),
-      ccReaderType: RootscopeStore.getCache('machineSettings.CReaderType'),
-      vmcPlatform: RootscopeStore.getCache('machineSettings.MCPlatform'),
-      machineCount: RootscopeStore.getCache('machineSettings.achineCount'),
-      comPort: RootscopeStore.getCache('machineSettings.MCControlCOMPort'),
-      salesTaxRate: RootscopeStore.getCache('machineSettings.alesTaxRate'),
-      shoppingCartMaxItemCount: RootscopeStore.getCache('machineSettings.hoppingCartMaxItemCount'),
-      bHasShoppingCart: RootscopeStore.getCache('custommachinese.tings.bHasShoppingCart'),
-      singleProductDonation: RootscopeStore.getCache('custommachinese.tings.singleProductDonation'),
-      minimumDonationAmount: RootscopeStore.getCache('custommachinese.tings.minimumDonationAmount'),
+      ccProcessorMode: RootscopeStore.getCache('machineSettings.CCProcessorMode'),
+      machineSerialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber'),
+      merchantKey: RootscopeStore.getCache('machineSettings.CCMerchantKey'),
+      merchantID: RootscopeStore.getCache('machineSettings.CCMerchantID'),
+      dropSensorAttached: RootscopeStore.getCache('machineSettings.DropSensorAttached'),
+      ccReaderType: RootscopeStore.getCache('machineSettings.CCReaderType'),
+      vmcPlatform: RootscopeStore.getCache('machineSettings.VMCPlatform'),
+      machineCount: RootscopeStore.getCache('machineSettings.MachineCount'),
+      comPort: RootscopeStore.getCache('machineSettings.VMCControlCOMPort'),
+      salesTaxRate: RootscopeStore.getCache('machineSettings.SalesTaxRate'),
+      shoppingCartMaxItemCount: RootscopeStore.getCache('machineSettings.ShoppingCartMaxItemCount'),
+      bHasShoppingCart: RootscopeStore.getCache('custommachinesettings.bHasShoppingCart'),
+      singleProductDonation: RootscopeStore.getCache('custommachinesettings.singleProductDonation'),
+      minimumDonationAmount: RootscopeStore.getCache('custommachinesettings.minimumDonationAmount'),
     };
 
 
@@ -61,14 +61,13 @@ class Admin_Settings extends Component {
           <_E.Row id="machineSettings">
 
               <_E.Row>
-                  <label>{Translate.translate('Admin_Settings','LabelCardProcessorMode')} </label><br>
+                  <label>{Translate.translate('Admin_Settings','LabelCardProcessorMode')} </label><br />
                   <select  id="cardProcessorMode" value="{{ccProcessorMode}}"></select>
               </_E.Row>
 
               <_E.Row>
-                  <label>{Translate.translate('Admin_Settings','LabelMerchantID')} </label><br>
-                  <FormField label="Input" className="textArea" id="machineSetting3" ng-model="merchantID" > /* avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"*/
-                      <FormInput value={this.merchantID}/>
+                  <FormField label={Translate.translate('Admin_Settings','LabelMerchantID')}  className="textArea" > /* avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"*/
+                      <FormInput value={this.state.merchantID} name='merchantID'/>
                   </FormField>
               </_E.Row>
 
