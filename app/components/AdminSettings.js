@@ -25,97 +25,97 @@ class Admin_Settings extends Component {
 
   render() {
     return (
-      <div className="Admin_Settings">
-
+      <_E.Row className="Admin_Settings">
+        <_E.Col>
           <h2>{Translate.translate('MachineSettings')}}</h2>
+        </_E.Col>
+          <_E.Row id="machineSettings">
 
-          <div id="machineSettings">
-
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelCardProcessorMode')} </label><br>
-                  <select className="droplist" id="cardProcessorMode" value="{{ccProcessorMode}}"></select>
-              </div>
+                  <select  id="cardProcessorMode" value="{{ccProcessorMode}}"></select>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelMerchantID')} </label><br>
                   <input type='text' className="textArea" id="machineSetting3" value={{merchantID}} ng-model="merchantID" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelMerchantKey')} </label><br>
                   <input type='text' className="textArea" id="machineSetting2" value={{merchantKey}} ng-model="merchantKey" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelMachineSerialNumber')} </label><br>
                   <input type='text' className="textArea" id="machineSetting1" value={{machineSerialNumber}} ng-model="machineSerialNumber" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelDefaultLanguage')} </label><br>
                   <select className="droplist" id="defaultLanguage" value="{{defaultLanguage}}"></select>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelSupportLanguages')} </label><br>
                   <input type='text' className="textArea" id="machineSetting0" value={{supportLanguages}} ng-model="supportLanguages" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelDropSensorAttached')} </label><br>
                   <input type='text' className="textArea" id="machineSetting4" value={{dropSensorAttached}} ng-model="dropSensorAttached" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelCardReaderType')} </label><br>
                   <input type='text' className="textArea" id="machineSetting5" value={{ccReaderType}} ng-model="ccReaderType" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelVMCPlatform')} </label><br>
                   <input type='text' className="textArea" id="machineSetting6" value={{vmcPlatform}} ng-model="vmcPlatform" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelMachineCount')} </label><br>
                   <input type='text' className="textArea" id="machineSetting7" value={{machineCount}} ng-model="machineCount" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelCOMPort')} </label><br>
                   <input type='text' className="textArea" id="machineSetting8" value={{comPort}} ng-model="comPort" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelSalesTaxRate')} </label><br>
                   <input type='text' className="textArea" id="machineSetting9" value={{salesTaxRate}} ng-model="salesTaxRate" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelShoppingCartMaxItemCount')} </label><br>
                   <input type='text' className="textArea" id="machineSetting10" value={{shoppingCartMaxItemCount}} ng-model="shoppingCartMaxItemCount" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelHasShoppingCart')} </label><br>
                   <input type='text' className="textArea" id="machineSetting11" value={{bHasShoppingCart}} ng-model="bHasShoppingCart" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelSingleProductDonation')} </label><br>
                   <input type='text' className="textArea" id="machineSetting12" value={{singleProductDonation}} ng-model="singleProductDonation" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-              <div>
+              <_E.Row>
                   <label>{Translate.translate('Admin_Settings','LabelMinimumDonationAmount')} </label><br>
                   <input type='text' className="textArea" id="machineSetting13" value={{minimumDonationAmount}} ng-model="minimumDonationAmount" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-              </div>
+              </_E.Row>
 
-          </div>
+          </_E.Row>
 
           <img className="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
 
-      </div>
+      </_E.Row>
 
 
     );
