@@ -7,6 +7,7 @@ import View2 from './components/View2'
 
 import AdminLogin from './components/AdminLogin'
 import AdminLogin from './components/AdminHome'
+import AdminSettings from './components/AdminSettings'
 
 import CardVending from './components/CardVending'
 import CashVending from './components/CashVending'
@@ -27,6 +28,7 @@ export default (
 
 		<Route path='Admin_Login' component={AdminLogin} />
 		<Route path='Admin_Login' component={AdminHome} />
+		<Route path='Admin_Settings' component={AdminSettings} />
 
 		<Route path='Card_Vending' component={CardVending} />
 		<Route path='Cash_Vending' component={CashVending} />
