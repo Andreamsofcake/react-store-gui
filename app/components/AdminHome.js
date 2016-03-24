@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
@@ -17,37 +18,6 @@ class Admin_Home extends Component {
 
   }
 
-  backhome(){
-      TsvService.gotoDefaultIdlePage();
-  }
-
-  inventory(){
-      browserHistory.push("/Admin_Inventory");
-  }
-
-  // jofemarExerciser(){
-  //     browserHistory.push("/Admin_Jofemar_Exerciser"); What is this?
-  // }
-
-  machineSettings(){
-      browserHistory.push("/Admin_Settings");
-  }
-
-  systemInfo(){
-      browserHistory.push("/Admin_System_Info");
-  }
-
-  vms(){
-      browserHistory.push("/Admin_Vms");
-  }
-
-  checkFaults(){
-      browserHistory.push("/Admin_Check_Faults");
-  }
-
-  autoMap(){
-      browserHistory.push("/Admin_Auto_Map");
-  }
 
   restart(){
       TsvService.restart();
@@ -72,23 +42,13 @@ class Admin_Home extends Component {
       <_E.Row class="admin_home">
         <_E.Col>
 
-              <_E.Button onClick={this.backhome}>
+              <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
 
-                  {Translate.translate('Admin_Home','Home')}
 
-              </_E.Button>
+              <_E.Button type="primary" component={(<Link to="/Admin_Inventory">{Translate.translate('Admin_Home','Inventory')}</Link>)} />
 
-              <_E.Button onClick={this.inventory}>
 
-                  {Translate.translate('Admin_Home','Inventory')}
-
-              </_E.Button>
-
-              <_E.Button onClick={this.systemInfo}>
-
-                  {Translate.translate('Admin_Home','SystemInfo')}
-
-              </_E.Button>
+              <_E.Button type="primary" component={(<Link to="/Admin_System_Info">{Translate.translate('Admin_Home','SystemInfo')}</Link>)} />
 
               {/*<_E.Button onClick={this.jofemarExerciser}>
 
@@ -96,29 +56,18 @@ class Admin_Home extends Component {
 
               </_E.Button>*/}
 
-              <_E.Button onClick={this.machineSettings}>
 
-                  {Translate.translate('Admin_Home','MachineSettings')}
+              <_E.Button type="primary" component={(<Link to="/Admin_Settings">{Translate.translate('Admin_Home','MachineSettings')}</Link>)} />
 
-              </_E.Button>
 
-              <_E.Button onClick={this.vms}>
+              <_E.Button type="primary" component={(<Link to="/Admin_Vms">{Translate.translate('Admin_Home','Vms')}</Link>)} />
 
-                  {Translate.translate('Admin_Home','Vms')}
 
-              </_E.Button>
+              <_E.Button type="primary" component={(<Link to="/Admin_Auto_Map">{Translate.translate('Admin_Home','AutoMap')}</Link>)} />
 
-              <_E.Button onClick={this.autoMap}>
 
-                  {Translate.translate('Admin_Home','AutoMap')}
+              <_E.Button type="primary" component={(<Link to="/Admin_Check_Faults">{Translate.translate('Admin_Home','CheckFaults')}</Link>)} />
 
-              </_E.Button>
-
-              <_E.Button onClick={this.checkFaults}>
-
-                  {Translate.translate('Admin_Home','CheckFaults')}
-
-              </_E.Button>
 
               <_E.Button onClick={this.restart}>
 
