@@ -36,14 +36,10 @@ class Admin_Jofemar_Exerciser extends Component {
   }
 
   vend(){
-    // clearStatus();
-    // var clearStatus = function() {
-    //     $scope.errs = 0;
-    //     $(".vmsStatus").empty();
-    // };
     TsvService.vendProduct(this.state.machineNumber, parseInt(this.num) + this.state.machineNumber * 100);
     this.setState({
-      num: ""
+      num: "",
+      vmsStatus: ""
     })
   }
 
@@ -87,16 +83,9 @@ class Admin_Jofemar_Exerciser extends Component {
     TsvService.subscribe("notifyVmsEvent", (eventArgs) => {
         if (browserHistory.push() !== "/Admin_Jofemar_Exerciser")
             return;
-        if (this.state.errs == 2) {
-            //clearStatus();
-            // var clearStatus = function() {
-            //     $scope.errs = 0;
-            //     $(".vmsStatus").empty();
-            // };
-        }
-
-        // $(".vmsStatus").append(eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')<br/>');
-        // this.errs++;
+        this.setState({
+              vmsStatus: this.state.vmsStatus + eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')'
+            })
     }, "app.jofemarExerciser");
 
   }
@@ -111,7 +100,8 @@ class Admin_Jofemar_Exerciser extends Component {
       <_E.Row className="Admin_Jofemar_Exerciser" >
         <_E.Col>
 
-          <h2 id="instruction">{ this.instructionMessage }</h2> // there was no instructions in the js
+          <h2 id="instruction">Exerciser Jofemar</h2>
+            <p>{this.state.vmsStatus}</p>
           <_E.Row>
 
             { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }

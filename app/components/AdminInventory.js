@@ -14,7 +14,9 @@ class Admin_Inventory extends Component {
     super(props, context);
 
     RootscopeActions.setSession('currentView', 'Admin_Inventory');
-    TsvService.fetchMachineIds(RootscopeActions.setCache('machineList'));
+    TsvService.fetchMachineIds((err, ids) => {
+        RootscopeActions.setCache('machineList', ids);
+      });
     this.state = {
       instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
       machineID: 0,
