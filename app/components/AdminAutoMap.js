@@ -22,9 +22,7 @@ class Admin_Auto_Map extends Component {
     }
 
     if(RootscopeStore.getCache('machineList').length > 1){
-        this.setState({
-          bShowMachine2 : true,
-        })
+        this.state.bShowMachine2 = true;
     }
   }
 
@@ -42,7 +40,7 @@ class Admin_Auto_Map extends Component {
     // lastRow = -1;
     if(!TsvService.getSession('bRunningAutoMap'){
         TsvService.setSession('bRunningAutoMap', true);
-        TsvService.runAutoMap(machineID, -1);
+        TsvService.runAutoMap(machineID, -1, () => {});
     }
   }
 
@@ -50,12 +48,13 @@ class Admin_Auto_Map extends Component {
   // Add change listeners to stores
   componentDidMount() {
     TSVService.subscribe("notifyMapStatusChange", (status, info) => {
-        if (info != null && info != undefined) //if what?
-        if(browserHistory.push() != "/Admin_Auto_Map")    return;
+        //if (info != null && info != undefined) //if what? KENT: skipping, this just generated a log msg in old code
+        if (RootscopeStore.getCache('currentLocation') != "/Admin_Auto_Map") return;
 
         this.setState({
           status: status
         })
+
         switch(status){
             case "Map":
                 addNewCoil(info.coilNumber);
@@ -67,6 +66,7 @@ class Admin_Auto_Map extends Component {
                 break;
         }
     }, "app.automap");
+
   }
 
   // Remove change listers from stores
@@ -85,7 +85,7 @@ class Admin_Auto_Map extends Component {
           <_E.Row>
             <_E.Col>
               <_E.Row>
-                  <_E.Col basis="1/2"><_E.Button id="machine0"  onClick={this.mapMachine(0)}>{Translate.translate('Admin_Auto_Map','Map1')}</_E.Button></_E.Col>
+                  <_E.Col basis="1/2"><_E.Button id="machine0"  onClick={this.mapMachine.bind(this, 0)}>{Translate.translate('Admin_Auto_Map','Map1')}</_E.Button></_E.Col>
 
                   { this.state.bShowMachine2 ? this.renderShowMachine2() : null }
 
@@ -140,7 +140,7 @@ class Admin_Auto_Map extends Component {
 
   renderShowMachine2() {
     return(
-      <_E.Col basis="1/2"><_E.Button id="machine1"  onClick={this.mapMachine(1)}>{Translate.translate('Admin_Auto_Map','Map2')}</_E.Button></_E.Col>
+      <_E.Col basis="1/2"><_E.Button id="machine1" onClick={this.mapMachine.bind(this, 1)}>{Translate.translate('Admin_Auto_Map','Map2')}</_E.Button></_E.Col>
     )
   }
 
