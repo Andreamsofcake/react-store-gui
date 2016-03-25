@@ -14,7 +14,32 @@ class Admin_Check_Faults extends Component {
     super(props, context);
     RootscopeActions.setSession('currentView', 'Admin_Check_Faults');
     this.state = {
-      versionInfos: TsvService.enumerateComponents()
+      bRunningClearFaults: false,
+      machineID: 0,
+      faults: TsvService.getFaultCodes(this.state.machineID.toString())
+    }
+    if(RootscopeStore.getCache('machineList').length > 1) {
+      /*
+        Create dropdown with machine list
+
+        addMachineOptions(){
+            var x = document.getElementById("selectMachine");
+
+            for(var i=0; i< TSVService.cache.machineList.length; i++) {
+                var option = document.createElement("option");
+                option.text = $scope.translate("Machine") + " " + (Number(TSVService.cache.machineList[i]) + 1);
+                x.add(option);
+            }
+          }
+          document.getElementById('selectMachine').onchange = function () {
+              $scope.machineID = document.getElementById("selectMachine").selectedIndex;
+              $scope.faults = TSVService.getFaultCodes($scope.machineID.toString());
+              //document.getElementById("displayFaults").innerHTML = "Fill All coils for machine "+$scope.machineID.toString();
+          };
+      */
+      this.setState({
+        bShowDropDownForMachines: true,
+      })
     }
 
   }
@@ -23,43 +48,66 @@ class Admin_Check_Faults extends Component {
     browserHistory.push("/Admin_Home")
   }
 
+  clearFaults(){
+      if(!this.state.bRunningClearFaults){
+        this.setState({
+          bRunningClearFaults:true
+        })
+        TsvService.clearMachineFaults(this.state.machineID.toString());
+      }
+  }
+
   // Add change listeners to stores
   componentDidMount() {
+
+      TsvService.subscribe("notifyResetComplete", (machineID) => {
+        this.setState({
+          bRunningClearFaults: false,
+          faults = TsvService.getFaultCodes(machineID.toString())
+        })
+      }, "app.checkFaults");
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
+
+    TsvService.unsubscribe("notifyResetComplete", "app.checkFaults");
+
   }
 
   render() {
     return (
       <_E.Row className="check_faults">
 
-          <select id="selectMachine" data-ng-show="bShowDropDownForMachines"></select>
+          <_E.FormSelect name="selectMachine" value={this.state.machineID} options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
 
-          <img className="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
+          <_E.Button id="back" onClick={this.back}>Back</_E.Button>
 
           <_E.Row id="wrapper">
 
-              <table className="faults">
+              <_E.Col>
 
-                  <tr className="faults">
-                      <th className="faults">{{translate("FaultCode")}}</th>
-                      <th className="faults">{{translate("EventID")}}</th>
-                      <th className="faults">{{translate("Description")}}</th>
-                  </tr>
+                  <_E.Row className="faults">
+                      <_E.Col basis="1/3" className="faults">{Translate.translate('Admin_Check_Faults', 'FaultCode')}</_E.Col>
+                      <_E.Col basis="1/3" className="faults">{Translate.translate('Admin_Check_Faults','EventID')}</_E.Col>
+                      <_E.Col basis="1/3" className="faults">{Translate.translate('Admin_Check_Faults','Description')}</_E.Col>
+                  </_E.Row>
 
-                  <tr className="faults" ng-repeat='fault in faults'>
-                      <td className="faults">{{ fault.faultCode }}</td>
-                      <td className="faults">{{ fault.vmsEventID }}</td>
-                      <td style="word-break: break-all" className="faults">{{ fault.faultDescription }}</td>
-                  </tr>
+                  {this.state.faults.map((fault, $index) => {
+                      return (
+                        <_E.Row key={$index}>
+                          <_E.Col basis="1/3" className="faults">{ fault.faultCode }</_E.Col>
+                          <_E.Col basis="1/3" className="faults">{ fault.vmsEventID }</_E.Col>
+                          <_E.Col basis="1/3" className="faults">{ fault.faultDescription }</_E.Col>
+                        </_E.Row>
+                      )}
+                    )}
 
-              </table>
+              </_E.Col>
 
           </_E.Row>
 
-          <button data-ng-click="clearFaults()">{{translate("Clear")}}</button>
+          <_E.Button type="warning" onClick={this.clearFaults}>{Translate.translate('Admin_Check_Faults','Clear')}</_E.Button>
 
       </div>
 
@@ -76,7 +124,7 @@ class Admin_Check_Faults extends Component {
             <table class="faults">
 
                 <tr class="faults">
-                    <th class="faults">{{translate("FaultCode")}}</th>
+                    <_E.Col class="faults">{{translate("FaultCode")}}</_E.Col>
                     <th class="faults">{{translate("EventID")}}</th>
                     <th class="faults">{{translate("Description")}}</th>
                 </tr>
