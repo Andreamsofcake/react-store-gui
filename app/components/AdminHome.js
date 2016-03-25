@@ -82,6 +82,7 @@ class Admin_Home extends Component {
               </_E.Button>
         </_E.Col>
       </_E.Row>
+    )
   }
     /*
 
