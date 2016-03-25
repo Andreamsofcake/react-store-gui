@@ -33913,7 +33913,7 @@
 			}
 		};
 
-		// aliases:	
+		// aliases:
 		module.exports.subscribe = module.exports.registerActionHandler;
 		module.exports.unsubscribe = module.exports.unregisterActionHandler;
 		module.exports.sub = module.exports.registerActionHandler;
