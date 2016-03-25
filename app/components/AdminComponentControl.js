@@ -19,16 +19,21 @@ class Admin_Vms extends Component {
 
   }
   lastHeartbeatTime() {
-    this.setState({
-      lastHeartbeatTime: TsvService.lastHeartbeatTime()
-    })
+    TsvService.lastHeartbeatTime(null, (lastBeat) => {
+      this.setState({
+        lastHeartbeatTime: lastBeat
+      })
+    });
   }
 
   heartBeatNow() {
-    TsvService.heartBeatNow();
-    this.setState({
-      lastHeartbeatTime: TsvService.lastHeartbeatTime()
-    })
+    TsvService.heartBeatNow(null, () => {
+      TsvService.lastHeartbeatTime(null, (lastBeat) => {
+        this.setState({
+          lastHeartbeatTime: lastBeat
+        });
+      });
+    });
   }
 
   back(){
@@ -47,7 +52,7 @@ class Admin_Vms extends Component {
     return (
       <_E.Row className = "component">
         <_E.Col>
-          <_E.Button onClick={this.restartGUI}>Restart GUI</_E.Button>
+          <_E.Button onClick={TsvService.refreshIndexPage}>Restart GUI</_E.Button>
           <_E.Button id="back" onClick={this.backToAdminHome}>Back</_E.Button>
       	</_E.Col>
       </_E.Row>
