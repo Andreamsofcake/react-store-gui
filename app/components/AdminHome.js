@@ -60,7 +60,7 @@ class Admin_Home extends Component {
               <_E.Button type="primary" component={(<Link to="/Admin_Settings">{Translate.translate('Admin_Home','MachineSettings')}</Link>)} />
 
 
-              // <_E.Button type="primary" component={(<Link to="/Admin_Vms">{Translate.translate('Admin_Home','Vms')}</Link>)} />
+              <_E.Button type="primary" component={(<Link to="/Admin_Vms">{Translate.translate('Admin_Home','Vms')}</Link>)} />
 
 
               <_E.Button type="primary" component={(<Link to="/Admin_Auto_Map">{Translate.translate('Admin_Home','AutoMap')}</Link>)} />
