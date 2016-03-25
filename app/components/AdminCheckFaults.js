@@ -20,24 +20,6 @@ class Admin_Check_Faults extends Component {
       faults: TsvService.getFaultCodes(this.state.machineID.toString())
     }
     if (RootscopeStore.getCache('machineList').length > 1) {
-      /*
-        Create dropdown with machine list
-
-        addMachineOptions(){
-            var x = document.getElementById("selectMachine");
-
-            for(var i=0; i< TSVService.cache.machineList.length; i++) {
-                var option = document.createElement("option");
-                option.text = $scope.translate("Machine") + " " + (Number(TSVService.cache.machineList[i]) + 1);
-                x.add(option);
-            }
-          }
-          document.getElementById('selectMachine').onchange = function () {
-              $scope.machineID = document.getElementById("selectMachine").selectedIndex;
-              $scope.faults = TSVService.getFaultCodes($scope.machineID.toString());
-              //document.getElementById("displayFaults").innerHTML = "Fill All coils for machine "+$scope.machineID.toString();
-          };
-      */
       this.setState({
         bShowDropDownForMachines: true,
       })
@@ -75,7 +57,7 @@ class Admin_Check_Faults extends Component {
     TsvService.unsubscribe("notifyResetComplete", "app.checkFaults");
 
   }
-  
+
   getMachineSelectOptions() {
     var options = [];
     RootscopeStore.getCache('machineList').forEach( MACHINE => {

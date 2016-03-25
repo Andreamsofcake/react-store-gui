@@ -16,34 +16,18 @@ class Admin_Jofemar_Exerciser extends Component {
     RootscopeActions.setSession('currentView', 'Admin_Jofemar_Exerciser');
     TsvService.disableLoginDevices();
     TsvService.emptyCart();
-    TsvService.fetchMachineIds(RootscopeActions.setCache('machineList'));
+    TsvService.fetchMachineIds((err, ids) => {
+      	RootscopeActions.setCache('machineList', ids);
+      });
     this.state = {
       num: "",
-      maxChars: RootscopeStore.bDualMachine(), //?3:2,
+      maxChars: RootscopeStore.getConfig('bDualMachine') ? 3 : 2,
       errs: 0,
       bShowDropDownForMachines: false,
       machineNumber: 0
     };
 
     if(RootscopeStore.getCache('machineList').length > 1){
-        /*
-          Create dropdown with machine list
-
-          document.getElementById('selectMachine').onchange = function () {
-              $scope.machineNumber = document.getElementById("selectMachine").selectedIndex;
-              console.log("$scope.machineNumber: "+$scope.machineNumber);
-          };
-
-          addMachineOptions(){
-              var x = document.getElementById("selectMachine");
-
-              for(var i=0; i< TSVService.cache.machineList.length; i++) {
-                  var option = document.createElement("option");
-                  option.text = $scope.translate("Machine") + " " + (Number(TSVService.cache.machineList[i]) + 1);
-                  x.add(option);
-              }
-            }
-        */
         this.setState({
           bShowDropDownForMachines: true,
         })
@@ -130,7 +114,7 @@ class Admin_Jofemar_Exerciser extends Component {
           <h2 id="instruction">{ this.instructionMessage }</h2> // there was no instructions in the js
           <_E.Row>
 
-            <_E.FormSelect name="selectMachine" value={this.state.machineID} options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
+            { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
 
             <_E.Col basis="1/2"><_E.Button   onClick={this.lightOn}>{Translate.translate('Admin_Jofemar_Exerciser', 'LightOn')}</_E.Button></_E.Col>
 

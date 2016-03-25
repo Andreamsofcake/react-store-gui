@@ -19,7 +19,7 @@ class Admin_Inventory extends Component {
       instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
       machineID: 0,
       num: "",
-      maxChars: RootscopeStore.bDualMachine(), //?3:2
+      maxChars: RootscopeStore.getConfig('bDualMachine') ? 3 : 2,
       bEnterCoil: true,
       showKeypad: false
     }
