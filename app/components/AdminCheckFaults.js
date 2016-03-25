@@ -75,12 +75,20 @@ class Admin_Check_Faults extends Component {
     TsvService.unsubscribe("notifyResetComplete", "app.checkFaults");
 
   }
+  
+  getMachineSelectOptions() {
+    var options = [];
+    RootscopeStore.getCache('machineList').forEach( MACHINE => {
+      options.push({ label: 'Machine ' + MACHINE, value: MACHINE });
+    })
+    return options;
+  }
 
   render() {
     return (
       <_E.Row className="check_faults">
 
-          <_E.FormSelect name="selectMachine" value={this.state.machineID} options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
+          { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
 
           <_E.Button id="back" onClick={this.back}>Back</_E.Button>
 
