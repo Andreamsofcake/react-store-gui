@@ -218,4 +218,4 @@ class Admin_Jofemar_Exerciser extends Component {
   }
 }
 
-export default AdminLogin
+export default Admin_Jofemar_Exerciser
