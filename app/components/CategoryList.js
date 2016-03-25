@@ -37,7 +37,7 @@ class Category_List extends Component {
 		}
     })
 
-	this._onRootstoreChange = this._onRootstoreChange.bind(this);
+	this._onChange = this._onChange.bind(this);
   }
 
   back(){
