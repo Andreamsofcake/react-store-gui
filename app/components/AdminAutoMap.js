@@ -35,6 +35,11 @@ class Admin_Auto_Map extends Component {
 
   mapMachine(machineID){
     // make table
+    // tableRow
+    // tableCol
+    // cellDiv
+    // lastRow
+    // lastRow = -1;
     if(!TsvService.getSession('bRunningAutoMap'){
         TsvService.setSession('bRunningAutoMap', true);
         TsvService.runAutoMap(machineID, -1);
