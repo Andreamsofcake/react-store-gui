@@ -39,7 +39,7 @@ class Admin_Inventory extends Component {
             }
         */
         this.setState({
-          bShowDropDownForMachines, true
+          bShowDropDownForMachines: true,
         })
     }
   }
