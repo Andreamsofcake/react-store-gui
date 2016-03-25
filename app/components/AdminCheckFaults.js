@@ -13,12 +13,13 @@ class Admin_Check_Faults extends Component {
     // MUST call super() before any this.*
     super(props, context);
     RootscopeActions.setSession('currentView', 'Admin_Check_Faults');
+    RootscopeActions.setCache('currentLocation', '/Admin_Check_Faults');
     this.state = {
       bRunningClearFaults: false,
       machineID: 0,
       faults: TsvService.getFaultCodes(this.state.machineID.toString())
     }
-    if(RootscopeStore.getCache('machineList').length > 1) {
+    if (RootscopeStore.getCache('machineList').length > 1) {
       /*
         Create dropdown with machine list
 
