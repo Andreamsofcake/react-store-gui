@@ -36,7 +36,7 @@ class Admin_Settings extends Component {
 
   };
 
-  backToAdminHome = function(){
+  backToAdminHome(){
       TsvService.removeKeyboard();
       browserHistory.push("/Admin_Home");
   };
@@ -185,7 +185,7 @@ class Admin_Settings extends Component {
               </_E.Row>
 
           </_E.Row>
-          
+
             <_E.Button id="back" onClick={this.back}>Back</_E.Button>
 
       </_E.Row>
