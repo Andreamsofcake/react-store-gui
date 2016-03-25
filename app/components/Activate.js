@@ -4,7 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { browserHistory } from 'react-router'
 
 class Activate extends Component {
 
@@ -13,16 +13,25 @@ class Activate extends Component {
     super(props, context);
 
     RootscopeActions.setSession('currentView', 'Activate');
+    RootscopeActions.setCache('currentLocation', '/Activate');
     this.state = {
       activationKey: '',
-      serialNumber: TsvService.machineSetting('MachineSerialNumber')
+      serialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber')
     };
+    
+  }
 
   activate() {
     if (TsvService.activate('this.activationKey', 'resultCode') === 'SUCCESS') {
         kb.reveal();
     }
 
+  }
+  
+  updateKey(e) {
+  	this.setState({
+  		activationKey: e.target.value
+  	});
   }
 
   keyboardTimeOut() {
@@ -31,10 +40,6 @@ class Activate extends Component {
     //admin login
     //wrong activation code and prompt
     // time out after 5000ms
-  }
-
-  keyboard() {
-
   }
 
   // Add change listeners to stores
@@ -47,9 +52,12 @@ class Activate extends Component {
 
   render() {
     return (
-      <div className="Activate" style="height:100%;width:100%;">
+      <div className="Activate" style={{height:'100%',width:'100%'}}>
+      	<h1>NOT FINISHED!</h1>
         <h2><span>{this.state.promptMessage}</span></h2>
-        <input id="activationKey" type='text' />{activate() keyboard()}
+        <input id="activationKey" type='text' onChange={this.updateKey.bind(this)} />
+        <p>state: {JSON.stringify(this.state)} </p>
+        <p>foo: {JSON.stringify(RootscopeStore.getCache('machineSettings'))} </p>
       </div>
     );
   }

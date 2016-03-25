@@ -7,10 +7,18 @@ import objectAssign from 'react/lib/Object.assign'
 import { EventEmitter } from 'events'
 import muDB from '../../lib/muDB'
 
+import { isClient } from '../utils'
+
 var CHANGE_EVENT = 'change'
 
 // example state vars:
 	, _store = {
+		
+		appConfig: {
+			name: 'SDK-Vending-Gui',
+			version: '0.0.1',
+			date: '2016-03-22'
+		},
 
 		session: {
 			cashMsg: Translate.translate("Cash_Vending", "HintMessageInsertCash"),
@@ -34,7 +42,10 @@ var CHANGE_EVENT = 'change'
 			productList: {},
 			planogram: {},
 			machineSettings: {},
-			custommachinesettings: {},
+			// pre-setting this from the actual settings for testing:
+			custommachinesettings: {
+				paymentPageTimeout: 65000
+			},
 			machineList: {},
 			prdHashTable: {}
 		},
@@ -89,7 +100,9 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 	},
 
 	emitChange: function() {
-		this.emit(CHANGE_EVENT);
+		var args = Array.prototype.slice.call(arguments);
+		args.unshift(CHANGE_EVENT);
+		this.emit.apply(this, args );
 	},
 
 	getConfig: function(path, dflt) {
@@ -135,6 +148,10 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 			var credit = _storeDB.get('config.credit');
 			return typeof credit !== 'undefined' && credit !== 0 && _storeDB.get('config.bShowCredit');
 		}
+	},
+	
+	getAppConfig: function() {
+		return _storeDB.get('appConfig');
 	}
 
 });
@@ -145,17 +162,19 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 
 		case appConstants.UPDATE_ROOT_CONFIG:
 			_storeDB.set('config.' + action.data.path, action.data.value);
-			RootscopeStore.emitChange();
+			RootscopeStore.emitChange({ type: 'config', path: action.data.path });
 			break;
 			
 		case appConstants.UPDATE_ROOT_CACHE:
 			_storeDB.set('cache.' + action.data.path, action.data.value);
-			RootscopeStore.emitChange();
+			RootscopeStore.emitChange({ type: 'cache', path: action.data.path });
+			console.warn(' someone updated CACHE, args:');
+			console.log(action.data);
 			break;
 			
 		case appConstants.UPDATE_ROOT_SESSION:
 			_storeDB.set('session.' + action.data.path, action.data.value);
-			RootscopeStore.emitChange();
+			RootscopeStore.emitChange({ type: 'session', path: action.data.path });
 			break;
 			
 		case appConstants.EXAMPLE_ACTION_CONSTANT:
@@ -170,5 +189,11 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 			break;
 	}
 });
+
+console.warn("\n\n -------------------------------------------------------\n\n RootscopeStore loaded!\n\n -------------------------------------------------------\n\n");
+
+if (isClient) {
+	window.RSS = RootscopeStore;
+}
 
 module.exports = RootscopeStore;

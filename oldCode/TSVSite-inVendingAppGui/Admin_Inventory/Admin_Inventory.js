@@ -9,17 +9,17 @@ angular.module('myApp.Admin_Inventory', ['ngRoute'])
         });
     }])
 
-    .controller('Admin_InventoryCtrl', ['$scope', '$rootScope', '$timeout', '$http', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $http, $location, TSVService, translate) {
-            TSVService.debug("Hi Admin_Inventory....");
+    .controller('Admin_InventoryCtrl', ['$scope', '$rootScope', '$timeout', '$http', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $http, $location, TsvService, translate) {
+            TsvService.debug("Hi Admin_Inventory....");
 
             $scope.translate = function(name){
                 return translate.translate("Admin_Inventory", name);
             };
 
-            TSVService.session.currentView = "Admin_Inventory";
+            TsvService.session.currentView = "Admin_Inventory";
             $scope.instructionMessage = $scope.translate('EnterCoil');
-            TSVService.cache.productList = TSVService.fetchProductQuick();
+            TsvService.cache.productList = TsvService.fetchProductQuick();
             var promise;
             $scope.machineID = 0;
             $scope.num = "";
@@ -27,11 +27,11 @@ angular.module('myApp.Admin_Inventory', ['ngRoute'])
             $scope.bEnterCoil = true;
             $scope.showKeypad = false;
 
-            TSVService.cache.machineList = TSVService.fetchMachineIds();
+            TsvService.cache.machineList = TsvService.fetchMachineIds();
 
-            if(TSVService.cache.machineList.length > 1){
+            if(TsvService.cache.machineList.length > 1){
                 $scope.bShowDropDownForMachines = true;
-                TSVService.debug("machine Count: "+TSVService.cache.machineList.length);
+                TsvService.debug("machine Count: "+TsvService.cache.machineList.length);
                 addMachineOptions();
             }
 
@@ -44,21 +44,21 @@ angular.module('myApp.Admin_Inventory', ['ngRoute'])
             function addMachineOptions(){
                 var x = document.getElementById("selectMachine");
 
-                for(var i=0; i< TSVService.cache.machineList.length; i++) {
+                for(var i=0; i< TsvService.cache.machineList.length; i++) {
                     var option = document.createElement("option");
-                    option.text = $scope.translate("Machine") + " " + (Number(TSVService.cache.machineList[i]) + 1);
+                    option.text = $scope.translate("Machine") + " " + (Number(TsvService.cache.machineList[i]) + 1);
                     x.add(option);
                 }
             }
 
             $scope.fillMachine = function(){
-                TSVService.debug("Fill machine for machine "+$scope.machineID.toString());
-                TSVService.fillMachine($scope.machineID.toString());
+                TsvService.debug("Fill machine for machine "+$scope.machineID.toString());
+                TsvService.fillMachine($scope.machineID.toString());
             };
 
             $scope.fillCoil = function(){
                 if($scope.num != ""){
-                    $scope.vpbc = TSVService.adminValidateProductByCoil($scope.num);
+                    $scope.vpbc = TsvService.adminValidateProductByCoil($scope.num);
 
                     switch ($scope.vpbc.result) {
                         case "UNKNOWN":
@@ -78,8 +78,8 @@ angular.module('myApp.Admin_Inventory', ['ngRoute'])
                             $scope.coilNumber = $scope.num;
                             $scope.num = "";
                             $scope.bEnterCoil = false;
-                            TSVService.debug("Fill coil "+$scope.coilNumber);
-                            TSVService.fillCoil($scope.coilNumber);
+                            TsvService.debug("Fill coil "+$scope.coilNumber);
+                            TsvService.fillCoil($scope.coilNumber);
                             break;
                     }
                 }
@@ -97,9 +97,9 @@ angular.module('myApp.Admin_Inventory', ['ngRoute'])
             $scope.addStock = function(){
                 if($scope.num != ""){
                     console.log("Hi Ping Debug addStock()"+$scope.num);
-                    TSVService.addStock($scope.coilNumber, $scope.num);
+                    TsvService.addStock($scope.coilNumber, $scope.num);
 
-                    $scope.vpbc = TSVService.adminValidateProductByCoil($scope.coilNumber);
+                    $scope.vpbc = TsvService.adminValidateProductByCoil($scope.coilNumber);
                     $scope.num = "";
 
                     promise = $timeout(function(){
@@ -115,8 +115,8 @@ angular.module('myApp.Admin_Inventory', ['ngRoute'])
                 console.log("Hi Ping Debug addStock()");
                 if($scope.num != ""){
                     console.log("Hi Ping Debug addStock()"+$scope.num);
-                    TSVService.removeStock($scope.coilNumber, $scope.num);
-                    $scope.vpbc = TSVService.adminValidateProductByCoil($scope.coilNumber);
+                    TsvService.removeStock($scope.coilNumber, $scope.num);
+                    $scope.vpbc = TsvService.adminValidateProductByCoil($scope.coilNumber);
                     $scope.stockCount = "Stock Count: "+$scope.vpbc.inventoryCount;
                     $scope.num = "";
 
@@ -135,7 +135,7 @@ angular.module('myApp.Admin_Inventory', ['ngRoute'])
 
             $scope.enter = function(){
                 console.log("Hi Ping Debug Coil Enter: "+$scope.num);
-                $scope.vpbc = TSVService.adminValidateProductByCoil($scope.num);
+                $scope.vpbc = TsvService.adminValidateProductByCoil($scope.num);
 
                 switch ($scope.vpbc.result) {
                     case "UNKNOWN":

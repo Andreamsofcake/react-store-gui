@@ -37,10 +37,12 @@ var Hapi = require('hapi')
 
 ****/
 
+var socketdebug = require('debug')('vending-app-gui:websocket-comm');
+
 var server = new Hapi.Server();
 server.connection({
 	host: 'localhost'
-	, port: process.env.SERVER_PORT || 8086
+	, port: process.env.SERVER_PORT || 8087
 	/*, routes: {
 		files: {
 			relativeTo: Path.join(__dirname, 'public')
@@ -49,7 +51,7 @@ server.connection({
 });
 
 server.register(Inert, () => {});
-
+/*
 var io = require('socket.io')(server.listener);
 
 io.on('connection', function (socket) {
@@ -60,6 +62,7 @@ io.on('connection', function (socket) {
         socket.emit('Excuse you!');
     });
 });
+*/
 
 /*
 if (!process.env.COOKIE_PASSWORD) {
@@ -81,21 +84,30 @@ server.register([
 		}
 	}
 */
+	{
+		register: require('hapi-io'),
+		options: {
+			//socketio: { OPTIONS CONFIG }
+		}
+	}
 ], err => {
 
 	if (err) throw /* GIANT_TANTRUM() */ err;
+	
+	['assets', 'js', 'css', 'gfx'].forEach( DIR => {
 
-
-	server.route({
-		method: 'GET',
-		path: '/assets/{filename*}',
-		handler: {
-			directory: {
-				path: 'public/assets',
-				redirectToSlash: true,
-				index: true
+		server.route({
+			method: 'GET',
+			path: '/'+DIR+'/{filename*}',
+			handler: {
+				directory: {
+					path: 'public/'+DIR,
+					redirectToSlash: true,
+					index: true
+				}
 			}
-		}
+		});
+	
 	});
 
 	// allows some pre-config on server.app by delayed requiring:
@@ -176,11 +188,83 @@ server.register([
 	});
 	*/
 
+	var TsvProxy = require('./routes/TsvProxy')
+		, ComBusEmulator = require('./routes/ComBusEmulator')
+		;
+	
+	server.route({
+		method: 'post',
+		path: '/tsv-proxy/flashapi',
+		handler: TsvProxy.Flashapi,
+		config: {
+			plugins: {
+				'hapi-io': {
+					event: 'flash-api'
+					, mapping: {
+						headers: ['accept'],
+						query: ['returnType']
+					},
+					post: (ctx, next) => {
+						/*
+						//ctx.socket.join(ctx.data.roomId);
+						//throw new Error('wtf');
+						socketdebug('---------------------------- result? ');
+						socketdebug(ctx.res);
+						socketdebug(ctx.result);
+						socketdebug(ctx.data);
+						*/
+						ctx.socket.emit(ctx.event, ctx.result);
+						next();
+					}
+				}
+			}
+		}
+	});
+
+	server.route({
+		method: 'post',
+		path: '/tsv-proxy/flashapi/multievent',
+		handler: TsvProxy.Multievent,
+		config: {
+			plugins: {
+				'hapi-io': {
+					event: 'flash-api-multi-event'
+					, mapping: {
+						//payload: ['_ws_args']
+						//headers: ['accept'],
+						//query: ['returnType']
+					},
+					post: (ctx, next) => {
+						var pl = typeof ctx.req.payload === 'string' ? JSON.parse(ctx.req.payload) : ctx.req.payload;
+						if (pl._ws_args) { pl = pl._ws_args; }
+						//socketdebug( 'what is PL? ' + typeof pl );
+						//socketdebug( pl );
+
+						if (pl.subscribe_to_externals) {
+							ctx.socket.join( 'flash-api-multi-event' );
+							//socketdebug('subscribed socket to flash-api-multi-event' );
+						} else {
+							//socketdebug('DID NOT SUBSCRIBE TO flash-api-multi-event' );
+							
+						}
+						ctx.socket.emit(ctx.event, ctx.result);
+						next();
+					}
+				}
+			}
+		}
+	});
+
+	server.route({
+		method: 'post',
+		path: '/api/emulator',
+		handler: ComBusEmulator
+	});
+	
 	server.route({
 		method: 'get',
 		path: '/{route*}',
 		handler: require('./app/Router.js')
-		//handler: function(request, reply) { reply({ hello: 'world' }) }
 	});
 
 	server.start(function(err) {
@@ -188,7 +272,7 @@ server.register([
 			console.log('server failed to listen! teach it a lesson.');
 			console.log(err);
 		} else {
-			console.log('CLIENT PORTAL server is listening');
+			console.log('VENDING APP GUI server is listening');
 		}
 	});
 

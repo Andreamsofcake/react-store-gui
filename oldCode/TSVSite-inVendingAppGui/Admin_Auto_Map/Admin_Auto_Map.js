@@ -9,19 +9,19 @@ angular.module('myApp.Admin_Auto_Map', ['ngRoute'])
         });
     }])
 
-    .controller('Admin_Auto_MapCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate){
-            TSVService.session.currentView = "Admin_Auto_Map";
-            TSVService.session.bRunningAutoMap = false;
+    .controller('Admin_Auto_MapCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate){
+            TsvService.session.currentView = "Admin_Auto_Map";
+            TsvService.session.bRunningAutoMap = false;
             $scope.status = "";
 
             $scope.translate = function(name){
                 return translate.translate("Auto_Map", name);
             };
 
-            TSVService.cache.machineList = TSVService.fetchMachineIds();
+            TsvService.cache.machineList = TsvService.fetchMachineIds();
             $scope.bShowMachine2 = false;
-            if(TSVService.cache.machineList.length > 1){
+            if(TsvService.cache.machineList.length > 1){
                 $scope.bShowMachine2 = true;
             }
             
@@ -37,19 +37,19 @@ angular.module('myApp.Admin_Auto_Map', ['ngRoute'])
 
             $scope.mapMachine = function(machineID){
                 console.log("Debug MAP MACHINE " + machineID);
-                TSVService.debug("Debug MAP MACHINE " + machineID);
+                TsvService.debug("Debug MAP MACHINE " + machineID);
                 lastRow = -1;
                 table.innerHTML = "";
-                if(!TSVService.session.bRunningAutoMap){
-                    TSVService.debug("Debug MAP MACHINE!!!");
-                    TSVService.session.bRunningAutoMap = true;
-                    TSVService.runAutoMap(machineID, -1);
+                if(!TsvService.session.bRunningAutoMap){
+                    TsvService.debug("Debug MAP MACHINE!!!");
+                    TsvService.session.bRunningAutoMap = true;
+                    TsvService.runAutoMap(machineID, -1);
                 }
             };
 
             var notifyMapStatusHandler = function(status, info){
                 if (info != null && info != undefined)
-                TSVService.debug("MapStatus " + status + ":" + info.coilNumber);
+                TsvService.debug("MapStatus " + status + ":" + info.coilNumber);
                 if($location.path() != "/Admin_Auto_Map")    return;
 
                 $scope.status = status;
@@ -58,7 +58,7 @@ angular.module('myApp.Admin_Auto_Map', ['ngRoute'])
                         addNewCoil(info.coilNumber);
                         break;
                     case "End":
-                        TSVService.session.bRunningAutoMap = false;
+                        TsvService.session.bRunningAutoMap = false;
                         break;
                     default:
                         break;
@@ -69,7 +69,7 @@ angular.module('myApp.Admin_Auto_Map', ['ngRoute'])
                 $scope.status = "Mapping coil: "+coilNumber;
                 var coilNum = parseInt(coilNumber);
                 var rowNum = Math.floor((coilNum - 1) / 10);
-                TSVService.debug("CoilNum = " + coilNum + " Prev Row = " + lastRow + " Cur Row = " + rowNum);
+                TsvService.debug("CoilNum = " + coilNum + " Prev Row = " + lastRow + " Cur Row = " + rowNum);
 
                 if (rowNum != lastRow) {
                     lastRow = rowNum;
@@ -82,10 +82,10 @@ angular.module('myApp.Admin_Auto_Map', ['ngRoute'])
                 cellDiv.innerHTML += "<div class='coilNumber'>" + coilNumber + "</div>";
             };
 
-            TSVService.subscribe("notifyMapStatusChange", notifyMapStatusHandler, "app.automap");
+            TsvService.subscribe("notifyMapStatusChange", notifyMapStatusHandler, "app.automap");
 
             $scope.$on('$destroy', function() {
-                TSVService.unsubscribe("notifyMapStatusChange", "app.automap")
+                TsvService.unsubscribe("notifyMapStatusChange", "app.automap")
             });
     }]);
 

@@ -9,9 +9,9 @@ angular.module('myApp.Admin_Vms', ['ngRoute'])
         });
     }])
 
-    .controller('Admin_VmsCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
-            TSVService.session.currentView = "Admin_Vms";
+    .controller('Admin_VmsCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
+            TsvService.session.currentView = "Admin_Vms";
 
             $scope.translate = function(name){
                 return translate.translate("Admin_Vms", name);
@@ -19,13 +19,13 @@ angular.module('myApp.Admin_Vms', ['ngRoute'])
 
             $scope.lastHeartbeatTime = function(){
                 console.log("Hi Ping Debug lastHeartBeatTime");
-                $scope.lastHeartBeatTime = TSVService.lastHeartbeatTime();
+                $scope.lastHeartBeatTime = TsvService.lastHeartbeatTime();
             }
 
             $scope.heartBeatNow = function(){
                 console.log("lastHeartBeatTime");
-                TSVService.heartbeatNow();
-                $scope.lastHearBeatTime = TSVService.lastHeartbeatTime();
+                TsvService.heartbeatNow();
+                $scope.lastHearBeatTime = TsvService.lastHeartbeatTime();
             }
 
             $scope.backToAdminHome = function(){

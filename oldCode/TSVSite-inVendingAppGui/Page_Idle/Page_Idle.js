@@ -12,8 +12,8 @@ angular.module('myApp.Page_Idle', ['ngRoute'])
   });
 }])
 
-.controller('Page_IdleCtrl', ['$scope', '$rootScope','$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+.controller('Page_IdleCtrl', ['$scope', '$rootScope','$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
             console.log("::Page_Idle");
 
             $rootScope.bDisplayCgryNavigation = false;
@@ -24,8 +24,8 @@ angular.module('myApp.Page_Idle', ['ngRoute'])
             };
 
             $scope.idleClicked = function(){
-                TSVService.idleClicked($location, $rootScope);
+                TsvService.idleClicked($location, $rootScope);
             };
 
-            TSVService.disableLoginDevices();
+            TsvService.disableLoginDevices();
 }]);

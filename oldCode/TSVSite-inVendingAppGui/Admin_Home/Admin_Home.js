@@ -9,15 +9,15 @@ angular.module('myApp.Admin_Home', ['ngRoute'])
         });
     }])
 
-    .controller('Admin_HomeCtrl', ['$scope', '$rootScope', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $location, TSVService, translate) {
-            TSVService.session.currentView = "Admin_Home";
+    .controller('Admin_HomeCtrl', ['$scope', '$rootScope', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $location, TsvService, translate) {
+            TsvService.session.currentView = "Admin_Home";
             $scope.translate = function(name){
                 return translate.translate("Admin_Home", name);
             };
 
             $scope.backhome = function(){
-                TSVService.gotoDefaultIdlePage($location, $rootScope);
+                TsvService.gotoDefaultIdlePage($location, $rootScope);
             };
 
             $scope.inventory = function(){
@@ -49,14 +49,14 @@ angular.module('myApp.Admin_Home', ['ngRoute'])
             };
 
             $scope.restart = function(){
-                TSVService.debug("restart");
-                TSVService.restart();
+                TsvService.debug("restart");
+                TsvService.restart();
                 $location.path("/view0");
             };
 
             $scope.shutdown = function(){
-                TSVService.debug("shutdown");
-                TSVService.shutdown();
+                TsvService.debug("shutdown");
+                TsvService.shutdown();
             };
     }]);
 

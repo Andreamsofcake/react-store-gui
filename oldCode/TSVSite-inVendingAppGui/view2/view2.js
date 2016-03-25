@@ -84,8 +84,8 @@ app.directive('imageonload', function() {
 });
 */
 
-app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TSVService', "translate",
-    function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TsvService', "translate",
+    function($scope, $rootScope, $timeout, $location, TsvService, translate) {
 
         console.log("View2Ctrl()");
 
@@ -94,7 +94,7 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
 
         $scope.path = $location.path();
 
-        if(('bDisplayPrdGalleryOnDetailPage' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.bDisplayPrdGalleryOnDetailPage.toString().toLowerCase() === "true")){
+        if(('bDisplayPrdGalleryOnDetailPage' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.bDisplayPrdGalleryOnDetailPage.toString().toLowerCase() === "true")){
             $rootScope.bDisplayPrdGalleryOnDetailPage = true;
         }
 
@@ -103,23 +103,23 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
         };
 
         if (!$rootScope.pvr) {
-            TSVService.gotoDefaultIdlePage($location);
+            TsvService.gotoDefaultIdlePage($location);
             return;
         }
 
-        TSVService.session.currentView = "view2";
+        TsvService.session.currentView = "view2";
         $rootScope.bShowLanguage = false;
-        TSVService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
-        TSVService.enablePaymentDevice("PAYMENT_TYPE_CASH");
-        TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
+        TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
+        TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+        TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
         $scope.bShowCouponBtn = false;
-        //$rootScope.itemsInCart = TSVService.cache.shoppingCart.detail.qtyInCart;
+        //$rootScope.itemsInCart = TsvService.cache.shoppingCart.detail.qtyInCart;
 
         // TODO: refactor to explicitly treat this as "state"
-        TSVService.session.cardMsg = translate.translate("Card_Vending", "InstructionMessage");
-        TSVService.session.cashMsg = translate.translate("Cash_Vending", "HintMessageInsertCash");
+        TsvService.session.cardMsg = translate.translate("Card_Vending", "InstructionMessage");
+        TsvService.session.cashMsg = translate.translate("Cash_Vending", "HintMessageInsertCash");
 
-        TSVService.resetGeneralIdleTimer($location,$rootScope);
+        TsvService.resetGeneralIdleTimer($location,$rootScope);
 
         if ($rootScope.bInsufficientFunds) {
             // this happens when redirected due to cashless session begin
@@ -129,23 +129,23 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
         } else {
             $scope.instructionMessage = "InstructionMessage";
         }
-        $scope.item = $rootScope.pvr;//TSVService.cache.shoppingCart.detail[0];
+        $scope.item = $rootScope.pvr;//TsvService.cache.shoppingCart.detail[0];
         console.log("pvr.productID2: "+$rootScope.pvr.productID);
         console.log("pvr.price: "+$rootScope.pvr.price);
-        $scope.bShowCheckout = !TSVService.isCartEmpty();
+        $scope.bShowCheckout = !TsvService.isCartEmpty();
 
-        for(var i=0; i<TSVService.cache.shoppingCart.detail.length; i++)
+        for(var i=0; i<TsvService.cache.shoppingCart.detail.length; i++)
         {
             console.log("Found!");
-            if(TSVService.cache.shoppingCart.detail[i].productID == $rootScope.pvr.productID){
-                $scope.item = TSVService.cache.shoppingCart.detail[i];
+            if(TsvService.cache.shoppingCart.detail[i].productID == $rootScope.pvr.productID){
+                $scope.item = TsvService.cache.shoppingCart.detail[i];
                 break;
             }
         }
 
         $scope.imagePath = $scope.item.imagePath;
         $scope.imagePath2 = $scope.imagePath;
-        $scope.summary = TSVService.cache.shoppingCart.summary;
+        $scope.summary = TsvService.cache.shoppingCart.summary;
         $rootScope.summary = $scope.summary;
 
         $rootScope.updateCredit();
@@ -162,12 +162,12 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
             $scope.bShowDesc = false;
         }
 
-        if(TSVService.cache.custommachinesettings.bHasShoppingCart.toLowerCase() === "true"){
+        if(TsvService.cache.custommachinesettings.bHasShoppingCart.toLowerCase() === "true"){
             $scope.checkoutOrAddToCartUrl = $rootScope.localizedImage('addToCart.png');
         }else{
             $scope.checkoutOrAddToCartUrl = $rootScope.localizedImage('checkout.png');
-            if(('bHasCouponCodes' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.bHasCouponCodes != "")){
-                if(TSVService.cache.custommachinesettings.bHasCouponCodes.toLowerCase() === "true"){
+            if(('bHasCouponCodes' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.bHasCouponCodes != "")){
+                if(TsvService.cache.custommachinesettings.bHasCouponCodes.toLowerCase() === "true"){
                     $scope.bShowCouponBtn = true;
                 }
             }
@@ -302,12 +302,12 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
         */
 
         $scope.back = function() {
-            if(TSVService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "false"){
-                TSVService.emptyCart();
+            if(TsvService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "false"){
+                TsvService.emptyCart();
                 $rootScope.itemsInCart = 0;
             }
 
-            TSVService.gotoDefaultIdlePage($location, $rootScope);
+            TsvService.gotoDefaultIdlePage($location, $rootScope);
         };
 
         var cardTransactionHandler = function(level) {
@@ -320,9 +320,9 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
                 return;
             }
 
-            TSVService.cardTransaction(level);
+            TsvService.cardTransaction(level);
 
-            if(!TSVService.session.bVendingInProcess) {
+            if(!TsvService.session.bVendingInProcess) {
                 switch(level){
                     case "CARD_INVALID_READ":
                     case "CARD_DECLINED":
@@ -341,6 +341,6 @@ app.controller('View2Ctrl', ['$scope', '$rootScope', '$timeout','$location', 'TS
             }
         };
 
-        TSVService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.view2");
+        TsvService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.view2");
 
 }]);

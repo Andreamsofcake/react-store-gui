@@ -2,11 +2,14 @@ import React, { Component } from 'react'
 import { Route, IndexRoute } from 'react-router'
 import App from './components/App'
 
+import Activate from './components/Activate'
+
 import View0 from './components/View0'
 import View2 from './components/View2'
+import PageIdle from './components/PageIdle'
 
 import AdminLogin from './components/AdminLogin'
-import AdminLogin from './components/AdminHome'
+import AdminHome from './components/AdminHome'
 import AdminSettings from './components/AdminSettings'
 
 import CardVending from './components/CardVending'
@@ -23,6 +26,8 @@ import NoMatch from './components/NoMatch'
 
 export default (
 	<Route path='/' component={App}>
+		<Route path='Activate' component={Activate} />
+
 		<Route path='View0' component={View0} />
 		<Route path='View2' component={View2} />
 
@@ -38,6 +43,8 @@ export default (
 		<Route path='THANKYOU_MSG' component={ThankYouMsg} />
 
 		<Route path='Vend_Error' component={VendError} />
+
+		<Route path='Page_Idle' component={PageIdle} />
 
 		<Route path='Category_Search' component={CategorySearch} />
 		<Route path='Product_Search' component={ProductSearch} />

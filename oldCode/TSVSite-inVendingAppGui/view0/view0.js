@@ -12,8 +12,8 @@ angular.module('myApp.view0', ['ngRoute'])
   });
 }])
 
-.controller('View0Ctrl', ['$scope', '$rootScope','$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+.controller('View0Ctrl', ['$scope', '$rootScope','$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
             console.log("::view0");
             var bClickedOnce = false;
 
@@ -23,9 +23,9 @@ angular.module('myApp.view0', ['ngRoute'])
                 return translate.translate("view0", name);
             };
 
-            TSVService.session.currentView = "View0";
+            TsvService.session.currentView = "View0";
 
-            TSVService.startGeneralIdleTimer($location, $rootScope);
+            TsvService.startGeneralIdleTimer($location, $rootScope);
 
             // KENT SAYS: we're not using jQuery, replace this document.ready with:
             console.error('<<<<        FIXME: need to attach events to click and mouseover globally to TsvService.resetGeneralIdleTimer()        >>>>');
@@ -34,7 +34,7 @@ angular.module('myApp.view0', ['ngRoute'])
                 $(document).ready(function () {
                     $(document).bind('click mousemove', function() {
                         //console.log("Hi Ping reset general idle timer");
-                        TSVService.resetGeneralIdleTimer($location, $rootScope);
+                        TsvService.resetGeneralIdleTimer($location, $rootScope);
                     });
                 });
             }) (jQuery);
@@ -46,30 +46,30 @@ angular.module('myApp.view0', ['ngRoute'])
                 console.log("gotoDefaultIdlePage");
 
                 // can't go to idle page until we get settings!
-                if (TSVService.cache.custommachinesettings === undefined) {
+                if (TsvService.cache.custommachinesettings === undefined) {
                     $rootScope.reloadPage();
                     return;
                 }
 
-                if (TSVService.checkActivation().resultCode !== "SUCCESS") {
+                if (TsvService.checkActivation().resultCode !== "SUCCESS") {
                     $location.path("/Activate");
                     return;
                 }
 
-                if(TSVService.customSetting('txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
+                if(TsvService.customSetting('txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
                     $location.path("/Page_Idle");
                     return;
                 }else{
-                    if (TSVService.customSetting('singleProductDonation')) {
+                    if (TsvService.customSetting('singleProductDonation')) {
                         //console.log("Hi Ping notifyTSVReady from view0 to Make_Donation");
                         $location.path("/Make_Donation");
                         return;
                     }else{
-                        if(TSVService.customSetting('txtSearchScene', 'coil_keypad').toLowerCase() === "coil_keypad"){
+                        if(TsvService.customSetting('txtSearchScene', 'coil_keypad').toLowerCase() === "coil_keypad"){
                             $location.path("/view1");
                             return;
-                        } else if (TSVService.customSetting('txtSearchScene', 'coil_keypad').toLowerCase() === "category_search") {
-                            if (TSVService.bCustomSetting('bCategoryView', 'false')){
+                        } else if (TsvService.customSetting('txtSearchScene', 'coil_keypad').toLowerCase() === "category_search") {
+                            if (TsvService.bCustomSetting('bCategoryView', 'false')){
                                 $location.path("/Category_Search");
                                 return;
                             }else{
@@ -82,7 +82,7 @@ angular.module('myApp.view0', ['ngRoute'])
             };
 			*/
 
-            TSVService.subscribe("noEvent", function() {
+            TsvService.subscribe("noEvent", function() {
                 console.log("Got event noEvent");
                 if ($location.path() == "/view0") {
                     console.log("Redirect");
@@ -90,7 +90,7 @@ angular.module('myApp.view0', ['ngRoute'])
                 }
             }, "app.view0");
 
-            TSVService.subscribe("linkDown", function() {
+            TsvService.subscribe("linkDown", function() {
                 console.log("Got event linkDown. Switching to /view0");
                 window.location.href = "http://localhost:8085/index.html#/view0";
             }, "app.view0");

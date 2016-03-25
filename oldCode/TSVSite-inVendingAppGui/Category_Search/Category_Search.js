@@ -9,8 +9,8 @@ angular.module('myApp.Category_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
         });
     }])
 
-    .controller('Category_SearchCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('Category_SearchCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
             // $rootScope.bDisplayCgryNavigation = false;
             var bClickedOnce = false;
             // $scope.bShowCgryTitle = true;
@@ -22,10 +22,10 @@ angular.module('myApp.Category_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
             var color= 'red';
             $scope.myStyle = {'position':'absolute','left':leftOffset, 'top':topOffset};
 
-            if(TSVService.customSetting('txtIdleScene', txtIdleScene).toLowerCase() === "category_search"
-                || !TSVService.isCartEmpty()) {
-                console.log("Hi Ping Debug TSVService.session.generalIdleTimer is null and restart it");
-                TSVService.startGeneralIdleTimer($location, $rootScope);
+            if(TsvService.customSetting('txtIdleScene', txtIdleScene).toLowerCase() === "category_search"
+                || !TsvService.isCartEmpty()) {
+                console.log("Hi Ping Debug TsvService.session.generalIdleTimer is null and restart it");
+                TsvService.startGeneralIdleTimer($location, $rootScope);
             }
 
             $scope.translate = function(name){
@@ -33,11 +33,11 @@ angular.module('myApp.Category_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
             };
 
             $rootScope.updateCredit();
-            TSVService.session.currentView = "Category_Search";
+            TsvService.session.currentView = "Category_Search";
             $rootScope.cgryNavTitle = $scope.translate('SelectCategory');
             $scope.bShowPrevArrow = false;//true;//false;
             $scope.bShowNextArrow = false;//true;//false;
-            $rootScope.categories = TSVService.fetchProductCategoriesByParentCategoryID(0);
+            $rootScope.categories = TsvService.fetchProductCategoriesByParentCategoryID(0);
 
             $scope.back = function(){
                  //need to go back to the parent category page
@@ -90,11 +90,11 @@ angular.module('myApp.Category_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
 
             $rootScope.fetchCategory = function (categoryID) {
                 console.log("Need to fetch category2 : "+categoryID);
-                $rootScope.categories = TSVService.fetchProductCategoriesByParentCategoryID(categoryID);
+                $rootScope.categories = TsvService.fetchProductCategoriesByParentCategoryID(categoryID);
 
                 if($rootScope.categories.length == 0){
                     console.log("No more categories...");
-                    $rootScope.products = TSVService.fetchProductByCategory(categoryID);
+                    $rootScope.products = TsvService.fetchProductByCategory(categoryID);
                     console.log($rootScope.products[0]);
                     $location.path("/Product_Search");
                 }else{

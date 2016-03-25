@@ -9,54 +9,54 @@ angular.module('myApp.Cash_Card', ['ngRoute'])
         });
     }])
 
-    .controller('Cash_CardCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('Cash_CardCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
             $rootScope.bDisplayCgryNavigation = false;
             $scope.translate = function(name){
                 return translate.translate("Cash_Card", name);
             };
 
-            TSVService.session.currentView = "Cash_Card";
+            TsvService.session.currentView = "Cash_Card";
 
             $scope.cancel = function(){
-                TSVService.emptyCart();
-                TSVService.gotoDefaultIdlePage($location, $rootScope);
+                TsvService.emptyCart();
+                TsvService.gotoDefaultIdlePage($location, $rootScope);
             };
 
             $rootScope.updateCredit();
 
             $scope.cancel = function(){
-                TSVService.emptyCart();
-                TSVService.gotoDefaultIdlePage($location);
+                TsvService.emptyCart();
+                TsvService.gotoDefaultIdlePage($location);
             };
 
             $scope.cash = function(){
-                //TSVService.disablePaymentDevice();
-                TSVService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+                //TsvService.disablePaymentDevice();
+                TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
                 $location.path("/Cash_Vending");
             };
 
             $scope.card = function(){
-                //TSVService.disablePaymentDevice();
-                TSVService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
+                //TsvService.disablePaymentDevice();
+                TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
                 $location.path("/Card_Vending");
             };
 
             var cardTransactionHandler = function(level) {
                 console.log("Got event cardTransactionResponse()default: "+level);
-                if(!TSVService.session.bVendingInProcess) {
+                if(!TsvService.session.bVendingInProcess) {
                     if($location.path() != "/Card_Vending"){
                         $location.path("/Card_Vending");
                     }
 
-                    TSVService.cardTransaction(level);
+                    TsvService.cardTransaction(level);
                 }
             };
 
-            TSVService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cashCard");
+            TsvService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cashCard");
 
             $scope.$on('$destroy', function() {
-                TSVService.unsubscribe("cardTransactionResponse", "app.cashCard");
+                TsvService.unsubscribe("cardTransactionResponse", "app.cashCard");
             });
     }]);
 

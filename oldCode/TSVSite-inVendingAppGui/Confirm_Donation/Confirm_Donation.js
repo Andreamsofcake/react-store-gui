@@ -14,20 +14,20 @@ angular.module('myApp.Confirm_Donation', ['ngRoute'])
     });
 }])
 
-.controller('Confirm_DonationCtrl', ['$scope', '$rootScope', '$timeout', '$location','TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
-            TSVService.session.currentView = "Confirm_Donation";
+.controller('Confirm_DonationCtrl', ['$scope', '$rootScope', '$timeout', '$location','TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
+            TsvService.session.currentView = "Confirm_Donation";
             $rootScope.bShowLanguage = $rootScope.bShowLanguageFlag;
             $rootScope.bShowCredit = true;
 
-            TSVService.disablePaymentDevice();
-            TSVService.clearVendingInProcessFlag();
+            TsvService.disablePaymentDevice();
+            TsvService.clearVendingInProcessFlag();
             $rootScope.updateCredit();
 
-            TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-            $scope.bShowViewCart = (TSVService.cache.shoppingCart.summary.vendItemCount+TSVService.cache.shoppingCart.summary.dropshipItemCount) > 0;
+            TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+            $scope.bShowViewCart = (TsvService.cache.shoppingCart.summary.vendItemCount+TsvService.cache.shoppingCart.summary.dropshipItemCount) > 0;
 
-            TSVService.subscribe("notifyTSVReady", function() {
+            TsvService.subscribe("notifyTSVReady", function() {
                 console.log("Got event notifyTSVReady");
             }, "app.confirmDonation");
 
@@ -37,7 +37,7 @@ angular.module('myApp.Confirm_Donation', ['ngRoute'])
 
             $scope.cancel = function() {
                 console.log("No!!!!!!!");
-                TSVService.emptyCart();
+                TsvService.emptyCart();
                 $location.path("/Make_Donation");
             };
 

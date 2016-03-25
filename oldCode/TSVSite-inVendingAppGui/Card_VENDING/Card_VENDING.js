@@ -9,8 +9,8 @@ angular.module('myApp.Card_Vending', ['ngRoute'])
         });
     }])
 
-    .controller('Card_VendingCtrl', ['$scope', '$rootScope','$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('Card_VendingCtrl', ['$scope', '$rootScope','$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
 
         console.log("Card_VendingCtrl()");
 	
@@ -21,66 +21,66 @@ angular.module('myApp.Card_Vending', ['ngRoute'])
 	};
 
         $rootScope.updateCredit();
-        TSVService.session.currentView = "Card_Vending";
-        TSVService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
-        $scope.cart = TSVService.cache.shoppingCart.detail;
-        $scope.item = TSVService.cache.shoppingCart.detail[0];
+        TsvService.session.currentView = "Card_Vending";
+        TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
+        $scope.cart = TsvService.cache.shoppingCart.detail;
+        $scope.item = TsvService.cache.shoppingCart.detail[0];
 
-        $scope.summary = TSVService.cache.shoppingCart.summary;
+        $scope.summary = TsvService.cache.shoppingCart.summary;
         $scope.TotalPriceLabel = $scope.translate("TotalPriceLabel");
         $scope.cardTransactionResponse = $scope.translate("InstructionMessage");
         $scope.showCancelBtn = true;
             console.log("$scope.summary.TotalPrice: "+$scope.summary.TotalPrice);
 
         // TODO: use state variable(s) not messages!
-        if(TSVService.session.cardMsg != $scope.translate("ProcessingMessage")
-            && TSVService.session.cardMsg != $scope.translate("VendingMessage")
-            && TSVService.session.cardMsg != $scope.translate("InstructionMessage")) {
+        if(TsvService.session.cardMsg != $scope.translate("ProcessingMessage")
+            && TsvService.session.cardMsg != $scope.translate("VendingMessage")
+            && TsvService.session.cardMsg != $scope.translate("InstructionMessage")) {
             startCardErrorTimer();
         }
 
         resetPaymentTimer();
 
-        if(TSVService.session.bVendingInProcess) {
+        if(TsvService.session.bVendingInProcess) {
             $scope.cardTransactionResponse = $scope.translate("VendingMessage");
             $scope.showCancelBtn = false;
-            TSVService.loadingSpinner();
+            TsvService.loadingSpinner();
         }
 
         function startCardErrorTimer() {
-            TSVService.session.cardErrorTimer = $timeout(function(){
+            TsvService.session.cardErrorTimer = $timeout(function(){
                 console.log("cardErrorTimeout()");
-                TSVService.session.cardMsg = $scope.translate("InstructionMessage");
-                $scope.cardTransactionResponse = TSVService.session.cardMsg;
+                TsvService.session.cardMsg = $scope.translate("InstructionMessage");
+                $scope.cardTransactionResponse = TsvService.session.cardMsg;
             },3000);
         }
 
         function killCardErrorTimer(){
             console.log("CardErrorTimer()");
-            $timeout.cancel(TSVService.session.cardErrorTimer);
+            $timeout.cancel(TsvService.session.cardErrorTimer);
         }
 
         function killTimers(){
             console.log("killTimers()");
-            $timeout.cancel(TSVService.session.paymentTimer);
-            $timeout.cancel(TSVService.session.cardErrorTimer);
+            $timeout.cancel(TsvService.session.paymentTimer);
+            $timeout.cancel(TsvService.session.cardErrorTimer);
         }
 
         $scope.cancel = function(){
             stopPaymentTimer();
-            TSVService.emptyCart();
-            TSVService.gotoDefaultIdlePage($location, $rootScope);
+            TsvService.emptyCart();
+            TsvService.gotoDefaultIdlePage($location, $rootScope);
             killTimers();
         };
 
         function startPaymentTimer(){
             //console.log("Debug startPaymentTimer");
-            TSVService.session.paymentTimer = $timeout(function(){
+            TsvService.session.paymentTimer = $timeout(function(){
                 console.log("Debug paymentTimer timeout");
-                TSVService.emptyCart();
-                TSVService.gotoDefaultIdlePage($location, $rootScope);
-                console.log("Hi Ping Payment Timer "+TSVService.cache.custommachinesettings.paymentPageTimeout);
-            }, TSVService.cache.custommachinesettings.paymentPageTimeout)
+                TsvService.emptyCart();
+                TsvService.gotoDefaultIdlePage($location, $rootScope);
+                console.log("Hi Ping Payment Timer "+TsvService.cache.custommachinesettings.paymentPageTimeout);
+            }, TsvService.cache.custommachinesettings.paymentPageTimeout)
         }
 
         function resetPaymentTimer(){
@@ -91,7 +91,7 @@ angular.module('myApp.Card_Vending', ['ngRoute'])
 
         function stopPaymentTimer(){
             //console.log("Debug stop the paymentTimer");
-            $timeout.cancel(TSVService.session.paymentTimer);
+            $timeout.cancel(TsvService.session.paymentTimer);
         }
 
         /****
@@ -114,14 +114,14 @@ angular.module('myApp.Card_Vending', ['ngRoute'])
         function startVend() {
             console.log("Hi Ping Debug card_vending card_approved and start to vend");
             $scope.cardTransactionResponse = translate.translate("Vending", "Vending");
-            TSVService.disablePaymentDevice();
+            TsvService.disablePaymentDevice();
             killTimers();
-            TSVService.loadingSpinner();
+            TsvService.loadingSpinner();
             $scope.showCancelBtn = false;
-            TSVService.session.cardMsg = translate.translate("Vending", "Vending");
-            TSVService.debug("Card Approved should vend...");
-            TSVService.startVend();
-            TSVService.setVendingInProcessFlag();
+            TsvService.session.cardMsg = translate.translate("Vending", "Vending");
+            TsvService.debug("Card Approved should vend...");
+            TsvService.startVend();
+            TsvService.setVendingInProcessFlag();
         }
 
         var cardTransactionHandler = function(level) {
@@ -129,7 +129,7 @@ angular.module('myApp.Card_Vending', ['ngRoute'])
             killCardErrorTimer();
             resetPaymentTimer();
 
-            if(!TSVService.session.bVendingInProcess){
+            if(!TsvService.session.bVendingInProcess){
                 switch(level){
                     case "CARD_INSERTED":
                         $scope.cardTransactionResponse = $scope.translate("ProcessingMessage");
@@ -165,21 +165,21 @@ angular.module('myApp.Card_Vending', ['ngRoute'])
 			}
 		};
 
-		TSVService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cardVending");
+		TsvService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cardVending");
 
 		$scope.$on('$destroy', function() {
-			TSVService.unsubscribe("cardTransactionResponse", "app.cardVending");
+			TsvService.unsubscribe("cardTransactionResponse", "app.cardVending");
 		});
 
 		var vendResponseHandler = function(processStatus){
-			TSVService.vendResponse(processStatus, $location);
+			TsvService.vendResponse(processStatus, $location);
 			stopPaymentTimer();
 		};
 
-		TSVService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
+		TsvService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
 
 		$scope.$on('$destroy', function() {
-			TSVService.unsubscribe("vendResponse", "app.cardVending");
+			TsvService.unsubscribe("vendResponse", "app.cardVending");
 		});
 
 		if ($scope.summary.TotalPrice < 0.01) {

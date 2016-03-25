@@ -9,17 +9,17 @@ angular.module('myApp.THANKYOU_MSG', ['ngRoute'])
         });
     }])
 
-    .controller('THANKYOU_MSGCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', '$window', function($scope, $rootScope, $timeout, $location, TSVService, $window) {
+    .controller('THANKYOU_MSGCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', '$window', function($scope, $rootScope, $timeout, $location, TsvService, $window) {
         $rootScope.updateCredit();
 
         $rootScope.bDisplayCgryNavigation = $rootScope.bDisplayCgryNavigation2;
 
-        TSVService.session.thankyouTimer = $timeout(thankyouTimeout, TSVService.cache.custommachinesettings.thankyouPageTimeout);
+        TsvService.session.thankyouTimer = $timeout(thankyouTimeout, TsvService.cache.custommachinesettings.thankyouPageTimeout);
 
         function thankyouTimeout(){
             console.log("thankyouTimeout()");
             //$location.path("/view1");
-            TSVService.gotoDefaultIdlePage($location, $rootScope);
+            TsvService.gotoDefaultIdlePage($location, $rootScope);
         }
     }]);
 

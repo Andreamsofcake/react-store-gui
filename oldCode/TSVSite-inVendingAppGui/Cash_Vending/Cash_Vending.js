@@ -9,8 +9,8 @@ angular.module('myApp.Cash_Vending', ['ngRoute'])
         });
     }])
 
-    .controller('Cash_VendingCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('Cash_VendingCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
 
             $rootScope.bDisplayCgryNavigation = false;
 
@@ -19,15 +19,15 @@ angular.module('myApp.Cash_Vending', ['ngRoute'])
             };
 
             $rootScope.updateCredit();
-            TSVService.session.currentView = "Cash_Vending";
-            TSVService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+            TsvService.session.currentView = "Cash_Vending";
+            TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
 
-            $scope.summary = TSVService.cache.shoppingCart.summary;
-            $scope.insertedAmount = TSVService.session.creditBalance;
-                $scope.summary = TSVService.cache.shoppingCart.summary;
-                $scope.insertedAmount = TSVService.session.creditBalance;
+            $scope.summary = TsvService.cache.shoppingCart.summary;
+            $scope.insertedAmount = TsvService.session.creditBalance;
+                $scope.summary = TsvService.cache.shoppingCart.summary;
+                $scope.insertedAmount = TsvService.session.creditBalance;
                 console.log($scope.translate('HintMessageInsertCash'));
-                $scope.cart = TSVService.cache.shoppingCart.detail;
+                $scope.cart = TsvService.cache.shoppingCart.detail;
 
                 $scope.showCancelBtnCash = true;
                 $scope.hintMsg = $scope.translate('HintMessageInsertCash');
@@ -37,28 +37,28 @@ angular.module('myApp.Cash_Vending', ['ngRoute'])
 
                 RootscopeActions.setSession(‘bVendedOldCredit’, this.checkBalance())
 
-                if(TSVService.session.bVendingInProcess){
-                    TSVService.debug("TSVService.session.bVendingInProcess: "+TSVService.session.bVendingInProcess);
+                if(TsvService.session.bVendingInProcess){
+                    TsvService.debug("TsvService.session.bVendingInProcess: "+TsvService.session.bVendingInProcess);
                     $scope.hintMsg = $scope.translate('HintMessageVending');
                     $scope.showCancelBtnCash = false;
-                    TSVService.loadingSpinner();
+                    TsvService.loadingSpinner();
                     stopPaymentTimer();
                 }
 
                 $scope.cancel = function(){
-                    TSVService.emptyCart();
+                    TsvService.emptyCart();
                     stopPaymentTimer();
-                    TSVService.gotoDefaultIdlePage($location, $rootScope);
+                    TsvService.gotoDefaultIdlePage($location, $rootScope);
                 };
 
                 function startPaymentTimer(){
                     //console.log("Hi Ping Debug startPaymentTimer");
-                    TSVService.session.paymentTimer = $timeout(function(){
+                    TsvService.session.paymentTimer = $timeout(function(){
                         console.log("Hi Ping Debug paymentTimer timeout");
-                        TSVService.emptyCart();
-                        TSVService.gotoDefaultIdlePage($location, $rootScope);
+                        TsvService.emptyCart();
+                        TsvService.gotoDefaultIdlePage($location, $rootScope);
                         stopPaymentTimer();
-                    }, TSVService.cache.custommachinesettings.paymentPageTimeout)
+                    }, TsvService.cache.custommachinesettings.paymentPageTimeout)
                 }
 
                 function resetPaymentTimer(){
@@ -69,33 +69,33 @@ angular.module('myApp.Cash_Vending', ['ngRoute'])
 
                 function stopPaymentTimer(){
                     //console.log("Debug stop the paymentTimer");
-                    $timeout.cancel(TSVService.session.paymentTimer);
+                    $timeout.cancel(TsvService.session.paymentTimer);
                 }
 
                 var creditBalanceHandler = function(ins, balance){
-                    TSVService.debug("PingPing Cash page Got event Cash_Vending creditBalanceChanged: "+ins+" balance: "+balance);
-                    TSVService.session.creditBalance = balance/100.00;
-                    $scope.insertedAmount = TSVService.session.creditBalance;
+                    TsvService.debug("PingPing Cash page Got event Cash_Vending creditBalanceChanged: "+ins+" balance: "+balance);
+                    TsvService.session.creditBalance = balance/100.00;
+                    $scope.insertedAmount = TsvService.session.creditBalance;
 
-                    if(TSVService.session.bVendingInProcess){
+                    if(TsvService.session.bVendingInProcess){
                         $scope.hintMsg = "Vending...";
                         $scope.showCancelBtnCash = false;
-                        TSVService.loadingSpinner();
+                        TsvService.loadingSpinner();
                     }
                     resetPaymentTimer();
                 };
 
                 function checkBalance(){
-                    TSVService.debug("Hi Ping Debug cash page checkBalance()");
-                    var total = TSVService.cache.shoppingCart.summary.TotalPrice;
+                    TsvService.debug("Hi Ping Debug cash page checkBalance()");
+                    var total = TsvService.cache.shoppingCart.summary.TotalPrice;
 
-                    if(TSVService.session.creditBalance >= total && TSVService.cache.shoppingCart.detail.length > 0) {
-                        TSVService.disablePaymentDevice();
-                        if(!TSVService.session.bVendingInProcess){
+                    if(TsvService.session.creditBalance >= total && TsvService.cache.shoppingCart.detail.length > 0) {
+                        TsvService.disablePaymentDevice();
+                        if(!TsvService.session.bVendingInProcess){
                             $scope.hintMsg = $scope.translate('HintMessageVending');
                             $scope.showCancelBtnCash = false;
-                            TSVService.loadingSpinner();
-                            TSVService.startVend();
+                            TsvService.loadingSpinner();
+                            TsvService.startVend();
                             return true;
                         }
                         return false;
@@ -103,38 +103,38 @@ angular.module('myApp.Cash_Vending', ['ngRoute'])
                     return false;
                 }
 
-                TSVService.subscribe("creditBalanceChanged", creditBalanceHandler, "app.cashVending");
+                TsvService.subscribe("creditBalanceChanged", creditBalanceHandler, "app.cashVending");
 
                 $scope.$on('$destroy', function() {
-                    TSVService.unsubscribe("creditBalanceChanged", "app.cashVending");
+                    TsvService.unsubscribe("creditBalanceChanged", "app.cashVending");
                 });
 
                 var cardTransactionHandler = function(level) {
                     console.log("Got event cardTransactionResponse()default: "+level);
-                    if(!TSVService.session.bVendingInProcess) {
+                    if(!TsvService.session.bVendingInProcess) {
                         if($location.path() != "/Card_Vending"){
                             $location.path("/Card_Vending");
                         }
 
-                        TSVService.cardTransaction(level);
+                        TsvService.cardTransaction(level);
                     }
                 };
 
-                TSVService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cashVending");
+                TsvService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.cashVending");
 
                 $scope.$on('$destroy', function() {
-                    TSVService.unsubscribe("cardTransactionResponse", "app.cashVending")
+                    TsvService.unsubscribe("cardTransactionResponse", "app.cashVending")
                 });
 
                 var vendResponseHandler = function(processStatus){
-                    TSVService.debug("GUI Debug vendResponseHandler()!!!!!!!!!!!!!!!");
-                    TSVService.vendResponse(processStatus, $location);
+                    TsvService.debug("GUI Debug vendResponseHandler()!!!!!!!!!!!!!!!");
+                    TsvService.vendResponse(processStatus, $location);
                     stopPaymentTimer();
                 };
 
-                TSVService.subscribe("vendResponse", vendResponseHandler, "app.cashVending");
+                TsvService.subscribe("vendResponse", vendResponseHandler, "app.cashVending");
 
                 $scope.$on('$destroy', function() {
-                    TSVService.unsubscribe("vendResponse", "app.cashVending")
+                    TsvService.unsubscribe("vendResponse", "app.cashVending")
                 });
     }]);

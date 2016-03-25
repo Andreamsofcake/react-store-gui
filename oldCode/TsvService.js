@@ -6,7 +6,7 @@ import axios from 'axios'
  */
 
 //var avt = angular.module('avt', []);
-//avt.factory('TSVService', ['$rootScope', '$timeout', 'translate', '$filter', function($rootScope, $timeout, translate, $filter) {
+//avt.factory('TsvService', ['$rootScope', '$timeout', 'translate', '$filter', function($rootScope, $timeout, translate, $filter) {
 
     var tsvApi = [
         "activate",

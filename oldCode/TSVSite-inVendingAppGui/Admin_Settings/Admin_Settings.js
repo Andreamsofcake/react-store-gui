@@ -51,37 +51,37 @@ kbApp.config(['AVT_VKI_CONFIG', function(AVT_VKI_CONFIG) {
         };
     }]);
 
-kbApp.controller('Admin_SettingsCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-    function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+kbApp.controller('Admin_SettingsCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+    function($scope, $rootScope, $timeout, $location, TsvService, translate) {
 
     $scope.translate = function(name){
         return translate.translate("Admin_Settings", name);
     };
 
     $rootScope.updateCredit();
-    TSVService.session.currentView = "Admin_Settings";
+    TsvService.session.currentView = "Admin_Settings";
 
-    if(Object.getOwnPropertyNames(TSVService.cache.machineSettings).length === 0){
-        TSVService.cache.machineSettings = TSVService.fetchAllMachineSettings();
+    if(Object.getOwnPropertyNames(TsvService.cache.machineSettings).length === 0){
+        TsvService.cache.machineSettings = TsvService.fetchAllMachineSettings();
     }
 
-    $scope.defaultLanguage = TSVService.cache.machineSettings.defaultLanguage;
-    $scope.ccProcessorMode = TSVService.cache.machineSettings.CCProcessorMode;
-    $scope.machineSerialNumber = TSVService.cache.machineSettings.MachineSerialNumber;
-    $scope.merchantKey = TSVService.cache.machineSettings.CCMerchantKey;
-    $scope.merchantID = TSVService.cache.machineSettings.CCMerchantID;
-    $scope.dropSensorAttached = TSVService.cache.machineSettings.DropSensorAttached;
-    $scope.ccReaderType = TSVService.cache.machineSettings.CCReaderType;
-    $scope.vmcPlatform = TSVService.cache.machineSettings.VMCPlatform;
-    $scope.machineCount = TSVService.cache.machineSettings.MachineCount;
-    $scope.comPort = TSVService.cache.machineSettings.VMCControlCOMPort;
-    $scope.salesTaxRate = TSVService.cache.machineSettings.SalesTaxRate;
-    $scope.shoppingCartMaxItemCount = TSVService.cache.machineSettings.ShoppingCartMaxItemCount;
-    $scope.bHasShoppingCart = TSVService.cache.custommachinesettings.bHasShoppingCart;
-    $scope.singleProductDonation = TSVService.cache.custommachinesettings.singleProductDonation;
-    $scope.minimumDonationAmount = TSVService.cache.custommachinesettings.minimumDonationAmount;
+    $scope.defaultLanguage = TsvService.cache.machineSettings.defaultLanguage;
+    $scope.ccProcessorMode = TsvService.cache.machineSettings.CCProcessorMode;
+    $scope.machineSerialNumber = TsvService.cache.machineSettings.MachineSerialNumber;
+    $scope.merchantKey = TsvService.cache.machineSettings.CCMerchantKey;
+    $scope.merchantID = TsvService.cache.machineSettings.CCMerchantID;
+    $scope.dropSensorAttached = TsvService.cache.machineSettings.DropSensorAttached;
+    $scope.ccReaderType = TsvService.cache.machineSettings.CCReaderType;
+    $scope.vmcPlatform = TsvService.cache.machineSettings.VMCPlatform;
+    $scope.machineCount = TsvService.cache.machineSettings.MachineCount;
+    $scope.comPort = TsvService.cache.machineSettings.VMCControlCOMPort;
+    $scope.salesTaxRate = TsvService.cache.machineSettings.SalesTaxRate;
+    $scope.shoppingCartMaxItemCount = TsvService.cache.machineSettings.ShoppingCartMaxItemCount;
+    $scope.bHasShoppingCart = TsvService.cache.custommachinesettings.bHasShoppingCart;
+    $scope.singleProductDonation = TsvService.cache.custommachinesettings.singleProductDonation;
+    $scope.minimumDonationAmount = TsvService.cache.custommachinesettings.minimumDonationAmount;
 
-    var defaultLanguage = (('languageDefaulted' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.languageDefaulted != ""))?TSVService.cache.custommachinesettings.languageDefaulted:"En";
+    var defaultLanguage = (('languageDefaulted' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.languageDefaulted != ""))?TsvService.cache.custommachinesettings.languageDefaulted:"En";
     $scope.supportLanguages = $rootScope.supportLanguages;
     var languages = $scope.supportLanguages.split(";");
     var option;
@@ -102,8 +102,8 @@ kbApp.controller('Admin_SettingsCtrl', ['$scope', '$rootScope', '$timeout', '$lo
 
         var dfltLang = $("#defaultLanguage").val();
         console.log("$(#defaultLanguage).val(): "+ dfltLang);
-        TSVService.cache.custommachinesettings.languageDefaulted = dfltLang;
-        TSVService.setCustomMachineSetting("languageDefaulted", TSVService.cache.custommachinesettings.languageDefaulted);
+        TsvService.cache.custommachinesettings.languageDefaulted = dfltLang;
+        TsvService.setCustomMachineSetting("languageDefaulted", TsvService.cache.custommachinesettings.languageDefaulted);
     };
 
     //Card Processor Mode
@@ -116,90 +116,90 @@ kbApp.controller('Admin_SettingsCtrl', ['$scope', '$rootScope', '$timeout', '$lo
     option.text = "Certification";
     y.add(option);
 
-    $("#cardProcessorMode").val(TSVService.cache.machineSettings.CCProcessorMode);
+    $("#cardProcessorMode").val(TsvService.cache.machineSettings.CCProcessorMode);
 
     document.getElementById('cardProcessorMode').onchange = function () {
-        TSVService.cache.machineSettings.CCProcessorMode = $("#cardProcessorMode").val();
-        TSVService.setMachineSetting("CCProcessorMode", TSVService.cache.machineSettings.CCProcessorMode);
+        TsvService.cache.machineSettings.CCProcessorMode = $("#cardProcessorMode").val();
+        TsvService.setMachineSetting("CCProcessorMode", TsvService.cache.machineSettings.CCProcessorMode);
     };
 
     $scope.backToAdminHome = function(){
-        TSVService.removeKeyboard();
+        TsvService.removeKeyboard();
         $location.path("/Admin_Home");
     };
 
     //need to save data in sql database
     $scope.save = function(){
         console.log("save!");
-        if(TSVService.cache.machineSettings.MachineSerialNumber != $scope.machineSerialNumber){
-            TSVService.setMachineSetting("MachineSerialNumber", $scope.machineSerialNumber);
-            TSVService.cache.machineSettings.MachineSerialNumber = $scope.machineSerialNumber;
+        if(TsvService.cache.machineSettings.MachineSerialNumber != $scope.machineSerialNumber){
+            TsvService.setMachineSetting("MachineSerialNumber", $scope.machineSerialNumber);
+            TsvService.cache.machineSettings.MachineSerialNumber = $scope.machineSerialNumber;
         }
 
-        if(TSVService.cache.machineSettings.CCMerchantKey != $scope.merchantKey){
-            TSVService.setMachineSetting("CCMerchantKey", $scope.merchantKey);
-            TSVService.cache.machineSettings.CCMerchantKey = $scope.merchantKey;
+        if(TsvService.cache.machineSettings.CCMerchantKey != $scope.merchantKey){
+            TsvService.setMachineSetting("CCMerchantKey", $scope.merchantKey);
+            TsvService.cache.machineSettings.CCMerchantKey = $scope.merchantKey;
         }
 
-        if(TSVService.cache.machineSettings.CCMerchantID != $scope.merchantID){
-            TSVService.setMachineSetting("CCMerchantID", $scope.merchantID);
-            TSVService.cache.machineSettings.CCMerchantID = $scope.merchantID;
+        if(TsvService.cache.machineSettings.CCMerchantID != $scope.merchantID){
+            TsvService.setMachineSetting("CCMerchantID", $scope.merchantID);
+            TsvService.cache.machineSettings.CCMerchantID = $scope.merchantID;
         }
 
-        if(TSVService.cache.machineSettings.DropSensorAttached != $scope.dropSensorAttached){
-            TSVService.setMachineSetting("DropSensorAttached", $scope.dropSensorAttached);
-            TSVService.cache.machineSettings.DropSensorAttached = $scope.dropSensorAttached;
+        if(TsvService.cache.machineSettings.DropSensorAttached != $scope.dropSensorAttached){
+            TsvService.setMachineSetting("DropSensorAttached", $scope.dropSensorAttached);
+            TsvService.cache.machineSettings.DropSensorAttached = $scope.dropSensorAttached;
         }
 
-        if(TSVService.cache.machineSettings.CCReaderType != $scope.ccReaderType){
-            TSVService.setMachineSetting("CCReaderType", $scope.ccReaderType);
-            TSVService.cache.machineSettings.CCReaderType = $scope.ccReaderType;
+        if(TsvService.cache.machineSettings.CCReaderType != $scope.ccReaderType){
+            TsvService.setMachineSetting("CCReaderType", $scope.ccReaderType);
+            TsvService.cache.machineSettings.CCReaderType = $scope.ccReaderType;
         }
 
-        if(TSVService.cache.machineSettings.VMCPlatform != $scope.vmcPlatform){
-            TSVService.setMachineSetting("VMCPlatform", $scope.vmcPlatform);
-            TSVService.cache.machineSettings.VMCPlatform = $scope.vmcPlatform;
+        if(TsvService.cache.machineSettings.VMCPlatform != $scope.vmcPlatform){
+            TsvService.setMachineSetting("VMCPlatform", $scope.vmcPlatform);
+            TsvService.cache.machineSettings.VMCPlatform = $scope.vmcPlatform;
         }
 
-        if(TSVService.cache.machineSettings.MachineCount != $scope.machineCount){
-            TSVService.setMachineSetting("MachineCount", $scope.machineCount);
-            TSVService.cache.machineSettings.MachineCount = $scope.machineCount;
+        if(TsvService.cache.machineSettings.MachineCount != $scope.machineCount){
+            TsvService.setMachineSetting("MachineCount", $scope.machineCount);
+            TsvService.cache.machineSettings.MachineCount = $scope.machineCount;
         }
 
-        if(TSVService.cache.machineSettings.VMCControlCOMPort != $scope.comPort){
-            TSVService.setMachineSetting("VMCControlCOMPort", $scope.comPort);
-            TSVService.cache.machineSettings.VMCControlCOMPort = $scope.comPort;
+        if(TsvService.cache.machineSettings.VMCControlCOMPort != $scope.comPort){
+            TsvService.setMachineSetting("VMCControlCOMPort", $scope.comPort);
+            TsvService.cache.machineSettings.VMCControlCOMPort = $scope.comPort;
         }
 
-        if(TSVService.cache.machineSettings.SalesTaxRate != $scope.salesTaxRate){
-            TSVService.setMachineSetting("SalesTaxRate", $scope.salesTaxRate);
-            TSVService.cache.machineSettings.SalesTaxRate = $scope.salesTaxRate;
+        if(TsvService.cache.machineSettings.SalesTaxRate != $scope.salesTaxRate){
+            TsvService.setMachineSetting("SalesTaxRate", $scope.salesTaxRate);
+            TsvService.cache.machineSettings.SalesTaxRate = $scope.salesTaxRate;
         }
 
-        if(TSVService.cache.machineSettings.ShoppingCartMaxItemCount!= $scope.shoppingCartMaxItemCount){
-            TSVService.setMachineSetting("ShoppingCartMaxItemCount", $scope.shoppingCartMaxItemCount);
-            TSVService.cache.machineSettings.shoppingCartMaxItemCount = $scope.shoppingCartMaxItemCount;
+        if(TsvService.cache.machineSettings.ShoppingCartMaxItemCount!= $scope.shoppingCartMaxItemCount){
+            TsvService.setMachineSetting("ShoppingCartMaxItemCount", $scope.shoppingCartMaxItemCount);
+            TsvService.cache.machineSettings.shoppingCartMaxItemCount = $scope.shoppingCartMaxItemCount;
         }
 
-        if(('languageSupported' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.languageSupported != $scope.supportLanguages)){
+        if(('languageSupported' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.languageSupported != $scope.supportLanguages)){
             $rootScope.supportLanguages = $scope.supportLanguages;
-            TSVService.setCustomMachineSetting("languageSupported", $scope.supportLanguages);
-            TSVService.cache.custommachinesettings.languageSupported = $scope.supportLanguages;
+            TsvService.setCustomMachineSetting("languageSupported", $scope.supportLanguages);
+            TsvService.cache.custommachinesettings.languageSupported = $scope.supportLanguages;
         }
 
-        if(('bHasShoppingCart' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.bHasShoppingCart != $scope.bHasShoppingCart)){
-            TSVService.setCustomMachineSetting("bHasShoppingCart", $scope.bHasShoppingCart);
-            TSVService.cache.custommachinesettings.bHasShoppingCart = $scope.bHasShoppingCart;
+        if(('bHasShoppingCart' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.bHasShoppingCart != $scope.bHasShoppingCart)){
+            TsvService.setCustomMachineSetting("bHasShoppingCart", $scope.bHasShoppingCart);
+            TsvService.cache.custommachinesettings.bHasShoppingCart = $scope.bHasShoppingCart;
         }
 
-        if(('singleProductDonation' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.singleProductDonation != $scope.singleProductDonation)){
-            TSVService.setCustomMachineSetting("singleProductDonation", $scope.singleProductDonation);
-            TSVService.cache.custommachinesettings.singleProductDonation = $scope.singleProductDonation;
+        if(('singleProductDonation' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.singleProductDonation != $scope.singleProductDonation)){
+            TsvService.setCustomMachineSetting("singleProductDonation", $scope.singleProductDonation);
+            TsvService.cache.custommachinesettings.singleProductDonation = $scope.singleProductDonation;
         }
 
-        if(('minimumDonationAmount' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.minimumDonationAmount != $scope.minimumDonationAmount)){
-            TSVService.setCustomMachineSetting("minimumDonationAmount", $scope.minimumDonationAmount);
-            TSVService.cache.custommachinesettings.minimumDonationAmount = $scope.minimumDonationAmount;
+        if(('minimumDonationAmount' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.minimumDonationAmount != $scope.minimumDonationAmount)){
+            TsvService.setCustomMachineSetting("minimumDonationAmount", $scope.minimumDonationAmount);
+            TsvService.cache.custommachinesettings.minimumDonationAmount = $scope.minimumDonationAmount;
         }
     }
 }]);

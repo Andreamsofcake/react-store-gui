@@ -6,7 +6,7 @@ import * as _E from 'elemental'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { browserHistory } from 'react-router'
 
 class Vend_Error extends Component {
 
@@ -15,6 +15,7 @@ class Vend_Error extends Component {
     super(props, context);
 
     RootscopeActions.setSession('currentView', 'Vend_Error');
+    RootscopeActions.setCache('currentLocation', '/Vend_Error');
     RootscopeActions.updateCredit();
     this.state = {
       errorMsg1: RootscopeStore.getSession('vendErrorMsg1'),

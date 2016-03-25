@@ -4,6 +4,9 @@ import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
 
+import { browserHistory } from 'react-router'
+import * as _E from 'elemental'
+
 class Product_Search extends Component {
 
   constructor(props, context) {
@@ -19,22 +22,46 @@ class Product_Search extends Component {
     RootscopeActions.updateCredit();
     RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance'))
     RootscopeActions.setSession('currentView', 'Product_Search');
+    RootscopeActions.setCache('currentLocation', '/Product_Search');
+
+    var products = RootscopeStore.getConfig('products');
 
     if (RootscopeStore.getCache('custommachinesettings.bCategoryView') === false) {
-      /*this.state.products = */TsvService.fetchProduct(null, function(err, products) {
-      	this.setState({
-      		products: products
-      	});
-      });
+    	
+    	if (products) {
+    		this.state.products = products;
+    	} else {
+    		console.warn('have to go fetch all products!');
+    		console.log(RootscopeStore.getConfig('products'));
+			TsvService.fetchProduct(null, (err, data) => {
+				if (err) throw err;
+				this.setState({
+					products: data
+				});
+			});
+		}
 
     } else {
-      this.state.products = RootscopeStore.getProducts();
-      this.state.bShowBackBtn = true;
+
+    	if (products) {
+    		this.state.products = products;
+    	} else {
+    		console.warn('have to go fetch all products!');
+    		console.log(RootscopeStore.getConfig('products'));
+			this.state.bShowBackBtn = true;
+			TsvService.fetchProduct(null, (err, data) => {
+				if (err) throw err;
+				RootscopeActions.setConfig('products', data);
+				this.setState({
+					products: data
+				});
+			});
+		}
     }
 
   }
 
-  setOpacity() {
+  setOpacity(count) {
     return count == 0 ? 0.4 : 1
   }
 
@@ -52,9 +79,12 @@ class Product_Search extends Component {
 
   setPrdSelected(product, e) {
     if(product.stockCount > 0){
-      RootscopeActions.setConfig('pvr', TsvService.addToCartByProductID(product.productID));
-      {/* $location.path("/view2");*/}
-
+    	TsvService.addToCartByProductID(product.productID, (err, response) => {
+    		if (err) throw err;
+	      RootscopeActions.setConfig('pvr', response);
+	      // this will throw it to the simple checkout page, don't want to do that we want to shop!
+	      // browserHistory.push("/View2");
+      	});
     }
   }
 
@@ -63,7 +93,13 @@ class Product_Search extends Component {
   }
 
   updateCategory(categoryID) {
-      RootscopeStore.getProducts(TsvService.fetchProductByCategory(categoryID));
+  	TsvService.fetchProductByCategory(categoryID, (err, data) => {
+		if (err) throw err;
+		RootscopeActions.setConfig('products', data);
+		this.setState({
+			products: data
+		});
+  	});
   }
 
   back() {
@@ -79,49 +115,62 @@ class Product_Search extends Component {
   }
 
   render() {
-    var products = RootscopeStore.getProducts();
+    var products = this.state.products;
+    if (!products || !products.length) {
+    	return (
+		  <_E.Row className="Product_Search" >
+
+			<_E.Col>
+
+			<h2>{Translate.translate('Product_Search','OneMomentPlease')}</h2>
+			
+			</_E.Col>
+    		</_E.Row>
+    	);
+    }
     return (
 
       <_E.Row className="Product_Search" >
 
         <_E.Col>
           { this.state.bDisplayCgry ? this.renderCategoryTable() : null }
-
-        <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
+	        <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
         </_E.Col>
-        {/* slider container*/}
-        <_E.Row class="container_slider">
-          <_E.Col>
 
+        {/* slider container*/}
+        <_E.Row gutter={0} className="container_slider">
               {/* enumerate all photos
               { this.renderImageSlider(products)}
 
               prev / next controls
-              <div class="arrow prev" href="#" onClick=(this.showPrev()}></div>
-              <div class="arrow next" href="#" onClick=(this.showNext()}></div>
+              <div className="arrow prev" href="#" onClick=(this.showPrev()}></div>
+              <div className="arrow next" href="#" onClick=(this.showNext()}></div>
 
               extra navigation controls*/}
 
-              <ul className="flex-container">
                   {products.map((product, $index) => {
+                  /*
+                  if (/ProductImageNotFound/.test(product.imagePath)) {
+                  	return null;
+                  }
+                  */
                     return (
-                      <li key={$index} className={'flex-item' + (this.isActive($index) ? ' active' : '')} style={{ opacity: this.setOpacity(stockCount) }}>
+                      <_E.Col basis="25%" key={$index} className={'flex-item' + (this.isActive($index) ? ' active' : '')} style={{ opacity: this.setOpacity(product.stockCount) }}>
 
-                          <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
+                          <div className="product" id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
 
-                              <figcaption>{product.productName}</figcaption>
+                              <h4>{product.productName}</h4>
 
                               <img src={product.imagePath} alt={product.description} title={product.description} />
 
-                              <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
+                              <p className="prdPrice">${TsvService.currencyFilter(product.price) }</p>
 
-                          </figure>
+                          </div>
 
-                      </li>
+                      </_E.Col>
                     )
                   })}
-              </ul>
-            </_E.Col>
+
           </_E.Row>
 
           {this.renderBackBtn()}
@@ -136,13 +185,13 @@ class Product_Search extends Component {
     <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
 
       {slider container}
-      <div class="container_slider">
+      <div className="container_slider">
 
            enumerate all photos
           { this.renderImageSlider(products)}
           prev / next controls
-          <div class="arrow prev" href="#" onClick=(this.showPrev()}></div>
-          <div class="arrow next" href="#" onClick=(this.showNext()}></div>
+          <div className="arrow prev" href="#" onClick=(this.showPrev()}></div>
+          <div className="arrow next" href="#" onClick=(this.showNext()}></div>
           extra navigation controls
 
           <ul className="flex-container">
@@ -173,7 +222,7 @@ class Product_Search extends Component {
   /* renderImageSlider(products) {
     {Object.keys(products).map(function(product){
       return (
-         <img class="slide" ng-swipe-right={showPrev()} ng-swipe-left={showNext()} ng-show="isActive($index)" src="{{product.imagePath}}" />
+         <img className="slide" ng-swipe-right={showPrev()} ng-swipe-left={showNext()} ng-show="isActive($index)" src="{{product.imagePath}}" />
       )
     })}
   } */

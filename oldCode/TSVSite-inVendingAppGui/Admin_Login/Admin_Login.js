@@ -9,22 +9,22 @@ angular.module('myApp.Admin_Login', ['ngRoute'])
         });
     }])
 
-    .controller('Admin_LoginCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('Admin_LoginCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
 
         $scope.translate = function(name){
             return translate.translate("Admin_Login", name);
         };
 
         $scope.instructionMessage = $scope.translate('Password');
-        TSVService.session.currentView = "Admin_Login";
-        TSVService.disableLoginDevices();
-        TSVService.emptyCart();
+        TsvService.session.currentView = "Admin_Login";
+        TsvService.disableLoginDevices();
+        TsvService.emptyCart();
         $scope.num = "";
         $scope.maxChars = 6;
 
         $scope.enter = function(){
-            var res = TSVService.validateAdminPassword($scope.num);
+            var res = TsvService.validateAdminPassword($scope.num);
 
             switch(res.result){
                 case "VALID":

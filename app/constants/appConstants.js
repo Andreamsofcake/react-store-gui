@@ -21,6 +21,8 @@ var appConstants = keyMirror({
 	UPDATE_ROOT_CONFIG: null,
 	UPDATE_ROOT_CACHE: null,
 	UPDATE_ROOT_SESSION: null,
+	
+	TEST_EMULATOR_RESULT: null,
 
 // Foo Section Describer (optional)
 	EXAMPLE_ACTION_CONSTANT: null,

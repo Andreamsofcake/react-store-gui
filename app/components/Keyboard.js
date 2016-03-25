@@ -95,7 +95,7 @@ class Keyboard extends Component {
 		browserHistory.push('/Shopping_Cart');
 
 	} else {
-		browserHistory.push('/view2');
+		browserHistory.push('/View2');
 	}
 
   }

@@ -9,15 +9,15 @@ angular.module('myApp.Admin_System_Info', ['ngRoute'])
         });
     }])
 
-    .controller('Admin_System_InfoCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('Admin_System_InfoCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
 
         $scope.translate = function(name){
             return translate.translate("System_Info", name);
         };
 
-        $scope.versionInfos = TSVService.enumerateComponents();
-        TSVService.session.currentView = "System_Info";
+        $scope.versionInfos = TsvService.enumerateComponents();
+        TsvService.session.currentView = "System_Info";
 
         $scope.backToAdminHome = function(){
             $location.path("/Admin_Home");
