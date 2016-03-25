@@ -25,19 +25,6 @@ class Admin_Inventory extends Component {
     }
 
     if(RootscopeStore.getCache('machineList').length > 1){
-        /*
-          Create dropdown with machine list
-
-          addMachineOptions(){
-              var x = document.getElementById("selectMachine");
-
-              for(var i=0; i< TSVService.cache.machineList.length; i++) {
-                  var option = document.createElement("option");
-                  option.text = $scope.translate("Machine") + " " + (Number(TSVService.cache.machineList[i]) + 1);
-                  x.add(option);
-              }
-            }
-        */
         this.setState({
           bShowDropDownForMachines: true,
         })
@@ -207,6 +194,14 @@ class Admin_Inventory extends Component {
     return ""
   }
 
+  getMachineSelectOptions() {
+    var options = [];
+    RootscopeStore.getCache('machineList').forEach( MACHINE => {
+      options.push({ label: 'Machine ' + MACHINE, value: MACHINE });
+    })
+    return options;
+  }
+
   // Add change listeners to stores
   componentDidMount() {
   }
@@ -357,19 +352,12 @@ class Admin_Inventory extends Component {
     return(
       <_E.Col>
         <_E.Row>
-          { this.state.bShowDropDownForMachines ? this.renderShowDropDownForMachines() : null }
+            { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
             <_E.Button id="fillMachine" onClick={this.fillMachine}>{Translate.translate('Admin_Inventory', 'FillMachine')}</_E.Button>
             <p id="displayMachine">{Translate.translate('Admin_Inventory','FillAllCoilsForMachine')} { this.state.machineID + 1 }</p>
         </_E.Row>
       </_E.Col>
     )
-  }
-
-  renderShowDropDownForMachines() {
-    return(
-      <_E.FormSelect name="selectMachine" value={this.state.machineID} options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
-    )
-    /*<select id="selectMachine" data-ng-show="bShowDropDownForMachines"></select>*/
   }
 
   renderProductInfo() {
