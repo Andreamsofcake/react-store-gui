@@ -103,7 +103,7 @@ class Admin_Jofemar_Exerciser extends Component {
     TsvService.subscribe("notifyVmsEvent", (eventArgs) => {
         if (browserHistory.push() !== "/Admin_Jofemar_Exerciser")
             return;
-        if (this.errs == 2) {
+        if (this.state.errs == 2) {
             //clearStatus();
             // var clearStatus = function() {
             //     $scope.errs = 0;
