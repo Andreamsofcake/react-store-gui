@@ -38,8 +38,8 @@ class Admin_Auto_Map extends Component {
     // cellDiv
     // lastRow
     // lastRow = -1;
-    if(!TsvService.getSession('bRunningAutoMap'){
-        TsvService.setSession('bRunningAutoMap', true);
+    if(!RootscopeStore.getSession('bRunningAutoMap'){
+        RootscopeActions.setSession('bRunningAutoMap', true);
         TsvService.runAutoMap(machineID, -1, () => {});
     }
   }
