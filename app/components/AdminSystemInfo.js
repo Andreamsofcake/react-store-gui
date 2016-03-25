@@ -13,9 +13,9 @@ class System_Info extends Component {
     // MUST call super() before any this.*
     super(props, context);
     RootscopeActions.setSession('currentView', 'System_Info');
-    this.state = {
-      versionInfos: TsvService.enumerateComponents()
-    }
+    TsvService.enumerateComponents((err, data) => {
+       this.setState({ versionInfos: data })
+    })
 
   }
 

@@ -37,9 +37,10 @@ class Admin_Inventory extends Component {
 
   fillCoil(){
     if(this.state.num != ""){
-        this.setState({
-          vpbc: TsvService.adminValidateProductByCoil(this.state.num);
-        })
+      TsvService.adminValidateProductByCoil(this.state.num,( err, data) => {
+           this.setState({   vpbc: data })
+         });
+        }
 
         switch (this.state.vpbc.result) {
             case "UNKNOWN":
