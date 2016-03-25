@@ -59,22 +59,25 @@ class Admin_Inventory extends Component {
                 this.setState({
                   instructionMessage: Translate.translate('Admin_Inventory', 'UnknownProduct')
                 });
-                TsvService.onGeneralTimeout(3000){
-                  //Not correct timeout, need fixing
-                  this.setState({
-                    instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'))
-                  });
-                };
+                setTimeout( () => {
+                    this.setState({
+                      instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+                      bEnterCoil: true,
+                      num: ""
+                    });
+                }, 3000);
                 break;
             case "INVALID_PRODUCT":
               this.setState({
                 instructionMessage: Translate.translate('Admin_Inventory', 'InvalidProduct')
               });
-              TsvService.onGeneralTimeout(3000){
-                this.setState({
-                  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'))
-                });
-              };
+              setTimeout( () => {
+                  this.setState({
+                    instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+                    bEnterCoil: true,
+                    num: ""
+                  });
+              }, 3000);
               break;
             default:
               this.setState({
@@ -110,13 +113,13 @@ class Admin_Inventory extends Component {
             num: "";
           });
 
-          TsvService.onGeneralTimeout(2000){
-            this.setState({
-              instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
-              bEnterCoil: true,
-              num: ""
-            });
-          }
+          setTimeout( () => {
+              this.setState({
+                instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+                bEnterCoil: true,
+                num: ""
+              });
+          }, 2000);
       }
   }
 
@@ -129,13 +132,13 @@ class Admin_Inventory extends Component {
             num: "";
           });
 
-          TsvService.onGeneralTimeout(2000){
-            this.setState({
-              instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
-              bEnterCoil: true,
-              num: ""
-            });
-          }
+          setTimeout( () => {
+              this.setState({
+                instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+                bEnterCoil: true,
+                num: ""
+              });
+          }, 2000);
       }
   }
 
@@ -155,22 +158,25 @@ class Admin_Inventory extends Component {
             this.setState({
               instructionMessage: Translate.translate('Admin_Inventory', 'UnknownProduct')
             });
-            TsvService.onGeneralTimeout(3000){
-              //Not correct timeout, need fixing
-              this.setState({
-                instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'))
-              });
-            };
+            setTimeout( () => {
+                this.setState({
+                  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+                  bEnterCoil: true,
+                  num: ""
+                });
+            }, 3000);
             break;
         case "INVALID_PRODUCT":
           this.setState({
             instructionMessage: Translate.translate('Admin_Inventory', 'InvalidProduct')
           });
-          TsvService.onGeneralTimeout(3000){
-            this.setState({
-              instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'))
-            });
-          };
+          setTimeout( () => {
+              this.setState({
+                instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+                bEnterCoil: true,
+                num: ""
+              });
+          }, 3000);
           break;
         default:
           this.setState({
