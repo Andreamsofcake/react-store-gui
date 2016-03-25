@@ -5,33 +5,39 @@ var debug = require('debug')('vending-app-gui:tsv-proxy');
 module.exports = {
 
 	Multievent: function(request, reply) {
+		//var actionToken = request.payload.actionToken || false;
 		if (request.payload._ws_args) {
 			debug('[multievent] WEBSOCKET PAYLOAD');
 			request.payload = request.payload._ws_args;
 		}
-		debug('typeof payload: ' + typeof request.payload);
-		debug(request.payload);
+		//debug('typeof payload: ' + typeof request.payload);
+		//debug(request.payload);
 		var data = { status: 'ok', msg: 'Multievent test response', payload: request.payload };
-		if (request.payload.actionToken) {
-			data.actionToken = request.payload.actionToken;
+		/*
+		if (actionToken) {
+			data.actionToken = actionToken;
 		}
+		*/
 		return reply( data ).code(200);
 	},
 
 	Flashapi: function(request, reply) {
 		//debug(request.payload);
+		//var actionToken = request.payload.actionToken || false;
 		if (request.payload._ws_args) {
 			debug('[flashapi] WEBSOCKET PAYLOAD');
 			request.payload = request.payload._ws_args;
 		}
-		debug(request.payload);
+		//debug(request.payload);
 		if (process.env.CANNED_API_DATA) {
 			return handleCannedApiResponse(request, reply);
 		}
 		var data = { status: 'ok', msg: 'Flashapi test response', payload: request.payload };
-		if (request.payload.actionToken) {
-			data.actionToken = request.payload.actionToken;
+		/*
+		if (actionToken) {
+			data.actionToken = actionToken;
 		}
+		*/
 		return reply( data ).code(200);
 	}
 
@@ -117,12 +123,13 @@ function handleCannedApiResponse(request, reply) {
 				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
 				break;
 		}
-		
-		if (request.payload.actionToken) {
+		/*
+		if (actionToken) {
 			var data = JSON.parse(response);
-			data.actionToken = request.payload.actionToken;
+			data.actionToken = actionToken;
 			response = JSON.stringify(data);
 		}
+		*/
 		return reply( response ).code(200);
 	}
 }
