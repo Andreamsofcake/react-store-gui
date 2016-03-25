@@ -17,13 +17,19 @@ class Admin_Check_Faults extends Component {
     this.state = {
       bRunningClearFaults: false,
       machineID: 0,
-      faults: TsvService.getFaultCodes(this.state.machineID.toString())
-    }
+
+    };
+    TsvService.getFaultCodes(this.state.machineID.toString(), (err, data)=>{
+      this.setState({
+        faults: data
+      })
+    });
+
     if (RootscopeStore.getCache('machineList').length > 1) {
       this.setState({
         bShowDropDownForMachines: true,
       })
-    }
+    };
 
   }
 
@@ -36,7 +42,11 @@ class Admin_Check_Faults extends Component {
         this.setState({
           bRunningClearFaults:true
         })
-        TsvService.clearMachineFaults(this.state.machineID.toString());
+        TsvService.getFaultCodes(this.state.machineID.toString(), (err, data)=>{
+          this.setState({
+            faults: data
+          })
+        })
       }
   }
 
@@ -46,7 +56,12 @@ class Admin_Check_Faults extends Component {
       TsvService.subscribe("notifyResetComplete", (machineID) => {
         this.setState({
           bRunningClearFaults: false,
-          faults = TsvService.getFaultCodes(machineID.toString())
+        })
+
+        TsvService.getFaultCodes(machineID.toString(), (err, data)=>{
+          this.setState({
+            faults: data
+          })
         })
       }, "app.checkFaults");
   }
