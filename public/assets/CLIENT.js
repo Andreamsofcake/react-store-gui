@@ -48886,11 +48886,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TsvService = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../lib/TsvService\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _TsvService = __webpack_require__(46);
 
 	var _TsvService2 = _interopRequireDefault(_TsvService);
 
-	var _Translate = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../lib/Translate\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _Translate = __webpack_require__(47);
 
 	var Translate = _interopRequireWildcard(_Translate);
 
@@ -49165,7 +49165,7 @@
 	  return Admin_Login;
 	}(_react.Component);
 
-	exports.default = AdminLogin;
+	exports.default = Admin_Login;
 
 /***/ }
 /******/ ]);

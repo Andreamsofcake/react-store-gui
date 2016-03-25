@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import TsvService from '../lib/TsvService'
-import * as Translate from '../lib/Translate'
+import TsvService from '../../lib/TsvService'
+import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
@@ -135,4 +135,4 @@ class Admin_Login extends Component {
   }
 }
 
-export default AdminLogin
+export default Admin_Login
