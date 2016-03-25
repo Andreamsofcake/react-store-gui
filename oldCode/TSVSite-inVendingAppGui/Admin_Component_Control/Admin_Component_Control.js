@@ -9,9 +9,9 @@ angular.module('myApp.Admin_Component_Control', ['ngRoute'])
         });
     }])
 
-    .controller('Admin_Component_ControlCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
-            TSVService.session.currentView = "Admin_Component_Control";
+    .controller('Admin_Component_ControlCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
+            TsvService.session.currentView = "Admin_Component_Control";
 
             $scope.translate = function(name){
                 return translate.translate("Admin_Component_Control", name);
@@ -19,7 +19,7 @@ angular.module('myApp.Admin_Component_Control', ['ngRoute'])
 
             // KENT: this is the only place this method is called, let's just do a re-render instead?
             $scope.restartGUI = function(){
-                TSVService.refreshIndexPage();
+                TsvService.refreshIndexPage();
             };
 
             $scope.backToAdminHome = function(){

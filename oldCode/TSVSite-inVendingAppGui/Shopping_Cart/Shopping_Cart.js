@@ -9,8 +9,8 @@ angular.module('myApp.Shopping_Cart', ['ngRoute'])
         });
     }])
 
-    .controller('Shopping_CartCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('Shopping_CartCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
             $rootScope.bDisplayCgryNavigation = $rootScope.bDisplayCgryNavigation2;
 
             $scope.translate = function(name){
@@ -18,18 +18,18 @@ angular.module('myApp.Shopping_Cart', ['ngRoute'])
             };
 
             $rootScope.updateCredit();
-            TSVService.session.currentView = "Shopping_Cart";
-            $scope.totalPrice = TSVService.cache.shoppingCart.summary.TotalPrice;
-            $scope.cart = TSVService.cache.shoppingCart.detail;
-            $scope.salesTaxAmount = TSVService.cache.shoppingCart.summary.salesTaxAmount;
+            TsvService.session.currentView = "Shopping_Cart";
+            $scope.totalPrice = TsvService.cache.shoppingCart.summary.TotalPrice;
+            $scope.cart = TsvService.cache.shoppingCart.detail;
+            $scope.salesTaxAmount = TsvService.cache.shoppingCart.summary.salesTaxAmount;
             $rootScope.summary = $scope.summary;
             $scope.emptyCart = false;
             $scope.bShowTax = $scope.salesTaxAmount > 0;
 
             $scope.bShowCgryNav = true;
 
-            if(('bHasCouponCodes' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.bHasCouponCodes != "")){
-                if(TSVService.cache.custommachinesettings.bHasCouponCodes.toLowerCase() === "true"){
+            if(('bHasCouponCodes' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.bHasCouponCodes != "")){
+                if(TsvService.cache.custommachinesettings.bHasCouponCodes.toLowerCase() === "true"){
                     $scope.bShowCouponBtn = true;
                 }
             }
@@ -39,74 +39,74 @@ angular.module('myApp.Shopping_Cart', ['ngRoute'])
             };
 
             $scope.cancel = function(){
-                TSVService.emptyCart();
+                TsvService.emptyCart();
                 $rootScope.itemsInCart = 0;
-                TSVService.gotoDefaultIdlePage($location, $rootScope);
+                TsvService.gotoDefaultIdlePage($location, $rootScope);
             };
 
             $scope.shopmore = function(){
-                TSVService.gotoDefaultIdlePage($location, $rootScope);
+                TsvService.gotoDefaultIdlePage($location, $rootScope);
             };
 
             $scope.minusQty = function(coil){
                 console.log("Minus Qty for Coil: "+coil);
-                TSVService.removeFromCartByCoilNo(coil);
-                TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-                $scope.cart = TSVService.cache.shoppingCart.detail;
-                $scope.totalPrice = TSVService.cache.shoppingCart.summary.TotalPrice;
+                TsvService.removeFromCartByCoilNo(coil);
+                TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+                $scope.cart = TsvService.cache.shoppingCart.detail;
+                $scope.totalPrice = TsvService.cache.shoppingCart.summary.TotalPrice;
                 $scope.emptyCart =  $scope.cart.length <= 0;
                 if($scope.emptyCart){
-                    TSVService.gotoDefaultIdlePage($location, $rootScope);
+                    TsvService.gotoDefaultIdlePage($location, $rootScope);
                 }
             };
 
             $scope.addQty = function(coil){
                 console.log("Add Qty for Coil: "+coil);
-                TSVService.addToCartByCoil(coil);
-                TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-                $scope.cart = TSVService.cache.shoppingCart.detail;
-                $scope.totalPrice = TSVService.cache.shoppingCart.summary.TotalPrice;
+                TsvService.addToCartByCoil(coil);
+                TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+                $scope.cart = TsvService.cache.shoppingCart.detail;
+                $scope.totalPrice = TsvService.cache.shoppingCart.summary.TotalPrice;
             };
 
             $scope.removeAllQty = function(coil, qty){
                 console.log("removeAll for coil: "+coil);
                 console.log("qty: "+qty);
 
-                TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-                $scope.cart = TSVService.cache.shoppingCart.detail;
+                TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+                $scope.cart = TsvService.cache.shoppingCart.detail;
 
                 while(qty > 0){
                     console.log("Removed!");
-                    TSVService.removeFromCartByCoilNo(coil);
+                    TsvService.removeFromCartByCoilNo(coil);
 
-                    TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-                    $scope.cart = TSVService.cache.shoppingCart.detail;
+                    TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+                    $scope.cart = TsvService.cache.shoppingCart.detail;
                     qty--;
                 }
-                TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-                $scope.cart = TSVService.cache.shoppingCart.detail;
-                $scope.totalPrice = TSVService.cache.shoppingCart.summary.TotalPrice;
+                TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+                $scope.cart = TsvService.cache.shoppingCart.detail;
+                $scope.totalPrice = TsvService.cache.shoppingCart.summary.TotalPrice;
                 console.log("After remove: "+$scope.cart.length);
                 $scope.emptyCart =  $scope.cart.length <= 0;
                 if($scope.emptyCart){
-                    TSVService.gotoDefaultIdlePage($location, $rootScope);
+                    TsvService.gotoDefaultIdlePage($location, $rootScope);
                 }
             };
 
             var cardTransactionHandler = function(level) {
                 console.log("Got event cardTransactionResponse()default: "+level);
 
-                if(!TSVService.session.bVendingInProcess) {
+                if(!TsvService.session.bVendingInProcess) {
                     if($location.path() != "/Card_Vending"){
                         $location.path("/Card_Vending");
                     }
-                    TSVService.cardTransaction(level);
+                    TsvService.cardTransaction(level);
                 }
             };
 
-            TSVService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.shoppingCart");
+            TsvService.subscribe("cardTransactionResponse", cardTransactionHandler, "app.shoppingCart");
 
             $scope.$on('$destroy', function() {
-                TSVService.unsubscribe("cardTransactionResponse", "app.shoppingCart");
+                TsvService.unsubscribe("cardTransactionResponse", "app.shoppingCart");
             });
     }]);

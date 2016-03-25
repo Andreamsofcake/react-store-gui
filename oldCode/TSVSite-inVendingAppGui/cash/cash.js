@@ -9,18 +9,18 @@ angular.module('myApp.cash', ['ngRoute'])
         });
     }])
 
-    .controller('CashCtrl',  ['$scope', '$timeout', '$location', 'TSVService', function($scope, $timeout, $location, TSVService) {
-        TSVService.session.currentView = "cash";
-        TSVService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+    .controller('CashCtrl',  ['$scope', '$timeout', '$location', 'TsvService', function($scope, $timeout, $location, TsvService) {
+        TsvService.session.currentView = "cash";
+        TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
 
-        $scope.summary = TSVService.cache.shoppingCart.summary;
-        $scope.insertedAmount = TSVService.session.inserted;
+        $scope.summary = TsvService.cache.shoppingCart.summary;
+        $scope.insertedAmount = TsvService.session.inserted;
         $scope.hintMsg = "Insert Cash Now....";
         $scope.showCancelBtnCash = true;
-        $scope.item = TSVService.cache.shoppingCart.detail[0];
+        $scope.item = TsvService.cache.shoppingCart.detail[0];
         startPaymentTimer();
 
-        if(TSVService.session.bVendingInProcess){
+        if(TsvService.session.bVendingInProcess){
             $scope.hintMsg = "Vending...";
             $scope.showCancelBtnCash = false;
             loadingSpinner();
@@ -28,8 +28,8 @@ angular.module('myApp.cash', ['ngRoute'])
         }
 
         $scope.cancel = function(){
-            TSVService.emptyCart();
-            TSVService.session.inserted = 0;
+            TsvService.emptyCart();
+            TsvService.session.inserted = 0;
             stopPaymentTimer();
             $location.path("/view1");
         }
@@ -74,12 +74,12 @@ angular.module('myApp.cash', ['ngRoute'])
         // KENT NOTE: pass "view1" to the TsvService.startPaymentTimer() here
         function startPaymentTimer(){
             console.log("Hi Ping Debug startPaymentTimer");
-            TSVService.session.paymentTimer = $timeout(function(){
+            TsvService.session.paymentTimer = $timeout(function(){
                 console.log("Hi Ping Debug paymentTimer timeout");
-                TSVService.emptyCart();
-                TSVService.session.inserted = 0;
+                TsvService.emptyCart();
+                TsvService.session.inserted = 0;
                 $location.path("/view1");
-            }, TSVService.cache.custommachinesettings.paymentPageTimeout)
+            }, TsvService.cache.custommachinesettings.paymentPageTimeout)
         }
 
         function resetPaymentTimer(){
@@ -90,16 +90,16 @@ angular.module('myApp.cash', ['ngRoute'])
 
         function stopPaymentTimer(){
             console.log("Hi Ping Debug stop the paymentTimer");
-            $timeout.cancel(TSVService.session.paymentTimer);
+            $timeout.cancel(TsvService.session.paymentTimer);
         }
 
-        TSVService.subscribe("creditBalanceChanged", function(ins, balance){
-            if(TSVService.session.currentView != "cash")    return;
+        TsvService.subscribe("creditBalanceChanged", function(ins, balance){
+            if(TsvService.session.currentView != "cash")    return;
 
             console.log("Got event cash creditBalanceChanged: "+ins+" balance: "+balance);
-            TSVService.session.inserted = balance/100.00;
-            TSVService.session.creditBalance = $scope.summary.TotalPrice - (balance/100.00);
-            $scope.insertedAmount = TSVService.session.inserted;
+            TsvService.session.inserted = balance/100.00;
+            TsvService.session.creditBalance = $scope.summary.TotalPrice - (balance/100.00);
+            $scope.insertedAmount = TsvService.session.inserted;
 
             checkBalance();
             resetPaymentTimer();
@@ -107,16 +107,16 @@ angular.module('myApp.cash', ['ngRoute'])
 
         function checkBalance(){
             console.log("Hi Ping Debug checkBalance()!");
-            var total = TSVService.cache.shoppingCart.summary.TotalPrice;
+            var total = TsvService.cache.shoppingCart.summary.TotalPrice;
 
-            if((TSVService.session.inserted * 100) >= (total * 100) && TSVService.cache.shoppingCart.detail.length > 0){
-                TSVService.disablePaymentDevice();
-                if(!TSVService.session.bVendingInProcess){
+            if((TsvService.session.inserted * 100) >= (total * 100) && TsvService.cache.shoppingCart.detail.length > 0){
+                TsvService.disablePaymentDevice();
+                if(!TsvService.session.bVendingInProcess){
                     $scope.hintMsg = "Vending...";
-                    TSVService.startVend();
+                    TsvService.startVend();
                     loadingSpinner();
                     $scope.showCancelBtnCash = false;
-                    TSVService.session.bVendingInProcess = true;
+                    TsvService.session.bVendingInProcess = true;
                 }
                 return 1;
             }

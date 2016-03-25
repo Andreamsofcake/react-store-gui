@@ -24,7 +24,8 @@ if (isClient) {
 		socket_connected = true;
 		if (queue.length) {
 			queue.forEach( Q => {
-				console.log('emit Q command: '+Q.command);
+				console.log('[WS] emit Q command: '+Q.command);
+				console.log(Q.data);
 				websocket.emit(Q.command, Q.data);
 			});
 		}
@@ -63,8 +64,11 @@ if (isClient) {
 		console.log(data);
 		console.log(' -----------------------------------------------------------------');
 		//*/
-		if (ActionHandlers[event] && typeof ActionHandlers[event] == 'function') {
-			ActionHandlers[event](data);
+		var handle = event;
+		if (data && data.actionToken) { handle += ':' + actionToken }
+
+		if (ActionHandlers[handle] && typeof ActionHandlers[handle] == 'function') {
+			ActionHandlers[handle](data);
 		} else {
 			console.log(' -----------------------------------------------------------------');
 			console.log('[ >>>>> SOCKET catch-all, nobody was registered to handle this <<<<<< ] ... event, then data');
@@ -80,9 +84,11 @@ if (isClient) {
 		// removes need for defining websocket.on('foo', function), also removes need to include all actions and processing logic here.
 		// explore using PubSub for handling multiple listeners per socket pingback events
 		// see: utils/PubSub.js
-		registerActionHandler(action, handler) {
-			console.log('registering action handler for: '+action);
-			ActionHandlers[action] = handler;
+		registerActionHandler(action, handler, actionToken) {
+			var handle = action;
+			if (actionToken) { handle += ':' + actionToken }
+			console.log('registering action handler for: '+handle);
+			ActionHandlers[handle] = handler;
 		},
 
 		unregisterActionHandler(action, handler) {
@@ -100,11 +106,12 @@ if (isClient) {
 			SocketHandler.socket.emit('testResponse', TD);
 		},
 	
-		socketSendCommand(cmd, data, handler) {
+		socketSendCommand(cmd, data, handler, actionToken) {
 			// optional auto-link up to ActionHandler
 			if (handler && typeof handler == 'function') {
-				this.registerActionHandler(cmd, handler);
+				this.registerActionHandler(cmd, handler, actionToken);
 			}
+			data.actionToken = actionToken;
 			SocketHandler.emit(cmd, data);
 		},
 		
@@ -132,7 +139,7 @@ if (isClient) {
 		}
 	}
 	
-	//window.SH = SocketHandler;
+	//window.SH = { SocketHandler, expo: module.exports };
 
 } else {
 	module.exports = false;

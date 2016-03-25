@@ -4,7 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 class Card_Vending extends Component {
@@ -14,36 +14,45 @@ class Card_Vending extends Component {
     super(props, context);
 
     RootscopeActions.setSession('currentView', 'Card_Vending');
+    RootscopeActions.setCache('currentLocation', '/Card_Vending');
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.updateCredit();
-    TsvService.enablePaymentDevice()
+    TsvService.enablePaymentDevice('PAYMENT_TYPE_CREDIT_CARD', () => {})
+
     this.state = {
-      cart: RootscopeStore.getCache('shoppingCart.detail'),
-      item: RootscopeStore.getCache('shoppingCart.detail')[0],
-      summary: RootscopeStore.getCache('shoppingCart.summary'),
-      showCancelBtn: true,
-      cardTransactionResponse: Translate.translate('Card_Vending', 'InstructionMessage')
+		cart: RootscopeStore.getCache('shoppingCart.detail'),
+		// testing, this fails: (so setting differently below)
+		//item: RootscopeStore.getCache('shoppingCart.detail')[0],
+		summary: RootscopeStore.getCache('shoppingCart.summary'),
+		showCancelBtn: true,
+		cardTransactionResponse: Translate.translate('Card_Vending', 'InstructionMessage')
     };
+
+	this.state.item = this.state.cart && this.state.cart.length ? this.state.cart[0] : false;
+
+/*
+    if (RootscopeStore.getSession('cardMsg')!= Translate.translate('ProcessingMessage')
+		&& RootscopeStore.getSession('cardMsg')!= Translate.translate('VendingMessage')
+		&& RootscopeStore.getSession('cardMsg')!= Translate.translate('InstructionMessage')
+		) {
+		TsvService.startCardErrorTimer();
+	}
+*/
+
+    if (RootscopeStore.getSession('bVendingInProcess')){
+		this.state.showSpinner = true;
+		this.state.cardTransactionResponse = Translate.translate('Card_Vending', "VendingMessage");
+		this.state.showCancelBtnCash = false;
+    }
+
+    //if (!this.state.summary || (this.state.summary && this.state.summary.TotalPrice < 0.01)) {
+    if (this.state.summary && this.state.summary.TotalPrice < 0.01) {
+		console.warn("this.summary.TotalPrice: "+ this.summary.TotalPrice);
+		console.warn("this.summary.TotalPrice less than 0.01 should start vend");
+		this.startVend();
+	}
+
     TsvService.resetPaymentTimer();
-
-    if(RootscopeStore.getSession('cardMsg')!= Translate.translate('ProcessingMessage')
-      && RootscopeStore.getSession('cardMsg')!= Translate.translate('VendingMessage')
-      && RootscopeStore.getSession('cardMsg')!= Translate.translate('InstructionMessage')
-      ){
-      TsvService.startCardErrorTimer();
-     }
-
-    if(RootscopeStore.getSession('bVendingInProcess')){
-       this.state.showSpinner = true;
-       this.state.cardTransactionResponse = Translate.translate('Card_Vending', "VendingMessage");
-       this.state.showCancelBtnCash = false;
-     }
-
-    if (this.state.summary.TotalPrice < 0.01) {
- 			console.log("this.summary.TotalPrice: "+ this.summary.TotalPrice);
- 			console.log("this.summary.TotalPrice less than 0.01 should start vend");
- 			this.startVend();
- 		}
 
   }
 
@@ -64,77 +73,82 @@ class Card_Vending extends Component {
 
   ****/
 
-  startVend() {
-      TsvServicesService.disablePaymentDevice();
-      TsvService.killTimers();
-      RootscopeActions.setSession('cardMsg', Translate.translate("Vending", "Vending"));
-      //TsvService.debug("Card Approved should vend...");
-      TsvService.startVend();
-      TsvService.setVendingInProcessFlag();
-      this.setState({
-        cardTransactionRespose: Translate.translate("Vending", "Vending"),
-        showSpinner: true,
-        showCancelBtn: false
-      })
-  }
+	startVend() {
+		TsvService.disablePaymentDevice(null, () => {});
+		TsvService.killTimers();
+		RootscopeActions.setSession('cardMsg', Translate.translate("Card_Vending", "Vending", "Vending"));
+		//TsvService.debug("Card Approved should vend...");
+		TsvService.startVend(null, () => {});
+		TsvService.setVendingInProcessFlag();
 
-  cancel(){
-    TsvService.stopPaymentTimer();
-    TsvService.emptyCart();
-    TsvService.gotoDefaultIdlePage();
-  }
+		this.setState({
+			cardTransactionRespose: Translate.translate("Card_Vending", "Vending", "Vending"),
+			showSpinner: true,
+			showCancelBtn: false
+		});
+	}
+
+	cancel(){
+		TsvService.stopPaymentTimer();
+		TsvService.emptyCart();
+		TsvService.gotoDefaultIdlePage();
+	}
 
   // Add change listeners to stores
 	cardTransactionHandler(level) {
 
-		TsvService.killCardErrorTimer();
+		TsvService.killTimers('cardErrorTimer');
 		TsvService.resetPaymentTimer();
-		var msg;
+		var msg, showSpinner = false;
 
 		if (!RootscopeStore.getSession('bVendingInProcess')) {
 
 			switch(level){
 				case "CARD_INSERTED":
-					msg = Translate.translate("ProcessingMessage");
+					msg = Translate.translate("Card_Vending", "ProcessingMessage");
+					showSpinner = true;
 					break;
 
 				case "CARD_PROCESSING":
-					msg = Translate.translate("ProcessingMessage");
+					msg = Translate.translate("Card_Vending", "ProcessingMessage");
+					showSpinner = true;
 					break;
 
 				case "CARD_APPROVED":
-					startVend();
+					msg = Translate.translate("Card_Vending", "CardAccepted");
+					this.startVend();
 					break;
 
 				case "CARD_INVALID_READ":
-					msg = Translate.translate("CardInvalidMessage");
-					TsvService.startCardErrorTimer();
+					msg = Translate.translate("Card_Vending", "CardInvalidMessage");
+					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
 					break;
 
 				case "CARD_DECLINED":
-					msg =  Translate.translate("CardDeclinedMessage");
-					TsvService.startCardErrorTimer();
+					msg =  Translate.translate("Card_Vending", "CardDeclinedMessage");
+					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
 					break;
 
 				case "CARD_CONNECTION_FAILURE":
-					msg = Translate.translate("CardConnectionErrorMessage");
-					TsvService.startCardErrorTimer();
+					msg = Translate.translate("Card_Vending", "CardConnectionErrorMessage");
+					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
 					break;
 
 				case "CARD_UNKNOWN_ERROR":
-					msg = Translate.translate("CardUnknownErrorMessage");
-					TsvService.startCardErrorTimer();
+					msg = Translate.translate("Card_Vending", "CardUnknownErrorMessage");
+					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
 					break;
 
 				default:
 					console.log("Card_Vending Got event cardTransactionResponse()default: "+level);
-					msg = Translate.translate("ErrorMessage");
-					TsvService.startCardErrorTimer();
+					msg = Translate.translate("Card_Vending", "ErrorMessage");
+					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
 					break;
 			}
 
 			this.setState({
-				cardTransactionResponse: msg
+				cardTransactionResponse: msg,
+				showSpinner: showSpinner
 			});
 		}
   }
@@ -145,16 +159,17 @@ class Card_Vending extends Component {
 		var vendResponseHandler = function(processStatus){
 			TsvService.vendResponse(processStatus);
 			TsvService.stopPaymentTimer();
-	  };
-    TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.cardVending");
-    TsvService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
+		};
+
+    	TsvService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
+	    TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.cardVending");
 	}
 
-  // Remove change listers from stores
-  componentWillUnmount() {
-    TsvService.unsubscribe("cardTransactionResponse", "app.cardVending");
-    TsvService.unsubscribe("vendResponse", "app.cardVending");
-  }
+	// Remove change listers from stores
+	componentWillUnmount() {
+		TsvService.unsubscribe("vendResponse", "app.cardVending");
+		TsvService.unsubscribe("cardTransactionResponse", "app.cardVending");
+	}
 
   render() {
     return (
@@ -162,7 +177,7 @@ class Card_Vending extends Component {
         <_E.Col>
           <h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
               <_E.Row>
-                {cart.map((prd, $index) => {
+                {this.state.cart ? this.state.cart.map((prd, $index) => {
                   return(
                     <_E.Col basis="33%" key={$index}>
 
@@ -170,11 +185,11 @@ class Card_Vending extends Component {
 
                     </_E.Col>
                   )}
-                )}
+                ) : (<p>No cart products found! probably testing</p>) }
 
               </_E.Row>
 
-        /*
+        {/*
         <table className="cart">
 
             <tr>
@@ -191,21 +206,22 @@ class Card_Vending extends Component {
             </tr>
 
         </table>
-        */
+        */}
 
-          { this.state.summary.TotalPrice >= 1 ? this.renderTotalPriceLabel() : null }
+          { this.state.summary && this.state.summary.TotalPrice >= 1 ? this.renderTotalPriceLabel() : null }
 
-          <p id = "cardResponse">{ this.state.cardTransactionResponse }</p>
+          <p id = "cardResponse">{ this.state.cardTransactionResponse || 'no msg yet' }</p>
 
-          <img id="creditCards" src="../Images/creditcards.png" alt="creditcards" />
+          { this.state.showSpinner ? this.renderSpinner() : null }
+
+          <img id="creditCards" src="/gfx/creditcards.png" alt="creditcards" />
 
           { this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null }
 
-          { this.state.showSpinner ? this.renderSpinner() : null }
         </_E.Col>
       </_E.Row>
     );
-    /*
+	{/*
     <div className="Card_Vending" >
         <h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
         <table className="cart">
@@ -237,7 +253,7 @@ class Card_Vending extends Component {
       </div>
 
 
-    */
+    */}
   }
 
   renderCancelBtnCash(){
@@ -253,8 +269,11 @@ class Card_Vending extends Component {
   }
 
   renderSpinner(){
+  	console.warn('render spinner!!!!');
     return(
-      <_E.Spinner size="md" type="inverted" />
+    	<div style={{margin:'0 auto 2em'}}>
+      <_E.Spinner size="lg" type="primary" style={{margin:'0 auto 2em'}} />
+      </div>
     )
   }
 

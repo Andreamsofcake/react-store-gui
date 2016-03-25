@@ -158,8 +158,8 @@ var RootscopeActions = {
 		var session = RootscopeStore.getSession(null, {});
 		this.setConfig('credit', session.discount + session.creditBalance);
 		/*
-		TSVService.debug("Updated credit to include discount "
-			+ TSVService.session.discount + " + " + TSVService.session.creditBalance
+		TsvService.debug("Updated credit to include discount "
+			+ TsvService.session.discount + " + " + TsvService.session.creditBalance
 			+ " = "
 			+ $rootScope.credit);
 		*/

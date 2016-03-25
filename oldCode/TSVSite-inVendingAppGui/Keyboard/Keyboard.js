@@ -9,8 +9,8 @@ angular.module('myApp.Keyboard', ['ngRoute', 'ngAnimate', 'ngTouch'])
         });
     }])
 
-    .controller('KeyboardCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('KeyboardCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
             $scope.bShowBtns = true;
             $scope.emailAddress = "";
             $scope.email = "";//may need to use rootScope
@@ -37,12 +37,12 @@ angular.module('myApp.Keyboard', ['ngRoute', 'ngAnimate', 'ngTouch'])
                 return translate.translate("Keyboard", name);
             };
         $rootScope.updateCredit();
-        TSVService.session.currentView = "Keyboard";
+        TsvService.session.currentView = "Keyboard";
         $scope.keyboardTitle = "EnterEmailTitle";
         //$rootScope.keyboardView = "Enter_Coupon";
 
-            $rootScope.credit = TSVService.session.creditBalance;
-            TSVService.session.currentView = "Keyboard";
+            $rootScope.credit = TsvService.session.creditBalance;
+            TsvService.session.currentView = "Keyboard";
             $scope.keyboardTitle = "EnterEmailTitle";
             //$rootScope.keyboardView = "Enter_Coupon";
 
@@ -59,8 +59,8 @@ angular.module('myApp.Keyboard', ['ngRoute', 'ngAnimate', 'ngTouch'])
             };
 
             $scope.back = function(){
-                TSVService.removeKeyboard();
-                if(TSVService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "true" && $location.path() != "/Shopping_Cart"){
+                TsvService.removeKeyboard();
+                if(TsvService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "true" && $location.path() != "/Shopping_Cart"){
                     $location.path("/Shopping_Cart");
                 }else{
                     $location.path("/view2");

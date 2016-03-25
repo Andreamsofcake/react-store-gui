@@ -4,7 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 class Page_Idle extends Component {
@@ -13,11 +13,13 @@ class Page_Idle extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
+    RootscopeActions.setCache('currentLocation', '/Page_Idle');
+
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.setConfig('bShowCredit', RootscopeStore.getCache('credit') && true);
 
     // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
-    TsvService.disableLoginDevices();
+    TsvService.disableLoginDevices(() => {});
 
 	var binders = [
 		'idleClicked',

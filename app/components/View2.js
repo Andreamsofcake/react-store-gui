@@ -4,7 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 class View2 extends Component {
@@ -14,8 +14,9 @@ class View2 extends Component {
     super(props, context);
 
     RootscopeActions.setSession('currentView', 'View2');
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+    RootscopeActions.setCache('currentLocation', '/View2');
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD", () => {});
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH", () => {});
     TsvService.fetchShoppingCart2(null, function(err, cart) {
     	if (err) throw err;
     	RootscopeActions.setCache('shoppingCart', cart);
@@ -27,7 +28,7 @@ class View2 extends Component {
     // moved up here, closer to the actual declaration
     //if (!RootscopeStore.getConfig('pvr')) {
     if (!item) {
-        TsvService.gotoDefaultIdlePage();
+        return TsvService.gotoDefaultIdlePage();
         //return;
     }
 
@@ -94,7 +95,7 @@ class View2 extends Component {
       /*what? $.fancybox.close();*/
 
       if (RootscopeStore.getCache('currentLocation') != RootscopeStore.getCache('currentLocation')) {
-          console.log("Path doesn't match. Not for view2, ignoring")
+          console.log("Path doesn't match. Not for View2, ignoring")
           return;
       }
 
@@ -115,18 +116,18 @@ class View2 extends Component {
                   break;
           }
       } else {
-          console.log("Ignoring credit card event, from view2, vend is in progress?");
+          console.log("Ignoring credit card event, from View2, vend is in progress?");
       }
   }
 
   // Add change listeners to stores
   componentDidMount() {
-    TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.view2");
+    TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.View2");
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-    TsvService.subscribe("cardTransactionResponse", "app.view2");
+    TsvService.subscribe("cardTransactionResponse", "app.View2");
   }
 
   render() {
@@ -139,7 +140,7 @@ class View2 extends Component {
               { this.state.bShowCheckout ? this.renderShowCheckout() : null }
 
               { this.state.bShowCouponBtn ? this.renderCouponButton() : null }
-               <_E.Row id="view2Title">
+               <_E.Row id="View2Title">
 
                     <h1>{Translate.translate('View2', 'instructionMessage')}</h1> {/*what are these: data-fittext="1" data-fittext-min="20" data-fittext-max="36" */}
 
@@ -150,13 +151,13 @@ class View2 extends Component {
                       <_E.Row className="detail">
 
                         <_E.Col lg="50%" className="detail">
-                            <img id="prdDetailImage" src={ this.imagePath } />
+                            <img id="prdDetailImage" src={ this.state.imagePath } />
                         </_E.Col>
 
                         <_E.Col lg="50%" className="detail">
 
                                  <_E.Row className="detail">
-                                     <p>{ TsvService.currencyFilter(item.price)}</p>
+                                     <p>{ TsvService.currencyFilter( this.state.item.price )}</p>
                                  </_E.Row>
 
                         </_E.Col>
@@ -184,7 +185,7 @@ class View2 extends Component {
 
             { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
 
-             <div id="view2Title">
+             <div id="View2Title">
 
                   <h1>{Translate.translate('View2', 'instructionMessage')}</h1> {/*what are these: data-fittext="1" data-fittext-min="20" data-fittext-max="36" }
 

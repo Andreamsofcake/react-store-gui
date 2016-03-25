@@ -2,12 +2,12 @@
     "CreditLabel": "Crédit",
     "BalanceLabel": "Solde",
 
-    "view0": {
+    "View0": {
         "Resetting": "Réinitialisation",
         "PleaseWait": "SVP Attendez"
     },
 
-    "view1": {
+    "View1": {
         "MakeASelection": "Veuillez Faire Votre Choix",
         "Unavailable": "Indisponible",
         "OutOfStock": "Rupture De Stock",
@@ -17,7 +17,7 @@
         "HELLO_WORLD": "Bonjour"
     },
 
-    "view2": {
+    "View2": {
         "InstructionMessage": "Insérez Carte Ou Argent Comptant",
         "InsufficientFunds": "Désolé, pas de fonds suffisants"
     },

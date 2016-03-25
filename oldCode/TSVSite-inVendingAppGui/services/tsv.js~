@@ -4,7 +4,7 @@
 
 var avt = angular.module('avt', []);
 
-avt.factory('TSVService', function() {
+avt.factory('TsvService', function() {
 
     var tsvApi = [
 

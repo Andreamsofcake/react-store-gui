@@ -15,25 +15,25 @@ angular.module('myApp.Make_Donation', ['ngRoute'])
     });
 }])
 
-.controller('Make_DonationCtrl', ['$scope', '$rootScope', '$timeout', '$location','TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
-            TSVService.session.currentView = "Make_Donation";
+.controller('Make_DonationCtrl', ['$scope', '$rootScope', '$timeout', '$location','TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
+            TsvService.session.currentView = "Make_Donation";
             $rootScope.bShowLanguage = $rootScope.bShowLanguageFlag;
             $rootScope.bShowCredit = true;
             $scope.minimumDonationAmount = 5;
             $scope.minimumDonationAmount2 = "";
 
-            if(('minimumDonationAmount' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.minimumDonationAmount != "")){
-                $scope.minimumDonationAmount = TSVService.cache.custommachinesettings.minimumDonationAmount;
+            if(('minimumDonationAmount' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.minimumDonationAmount != "")){
+                $scope.minimumDonationAmount = TsvService.cache.custommachinesettings.minimumDonationAmount;
             }
 
-            if(TSVService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "false"){
-                TSVService.emptyCart();
+            if(TsvService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "false"){
+                TsvService.emptyCart();
                 $rootScope.itemsInCart = 0;
             }
 
-            TSVService.disablePaymentDevice();
-            TSVService.clearVendingInProcessFlag();
+            TsvService.disablePaymentDevice();
+            TsvService.clearVendingInProcessFlag();
             $scope.num = "";
             $scope.dollar = "$";
             $scope.maxChars = 5;
@@ -41,10 +41,10 @@ angular.module('myApp.Make_Donation', ['ngRoute'])
             var resetInstructionMsgTimer;
             var bClickedOnce = false;
             $rootScope.defaultStr = $rootScope.bDualMachine?"---":"--";
-            TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-            $scope.bShowViewCart = (TSVService.cache.shoppingCart.summary.vendItemCount+TSVService.cache.shoppingCart.summary.dropshipItemCount) > 0;
+            TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+            $scope.bShowViewCart = (TsvService.cache.shoppingCart.summary.vendItemCount+TsvService.cache.shoppingCart.summary.dropshipItemCount) > 0;
 
-            TSVService.subscribe("notifyTSVReady", function() {
+            TsvService.subscribe("notifyTSVReady", function() {
                 console.log("Got event notifyTSVReady");
             }, "app.makeDonation");
 
@@ -68,7 +68,7 @@ angular.module('myApp.Make_Donation', ['ngRoute'])
             };
 
             $scope.enter = function(){
-                TSVService.debug("Enter Button Clicked!");
+                TsvService.debug("Enter Button Clicked!");
                 if(parseInt($scope.num) < $scope.minimumDonationAmount){
                     $scope.instructionMessage = "MinimumDonationAmount";
                     $scope.num = "";
@@ -82,7 +82,7 @@ angular.module('myApp.Make_Donation', ['ngRoute'])
                     }, 3000);
                 }else{
                     console.log("$scope.num: "+$scope.num);
-                    $rootScope.pvr = TSVService.addProductAndPriceByProductId(TSVService.cache.custommachinesettings.singleProductDonation, $scope.num);
+                    $rootScope.pvr = TsvService.addProductAndPriceByProductId(TsvService.cache.custommachinesettings.singleProductDonation, $scope.num);
                     $scope.num = "";
 
                     $scope.minimumDonationAmount2 = "";
@@ -137,13 +137,13 @@ angular.module('myApp.Make_Donation', ['ngRoute'])
                 }
             };
 
-            TSVService.startGeneralIdleTimer($location, $rootScope);
+            TsvService.startGeneralIdleTimer($location, $rootScope);
 
             /*(function ($) {
                 $(document).ready(function () {
                     $(document).bind('click mousemove', function() {
                         //console.log("reset general idle timer");
-                        TSVService.resetGeneralIdleTimer($location, $rootScope);
+                        TsvService.resetGeneralIdleTimer($location, $rootScope);
                     });
                 });
             }) (jQuery);*/

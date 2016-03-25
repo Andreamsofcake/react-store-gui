@@ -17,32 +17,28 @@ class AppLayout extends Component {
 		<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
 		<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, width=device-width" />
 		<meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="msapplication-TileColor" content="#FFFFFF" />
-		<meta name="msapplication-TileImage" content="/gfx/favi/favicon-144.png" />
-		<meta name="msapplication-config" content="/gfx/favi/browserconfig.xml" />
-
 
 		<title>SDK Vending App GUI</title>
 
 		{/* alt cdn load for socket: <script src="https://cdn.socket.io/socket.io-1.4.1.min.js"></script> */}
 		<script src="/socket.io/socket.io.js" type="text/javascript"></script>
-		{/*<script type="text/javascript">
-			var socket = io();
-			socket.on('msg', function(message) {
-				//console.log(message);
-			});
-			socket.on('connection', function() {
-				console.log('[ SOCKET IO ] connected');
-				socket.emit('testResponse');
-			});
-			console.log('[ SOCKET IO ] should be running....');
-		</script>*/}
+		{/*<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js" type="text/javascript"></script>*/}
+		{/* The core React library * /}
+		<script src="https://fb.me/react-0.14.7.js"></script>
+		{/* The ReactDOM Library * /}
+		<script src="https://fb.me/react-dom-0.14.7.js"></script>
+		*/}
 
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 		
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.1.0/foundation.min.css" />
-		<link rel="stylesheet" type="text/css" href="/styles/search.css" />
-		<link rel="stylesheet" href="/styles/custom.css" />
+		{/*<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.1.0/foundation.min.css" />*/}
+		{/*<link rel="stylesheet" type="text/css" href="http://elemental-ui.com/site.css"/>*/}
+		<link rel="stylesheet" type="text/css" href="/css/elemental-site.css"/>
+		<link rel="stylesheet" type="text/css" href="/css/styles.css"/>
+		{/*
+		<link rel="stylesheet" href="/assets/css/react-datepicker-min.css"/>
+		<link rel="stylesheet" href="/assets/css/styles.css" />
+		*/}
 	</head>
 	<body>
 

@@ -9,8 +9,8 @@ angular.module('myApp.Product_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
         });
     }])
 
-    .controller('Product_SearchCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
+    .controller('Product_SearchCtrl',  ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
             $scope.bShowBackBtn = false;
 
             $scope.translate = function(name){
@@ -30,13 +30,13 @@ angular.module('myApp.Product_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
 
             $rootScope.updateCredit();
 
-            //$rootScope.products = TSVService.fetchProduct();
-            $rootScope.credit = TSVService.session.creditBalance;
-            TSVService.session.currentView = "Product_Search";
+            //$rootScope.products = TsvService.fetchProduct();
+            $rootScope.credit = TsvService.session.creditBalance;
+            TsvService.session.currentView = "Product_Search";
 
-            //$rootScope.products = TSVService.fetchProduct();
-            if(TSVService.cache.custommachinesettings.bCategoryView.toString().toLowerCase() === "false"){
-                $scope.products = TSVService.fetchProduct();
+            //$rootScope.products = TsvService.fetchProduct();
+            if(TsvService.cache.custommachinesettings.bCategoryView.toString().toLowerCase() === "false"){
+                $scope.products = TsvService.fetchProduct();
             }else{
                 $scope.products = $rootScope.products;
                 $scope.bShowBackBtn = true;
@@ -71,20 +71,20 @@ angular.module('myApp.Product_Search', ['ngRoute', 'ngAnimate', 'ngTouch'])
                 //$("#prdImg"+index).css("opacity", 0);
 
                 if(stockCount > 0){
-                    $rootScope.pvr = TSVService.addToCartByProductID(productID);
+                    $rootScope.pvr = TsvService.addToCartByProductID(productID);
                     $location.path("/view2");
                 }
             };
 
             $scope.logoClicked = function(){
-                TSVService.gotoDefaultIdlePage($location, $rootScope);
+                TsvService.gotoDefaultIdlePage($location, $rootScope);
             };
 
             // show a certain image
             $scope.updateCategory = function (categoryID, $rootScope) {
                 //$scope._Index = index;
                 console.log("Need to update category2 : "+categoryID);
-                $scope.products = TSVService.fetchProductByCategory(categoryID);
+                $scope.products = TsvService.fetchProductByCategory(categoryID);
             };
 
             $scope.back = function(){

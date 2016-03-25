@@ -4,7 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 class Cash_Vending extends Component {
@@ -14,6 +14,7 @@ class Cash_Vending extends Component {
     super(props, context);
 
     RootscopeActions.setSession('currentView', 'Cash_Vending');
+    RootscopeActions.setCache('currentLocation', '/Cash_Vending');
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.updateCredit();
     TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
@@ -37,7 +38,7 @@ class Cash_Vending extends Component {
 
     if (RootscopeStore.getSession('bVendingInProcess')) {
 
-        TSVService.stopPaymentTimer();
+        TsvService.stopPaymentTimer();
 
         this.state.showSpinner = true;
         this.state.hintMsg = Translate.translate('Cash_Vending','HintMessageVending');
@@ -55,7 +56,7 @@ class Cash_Vending extends Component {
     TsvService.emptyCart();
     TsvService.stopPaymentTimer();
   	// only in cash.js:
-    //browserHistory.push("/view1");
+    //browserHistory.push("/View1");
     TsvService.gotoDefaultIdlePage();
   }
 

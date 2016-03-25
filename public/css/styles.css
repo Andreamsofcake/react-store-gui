@@ -1,0 +1,21 @@
+h2, h3 { margin-top: 0.5em; }
+
+.Product_Search .flex-item {
+	overflow-x: hidden;
+}
+
+.Product_Search img {
+	max-width: 95% !important;
+}
+
+#ComEmulator {
+	position: fixed;
+	top: 0;
+	right: 0;
+	margin: 10px;
+	background-color: rgba(255, 255, 255, 0.65);
+	border: 1px solid #dfdfdf;
+	border-radius: 5px;
+	padding: 10px;
+	max-width: 200px;
+}

@@ -6,7 +6,7 @@ import * as _E from 'elemental'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { browserHistory } from 'react-router'
 
 class Cash_Card extends Component {
 
@@ -16,6 +16,7 @@ class Cash_Card extends Component {
 
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.setSession('currentView', 'Cash_Card');
+    RootscopeActions.setCache('currentLocation', '/Cash_Card');
     RootscopeActions.updateCredit();
 
   };

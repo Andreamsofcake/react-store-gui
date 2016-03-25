@@ -12,15 +12,15 @@ angular.module('myApp.view1', ['ngRoute'])
     });
 }])
 
-.controller('View1Ctrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate',
-        function($scope, $rootScope, $timeout, $location, TSVService, translate) {
-            if(('singleProductDonation' in TSVService.cache.custommachinesettings) && (TSVService.cache.custommachinesettings.singleProductDonation != "")){
+.controller('View1Ctrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate',
+        function($scope, $rootScope, $timeout, $location, TsvService, translate) {
+            if(('singleProductDonation' in TsvService.cache.custommachinesettings) && (TsvService.cache.custommachinesettings.singleProductDonation != "")){
                 $location.path("/Make_Donation");
             }else{
-                if(TSVService.customSetting('txtIdleScene', 'coil_keypad').toLowerCase() !== "coil_keypad"
-                    || !TSVService.isCartEmpty()) {
-                    console.log("Hi Ping Debug TSVService.session.generalIdleTimer is null and restart it");
-                    TSVService.startGeneralIdleTimer($location, $rootScope);
+                if(TsvService.customSetting('txtIdleScene', 'coil_keypad').toLowerCase() !== "coil_keypad"
+                    || !TsvService.isCartEmpty()) {
+                    console.log("Hi Ping Debug TsvService.session.generalIdleTimer is null and restart it");
+                    TsvService.startGeneralIdleTimer($location, $rootScope);
                 }
             }
 
@@ -31,37 +31,37 @@ angular.module('myApp.view1', ['ngRoute'])
             var PVR_CART_ITEM_MAX_EXCEEDED = 4;
             var PVR_CART_VALUE_MAX_EXCEEDED = 5;
 
-            TSVService.session.currentView = "View1";
+            TsvService.session.currentView = "View1";
             $rootScope.bShowLanguage = $rootScope.bShowLanguageFlag;
             $rootScope.bShowCredit = true;
 
-            if(TSVService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "false"){
-                TSVService.emptyCart();
+            if(TsvService.cache.custommachinesettings.bHasShoppingCart.toString().toLowerCase() === "false"){
+                TsvService.emptyCart();
                 $rootScope.itemsInCart = 0;
             }
 
-            var creditObj = TSVService.fetchCreditBalance();
+            var creditObj = TsvService.fetchCreditBalance();
             $rootScope.updateCredit();
 
-            TSVService.disablePaymentDevice();
-            TSVService.clearVendingInProcessFlag();
+            TsvService.disablePaymentDevice();
+            TsvService.clearVendingInProcessFlag();
             $scope.num = "";
             $scope.maxChars = $rootScope.bDualMachine?3:2;
-            //$rootScope.credit = TSVService.session.creditBalance;
+            //$rootScope.credit = TsvService.session.creditBalance;
             var resetInstructionMsgTimer;
             var bClickedOnce = false;
             $rootScope.defaultStr = $rootScope.bDualMachine?"---":"--";
-            TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-            TSVService.session.creditBalance = $rootScope.credit;
-            //$rootScope.itemsInCart = TSVService.cache.shoppingCart.detail.qtyInCart;
+            TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+            TsvService.session.creditBalance = $rootScope.credit;
+            //$rootScope.itemsInCart = TsvService.cache.shoppingCart.detail.qtyInCart;
 
-            console.log("TSVService.cache.shoppingCart: "+TSVService.cache.shoppingCart);
-            if(TSVService.cache.shoppingCart != null && TSVService.cache.shoppingCart!=undefined){
-                console.log("TSVService.cache.shoppingCart.summary: "+TSVService.cache.shoppingCart.summary);
-                $scope.bShowViewCart = (TSVService.cache.shoppingCart.summary.vendItemCount+TSVService.cache.shoppingCart.summary.dropshipItemCount) > 0;
+            console.log("TsvService.cache.shoppingCart: "+TsvService.cache.shoppingCart);
+            if(TsvService.cache.shoppingCart != null && TsvService.cache.shoppingCart!=undefined){
+                console.log("TsvService.cache.shoppingCart.summary: "+TsvService.cache.shoppingCart.summary);
+                $scope.bShowViewCart = (TsvService.cache.shoppingCart.summary.vendItemCount+TsvService.cache.shoppingCart.summary.dropshipItemCount) > 0;
             }
 
-            TSVService.subscribe("notifyTSVReady", function() {
+            TsvService.subscribe("notifyTSVReady", function() {
                 console.log("Got event notifyTSVReady");
             }, "app.view1");
 
@@ -84,21 +84,21 @@ angular.module('myApp.view1', ['ngRoute'])
             };
 
             $scope.enter = function(){
-                TSVService.debug("Enter Button Clicked!");
+                TsvService.debug("Enter Button Clicked!");
                 $timeout.cancel(resetInstructionMsgTimer);
-                if($scope.num == "" && TSVService.cache.shoppingCart.detail.length >=1){
+                if($scope.num == "" && TsvService.cache.shoppingCart.detail.length >=1){
                     $location.path("/view2");
                     return;
                 }
-                $rootScope.pvr = TSVService.addToCartByCoil($scope.num);
+                $rootScope.pvr = TsvService.addToCartByCoil($scope.num);
                 $scope.num = "";
 
                 console.log("addToCartByCoil.result: "+$rootScope.pvr.result);
                 switch ($rootScope.pvr.result) {
                     case PVR_AVAILABLE:
-                        TSVService.debug("Enter Button Clicked! Before go to view2");
+                        TsvService.debug("Enter Button Clicked! Before go to view2");
                         $location.path("/view2");
-                        TSVService.debug("Enter Button Clicked! After go to view2");
+                        TsvService.debug("Enter Button Clicked! After go to view2");
                         return;
                     case PVR_UNAVAILABLE:
                         $scope.instructionMessage = "Unavailable";
@@ -112,16 +112,16 @@ angular.module('myApp.view1', ['ngRoute'])
                     case PVR_CART_ITEM_MAX_EXCEEDED:
                         console.log("Bug? Can't exceed 1 item cart. Resetting");
                         $scope.instructionMessage = "MaxItemsExceeded";
-                        TSVService.emptyCart();
+                        TsvService.emptyCart();
                         $rootScope.itemsInCart = 0;
-                        TSVService.fetchShoppingCart2();
+                        TsvService.fetchShoppingCart2();
                         break;
                     case PVR_CART_VALUE_MAX_EXCEEDED:
                         $scope.instructionMessage = "MaxValueExceeded";
                         break;
                     default:
                         $scope.instructionMessage = "Unavailable";
-                        TSVService.emptyCart();
+                        TsvService.emptyCart();
                         $rootScope.itemsInCart = 0;
                         break;
                 }
@@ -164,55 +164,55 @@ angular.module('myApp.view1', ['ngRoute'])
             };
 
             function couponHandler (coupon) {
-                TSVService.debug("couponHandler called");
+                TsvService.debug("couponHandler called");
                 if (!coupon.isValid || coupon.isDiscountInPercentage) {
-                    TSVService.debug("Clearing invalid or %age discount");
-                    TSVService.session.discount = 0;
+                    TsvService.debug("Clearing invalid or %age discount");
+                    TsvService.session.discount = 0;
                 } else {
-                    TSVService.debug("Setting discount");
-                    TSVService.session.discount = coupon.discount;
+                    TsvService.debug("Setting discount");
+                    TsvService.session.discount = coupon.discount;
                 }
                 $rootScope.updateCredit();
-                TSVService.cache.shoppingCart = TSVService.fetchShoppingCart2();
-                TSVService.debug("Updated credit to include discount " + $rootScope.credit);
+                TsvService.cache.shoppingCart = TsvService.fetchShoppingCart2();
+                TsvService.debug("Updated credit to include discount " + $rootScope.credit);
 
-                TSVService.autoCheckout();
+                TsvService.autoCheckout();
             };
-            TSVService.subscribe("notifyCouponEvent", couponHandler, "app.view1");
+            TsvService.subscribe("notifyCouponEvent", couponHandler, "app.view1");
 
             $scope.isLoggedIn = function () {
-                return TSVService.session.discount != 0
+                return TsvService.session.discount != 0
             };
             $scope.logout = function () {
-                TSVService.logoutShopper();
+                TsvService.logoutShopper();
             };
 
             var identityHandler = function(event, id) {
-                TSVService.debug("identityHandler called");
+                TsvService.debug("identityHandler called");
                 if (event === "LoggedIn") {
                     // prevent unwanted scans during remainder of flow
-                    TSVService.disableLoginDevices();
+                    TsvService.disableLoginDevices();
                 } else {
 
-                    if (!TSVService.session.bVendingInProcess) {
-                        TSVService.debug("!!!Going to default idle page because logged out");
-                        TSVService.emptyCart();
-                        TSVService.gotoDefaultIdlePage($location);
+                    if (!TsvService.session.bVendingInProcess) {
+                        TsvService.debug("!!!Going to default idle page because logged out");
+                        TsvService.emptyCart();
+                        TsvService.gotoDefaultIdlePage($location);
                     } else {
-                        TSVService.debug("Ignoring log-out, still vending!");
+                        TsvService.debug("Ignoring log-out, still vending!");
                     }
                 }
             };
-            TSVService.subscribe("identityEvent", identityHandler, "app.view1");
+            TsvService.subscribe("identityEvent", identityHandler, "app.view1");
 
             var creditBalanceHandler = function(ins, balance){
-                TSVService.debug("rootScope Got event cash creditBalanceChanged: "+ins+" creditBalance: "+balance);
+                TsvService.debug("rootScope Got event cash creditBalanceChanged: "+ins+" creditBalance: "+balance);
                 $.fancybox.close();
-                TSVService.session.creditBalance = balance/100.00;
+                TsvService.session.creditBalance = balance/100.00;
                 $rootScope.updateCredit();
 
-                if(!TSVService.session.bVendedOldCredit){
-                    TSVService.checkBalance();
+                if(!TsvService.session.bVendedOldCredit){
+                    TsvService.checkBalance();
 
                     if(balance != 0){
                         $location.path("/Cash_Vending");
@@ -220,12 +220,12 @@ angular.module('myApp.view1', ['ngRoute'])
                 }
             };
 
-            TSVService.subscribe("creditBalanceChanged", creditBalanceHandler, "app.view1");
+            TsvService.subscribe("creditBalanceChanged", creditBalanceHandler, "app.view1");
 
             function cashlessBeginSession(fundsAvailable) {
                 var where = $location.path();
                 console.log("cashlessBeginSession " + fundsAvailable + " view: " + where);
-                $rootScope.fundsAvailable = ((1.0) * fundsAvailable) / 100.0 + TSVService.session.discount;
+                $rootScope.fundsAvailable = ((1.0) * fundsAvailable) / 100.0 + TsvService.session.discount;
                 $rootScope.bCashless = true;
 
                 if (   where === "/view2"
@@ -234,7 +234,7 @@ angular.module('myApp.view1', ['ngRoute'])
                     || where === "/Card_Vending"
                     || where === "/Cash_Card"
                 ) {
-                    if ($rootScope.fundsAvailable >= TSVService.cache.shoppingCart.summary.TotalPrice) {
+                    if ($rootScope.fundsAvailable >= TsvService.cache.shoppingCart.summary.TotalPrice) {
                         console.log("Cashless swipe in product detail/cart... vend now");
                         $location.path("/Cashless_Vending");
                     }else {
@@ -250,11 +250,11 @@ angular.module('myApp.view1', ['ngRoute'])
                 $rootScope.bCashless = false;
             }
 
-            TSVService.subscribe("cashlessBeginSession", cashlessBeginSession, "app.view1");
+            TsvService.subscribe("cashlessBeginSession", cashlessBeginSession, "app.view1");
 
-            TSVService.subscribe("cashlessEndSession", cashlessEndSession, "app.view1");
+            TsvService.subscribe("cashlessEndSession", cashlessEndSession, "app.view1");
 
             $scope.resetInstruction();
 
-            TSVService.enableLoginDevices();
+            TsvService.enableLoginDevices();
     }]);

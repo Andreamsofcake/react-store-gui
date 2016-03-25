@@ -96,8 +96,8 @@ app.filter("trustHtml", ['$sce', function($sce) {
     }
 }]);
 
-app.controller('mainController', ['$rootScope', '$location', 'TSVService', 'translate', '$timeout', '$filter',
-    function($rootScope, $location, TSVService, translate, $timeout, $filter) {
+app.controller('mainController', ['$rootScope', '$location', 'TsvService', 'translate', '$timeout', '$filter',
+    function($rootScope, $location, TsvService, translate, $timeout, $filter) {
 
         $rootScope.reloadPage = function(){window.location.reload();};
         // * Andrea refactor 3/11
@@ -112,33 +112,33 @@ app.controller('mainController', ['$rootScope', '$location', 'TSVService', 'tran
         // $rootScope.bDisplayCgryNavigation2 = false;
         // $rootScope.categories = [];
 
-        if(Object.getOwnPropertyNames(TSVService.cache.machineSettings).length === 0){
-            TSVService.cache.machineSettings = TSVService.fetchAllMachineSettings();
+        if(Object.getOwnPropertyNames(TsvService.cache.machineSettings).length === 0){
+            TsvService.cache.machineSettings = TsvService.fetchAllMachineSettings();
         }
-        if(Object.getOwnPropertyNames(TSVService.cache.custommachinesettings).length === 0){
-            TSVService.cache.custommachinesettings = TSVService.fetchAllCustomSettings();
+        if(Object.getOwnPropertyNames(TsvService.cache.custommachinesettings).length === 0){
+            TsvService.cache.custommachinesettings = TsvService.fetchAllCustomSettings();
         }
-        if(Object.getOwnPropertyNames(TSVService.cache.machineList).length === 0){
-            TSVService.cache.machineList = TSVService.fetchMachineIds();
+        if(Object.getOwnPropertyNames(TsvService.cache.machineList).length === 0){
+            TsvService.cache.machineList = TsvService.fetchMachineIds();
 
-            if(TSVService.machineSetting("MachineCount", 1) > 1){
+            if(TsvService.machineSetting("MachineCount", 1) > 1){
                 $rootScope.bDualMachine = true;
             }
         }
 
         $rootScope.registerKF =  function() {
-            TSVService.registerComponent("KioskFramework", "1.0.0.3", "2015-12-10");
+            TsvService.registerComponent("KioskFramework", "1.0.0.3", "2015-12-10");
         };
 
         $rootScope.registerKF();
 
-        var currencyType = TSVService.machineSetting("currencyFilter", 'currency');
+        var currencyType = TsvService.machineSetting("currencyFilter", 'currency');
 
         $rootScope.currencyFilter = function(model) {
             return $filter(currencyType)(model);
         };
 
-        $rootScope.supportLanguages = TSVService.customSetting('languageSupported', 'En');
+        $rootScope.supportLanguages = TsvService.customSetting('languageSupported', 'En');
         $rootScope.bDualLanguage = $rootScope.supportLanguages.split(";").length > 1;
 
         //Run translation if selected language changes
@@ -148,29 +148,29 @@ app.controller('mainController', ['$rootScope', '$location', 'TSVService', 'tran
 
         $rootScope.cgryNavTitle = translate.translate('Category_Search', 'NavTitle');
 
-        $rootScope.bDisplayCgryNavigation2 =  TSVService.customSetting('bDisplayCgryNavigation', false);
+        $rootScope.bDisplayCgryNavigation2 =  TsvService.customSetting('bDisplayCgryNavigation', false);
 
         $rootScope.localizedImage = function(name) {
             return translate.localizedPath(name);
         };
 
         $rootScope.logoClicked = function(){
-            TSVService.gotoDefaultIdlePage($location, $rootScope);
+            TsvService.gotoDefaultIdlePage($location, $rootScope);
         };
 
         $rootScope.checkout = function() {
-            var bHasShoppingCart = TSVService.bCustomSetting('bHasShoppingCart', "true");
+            var bHasShoppingCart = TsvService.bCustomSetting('bHasShoppingCart', "true");
             if ($rootScope.fundsAvailable >= $rootScope.summary.TotalPrice) {
                 $location.path("/Cashless_Vending");
             } else {
-                console.log("bHasShoppingCart:"+TSVService.bCustomSetting('bHasShoppingCart', "true"));
+                console.log("bHasShoppingCart:"+TsvService.bCustomSetting('bHasShoppingCart', "true"));
                 if(bHasShoppingCart && $location.path() != "/Shopping_Cart"){
                     $location.path("/Shopping_Cart");
                 }else{
                     if (bHasShoppingCart) {
                         $location.path("/Shopping_Cart");
                     }
-                    if(TSVService.bCustomSetting('bAskForReceipt', "false")) {
+                    if(TsvService.bCustomSetting('bAskForReceipt', "false")) {
                         $rootScope.keyboardView = "Enter_Email";
                         $location.path("/Keyboard");
                     }else{
@@ -181,18 +181,18 @@ app.controller('mainController', ['$rootScope', '$location', 'TSVService', 'tran
         };
 
         $rootScope.gotoPayment = function(){
-            TSVService.debug("gotoPayment() called");
+            TsvService.debug("gotoPayment() called");
 
-            if (TSVService.cache.shoppingCart.summary.TotalPrice != 0
-                && TSVService.bCustomSetting('HasCreditCard', 'true')
-                && TSVService.bCustomSetting('HasBillCoin', 'false')) {
+            if (TsvService.cache.shoppingCart.summary.TotalPrice != 0
+                && TsvService.bCustomSetting('HasCreditCard', 'true')
+                && TsvService.bCustomSetting('HasBillCoin', 'false')) {
                 $location.path("/Cash_Card");
             } else {
-                if (TSVService.bCustomSetting('HasBillCoin', 'false')){
+                if (TsvService.bCustomSetting('HasBillCoin', 'false')){
                     $location.path("/Cash_Vending");
-                } else if (TSVService.bCustomSetting('HasCreditCard', 'true')) {
+                } else if (TsvService.bCustomSetting('HasCreditCard', 'true')) {
                     $location.path("/Card_Vending");
-                } else if (TSVService.cache.shoppingCart.summary.TotalPrice == 0) {
+                } else if (TsvService.cache.shoppingCart.summary.TotalPrice == 0) {
                         $location.path("/Card_Vending");
                 }
             }
@@ -206,16 +206,16 @@ app.controller('mainController', ['$rootScope', '$location', 'TSVService', 'tran
             }
         };
 
-        TSVService.subscribe("notifyTSVReady", $rootScope, function() {
+        TsvService.subscribe("notifyTSVReady", $rootScope, function() {
             console.log("Got event notifyTSVReady");
             if ($location.path() == "/view0") {
                 console.log("Redirect to default idle page or reload");
 
-                if (TSVService.cache.custommachinesettings === undefined) {
+                if (TsvService.cache.custommachinesettings === undefined) {
                     $rootScope.reloadPage();
                 } else {
                     $rootScope.registerKF();
-                    TSVService.gotoDefaultIdlePage($location, $rootScope);
+                    TsvService.gotoDefaultIdlePage($location, $rootScope);
                 }
             }
         }, "app");
@@ -234,9 +234,9 @@ app.controller('mainController', ['$rootScope', '$location', 'TSVService', 'tran
         };
 
         $rootScope.updateCredit = function() {
-            $rootScope.credit = TSVService.session.discount + TSVService.session.creditBalance;
-            TSVService.debug("Updated credit to include discount "
-                + TSVService.session.discount + " + " + TSVService.session.creditBalance
+            $rootScope.credit = TsvService.session.discount + TsvService.session.creditBalance;
+            TsvService.debug("Updated credit to include discount "
+                + TsvService.session.discount + " + " + TsvService.session.creditBalance
                 + " = "
                 + $rootScope.credit);
         };
@@ -244,12 +244,12 @@ app.controller('mainController', ['$rootScope', '$location', 'TSVService', 'tran
         $rootScope.updateCredit();
 
         //Init
-        $rootScope.selectedLanguage = TSVService.customSetting('languageDefaulted', 'En');
+        $rootScope.selectedLanguage = TsvService.customSetting('languageDefaulted', 'En');
         document.getElementById($rootScope.selectedLanguage).className = "showflag";
         translate.selectLanguage($rootScope.selectedLanguage);
 
         //Don't display the language button if no other language supported
-        var languageSupported = TSVService.customSetting('languageSupported');
+        var languageSupported = TsvService.customSetting('languageSupported');
         if (languageSupported !== undefined) {
             var languages = languageSupported.split(";");
             $rootScope.bShowLanguageFlag = languages.length > 1;

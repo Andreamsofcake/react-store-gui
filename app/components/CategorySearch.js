@@ -4,7 +4,8 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { browserHistory } from 'react-router'
+import * as _E from 'elemental'
 
 class Category_Search extends Component {
 
@@ -17,13 +18,19 @@ class Category_Search extends Component {
       bShowCgryTitle: true,
       bShowPrevArrow: false,
       bShowNextArrow: false,
-      _Index: 0
+      _Index: 0,
+      categories: RootscopeStore.getConfig('categories')
     }
-
+    
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    RootscopeActions.updateCredit();
     RootscopeActions.setSession('currentView', 'Category_Search');
-    RootscopeActions.setConfig('categories', TsvService.fetchProductCategoriesByParentCategoryID(0));
+    RootscopeActions.setCache('currentLocation', '/Category_Search');
+    RootscopeActions.updateCredit();
+
+    TsvService.fetchProductCategoriesByParentCategoryID(0, (err, data) => {
+    	if (err) throw err;
+    	RootscopeActions.setConfig('categories', data);
+    });
     
     TsvService.isCartEmpty( isEmpty => {
 		if (RootscopeStore.getCache('custommachinesettings.txtIdleScene') === "category_search" || !isEmpty ) {
@@ -31,7 +38,7 @@ class Category_Search extends Component {
 		}
     })
 
-
+	this._onRootstoreChange = this._onRootstoreChange.bind(this);
   }
 
   back(){
@@ -43,20 +50,39 @@ class Category_Search extends Component {
   }
 
   fetchCategory(categoryID) {
-    RootscopeActions.setConfig('categories', TsvService.fetchProductCategoriesByParentCategoryID(categoryID));
+  	TsvService.fetchProductCategoriesByParentCategoryID(categoryID, (err, data) => {
+    	if (err) throw err;
+    	RootscopeActions.setConfig('categories', data);
+    	if (data.length === 0) {
+    		TsvService.fetchProductByCategory(categoryID, (err, data) => {
+		    	if (err) throw err;
+		    	RootscopeActions.setConfig('products', data);
+		    	browserHistory.push("/Product_Search");
+		    });
+    	}
+    });
 
-    if(RootscopeStore.getCache('categories').length == 0) {
-      RootscopeActions.setConfig('products', TSVService.fetchProductByCategory(categoryID));
-      browserHistory.push("/Product_Search");
-    }
   }
 
   // Add change listeners to stores
   componentDidMount() {
+		RootscopeStore.addChangeListener(this._onRootstoreChange);
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
+		RootscopeStore.removeChangeListener(this._onRootstoreChange);
+  }
+  
+  _onRootstoreChange(event) {
+  	if (event && event.type == 'config' && event.path == 'categories') {
+		//console.log('[_onRootstoreChange]');
+		//console.log(event);
+		//console.log(RootscopeStore.getConfig('categories'));
+		this.setState({
+			categories: RootscopeStore.getConfig('categories')
+		});
+  	}
   }
 
   render() {
@@ -64,32 +90,29 @@ class Category_Search extends Component {
       <_E.Row className="Category_Search">
         <_E.Col>
 
-          <h2>{Translate.translate('Select_Category', 'SelectCategory')}</h2>
+          <h2>{Translate.translate('Category_Search', 'SelectCategory')}</h2>
         </_E.Col>
 
           {/*slider container*/}
           <_E.Row className="container_slider">
-            <_E.Col>
-              <ul className="nav">
 
-              {categories.map((category, $index) => {
+              {this.state.categories ? this.state.categories.map((category, $index) => {
                   return (
-                    <li key={$index} className = "gallery" >
+                    <_E.Col basis="33%" key={$index} className = "gallery" >
 
-                        <figure>
+                        <div className="product">
 
-                            { this.state.bShowCgryTitle ? (<figcaption>{category.categoryName}</figcaption>) : null }
+                            { this.state.bShowCgryTitle ? (<h4>{category.categoryName}</h4>) : null }
 
                             <img id={$index} src={category.imagePath} alt={category.description} title={category.description} onClick={this.fetchCategory.bind(this, category.categoryID)} />
 
-                        </figure>
+                        </div>
 
-                    </li>
+                    </_E.Col>
                   )
                 }
-              )}
-              </ul>
-            </_E.Col>
+              ) : null}
+
           </_E.Row>
 
           { this.state.bSubCgry ? this.renderSubCgry() : null }
@@ -99,12 +122,11 @@ class Category_Search extends Component {
   }
 
   renderSubCgry() {
+  	//<img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} onClick={this.back} />
     return (
-      <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} onClick={this.back} />
+      <_E.Button> {Translate.translate('Category_Search', 'Back')} </_E.Button>
     )
   }
-
-
 
 }
 

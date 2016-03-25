@@ -2,12 +2,12 @@
     "CreditLabel":"Credit",
     "BalanceLabel":"Balance",
 	
-    "view0": {
+    "View0": {
         "Resetting": "Resetting",
         "PleaseWait": "Please Wait"
     },
 
-    "view1": {
+    "View1": {
         "MakeASelection": "Please Make A Selection",
         "Unavailable": "Unavailable",
         "OutOfStock": "Out Of Stock",
@@ -17,7 +17,7 @@
         "HELLO_WORLD":"hello"
     },
 
-    "view2": {
+    "View2": {
         "InstructionMessage":"Swipe Card or Insert Cash",
         "InsufficientFunds": "Insufficient Funds"
     },

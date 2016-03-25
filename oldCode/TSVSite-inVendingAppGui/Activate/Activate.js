@@ -42,18 +42,18 @@ activateApp.config(['VKI_CONFIG', function (VKI_CONFIG) {
 }]);
 
 
-activateApp.controller('ActivateCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TSVService', 'translate', 'ngVirtualKeyboardService', '$sce',
-    function ($scope, $rootScope, $timeout, $location, TSVService, translate, ngVirtualKeyboardService, $sce) {
+activateApp.controller('ActivateCtrl', ['$scope', '$rootScope', '$timeout', '$location', 'TsvService', 'translate', 'ngVirtualKeyboardService', '$sce',
+    function ($scope, $rootScope, $timeout, $location, TsvService, translate, ngVirtualKeyboardService, $sce) {
 
         $scope.translate = function (name) {
             return translate.translate("Activate", name);
         };
 
-        TSVService.session.currentView = "Activate";
+        TsvService.session.currentView = "Activate";
 
         $scope.activationKey = '';
 
-        $scope.serialNumber = TSVService`.machineSetting`('MachineSerialNumber');
+        $scope.serialNumber = TsvService`.machineSetting`('MachineSerialNumber');
 
         setTimeout(function () {
 
@@ -67,7 +67,7 @@ activateApp.controller('ActivateCtrl', ['$scope', '$rootScope', '$timeout', '$lo
                 var valid = false;
 
                 if (isClosing) {
-                    valid = TSVService.activate(value).resultCode === 'SUCCESS';
+                    valid = TsvService.activate(value).resultCode === 'SUCCESS';
                 }
 
                 if (isClosing && valid) {
@@ -112,7 +112,7 @@ activateApp.controller('ActivateCtrl', ['$scope', '$rootScope', '$timeout', '$lo
         };
 
         $scope.activate = function () {
-            var success = TSVService.activate($scope.activationKey).resultCode === 'SUCCESS';
+            var success = TsvService.activate($scope.activationKey).resultCode === 'SUCCESS';
             if (!success) {
                 $scope.kb.reveal();
             }
