@@ -18,7 +18,8 @@ class Admin_Auto_Map extends Component {
 
     this.state = {
       bShowMachine2 : false,
-      status: ""
+      status: "",
+      coilMap:[]
     }
 
     if(RootscopeStore.getCache('machineList').length > 1){
@@ -32,15 +33,13 @@ class Admin_Auto_Map extends Component {
   }
 
   mapMachine(machineID){
-    // make table
-    // tableRow
-    // tableCol
-    // cellDiv
-    // lastRow
-    // lastRow = -1;
+
     if(!RootscopeStore.getSession('bRunningAutoMap'){
         RootscopeActions.setSession('bRunningAutoMap', true);
         TsvService.runAutoMap(machineID, -1, () => {});
+        this.setState({
+          coilMap: []
+        })
     }
   }
 
@@ -48,7 +47,7 @@ class Admin_Auto_Map extends Component {
   // Add change listeners to stores
   componentDidMount() {
     TSVService.subscribe("notifyMapStatusChange", (status, info) => {
-        //if (info != null && info != undefined) //if what? KENT: skipping, this just generated a log msg in old code
+
         if (RootscopeStore.getCache('currentLocation') != "/Admin_Auto_Map") return;
 
         this.setState({
@@ -57,7 +56,11 @@ class Admin_Auto_Map extends Component {
 
         switch(status){
             case "Map":
-                addNewCoil(info.coilNumber);
+                if(this.state.coilMap.indexOf(info.coilNumber) == -1){
+                  this.setState({
+                    coilMap: this.state.coilMap.push(info.coilNumber)
+                  })
+                }
                 break;
             case "End":
                 RootscopeActions.setSession('bRunningAutoMap', false);
@@ -93,7 +96,7 @@ class Admin_Auto_Map extends Component {
             </_E.Col>
           </_E.Row>
           <_E.Row id="wrapper">
-              // map coil number and status
+              {JSON.stringify(this.state.coilMap)}
           </_E.Row>
         </_E.Col>
       </_E.Row>
