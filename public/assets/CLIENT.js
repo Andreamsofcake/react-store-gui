@@ -206,18 +206,6 @@
 
 	var _PageIdle2 = _interopRequireDefault(_PageIdle);
 
-	var _AdminLogin = __webpack_require__(368);
-
-	var _AdminLogin2 = _interopRequireDefault(_AdminLogin);
-
-	var _AdminHome = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/AdminHome\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-	var _AdminHome2 = _interopRequireDefault(_AdminHome);
-
-	var _AdminSettings = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/AdminSettings\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
-
-	var _AdminSettings2 = _interopRequireDefault(_AdminSettings);
-
 	var _CardVending = __webpack_require__(14);
 
 	var _CardVending2 = _interopRequireDefault(_CardVending);
@@ -262,9 +250,6 @@
 		_react2.default.createElement(_reactRouter.Route, { path: 'Activate', component: _Activate2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'View0', component: _View2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'View2', component: _View4.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Login', component: _AdminLogin2.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Login', component: _AdminHome2.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Settings', component: _AdminSettings2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Card_Vending', component: _CardVending2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Cash_Vending', component: _CashVending2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Cash_Card', component: _CashCard2.default }),
@@ -276,6 +261,10 @@
 		_react2.default.createElement(_reactRouter.Route, { path: 'Product_Search', component: _ProductSearch2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: '*', component: _NoMatch2.default })
 	);
+
+	//import AdminLogin from './components/AdminLogin'
+	//import AdminHome from './components/AdminHome'
+	//import AdminSettings from './components/AdminSettings'
 
 /***/ },
 /* 2 */
@@ -762,9 +751,6 @@
 					console.error('[fetchAllCustomSettings] no data returned');
 					return;
 				}
-
-				console.error('[fetchAllCustomSettings] check data');
-				console.log(data);
 
 				var multipleLangs = data.languageSupported && data.languageSupported.split(";").length > 1,
 				    LANG = data.languageDefaulted || 'En';
@@ -5566,57 +5552,62 @@
 		//	console.log(requestJson);
 		//	console.log(typeof requestJson);
 
-		if (_SocketAPI2.default) {
-			_SocketAPI2.default.send('flash-api', { _ws_args: args }, function (response) {
-				console.warn('SOCKET response for call: ' + name + ', args: ' + requestJson);
-				console.log(response);
-				if (response) {
-					callback(null, response);
+		/*
+	 // SKIPPING websocket for regular calls, due to getting wires crossed from single endpoint handling multiple calls
+	 // FIXME: is to change the server-side handling for these calls to have /more/unique/paths dynamically mapped to a Hapiio call
+	 if (SocketAPI) {
+	 	SocketAPI.send('flash-api', { _ws_args: args }, name, (response) => {
+	 		console.warn('SOCKET response for call: ' + name + ', args: ' + requestJson);
+	 		console.log(response);
+	 		if (response) {
+	 			callback(null, response);
+	 		} else {
+	 			if (response && response.error) {
+	 				console.error('[TsvService] failed to WEBSOCKET post to flashapi, error:');
+	 				console.log(response.error);
+	 				callback(response.error);
+	 			} else {
+	 				console.error('[TsvService] failed to WEBSOCKET post to flashapi, no data returned. full response:');
+	 				console.log(response);
+	 				callback('unknown error, check logs');
+	 			}
+	 		}
+	 	});
+	 } else {
+	 */
+
+		_axios2.default.post('http://localhost:8087/tsv-proxy/flashapi', requestJson, {
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}).then(function (response) {
+
+			//console.warn("Flash call returned - response:");
+			//console.log(response);
+			//console.log(args);
+
+			if (response.data) {
+				callback(null, response.data);
+			} else {
+				if (response.data && response.data.error) {
+					console.error('[TsvService] failed to post to flashapi, error:');
+					console.log(response.data.error);
+					callback(response.data.error);
 				} else {
-					if (response && response.error) {
-						console.error('[TsvService] failed to WEBSOCKET post to flashapi, error:');
-						console.log(response.error);
-						callback(response.error);
-					} else {
-						console.error('[TsvService] failed to WEBSOCKET post to flashapi, no data returned. full response:');
-						console.log(response);
-						callback('unknown error, check logs');
-					}
+					console.error('[TsvService] failed to post to flashapi, no data returned. full response:');
+					console.log(response);
+					callback('unknown error, check logs');
 				}
-			});
-		} else {
+			}
+		}).catch(function (error) {
+			//console.log("Flash call failed " + textStatus + " - " + errorThrown);
+			console.warn("Flash call failed - error:");
+			console.log(error);
+			console.log(args);
+			callback(error);
+		});
 
-			_axios2.default.post('http://localhost:8087/tsv-proxy/flashapi', requestJson, {
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}).then(function (response) {
-
-				//console.warn("Flash call returned - response:");
-				//console.log(response);
-				//console.log(args);
-
-				if (response.data) {
-					callback(null, response.data);
-				} else {
-					if (response.data && response.data.error) {
-						console.error('[TsvService] failed to post to flashapi, error:');
-						console.log(response.data.error);
-						callback(response.data.error);
-					} else {
-						console.error('[TsvService] failed to post to flashapi, no data returned. full response:');
-						console.log(response);
-						callback('unknown error, check logs');
-					}
-				}
-			}).catch(function (error) {
-				//console.log("Flash call failed " + textStatus + " - " + errorThrown);
-				console.warn("Flash call failed - error:");
-				console.log(error);
-				console.log(args);
-				callback(error);
-			});
-		}
+		//}
 	}
 
 	// autogenerate handlers
@@ -10175,16 +10166,14 @@
 	  console.log(' -----------------------------------------------------------------');
 	  //*/
 			var handle = event;
-			if (data && data.actionToken) {
-				handle += ':' + actionToken;
-			}
+			//if (data && data.actionToken) { handle += ':' + actionToken }
 
 			if (ActionHandlers[handle] && typeof ActionHandlers[handle] == 'function') {
 				ActionHandlers[handle](data);
 			} else {
 				console.log(' -----------------------------------------------------------------');
 				console.log('[ >>>>> SOCKET catch-all, nobody was registered to handle this <<<<<< ] ... event, then data');
-				console.log(event);
+				console.log(handle);
 				console.log(data);
 				console.log(' -----------------------------------------------------------------');
 			}
@@ -10199,19 +10188,19 @@
 
 			registerActionHandler: function registerActionHandler(action, handler, actionToken) {
 				var handle = action;
-				if (actionToken) {
-					handle += ':' + actionToken;
-				}
+				//if (actionToken) { handle += ':' + actionToken }
 				console.log('registering action handler for: ' + handle);
 				ActionHandlers[handle] = handler;
 			},
-			unregisterActionHandler: function unregisterActionHandler(action, handler) {
+			unregisterActionHandler: function unregisterActionHandler(action, handler, actionToken) {
 				throw new Error('unfinished function ... depends on PubSub / multiple listeners per action');
+				var handle = action;
+				//if (actionToken) { handle += ':' + actionToken }
 				if (!handler) {
 					// remove all
 				} else {
 						// remove single
-						ActionHandlers[action] = handler;
+						ActionHandlers[handle] = handler;
 					}
 			},
 			testSocketConnection: function testSocketConnection(TD) {
@@ -10223,7 +10212,7 @@
 				if (handler && typeof handler == 'function') {
 					this.registerActionHandler(cmd, handler, actionToken);
 				}
-				data.actionToken = actionToken;
+				//data.actionToken = actionToken;
 				SocketHandler.emit(cmd, data);
 			},
 			getWebhookToken: function getWebhookToken() {
@@ -48869,303 +48858,6 @@
 	  module.exports = false;
 	}
 
-
-/***/ },
-/* 368 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(7);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _TsvService = __webpack_require__(46);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _Translate = __webpack_require__(47);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _RootscopeActions = __webpack_require__(48);
-
-	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
-
-	var _RootscopeStore = __webpack_require__(49);
-
-	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
-
-	var _reactRouter = __webpack_require__(8);
-
-	var _elemental = __webpack_require__(73);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Admin_Login = function (_Component) {
-	  _inherits(Admin_Login, _Component);
-
-	  function Admin_Login(props, context) {
-	    _classCallCheck(this, Admin_Login);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Admin_Login).call(this, props, context));
-	    // MUST call super() before any this.*
-
-
-	    _RootscopeActions2.default.setSession('currentView', 'Admin_Login');
-	    _TsvService2.default.disableLoginDevices();
-	    _TsvService2.default.emptyCart();
-	    _this.state = {
-	      num: "",
-	      maxChars: 6,
-	      instructionMessage: Translate.translate('Admin_Login', 'Password')
-	    };
-	    return _this;
-	  }
-
-	  _createClass(Admin_Login, [{
-	    key: 'enter',
-	    value: function enter() {
-	      var _this2 = this;
-
-	      _TsvService2.default.validateAdminPassword(this.state.num, function (res) {
-	        switch (res.result) {
-	          case "VALID":
-	            _reactRouter.browserHistory.path("/Admin_Home");
-	            break;
-	          default:
-	            _this2.setState({
-	              instructionMessage: Translate.translate('Admin_Login', 'InvalidPassword'),
-	              num: ""
-	            }); //"Invalid Password";
-	            break;
-	        }
-	      });
-	    }
-	  }, {
-	    key: 'clear',
-	    value: function clear() {
-	      this.setState({
-	        instructionMessage: Translate.translate('Admin_Login', 'Password'),
-	        num: ""
-	      });
-	    }
-	  }, {
-	    key: 'press',
-	    value: function press(digit) {
-	      if (this.state.num.length < this.state.maxChars) {
-	        this.setState({
-	          num: this.state.num + digit
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'back',
-	    value: function back() {
-	      _TsvService2.default.gotoDefaultIdlePage();
-	    }
-	    // Add change listeners to stores
-
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {}
-
-	    // Remove change listers from stores
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        _E.Row,
-	        { className: 'Admin_Login' },
-	        _react2.default.createElement(
-	          _E.Col,
-	          null,
-	          _react2.default.createElement(
-	            'h2',
-	            { id: 'instruction' },
-	            this.instructionMessage
-	          ),
-	          _react2.default.createElement(
-	            _E.Button,
-	            { id: 'back', onClick: this.back },
-	            'Back'
-	          ),
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 1) },
-	                '1'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 2) },
-	                '2'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 3) },
-	                '3'
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 4) },
-	                '4'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 5) },
-	                '5'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 6) },
-	                '6'
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 7) },
-	                '7'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 8) },
-	                '8'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 9) },
-	                '9'
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { type: 'warning', onClick: this.clear },
-	                'Clear'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { onClick: this.press.bind(this, 0) },
-	                '0'
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { type: 'primary', onClick: this.enter },
-	                'Enter'
-	              )
-	            )
-	          ),
-	          '>',
-	          _react2.default.createElement('input', { id: 'coilInput', type: 'password', value: this.state.num })
-	        )
-	      )
-
-	      /*<div className="Admin_Login" >
-	           <h2 id="instruction">{{ instructionMessage }}</h2>
-	           <img class="regularBtn" id="back" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="back()">
-	           <div id="keypad">
-	               <img src="../Images/Button_1.png" ng-click="press(1)">
-	              <img src="../Images/Button_2.png" ng-click="press(2)">
-	              <img src="../Images/Button_3.png" ng-click="press(3)">
-	              <img src="../Images/Button_4.png" ng-click="press(4)">
-	              <img src="../Images/Button_5.png" ng-click="press(5)">
-	              <img src="../Images/Button_6.png" ng-click="press(6)">
-	              <img src="../Images/Button_7.png" ng-click="press(7)">
-	              <img src="../Images/Button_8.png" ng-click="press(8)">
-	              <img src="../Images/Button_9.png" ng-click="press(9)">
-	              <img src="../Images/Button_10.png" ng-click="press(0)">
-	               <img ng-src="{{localizedImage('Button_Clear.png')}}" err-src="../Images/Button_Clear.png" ng-click="clear()">
-	              <img ng-src="{{localizedImage('Button_Enter.png')}}" err-src="../Images/Button_Enter.png" ng-click="enter()">
-	           </div>
-	           <input id="coilInput" type="password" value={{prompt()}}>
-	        </div>*/
-	      ;
-	    }
-	  }]);
-
-	  return Admin_Login;
-	}(_react.Component);
-
-	exports.default = Admin_Login;
 
 /***/ }
 /******/ ]);

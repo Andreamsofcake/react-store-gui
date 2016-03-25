@@ -65,14 +65,14 @@ if (isClient) {
 		console.log(' -----------------------------------------------------------------');
 		//*/
 		var handle = event;
-		if (data && data.actionToken) { handle += ':' + actionToken }
+		//if (data && data.actionToken) { handle += ':' + actionToken }
 
 		if (ActionHandlers[handle] && typeof ActionHandlers[handle] == 'function') {
 			ActionHandlers[handle](data);
 		} else {
 			console.log(' -----------------------------------------------------------------');
 			console.log('[ >>>>> SOCKET catch-all, nobody was registered to handle this <<<<<< ] ... event, then data');
-			console.log(event);
+			console.log(handle);
 			console.log(data);
 			console.log(' -----------------------------------------------------------------');
 		}
@@ -86,18 +86,20 @@ if (isClient) {
 		// see: utils/PubSub.js
 		registerActionHandler(action, handler, actionToken) {
 			var handle = action;
-			if (actionToken) { handle += ':' + actionToken }
+			//if (actionToken) { handle += ':' + actionToken }
 			console.log('registering action handler for: '+handle);
 			ActionHandlers[handle] = handler;
 		},
 
-		unregisterActionHandler(action, handler) {
+		unregisterActionHandler(action, handler, actionToken) {
 			throw new Error('unfinished function ... depends on PubSub / multiple listeners per action');
+			var handle = action;
+			//if (actionToken) { handle += ':' + actionToken }
 			if (!handler) {
 				// remove all
 			} else {
 				// remove single
-				ActionHandlers[action] = handler;
+				ActionHandlers[handle] = handler;
 			}
 		},
 
@@ -111,7 +113,7 @@ if (isClient) {
 			if (handler && typeof handler == 'function') {
 				this.registerActionHandler(cmd, handler, actionToken);
 			}
-			data.actionToken = actionToken;
+			//data.actionToken = actionToken;
 			SocketHandler.emit(cmd, data);
 		},
 		

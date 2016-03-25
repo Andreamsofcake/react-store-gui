@@ -8,9 +8,9 @@ import View0 from './components/View0'
 import View2 from './components/View2'
 import PageIdle from './components/PageIdle'
 
-import AdminLogin from './components/AdminLogin'
-import AdminHome from './components/AdminHome'
-import AdminSettings from './components/AdminSettings'
+//import AdminLogin from './components/AdminLogin'
+//import AdminHome from './components/AdminHome'
+//import AdminSettings from './components/AdminSettings'
 
 import CardVending from './components/CardVending'
 import CashVending from './components/CashVending'
@@ -30,11 +30,11 @@ export default (
 
 		<Route path='View0' component={View0} />
 		<Route path='View2' component={View2} />
-
+{/*
 		<Route path='Admin_Login' component={AdminLogin} />
 		<Route path='Admin_Login' component={AdminHome} />
 		<Route path='Admin_Settings' component={AdminSettings} />
-
+*/}
 		<Route path='Card_Vending' component={CardVending} />
 		<Route path='Cash_Vending' component={CashVending} />
 		<Route path='Cash_Card' component={CashCard} />

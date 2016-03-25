@@ -53,9 +53,6 @@ class App extends Component {
 				return;
 			}
 
-				console.error('[fetchAllCustomSettings] check data');
-				console.log(data);
-			
 			var multipleLangs = (data.languageSupported && data.languageSupported.split(";").length > 1)
 				, LANG = data.languageDefaulted || 'En'
 				;
