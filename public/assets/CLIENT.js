@@ -49332,6 +49332,10 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
+	var _CategoryListItem = __webpack_require__(372);
+
+	var _CategoryListItem2 = _interopRequireDefault(_CategoryListItem);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -49393,7 +49397,8 @@
 	    }
 	  }, {
 	    key: 'fetchCategory',
-	    value: function fetchCategory(categoryID) {
+	    value: function fetchCategory(data) {
+	      var categoryID = data;
 	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(categoryID, function (err, data) {
 	        if (err) throw err;
 	        _RootscopeActions2.default.setConfig('categories', data);
@@ -49455,20 +49460,11 @@
 	          _E.Row,
 	          { className: 'container_slider' },
 	          this.state.categories ? this.state.categories.map(function (category, $index) {
-	            return _react2.default.createElement(
-	              _E.Col,
-	              { basis: '33%', key: $index, className: 'gallery' },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'product' },
-	                _this2.state.bShowCgryTitle ? _react2.default.createElement(
-	                  'h4',
-	                  null,
-	                  category.categoryName
-	                ) : null,
-	                _react2.default.createElement('img', { id: $index, src: category.imagePath, alt: category.description, title: category.description, onClick: _this2.fetchCategory.bind(_this2, category.categoryID) })
-	              )
-	            );
+	            return _react2.default.createElement(_CategoryListItem2.default, {
+	              key: $index,
+	              onClick: _this2.fetchCategory.bind(_this2),
+	              data: category
+	            });
 	          }) : null
 	        ),
 	        this.state.bSubCgry ? this.renderSubCgry() : null
@@ -49524,6 +49520,10 @@
 	var _RootscopeStore = __webpack_require__(297);
 
 	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _ProductListItem = __webpack_require__(373);
+
+	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
 
 	var _reactRouter = __webpack_require__(160);
 
@@ -49707,26 +49707,11 @@
 	            	return null;
 	            }
 	            */
-	            return _react2.default.createElement(
-	              _E.Col,
-	              { basis: '25%', key: $index, className: 'flex-item' + (_this3.isActive($index) ? ' active' : ''), style: { opacity: _this3.setOpacity(product.stockCount) } },
-	              _react2.default.createElement(
-	                'div',
-	                { className: 'product', id: "prdImg" + $index, onClick: _this3.setPrdSelected.bind(_this3, product) },
-	                _react2.default.createElement(
-	                  'h4',
-	                  null,
-	                  product.productName
-	                ),
-	                _react2.default.createElement('img', { src: product.imagePath, alt: product.description, title: product.description }),
-	                _react2.default.createElement(
-	                  'p',
-	                  { className: 'prdPrice' },
-	                  '$',
-	                  _TsvService2.default.currencyFilter(product.price)
-	                )
-	              )
-	            );
+	            return _react2.default.createElement(_ProductListItem2.default, {
+	              key: $index,
+	              onClick: _this3.setPrdSelected.bind(_this3),
+	              data: product
+	            });
 	          })
 	        ),
 	        this.renderBackBtn()
@@ -49942,6 +49927,159 @@
 	}(_react.Component);
 
 	module.exports = AppLayout;
+
+/***/ },
+/* 372 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var CategoryListItem = function (_Component) {
+	  _inherits(CategoryListItem, _Component);
+
+	  function CategoryListItem() {
+	    _classCallCheck(this, CategoryListItem);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(CategoryListItem).apply(this, arguments));
+	  }
+
+	  _createClass(CategoryListItem, [{
+	    key: 'clickHandler',
+	    value: function clickHandler(e) {
+	      this.props.onClick(this.props.data);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var category = this.props.data;
+	      return _react2.default.createElement(
+	        _E.Col,
+	        { basis: '33%', className: 'gallery' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'product' },
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            category.categoryName
+	          ),
+	          ')',
+	          _react2.default.createElement('img', { src: category.imagePath, alt: category.description, title: category.description, onClick: this.clickHandler.bind(this) })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return CategoryListItem;
+	}(_react.Component);
+
+	exports.default = CategoryListItem;
+
+/***/ },
+/* 373 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ProductListItem = function (_Component) {
+	  _inherits(ProductListItem, _Component);
+
+	  function ProductListItem() {
+	    _classCallCheck(this, ProductListItem);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductListItem).apply(this, arguments));
+	  }
+
+	  _createClass(ProductListItem, [{
+	    key: 'clickHandler',
+	    value: function clickHandler(e) {
+	      this.props.onClick(this.props.data);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var product = this.props.data;
+	      var key = this.props.key;
+	      return _react2.default.createElement(
+	        _E.Col,
+	        { basis: '25%', key: key },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'product', id: "prdImg" + key, onClick: this.clickHandler.bind(this) },
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            product.productName
+	          ),
+	          _react2.default.createElement('img', { src: product.imagePath, alt: product.description, title: product.description }),
+	          _react2.default.createElement(
+	            'p',
+	            { className: 'prdPrice' },
+	            '$',
+	            _TsvService2.default.currencyFilter(product.price),
+	            ' '
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ProductListItem;
+	}(_react.Component);
+
+	exports.default = ProductListItem;
 
 /***/ }
 /******/ ]);

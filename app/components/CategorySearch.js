@@ -6,6 +6,7 @@ import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
+import CategoryListItem from './CategoryListItem'
 
 class Category_Search extends Component {
 
@@ -21,7 +22,7 @@ class Category_Search extends Component {
       _Index: 0,
       categories: RootscopeStore.getConfig('categories')
     }
-    
+
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.setSession('currentView', 'Category_Search');
     RootscopeActions.setCache('currentLocation', '/Category_Search');
@@ -31,7 +32,7 @@ class Category_Search extends Component {
     	if (err) throw err;
     	RootscopeActions.setConfig('categories', data);
     });
-    
+
     TsvService.isCartEmpty( isEmpty => {
 		if (RootscopeStore.getCache('custommachinesettings.txtIdleScene') === "category_search" || !isEmpty ) {
 			TsvService.startGeneralIdleTimer();
@@ -49,7 +50,8 @@ class Category_Search extends Component {
     return this.state._Index === index;
   }
 
-  fetchCategory(categoryID) {
+  fetchCategory(data) {
+    var categoryID = data
   	TsvService.fetchProductCategoriesByParentCategoryID(categoryID, (err, data) => {
     	if (err) throw err;
     	RootscopeActions.setConfig('categories', data);
@@ -73,7 +75,7 @@ class Category_Search extends Component {
   componentWillUnmount() {
 		RootscopeStore.removeChangeListener(this._onRootstoreChange);
   }
-  
+
   _onRootstoreChange(event) {
   	if (event && event.type == 'config' && event.path == 'categories') {
 		//console.log('[_onRootstoreChange]');
@@ -98,17 +100,11 @@ class Category_Search extends Component {
 
               {this.state.categories ? this.state.categories.map((category, $index) => {
                   return (
-                    <_E.Col basis="33%" key={$index} className = "gallery" >
-
-                        <div className="product">
-
-                            { this.state.bShowCgryTitle ? (<h4>{category.categoryName}</h4>) : null }
-
-                            <img id={$index} src={category.imagePath} alt={category.description} title={category.description} onClick={this.fetchCategory.bind(this, category.categoryID)} />
-
-                        </div>
-
-                    </_E.Col>
+                    <CategoryListItem
+                       key={$index}
+                       onClick={this.fetchCategory.bind(this)}
+                       data={category}
+                    />
                   )
                 }
               ) : null}
