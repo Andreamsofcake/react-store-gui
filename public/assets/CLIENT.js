@@ -48651,11 +48651,13 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
+	var _ShoppingCartItem = __webpack_require__(375);
+
+	var _ShoppingCartItem2 = _interopRequireDefault(_ShoppingCartItem);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -48978,66 +48980,11 @@
 	      }
 
 	      return this.state.cart.map(function (prd, $index) {
-	        return _react2.default.createElement(
-	          _E.Row,
-	          _defineProperty({ key: $index, className: 'cart' }, 'className', 'shoppingCart'),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { md: '15%', lg: '15%', className: 'cart' },
-	            _react2.default.createElement('img', { id: 'prdImg', src: prd.imagePath }),
-	            ' '
-	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { md: '25%', lg: '25%', className: 'cart' },
-	            prd.productName
-	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { md: '8%', lg: '8%', className: 'cart' },
-	            _TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
-	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { md: '37%', lg: '37%', className: 'cart' },
-	            _react2.default.createElement(
-	              _E.Row,
-	              null,
-	              _react2.default.createElement(
-	                _E.Col,
-	                null,
-	                _react2.default.createElement(
-	                  _E.Button,
-	                  { type: 'primary', onClick: _this5.minusQty.bind(_this5, prd.coilNumber) },
-	                  _react2.default.createElement(_E.Glyph, { icon: 'dash' })
-	                )
-	              ),
-	              _react2.default.createElement(
-	                _E.Col,
-	                { id: 'qty' },
-	                prd.qtyInCart
-	              ),
-	              _react2.default.createElement(
-	                _E.Col,
-	                null,
-	                _react2.default.createElement(
-	                  _E.Button,
-	                  { type: 'primary', onClick: _this5.addQty.bind(_this5, prd.coilNumber) },
-	                  _react2.default.createElement(_E.Glyph, { icon: 'plus' })
-	                )
-	              )
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { md: '15%', lg: '15%', className: 'cart' },
-	            _react2.default.createElement(
-	              _E.Button,
-	              { type: 'danger', onClick: _this5.removeAllQty.bind(_this5, prd.coilNumber, prd.qtyInCart) },
-	              _react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
-	            )
-	          )
-	        );
+	        return _react2.default.createElement(_ShoppingCartItem2.default, {
+	          key: $index,
+	          onClick: _this5.setPrdSelected.bind(_this5),
+	          data: product
+	        });
 	      });
 	    }
 	  }, {
@@ -50079,6 +50026,125 @@
 	}(_react.Component);
 
 	module.exports = AppLayout;
+
+/***/ },
+/* 374 */,
+/* 375 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+			value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ShoppingCartItem = function (_Component) {
+			_inherits(ShoppingCartItem, _Component);
+
+			function ShoppingCartItem() {
+					_classCallCheck(this, ShoppingCartItem);
+
+					return _possibleConstructorReturn(this, Object.getPrototypeOf(ShoppingCartItem).apply(this, arguments));
+			}
+
+			_createClass(ShoppingCartItem, [{
+					key: 'clickHandler',
+					value: function clickHandler(e) {
+							this.props.onClick(this.props.data);
+					}
+			}, {
+					key: 'render',
+					value: function render() {
+							var category = this.props.data;
+							return _react2.default.createElement(
+									_E.Row,
+									_defineProperty({ key: $index, className: 'cart' }, 'className', 'shoppingCart'),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '15%', lg: '15%', className: 'cart' },
+											_react2.default.createElement('img', { id: 'prdImg', src: prd.imagePath }),
+											' '
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '25%', lg: '25%', className: 'cart' },
+											prd.productName
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '8%', lg: '8%', className: 'cart' },
+											TsvService.currencyFilter(prd.price * prd.qtyInCart)
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '37%', lg: '37%', className: 'cart' },
+											_react2.default.createElement(
+													_E.Row,
+													null,
+													_react2.default.createElement(
+															_E.Col,
+															null,
+															_react2.default.createElement(
+																	_E.Button,
+																	{ type: 'primary', onClick: this.minusQty.bind(this, prd.coilNumber) },
+																	_react2.default.createElement(_E.Glyph, { icon: 'dash' })
+															)
+													),
+													_react2.default.createElement(
+															_E.Col,
+															{ id: 'qty' },
+															prd.qtyInCart
+													),
+													_react2.default.createElement(
+															_E.Col,
+															null,
+															_react2.default.createElement(
+																	_E.Button,
+																	{ type: 'primary', onClick: this.addQty.bind(this, prd.coilNumber) },
+																	_react2.default.createElement(_E.Glyph, { icon: 'plus' })
+															)
+													)
+											)
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '15%', lg: '15%', className: 'cart' },
+											_react2.default.createElement(
+													_E.Button,
+													{ type: 'danger', onClick: this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart) },
+													_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
+											)
+									)
+							);
+					}
+			}]);
+
+			return ShoppingCartItem;
+	}(_react.Component);
+
+	exports.default = ShoppingCartItem;
 
 /***/ }
 /******/ ]);

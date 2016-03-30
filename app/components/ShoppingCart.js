@@ -5,6 +5,7 @@ import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
+import ShoppingCartItem from './ShoppingCartItem'
 
 class Shopping_Cart extends Component {
 
@@ -287,7 +288,7 @@ class Shopping_Cart extends Component {
 
     */
   }
-  
+
   renderShoppingCart() {
   	if (!this.state.cart || !this.state.cart.length) {
   		return null;
@@ -295,41 +296,14 @@ class Shopping_Cart extends Component {
 
 	return this.state.cart.map((prd, $index) => {
 		return (
-		  <_E.Row key={$index} className="cart" className="shoppingCart">
-			<_E.Col md="15%" lg="15%" className="cart">
-
-				<img id="prdImg" src={prd.imagePath} /> {/*err-src="../Images/ProductImageNotFound.png"*/}
-
-			</_E.Col>
-
-			<_E.Col md="25%" lg="25%" className="cart">{ prd.productName }</_E.Col>
-
-			<_E.Col md="8%" lg="8%" className="cart">{ TsvService.currencyFilter(prd.price * prd.qtyInCart) }</_E.Col>
-
-			<_E.Col md="37%" lg="37%" className="cart">
-
-
-					<_E.Row>
-
-						<_E.Col><_E.Button type="primary" onClick={this.minusQty.bind(this, prd.coilNumber)}><_E.Glyph icon="dash" /></_E.Button></_E.Col>
-						{/*<img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}>*/}
-
-						<_E.Col id="qty">{ prd.qtyInCart}</_E.Col>
-
-						<_E.Col><_E.Button type="primary" onClick={this.addQty.bind(this, prd.coilNumber)}><_E.Glyph icon="plus" /></_E.Button></_E.Col>
-						{/*<img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}>*/}
-
-					</_E.Row>
-
-
-			</_E.Col>
-
-			<_E.Col md="15%" lg="15%" className="cart"><_E.Button type="danger" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}><_E.Glyph icon="circle-slash" /></_E.Button></_E.Col>
-			{/*<img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}>*/}
-		  </_E.Row>
-		);
-	  }
-	)
+      <ShoppingCartItem
+         key={$index}
+         onClick={this.setPrdSelected.bind(this)}
+         data={product}
+      />
+  		);
+  	  }
+  	)
   }
 
   renderCouponButton() {
