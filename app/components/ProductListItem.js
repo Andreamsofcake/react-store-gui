@@ -11,15 +11,14 @@ class ProductListItem extends Component {
 
   render() {
     var product = this.props.data
-    var key = this.props.key
     return (
-      <_E.Col basis="25%" key={key} >
+      <_E.Col basis="25%" >
 
-          <div className="product" id={"prdImg" + key} onClick={this.clickHandler.bind(this)}>
+          <div className="product">
 
               <h4>{product.productName}</h4>
 
-              <img src={product.imagePath} alt={product.description} title={product.description} />
+              <img src={product.imagePath} title={product.description} onClick={this.clickHandler.bind(this)} />
 
               <p className="prdPrice">${TsvService.currencyFilter(product.price)} </p>
 

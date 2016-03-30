@@ -149,7 +149,7 @@ class Product_Search extends Component {
 
               extra navigation controls*/}
 
-                  {products.map((product, $index) => {
+                  {this.state.products ? this.state.products.map((product, $index) => {
                   /*
                   if (/ProductImageNotFound/.test(product.imagePath)) {
                   	return null;
@@ -162,7 +162,8 @@ class Product_Search extends Component {
                          data={product}
                       />
                     )
-                  })}
+                  }
+                ) : null}
 
           </_E.Row>
 
