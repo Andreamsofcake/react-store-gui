@@ -27,7 +27,6 @@ class Customer_Login extends Component {
   render() {
     return (
       <_E.Row >
-          {/* skipped admin because we skipped it else where <button id="adminBtn" onClick=(this.admin()}></button>*/}
         <_E.Col>
           <h2>Customer Login<br /></h2>
         </_E.Col>

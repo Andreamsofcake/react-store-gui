@@ -28,7 +28,6 @@ class Storefront extends Component {
   render() {
     return (
       <_E.Row >
-          {/* skipped admin because we skipped it else where <button id="adminBtn" onClick=(this.admin()}></button>*/}
         <_E.Col>
           <h2>Storefront<br /></h2>
         </_E.Col>
