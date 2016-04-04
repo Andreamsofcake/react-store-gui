@@ -24891,6 +24891,22 @@
 
 	var _AdminSettings2 = _interopRequireDefault(_AdminSettings);
 
+	var _CustomerSignup = __webpack_require__(376);
+
+	var _CustomerSignup2 = _interopRequireDefault(_CustomerSignup);
+
+	var _CustomerLogin = __webpack_require__(377);
+
+	var _CustomerLogin2 = _interopRequireDefault(_CustomerLogin);
+
+	var _Storefront = __webpack_require__(378);
+
+	var _Storefront2 = _interopRequireDefault(_Storefront);
+
+	var _TransactionRefund = __webpack_require__(379);
+
+	var _TransactionRefund2 = _interopRequireDefault(_TransactionRefund);
+
 	var _CardVending = __webpack_require__(362);
 
 	var _CardVending2 = _interopRequireDefault(_CardVending);
@@ -24938,6 +24954,10 @@
 		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Login', component: _AdminLogin2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Login', component: _AdminHome2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Settings', component: _AdminSettings2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Signup', component: _CustomerSignup2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Login', component: _CustomerLogin2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Storefront', component: _Storefront2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Transaction_Refund', component: _TransactionRefund2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Card_Vending', component: _CardVending2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Cash_Vending', component: _CashVending2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Cash_Card', component: _CashCard2.default }),
@@ -50142,6 +50162,406 @@
 	}(_react.Component);
 
 	exports.default = ShoppingCartItem;
+
+/***/ },
+/* 376 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Customer_Signup = function (_Component) {
+	  _inherits(Customer_Signup, _Component);
+
+	  function Customer_Signup(props, context) {
+	    _classCallCheck(this, Customer_Signup);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_Signup).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _RootscopeActions2.default.setSession('currentView', 'Customer_Signup');
+
+	    return _this;
+	  }
+
+	  _createClass(Customer_Signup, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {}
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Customer Signup',
+	            _react2.default.createElement('br', null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Customer_Signup;
+	}(_react.Component);
+
+	exports.default = Customer_Signup;
+
+/***/ },
+/* 377 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Customer_Login = function (_Component) {
+	  _inherits(Customer_Login, _Component);
+
+	  function Customer_Login(props, context) {
+	    _classCallCheck(this, Customer_Login);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_Login).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _RootscopeActions2.default.setSession('currentView', 'Customer_Login');
+
+	    return _this;
+	  }
+
+	  _createClass(Customer_Login, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {}
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Customer Login',
+	            _react2.default.createElement('br', null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Customer_Login;
+	}(_react.Component);
+
+	exports.default = Customer_Login;
+
+/***/ },
+/* 378 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Storefront = function (_Component) {
+	  _inherits(Storefront, _Component);
+
+	  function Storefront(props, context) {
+	    _classCallCheck(this, Storefront);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _RootscopeActions2.default.setSession('currentView', 'Storefront');
+
+	    return _this;
+	  }
+
+	  _createClass(Storefront, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {}
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Storefront',
+	            _react2.default.createElement('br', null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Storefront;
+	}(_react.Component);
+
+	exports.default = Storefront;
+
+/***/ },
+/* 379 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Transaction_Refund = function (_Component) {
+	  _inherits(Transaction_Refund, _Component);
+
+	  function Transaction_Refund(props, context) {
+	    _classCallCheck(this, Transaction_Refund);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Transaction_Refund).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _RootscopeActions2.default.setSession('currentView', 'Transaction_Refund');
+
+	    return _this;
+	  }
+
+	  _createClass(Transaction_Refund, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {}
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Transaction Refund',
+	            _react2.default.createElement('br', null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Transaction_Refund;
+	}(_react.Component);
+
+	exports.default = Transaction_Refund;
 
 /***/ }
 /******/ ]);
