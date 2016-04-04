@@ -48080,12 +48080,10 @@
 	            _E.Row,
 	            null,
 	            this.state.cart ? this.state.cart.map(function (prd, $index) {
-	              return _react2.default.createElement(
-	                _E.Col,
-	                { basis: '33%', key: $index },
-	                _react2.default.createElement('img', { id: 'prdImg', src: prd.imagePath, alt: 'productImage' }),
-	                ' /*err-src="../Images/ProductImageNotFound.png"*/'
-	              );
+	              return _react2.default.createElement(VendCartItem, {
+	                key: $index,
+	                data: prd
+	              });
 	            }) : _react2.default.createElement(
 	              'p',
 	              null,
@@ -48367,11 +48365,10 @@
 	            _E.Row,
 	            null,
 	            cart.map(function (prd, $index) {
-	              return _react2.default.createElement(
-	                _E.Col,
-	                { basic: '33%', key: $index },
-	                _react2.default.createElement('img', { id: "prdImg" + $index, src: prd.imagePath, alt: 'productImage' })
-	              );
+	              return _react2.default.createElement(VendCartItem, {
+	                key: $index,
+	                data: prd
+	              });
 	            })
 	          )
 	        ),
@@ -49725,11 +49722,15 @@
 	            	return null;
 	            }
 	            */
-	            return _react2.default.createElement(_ProductListItem2.default, {
-	              key: $index,
-	              onClick: _this3.setPrdSelected.bind(_this3),
-	              data: product
-	            });
+	            return _react2.default.createElement(
+	              'div',
+	              { key: $index, style: { opacity: _this3.setOpacity(product.stockCount) } },
+	              _react2.default.createElement(_ProductListItem2.default, {
+	                key: $index,
+	                onClick: _this3.setPrdSelected.bind(_this3),
+	                data: product
+	              })
+	            );
 	          }) : null
 	        ),
 	        this.renderBackBtn()
@@ -50048,6 +50049,10 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -50077,7 +50082,7 @@
 			}, {
 					key: 'render',
 					value: function render() {
-							var category = this.props.data;
+							var prd = this.props.data;
 							return _react2.default.createElement(
 									_E.Row,
 									_defineProperty({ key: $index, className: 'cart' }, 'className', 'shoppingCart'),
@@ -50095,7 +50100,7 @@
 									_react2.default.createElement(
 											_E.Col,
 											{ md: '8%', lg: '8%', className: 'cart' },
-											TsvService.currencyFilter(prd.price * prd.qtyInCart)
+											_TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
 									),
 									_react2.default.createElement(
 											_E.Col,

@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
+import TsvService from '../../lib/TsvService'
 
 class ShoppingCartItem extends Component {
 
   clickHandler(e){
       this.props.onClick(this.props.data)
   }
+  
 
 
   render() {
-    var category = this.props.data
+    var prd = this.props.data
     return (
       <_E.Row key={$index} className="cart" className="shoppingCart">
 			<_E.Col md="15%" lg="15%" className="cart">

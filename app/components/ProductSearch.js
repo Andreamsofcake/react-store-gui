@@ -149,21 +149,27 @@ class Product_Search extends Component {
 
               extra navigation controls*/}
 
-                  {this.state.products ? this.state.products.map((product, $index) => {
+      {this.state.products ? this.state.products.map((product, $index) => {
                   /*
                   if (/ProductImageNotFound/.test(product.imagePath)) {
                   	return null;
                   }
                   */
                     return (
+                      <div key={$index} style={{ opacity: this.setOpacity(product.stockCount) }}>
+
+
                       <ProductListItem
                          key={$index}
                          onClick={this.setPrdSelected.bind(this)}
                          data={product}
                       />
+
+                    </div>
                     )
                   }
-                ) : null}
+                ):null
+    }
 
           </_E.Row>
 

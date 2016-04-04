@@ -146,9 +146,10 @@ class Cash_Vending extends Component {
               <_E.Row>
             {cart.map( (prd, $index) => {
                 return (
-              	<_E.Col basic="33%" key={$index}>
-                  <img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" />
-                </_E.Col>
+                  <VendCartItem
+                   key={$index}
+                   data={prd}
+                  />
                 )
               })
             }
