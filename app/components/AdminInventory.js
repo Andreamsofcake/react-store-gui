@@ -255,7 +255,7 @@ class Admin_Inventory extends Component {
             { !this.state.bEnterCoil ? this.renderProductInfo() : null }
 
 
-          <_E.Button id="back" onClick={this.back}>Back</_E.Button>
+         <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
 
           { this.state.bEnterCoil ? this.renderFillCoilButton() : null }
 

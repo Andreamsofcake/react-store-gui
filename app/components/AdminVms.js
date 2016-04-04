@@ -36,10 +36,6 @@ class Admin_Vms extends Component {
     });
   }
 
-  back(){
-    browserHistory.push("/Admin_Home")
-  }
-
   // Add change listeners to stores
   componentDidMount() {
   }
@@ -53,7 +49,7 @@ class Admin_Vms extends Component {
       <_E.Row className = "component">
         <_E.Col>
           <_E.Button onClick={TsvService.refreshIndexPage}>Restart GUI</_E.Button>
-          <_E.Button id="back" onClick={this.backToAdminHome}>Back</_E.Button>
+          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
       	</_E.Col>
       </_E.Row>
 

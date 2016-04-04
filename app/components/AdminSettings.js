@@ -36,10 +36,6 @@ class Admin_Settings extends Component {
 
   };
 
-  backToAdminHome(){
-      TsvService.removeKeyboard();
-      browserHistory.push("/Admin_Home");
-  };
 
   save(e) {
 
@@ -186,7 +182,7 @@ class Admin_Settings extends Component {
 
           </_E.Row>
 
-            <_E.Button id="back" onClick={this.back}>Back</_E.Button>
+            <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
 
       </_E.Row>
 

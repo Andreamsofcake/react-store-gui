@@ -81,7 +81,7 @@ class Admin_Auto_Map extends Component {
     return (
       <_E.Row class="automap">
         <_E.Col>
-          <_E.Button id="back" onClick={this.backToAdminHome}>Back</_E.Button>
+          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
 
           <h2>{this.state.status}</h2>
 

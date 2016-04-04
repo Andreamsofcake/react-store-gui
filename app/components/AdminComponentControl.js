@@ -45,7 +45,7 @@ class Admin_Component_Control extends Component {
                   <p key={$index} > {beat.key} : {beat}</p>
                 )}
               )}
-          <_E.Button id="back" onClick={this.backToAdminHome}>Back</_E.Button>
+          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
         </_E.Col>
       </_E.Row>
 

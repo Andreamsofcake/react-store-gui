@@ -120,7 +120,7 @@ class Category_Search extends Component {
   renderSubCgry() {
   	//<img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} onClick={this.back} />
     return (
-      <_E.Button> {Translate.translate('Category_Search', 'Back')} </_E.Button>
+      <_E.Button component={(<Link to="/Category_Search">{Translate.translate('Category_Search', 'Back')}</Link>)} />
     )
   }
 

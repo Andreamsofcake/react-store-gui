@@ -47102,11 +47102,11 @@
 	            { id: 'instruction' },
 	            this.instructionMessage
 	          ),
-	          _react2.default.createElement(
-	            _E.Button,
-	            { id: 'back', onClick: this.back },
-	            'Back'
-	          ),
+	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
+	              Link,
+	              { to: '/Page_Idle' },
+	              Translate.translate('Admin_Home', 'Home')
+	            ) }),
 	          _react2.default.createElement(
 	            _E.Row,
 	            null,
@@ -47545,12 +47545,6 @@
 	    }
 
 	    _createClass(Admin_Settings, [{
-	        key: 'backToAdminHome',
-	        value: function backToAdminHome() {
-	            _TsvService2.default.removeKeyboard();
-	            _reactRouter2.default.push("/Admin_Home");
-	        }
-	    }, {
 	        key: 'save',
 	        value: function save(e) {
 	            var _this2 = this;
@@ -47752,11 +47746,11 @@
 	                        )
 	                    )
 	                ),
-	                _react2.default.createElement(
-	                    _E.Button,
-	                    { id: 'back', onClick: this.back },
-	                    'Back'
-	                )
+	                _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
+	                        Link,
+	                        { to: '/Admin_Home' },
+	                        Translate.translate('Admin_Home', 'Home')
+	                    ) })
 	            );
 	            /*
 	             <div class="Admin_Settings">
@@ -49418,13 +49412,11 @@
 	    key: 'renderSubCgry',
 	    value: function renderSubCgry() {
 	      //<img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} onClick={this.back} />
-	      return _react2.default.createElement(
-	        _E.Button,
-	        null,
-	        ' ',
-	        Translate.translate('Category_Search', 'Back'),
-	        ' '
-	      );
+	      return _react2.default.createElement(_E.Button, { component: _react2.default.createElement(
+	          Link,
+	          { to: '/Category_Search' },
+	          Translate.translate('Category_Search', 'Back')
+	        ) });
 	    }
 	  }]);
 

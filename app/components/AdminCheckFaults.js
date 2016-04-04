@@ -87,7 +87,7 @@ class Admin_Check_Faults extends Component {
 
           { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
 
-          <_E.Button id="back" onClick={this.back}>Back</_E.Button>
+          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
 
           <_E.Row id="wrapper">
 

@@ -19,10 +19,6 @@ class System_Info extends Component {
 
   }
 
-  back(){
-    browserHistory.push("/Admin_Home")
-  }
-
   // Add change listeners to stores
   componentDidMount() {
   }
@@ -52,7 +48,7 @@ class System_Info extends Component {
           </_E.Row>
         </_E.Col>
         <_E.Col>
-          <_E.Button id="back" onClick={this.back}>Back</_E.Button>
+          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
         </_E.Col>
       </_E.Row>
 
