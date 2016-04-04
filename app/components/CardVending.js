@@ -179,11 +179,10 @@ class Card_Vending extends Component {
               <_E.Row>
                 {this.state.cart ? this.state.cart.map((prd, $index) => {
                   return(
-                    <_E.Col basis="33%" key={$index}>
-
-                        <img id="prdImg" src={ prd.imagePath } alt="productImage"/> /*err-src="../Images/ProductImageNotFound.png"*/
-
-                    </_E.Col>
+                    <VendCartItem
+                     key={$index}
+                     data={prd}
+                    />
                   )}
                 ) : (<p>No cart products found! probably testing</p>) }
 

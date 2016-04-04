@@ -3,6 +3,7 @@ import RootscopeActions from '../actions/RootscopeActions'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
+import ProductListItem from './ProductListItem'
 
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
@@ -37,7 +38,7 @@ class Product_Search extends Component {
     }
     
     if (RootscopeStore.getCache('custommachinesettings.bCategoryView') === false) {
-    	
+
     	if (products) {
     		this.state.products = products;
     	} else {
@@ -139,7 +140,7 @@ class Product_Search extends Component {
 			<_E.Col>
 
 			<h2>{Translate.translate('Product_Search','OneMomentPlease')}</h2>
-			
+
 			</_E.Col>
     		</_E.Row>
     	);
@@ -166,28 +167,27 @@ class Product_Search extends Component {
 
               extra navigation controls*/}
 
-                  {products.map((product, $index) => {
+      {this.state.products ? this.state.products.map((product, $index) => {
                   /*
                   if (/ProductImageNotFound/.test(product.imagePath)) {
                   	return null;
                   }
                   */
                     return (
-                      <_E.Col basis="25%" key={$index} className={'flex-item' + (this.isActive($index) ? ' active' : '')} style={{ opacity: this.setOpacity(product.stockCount) }}>
+                      <div key={$index} style={{ opacity: this.setOpacity(product.stockCount) }}>
 
-                          <div className="product" id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
 
-                              <h4>{product.productName}</h4>
+                      <ProductListItem
+                         key={$index}
+                         onClick={this.setPrdSelected.bind(this)}
+                         data={product}
+                      />
 
-                              <img src={product.imagePath} alt={product.description} title={product.description} />
-
-                              <p className="prdPrice">${TsvService.currencyFilter(product.price) }</p>
-
-                          </div>
-
-                      </_E.Col>
+                    </div>
                     )
-                  })}
+                  }
+                ):null
+    }
 
           </_E.Row>
 

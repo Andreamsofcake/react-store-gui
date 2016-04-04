@@ -74,7 +74,7 @@ class Admin_Login extends Component {
 
           <h2 id="instruction">{ this.instructionMessage }</h2>
 
-          <_E.Button id="back" onClick={this.back}>Back</_E.Button>
+          <_E.Button type="primary" component={(<Link to="/Page_Idle">{Translate.translate('Admin_Home','Home')}</Link>)} />
 
           <_E.Row>
               <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>

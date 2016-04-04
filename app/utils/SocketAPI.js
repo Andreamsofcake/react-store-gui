@@ -35,13 +35,13 @@ if (isClient) {
 		console.log('general message from server:');
 		console.log(response);
 	});
-	
+
 	websocket.on('set-webhook-token', function(token) {
 		console.log('webhook token from server:');
 		console.log(token);
 		webhook_token = token;
 	});
-	
+
 	// just a tester:
 	window.onbeforeunload = function() {
 		websocket.emit('beforeDisconnect', { msg: 'client is about to disconnect!', some: 'data' });
@@ -107,7 +107,7 @@ if (isClient) {
 			TD = TD || { some: 'test_data' }; // Test Data to ping with
 			SocketHandler.socket.emit('testResponse', TD);
 		},
-	
+
 		socketSendCommand(cmd, data, handler, actionToken) {
 			// optional auto-link up to ActionHandler
 			if (handler && typeof handler == 'function') {
@@ -116,14 +116,14 @@ if (isClient) {
 			//data.actionToken = actionToken;
 			SocketHandler.emit(cmd, data);
 		},
-		
+
 		getWebhookToken() {
 			return webhook_token;
 		}
-		
+
 	};
 
-	// aliases:	
+	// aliases:
 	module.exports.subscribe = module.exports.registerActionHandler;
 	module.exports.unsubscribe = module.exports.unregisterActionHandler;
 	module.exports.sub = module.exports.registerActionHandler;
@@ -140,10 +140,9 @@ if (isClient) {
 			queue.push({ command, data });
 		}
 	}
-	
+
 	//window.SH = { SocketHandler, expo: module.exports };
 
 } else {
 	module.exports = false;
 }
-

@@ -75,9 +75,7 @@ class Admin_Jofemar_Exerciser extends Component {
     return ""
   }
 
-  backToAdminHome() {
-    browserHistory.push("/Admin_Home");
-  }
+
     // Add change listeners to stores
   componentDidMount() {
     TsvService.subscribe("notifyVmsEvent", (eventArgs) => {
@@ -139,7 +137,7 @@ class Admin_Jofemar_Exerciser extends Component {
 
 
 
-          <_E.Button id="back" onClick={this.back}>Back</_E.Button>
+          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
           </_E.Col>
 
       </_E.Row>

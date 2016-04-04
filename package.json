@@ -41,6 +41,7 @@
     "request": "^2.69.0",
     "sdk-core-lib": "git+https://44ef4f5b03539d64a43483e8a203ff1274f65fad:x-oauth-basic@github.com/sdkcore/sdkcore-api-lib.git",
     "socket.io": "^1.4.5",
+    "socket.io-client": "^1.4.5",
     "yar": "^7.0.0"
   }
 }
