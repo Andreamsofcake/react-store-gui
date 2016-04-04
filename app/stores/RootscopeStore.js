@@ -168,8 +168,8 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 		case appConstants.UPDATE_ROOT_CACHE:
 			_storeDB.set('cache.' + action.data.path, action.data.value);
 			RootscopeStore.emitChange({ type: 'cache', path: action.data.path });
-			console.warn(' someone updated CACHE, args:');
-			console.log(action.data);
+			//console.warn(' someone updated CACHE, args:');
+			//console.log(action.data);
 			break;
 			
 		case appConstants.UPDATE_ROOT_SESSION:

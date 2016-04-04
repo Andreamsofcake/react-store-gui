@@ -6,6 +6,7 @@ import RootscopeStore from '../stores/RootscopeStore'
 
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
+import { Link } from 'react-router'
 
 class Product_Search extends Component {
 
@@ -26,6 +27,15 @@ class Product_Search extends Component {
 
     var products = RootscopeStore.getConfig('products');
 
+	TsvService.fetchShoppingCart2(null, (err, data) => {
+		if (err) throw err;
+		RootscopeActions.setCache('shoppingCart', data);
+	});
+
+    if (typeof window !== 'undefined') {
+    	window.RootscopeStore = RootscopeStore;
+    }
+    
     if (RootscopeStore.getCache('custommachinesettings.bCategoryView') === false) {
     	
     	if (products) {
@@ -82,6 +92,12 @@ class Product_Search extends Component {
     	TsvService.addToCartByProductID(product.productID, (err, response) => {
     		if (err) throw err;
 	      RootscopeActions.setConfig('pvr', response);
+
+	      TsvService.fetchShoppingCart2(null, (err, data) => {
+			if (err) throw err;
+			RootscopeActions.setCache('shoppingCart', data);
+	      });
+
 	      // this will throw it to the simple checkout page, don't want to do that we want to shop!
 	      // browserHistory.push("/View2");
       	});
@@ -128,11 +144,13 @@ class Product_Search extends Component {
     		</_E.Row>
     	);
     }
+    
     return (
 
       <_E.Row className="Product_Search" >
 
         <_E.Col>
+        	<_E.Button style={{float:'right'}} type="primary" component={(<Link to="/Shopping_Cart">TEST: go to shopping cart page</Link>)} />
           { this.state.bDisplayCgry ? this.renderCategoryTable() : null }
 	        <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
         </_E.Col>

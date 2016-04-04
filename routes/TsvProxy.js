@@ -49,7 +49,16 @@ function handleCannedApiResponse(request, reply) {
 		, prods = [{"sku":"977","productName":"Deja Blue Water","description":"Deja Blue Water","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":30,"inventoryCount":30,"isEmpty":false,"productID":6615,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"5047","productName":"PowerAde Fruit Punch","description":"PowerAde Fruit Punch","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":4,"inventoryCount":4,"isEmpty":false,"productID":6643,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"5183","productName":"Muscle Milk Chocolate 11oz","description":"Muscle Milk Chocolate 11oz","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":5,"inventoryCount":5,"isEmpty":false,"productID":6644,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"976","productName":"Dasani","description":"Dasani","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":41,"inventoryCount":41,"isEmpty":false,"productID":6645,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"996","productName":"Fiji Water","description":"","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":18,"inventoryCount":18,"isEmpty":false,"productID":6646,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"5180","productName":"Muscle Milk Vanilla","description":"Muscle Milk Vanilla","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":4,"inventoryCount":4,"isEmpty":false,"productID":6650,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"957","productName":"G2 Fruit Punch","description":"G2 Fruit Punch","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":3,"inventoryCount":3,"isEmpty":false,"productID":6686,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"955","productName":"Gatorade Fruit Punch","description":"Gatorade Fruit Punch","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":3,"inventoryCount":3,"isEmpty":false,"productID":6689,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"952","productName":"Gatorade Lemon Lime","description":"Gatorade Lemon Lime","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":4,"inventoryCount":4,"isEmpty":false,"productID":6690,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"951","productName":"Gatorade Orange","description":"Gatorade Orange","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":1,"inventoryCount":1,"isEmpty":false,"productID":6691,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"960","productName":"Powerade Lemon Lime","description":"Powerade Lemon Lime","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":5,"inventoryCount":5,"isEmpty":false,"productID":6693,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"966","productName":"Powerade Strawberry Lemonade","description":"Powerade Strawberry Lemonade","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":3,"inventoryCount":3,"isEmpty":false,"productID":6695,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"5190","productName":"Premier Protein Chocolate","description":"Premier Protein Chocolate","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":6,"inventoryCount":6,"isEmpty":false,"productID":6696,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"5192","productName":"Premier Protein Strawberry","description":"Premier Protein Strawberry","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":5,"inventoryCount":5,"isEmpty":false,"productID":6697,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"5191","productName":"Premier Protein Vanilla","description":"Premier Protein Vanilla","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":5,"inventoryCount":5,"isEmpty":false,"productID":6698,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"932","productName":"Monster White Zero","description":"Monster White Zero","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":3,"inventoryCount":3,"isEmpty":false,"productID":6786,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"926","productName":"Red Bull","description":"Red Bull","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":9,"inventoryCount":9,"isEmpty":false,"productID":6794,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"5177","productName":"Muscle Milk 100 cal Chocolate 8.25 oz","description":"Muscle Milk 100 cal Chocolate 8.25 oz\nSugar Free","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":7,"inventoryCount":7,"isEmpty":false,"productID":6817,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"5178","productName":"Muscle Milk 100 cal Van. Cream 8.25oz","description":"Muscle Milk 100 cal Van. Cream 8.25oz","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":5,"inventoryCount":5,"isEmpty":false,"productID":6818,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"954","productName":"Gatorade Blue Cherry","description":"Gatorade Blue Cherry","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":3,"inventoryCount":3,"isEmpty":false,"productID":6875,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"Resource Water with Electolytes","description":"Resource Water with Electolytes","price":0.01,"imagePath":"http://localhost:8087/gfx/Products/ProductImageNotFound.png","stockCount":20,"inventoryCount":20,"isEmpty":false,"productID":6949,"coilNumber":"N/A","productCategory":null,"productCategoryID":-1,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"Aquafina","description":"","price":2,"imagePath":"http://localhost:8087/gfx/Products/10430_Image1.png","stockCount":12,"inventoryCount":12,"isEmpty":false,"productID":10430,"coilNumber":"N/A","productCategory":"Drinks","productCategoryID":618,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"Arizona Green Tea","description":"","price":2,"imagePath":"http://localhost:8087/gfx/Products/10431_Image1.png","stockCount":6,"inventoryCount":6,"isEmpty":false,"productID":10431,"coilNumber":"N/A","productCategory":"Drinks","productCategoryID":618,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"Monster","description":"","price":3,"imagePath":"http://localhost:8087/gfx/Products/10432_Image1.png","stockCount":6,"inventoryCount":6,"isEmpty":false,"productID":10432,"coilNumber":"N/A","productCategory":"Drinks","productCategoryID":618,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"Bai 5 Lemonade","description":"","price":3,"imagePath":"http://localhost:8087/gfx/Products/10433_Image1.png","stockCount":7,"inventoryCount":7,"isEmpty":false,"productID":10433,"coilNumber":"N/A","productCategory":"Drinks","productCategoryID":618,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"Rice Krispies Treats","description":"Rice Krispies Treats","price":2,"imagePath":"http://localhost:8087/gfx/Products/10434_Image1.png","stockCount":6,"inventoryCount":6,"isEmpty":false,"productID":10434,"coilNumber":"N/A","productCategory":"Snacks","productCategoryID":619,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"BelVita Blueberry","description":"BelVita Blueberry","price":2,"imagePath":"http://localhost:8087/gfx/Products/10435_Image1.JPG","stockCount":10,"inventoryCount":10,"isEmpty":false,"productID":10435,"coilNumber":"N/A","productCategory":"Snacks","productCategoryID":619,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"Nature Valley Sweet and Salty Granola Bar","description":"Nature Valley Sweet and Salty Granola Bar","price":1.25,"imagePath":"http://localhost:8087/gfx/Products/10436_Image1.png","stockCount":8,"inventoryCount":8,"isEmpty":false,"productID":10436,"coilNumber":"N/A","productCategory":"Snacks","productCategoryID":619,"productType":"PRODUCT_RECORD","Attributes":{}},{"sku":"","productName":"Nature Valley Almond Cashew and Sea Salt","description":"Nature Valley Almond Cashew and Sea Salt","price":1.25,"imagePath":"http://localhost:8087/gfx/Products/10437_Image1.jpg","stockCount":4,"inventoryCount":4,"isEmpty":false,"productID":10437,"coilNumber":"N/A","productCategory":"Snacks","productCategoryID":619,"productType":"PRODUCT_RECORD","Attributes":{}}]
 		, cats = [{"categoryID":618,"parentCategoryID":0,"categoryName":"Drinks","categoryDescription":"Drinks","imagePath":"http://localhost:8087/gfx/Categories/618_CategoryImage1.jpg"},{"categoryID":619,"parentCategoryID":0,"categoryName":"Snacks","categoryDescription":"snack","imagePath":"http://localhost:8087/gfx/Categories/619_CategoryImage1.jpg"}]
 		, response
+		, default_cart = {"summary":{"discount":0,"discount1":0,"netDiscount":0,"subTotalPrice":0,"netSubTotalPrice":0,"TotalPrice":0,"netTotalPrice":0,"salesTaxRate":0,"salesTaxAmount":0,"netSalesTaxAmount":0,"shippingAmount":0,"vendItemCount":0,"dropshipItemCount":0,"maxItemCount":1,"maxDollarValue":10000,"vendFailCount":0},"detail":[]}
+		, test_cart = request.yar.get('test-shopping-cart') || default_cart
 		;
+
+/*
+// cart with a product (note the details):
+{"summary":{"discount":0,"discount1":0,"netDiscount":0,"subTotalPrice":2,"netSubTotalPrice":0,"TotalPrice":2,"netTotalPrice":0,"salesTaxRate":0,"salesTaxAmount":0,"netSalesTaxAmount":0,"shippingAmount":0,"vendItemCount":1,"dropshipItemCount":0,"maxItemCount":1,"maxDollarValue":10000,"vendFailCount":0},"detail":[
+{"sku":"","productName":"Aquafina","description":"","imagePath":"http://localhost:8085/Images/Products/10430_Image1.png","price":2,"stockCount":11,"productID":10430,"productCategory":"Drinks","machineID":0,"coilNumber":"12","serialNumber":"N/A","insertRef":0,"vendResult":"VEND_PENDING","itemRecordType":2,"qtyInCart":1,"Attributes":{}}]}
+*/
+
 	if (payload && payload instanceof Array && payload.length) {
 		switch (payload[0]) {
 			
@@ -116,20 +125,96 @@ function handleCannedApiResponse(request, reply) {
 				break;
 				
 			case 'fetchShoppingCart2':
-				response = {"summary":{"discount":0,"discount1":0,"netDiscount":0,"subTotalPrice":0,"netSubTotalPrice":0,"TotalPrice":0,"netTotalPrice":0,"salesTaxRate":0,"salesTaxAmount":0,"netSalesTaxAmount":0,"shippingAmount":0,"vendItemCount":0,"dropshipItemCount":0,"maxItemCount":1,"maxDollarValue":10000,"vendFailCount":0},"detail":[]};
+				response = test_cart;
+				break;
+			
+			case 'emptyCart':
+				//response = default_cart;
+				request.yar.set('test-shopping-cart', default_cart);
+				break;
+			
+			case 'addToCartByProductID':
+				if (payload[1] !== undefined) {
+					var product = prods.filter( P => { return P.productID === payload[1]; });
+					if (product && product.length == 1) {
+						// drop reference:
+						product = JSON.parse(JSON.stringify(product.pop()));
+						var cartItem = test_cart.detail.filter( ITEM => {
+							return ITEM.productID === product.productID;
+						});
+
+						if (cartItem && cartItem.length == 1) {
+							cartItem = cartItem.pop();
+							if (cartItem.stockCount > 1) {
+								cartItem.stockCount -= 1;
+								cartItem.qtyInCart += 1;
+							}
+
+						} else {
+							if (product.stockCount > 0) {
+								product.vendResult = "VEND_PENDING";
+								product.itemRecordType = 2;
+								product.qtyInCart = 1;
+								product.coilNumber = product.productID; // STRICTLY for testing here, as the cart emulation DOES NOT carry coil numbers.
+								test_cart.detail.push(product);
+							}
+						}
+					}
+					request.yar.set('test-shopping-cart', test_cart);
+				}
+				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
+				break;
+			
+			case 'addToCartByCoil':
+				if (payload[1] !== undefined) {
+					var cartItem = test_cart.detail.filter( ITEM => {
+						return ITEM.productID === payload[1];
+					});
+
+					if (cartItem && cartItem.length == 1) {
+						cartItem = cartItem.pop();
+						if (cartItem.stockCount > 0) {
+							cartItem.stockCount -= 1;
+							cartItem.qtyInCart += 1;
+						}
+					}
+					request.yar.set('test-shopping-cart', test_cart);
+				}
+				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
+				break;
+			
+			case 'removeFromCartByCoilNo':
+				if (payload[1] !== undefined) {
+					var cartItem = test_cart.detail.filter( ITEM => {
+						return ITEM.productID === payload[1];
+					});
+
+					if (cartItem && cartItem.length == 1) {
+						cartItem = cartItem.pop();
+						if (cartItem.qtyInCart > 1) {
+							cartItem.stockCount += 1;
+							cartItem.qtyInCart -= 1;
+						} else {
+							// only one more, remove from list entirely
+							test_cart.detail = test_cart.detail.filter( ITEM => {
+								return ITEM.productID !== payload[1];
+							});
+						}
+					}
+					request.yar.set('test-shopping-cart', test_cart);
+				}
+				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
 				break;
 			
 			default:
 				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
 				break;
 		}
-		/*
-		if (actionToken) {
-			var data = JSON.parse(response);
-			data.actionToken = actionToken;
-			response = JSON.stringify(data);
+		
+		debug(payload);
+		if (payload[0]) {
+			debug(response);
 		}
-		*/
 		return reply( response ).code(200);
 	}
 }

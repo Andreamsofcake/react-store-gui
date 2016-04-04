@@ -3,7 +3,7 @@ import RootscopeActions from '../actions/RootscopeActions'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
-import { browserHistory } from 'react-router'
+import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
 class Shopping_Cart extends Component {
@@ -45,7 +45,7 @@ class Shopping_Cart extends Component {
   }
 
   cancel(){
-    TsvService.emptyCart();
+    TsvService.emptyCart(null, () => {});
     RootscopeActions.setConfig('itemsInCart', 0);
     TsvService.gotoDefaultIdlePage();
 
@@ -117,12 +117,16 @@ class Shopping_Cart extends Component {
   }
 
   removeAllQty(coil, qty) {
+  
+	  //console.warn("\n\nremoveAllQty()\n\n");
+	  //console.log(coil, qty);
+  
 	TsvService.fetchShoppingCart2(null, (err, data) => {
 
 		if (err) throw err;
 		RootscopeActions.setCache('shoppingCart', data);
 
-		function removeQty(qty) {
+		let removeQty = (qty) => {
 			if (qty > 0) {
 				qty -= 1;
 				TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
@@ -151,6 +155,8 @@ class Shopping_Cart extends Component {
 				});
 			}
 		}
+
+		removeQty(qty);
 	});
   }
 
@@ -205,9 +211,11 @@ class Shopping_Cart extends Component {
                 <_E.Col basis="1/4"><img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} onClick={this.shopmore()}/></_E.Col>
                 <_E.Col basis="1/4"><img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/></_E.Col>
 */}
-                <_E.Col basis="1/4"><_E.Button type="primary" onClick={this.shopmore}>{Translate.translate('Shopping_Cart','Shop More')}</_E.Button></_E.Col>
-                <_E.Col basis="1/4"><_E.Button type="success" onClick={this.checkout}>{Translate.translate('Shopping_Cart','Checkout')}</_E.Button></_E.Col>
-                <_E.Col basis="1/4"><_E.Button type="warning" onClick={this.cancel}>{Translate.translate('Shopping_Cart','Cancel')}</_E.Button></_E.Col>
+                <_E.Col basis="25%"><_E.Button type="primary" onClick={this.shopmore.bind(this)}>{Translate.translate('Shopping_Cart','Shop More')}</_E.Button></_E.Col>
+                <_E.Col basis="25%"><_E.Button type="success" onClick={this.checkout.bind(this)}>{Translate.translate('Shopping_Cart','Checkout')}</_E.Button></_E.Col>
+                <_E.Col basis="25%"><_E.Button type="warning" onClick={this.cancel.bind(this)}>{Translate.translate('Shopping_Cart','Cancel')}</_E.Button></_E.Col>
+                <_E.Col basis="25%"><_E.Button type="danger" component={(<Link to="/Product_Search">TEST: go to product search page</Link>)} /></_E.Col>
+                <_E.Col basis="25%"><_E.Button type="danger" component={(<Link to="/Category_Search">TEST: go to category search page</Link>)} /></_E.Col>
 
                 { this.state.bShowCouponBtn ? this.renderCouponButton() : null }
 

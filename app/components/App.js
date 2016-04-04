@@ -56,7 +56,10 @@ class App extends Component {
 			var multipleLangs = (data.languageSupported && data.languageSupported.split(";").length > 1)
 				, LANG = data.languageDefaulted || 'En'
 				;
-			
+
+			// this skips the 0-9 keypad coil view:
+			data.txtSearchScene = 'category_search';
+
 			RootscopeActions.setCache('custommachinesettings', data);
 			RootscopeActions.setConfig('supportLanguages', data.languageSupported || 'En');
 			RootscopeActions.setConfig('bDualLanguage', multipleLangs);
@@ -84,7 +87,7 @@ class App extends Component {
             if (RootscopeStore.getCache('currentLocation') === '/View0') {
                 console.log("Redirect to default idle page or reload");
 
-                if (TsvService.cache.custommachinesettings === undefined) {
+                if (!RootscopeStore.getCache('custommachinesettings')) {
                     TsvService.reloadPage();
 
                 } else {

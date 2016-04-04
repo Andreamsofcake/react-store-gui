@@ -71,8 +71,9 @@ if (!process.env.COOKIE_PASSWORD) {
 */
 
 server.register([
-/*
+//*
 // don't need yar in the Vending Machine app!
+// FALSE: using now for tracking 
 	{
 		register: require('yar'),
 		options: {
@@ -82,8 +83,8 @@ server.register([
 				isSecure: false
 			}
 		}
-	}
-*/
+	} ,
+//*/
 	{
 		register: require('hapi-io'),
 		options: {
