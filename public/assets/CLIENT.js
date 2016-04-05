@@ -50436,13 +50436,13 @@
 
 	var Translate = _interopRequireWildcard(_Translate);
 
-	var _RootscopeActions = __webpack_require__(242);
+	var _StorefrontActions = __webpack_require__(380);
 
-	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
 
-	var _RootscopeStore = __webpack_require__(297);
+	var _StorefrontStore = __webpack_require__(381);
 
-	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
 
 	var _reactRouter = __webpack_require__(160);
 
@@ -50470,7 +50470,7 @@
 	    // MUST call super() before any this.*
 
 
-	    _RootscopeActions2.default.setSession('currentView', 'Storefront');
+	    _StorefrontActions2.default.setSession('currentView', 'Storefront');
 
 	    return _this;
 	  }
@@ -50499,9 +50499,11 @@
 	          _react2.default.createElement(
 	            'h2',
 	            null,
-	            'Storefront',
-	            _react2.default.createElement('br', null)
-	          )
+	            'Storefront'
+	          ),
+	          _react2.default.createElement(_E.Pill, { label: 'All', type: 'primary', onClear: this.handleClear }),
+	          _react2.default.createElement(_E.Pill, { label: 'Drinks', type: 'primary', onClear: this.handleClear }),
+	          _react2.default.createElement(_E.Pill, { label: 'Snacks', type: 'primary', onClear: this.handleClear })
 	        )
 	      );
 	    }
@@ -50611,6 +50613,315 @@
 	}(_react.Component);
 
 	exports.default = Transaction_Refund;
+
+/***/ },
+/* 380 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(243);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _SocketAPI = __webpack_require__(248);
+
+	var _SocketAPI2 = _interopRequireDefault(_SocketAPI);
+
+	var _axios = __webpack_require__(221);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _reactRouter = __webpack_require__(160);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var StorefrontActions = {
+		setConfig: function setConfig(path, value) {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.UPDATE_ROOT_CONFIG,
+				data: { path: path, value: value }
+			});
+		},
+		setCache: function setCache(path, value) {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.UPDATE_ROOT_CACHE,
+				data: { path: path, value: value }
+			});
+		},
+		setSession: function setSession(path, value) {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.UPDATE_ROOT_SESSION,
+				data: { path: path, value: value }
+			});
+		},
+		checkout: function checkout() {
+			var bHasShoppingCart = TsvService.bCustomSetting('bHasShoppingCart', true),
+			    fundsAvailable = RootscopeStore.getConfig('fundsAvailable'),
+			    summary = RootscopeStore.getConfig('summary');
+
+			if (fundsAvailable >= summary.TotalPrice) {
+				_reactRouter.browserHistory.push("/Cashless_Vending");
+			} else {
+				//console.log("bHasShoppingCart:" + TsvService.bCustomSetting('bHasShoppingCart', "true"));
+				if (bHasShoppingCart && RootscopeStore.getCache('currentLocation') != "/Shopping_Cart") {
+					_reactRouter.browserHistory.push("/Shopping_Cart");
+				} else {
+
+					if (bHasShoppingCart) {
+						return _reactRouter.browserHistory.push("/Shopping_Cart");
+					}
+
+					if (TsvService.bCustomSetting('bAskForReceipt', false)) {
+						this.setConfig('keyboardView', "Enter_Email");
+						_reactRouter.browserHistory.push("/Keyboard");
+					} else {
+						this.gotoPayment();
+					}
+				}
+			}
+		},
+		gotoPayment: function gotoPayment() {
+
+			var TotalPrice = RootscopeStore.getCache('shoppingCart.summary.TotalPrice', 0);
+
+			if (TotalPrice != 0 && TsvService.bCustomSetting('HasCreditCard', true) && TsvService.bCustomSetting('HasBillCoin', false)) {
+				_reactRouter.browserHistory.push("/Cash_Card");
+			} else {
+
+				if (TsvService.bCustomSetting('HasBillCoin', false)) {
+					_reactRouter.browserHistory.push("/Cash_Vending");
+				} else if (TsvService.bCustomSetting('HasCreditCard', true)) {
+					_reactRouter.browserHistory.push("/Card_Vending");
+				} else if (TotalPrice == 0) {
+					_reactRouter.browserHistory.push("/Card_Vending");
+				}
+			}
+		},
+		updateCredit: function updateCredit() {
+			var session = RootscopeStore.getSession(null, {});
+			this.setConfig('credit', session.discount + session.creditBalance);
+			/*
+	  TsvService.debug("Updated credit to include discount "
+	  	+ TsvService.session.discount + " + " + TsvService.session.creditBalance
+	  	+ " = "
+	  	+ $rootScope.credit);
+	  */
+		},
+		coupon: function coupon() {
+			RootscopeStore.setConfig('keyboardView', "Enter_Coupon");
+			_reactRouter.browserHistory.push("/Keyboard");
+		}
+	};
+
+	module.exports = StorefrontActions;
+
+/***/ },
+/* 381 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _session;
+
+	var _AppDispatcher = __webpack_require__(243);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _Object = __webpack_require__(39);
+
+	var _Object2 = _interopRequireDefault(_Object);
+
+	var _events = __webpack_require__(298);
+
+	var _muDB = __webpack_require__(299);
+
+	var _muDB2 = _interopRequireDefault(_muDB);
+
+	var _utils = __webpack_require__(219);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	var CHANGE_EVENT = 'change',
+	    _store = {
+
+		appConfig: {
+			name: 'SDK-Vending-Gui',
+			version: '0.0.1',
+			date: '2016-03-22'
+		},
+
+		session: (_session = {
+			cashMsg: Translate.translate("Cash_Vending", "HintMessageInsertCash"),
+			cardMsg: Translate.translate("Card_Vending", "InstructionMessage"),
+			bVendedOldCredit: false,
+			bVendingInProcess: false,
+			vendErrorMsg1: "vendErrorMsg1",
+			vendErrorMsg2: "vendErrorMsg2",
+			vendSettleTotal: 0,
+			creditBalance: 0,
+			discount: 0,
+			bRunningAutoMap: false,
+			machineID: 0
+		}, _defineProperty(_session, 'bVendedOldCredit', false), _defineProperty(_session, 'categories', null), _defineProperty(_session, 'products', null), _session),
+
+		cache: {
+			shoppingCart: {},
+			productList: {},
+			planogram: {},
+			machineSettings: {},
+			// pre-setting this from the actual settings for testing:
+			custommachinesettings: {
+				paymentPageTimeout: 65000
+			},
+			machineList: {},
+			prdHashTable: {}
+		},
+
+		config: {
+			failing: true,
+			failCount: 0,
+			eventSubscriptions: {},
+			bShowLanguageFlag: false,
+			bShowLanguage: false,
+			bShowCredit: false,
+			bCashless: false,
+			bDualMachine: false,
+			itemsInCart: 0,
+			bInsufficientFunds: false,
+			bDisplayCgryNavigation: false,
+			bDisplayCgryNavigation2: false,
+			categories: []
+		}
+	},
+	    _storeDB = new _muDB2.default();
+
+	_storeDB.setDB(_store);
+
+	var StorefrontStore = (0, _Object2.default)({}, _events.EventEmitter.prototype, {
+		addChangeListener: function addChangeListener(cb) {
+			this.on(CHANGE_EVENT, cb);
+		},
+
+		removeChangeListener: function removeChangeListener(cb) {
+			this.removeListener(CHANGE_EVENT, cb);
+		},
+
+		emitChange: function emitChange() {
+			var args = Array.prototype.slice.call(arguments);
+			args.unshift(CHANGE_EVENT);
+			this.emit.apply(this, args);
+		},
+
+		getConfig: function getConfig(path, dflt) {
+			path = path ? 'config.' + path : 'config';
+			var result = _storeDB.get(path);
+			if (typeof result !== 'undefined') {
+				return result;
+			}
+			return dflt;
+		},
+
+		getCache: function getCache(path, dflt) {
+			path = path ? 'cache.' + path : 'cache';
+			var result = _storeDB.get(path);
+			if (typeof result !== 'undefined') {
+				return result;
+			}
+			return dflt;
+		},
+
+		getSession: function getSession(path, dflt) {
+			path = path ? 'session.' + path : 'session';
+			var result = _storeDB.get(path);
+			if (typeof result !== 'undefined') {
+				return result;
+			}
+			return dflt;
+		},
+
+		getCreditMessage: function getCreditMessage() {
+			if (_storeDB.get('config.bCashless')) {
+				return Translate.translate("BalanceLabel") + ":" + '\n' + _TsvService2.default.currencyFilter(_storeDB.get('config.fundsAvailable'));
+			} else {
+				return Translate.translate("CreditLabel") + ":" + '\n' + _TsvService2.default.currencyFilter(_storeDB.get('config.credit'));
+			}
+		},
+
+		getShowCredit: function getShowCredit() {
+			if (_storeDB.get('config.bCashless')) {
+				var fundsA = _storeDB.get('config.fundsAvailable');
+				return typeof fundsA !== 'undefined' && fundsA !== 0 && _storeDB.get('config.bShowCredit');
+			} else {
+				var credit = _storeDB.get('config.credit');
+				return typeof credit !== 'undefined' && credit !== 0 && _storeDB.get('config.bShowCredit');
+			}
+		},
+
+		getAppConfig: function getAppConfig() {
+			return _storeDB.get('appConfig');
+		}
+	});
+
+	StorefrontStore.dispatch = _AppDispatcher2.default.register(function (payload) {
+		var action = payload.action;
+		switch (action.actionType) {
+
+			case _appConstants2.default.UPDATE_ROOT_CONFIG:
+				_storeDB.set('config.' + action.data.path, action.data.value);
+				StorefrontStore.emitChange({ type: 'config', path: action.data.path });
+				break;
+
+			case _appConstants2.default.UPDATE_ROOT_CACHE:
+				_storeDB.set('cache.' + action.data.path, action.data.value);
+				StorefrontStore.emitChange({ type: 'cache', path: action.data.path });
+				//console.warn(' someone updated CACHE, args:');
+				//console.log(action.data);
+				break;
+
+			case _appConstants2.default.UPDATE_ROOT_SESSION:
+				_storeDB.set('session.' + action.data.path, action.data.value);
+				StorefrontStore.emitChange({ type: 'session', path: action.data.path });
+				break;
+
+			case _appConstants2.default.EXAMPLE_ACTION_CONSTANT:
+				if (action.data) {
+					setFoo(action.data);
+				}
+				StorefrontStore.emitChange();
+				break;
+
+			default:
+				return true;
+				break;
+		}
+	});
+
+	if (_utils.isClient) {
+		window.RSS = StorefrontStore;
+	}
+
+	module.exports = StorefrontStore;
 
 /***/ }
 /******/ ]);
