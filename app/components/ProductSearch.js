@@ -43,7 +43,7 @@ class Product_Search extends Component {
     	products: RootscopeStore.getConfig('products'),
     	bShowBackBtn: RootscopeStore.getCache('custommachinesettings.bCategoryView')
     }
-    
+
     this.setState(state);
     
     if (!state.products) {
@@ -129,7 +129,7 @@ class Product_Search extends Component {
     		</_E.Row>
     	);
     }
-    
+
     return (
 
       <_E.Row className="Product_Search" >
@@ -166,8 +166,7 @@ class Product_Search extends Component {
                       </_E.Col>
                     )
                   }
-                ):null
-    }
+                ):null}
 
           </_E.Row>
 

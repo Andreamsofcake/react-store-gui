@@ -2709,11 +2709,23 @@
 
 	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
 
+	var _StorefrontActions = __webpack_require__(378);
+
+	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
+
+	var _StorefrontStore = __webpack_require__(379);
+
+	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
+
 	var _reactRouter = __webpack_require__(8);
 
 	var _elemental = __webpack_require__(82);
 
 	var _E = _interopRequireWildcard(_elemental);
+
+	var _ProductListItem = __webpack_require__(377);
+
+	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -2736,25 +2748,79 @@
 
 
 	    _RootscopeActions2.default.setSession('currentView', 'Storefront');
+	    _this.state = {
+	      categoryIdFilter: [],
+	      products: [],
+	      categories: []
+	    };
 
+	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
+	    _this._onStoreFrontChange = _this._onStoreFrontChange.bind(_this);
 	    return _this;
 	  }
 
+	  // Add change listeners to stores
+
+
 	  _createClass(Storefront, [{
 	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
+	      _StorefrontStore2.default.addChangeListener(this._onStoreFrontChange);
 
+	      _TsvService2.default.fetchProduct(null, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setSession('products', data);
+	      });
 
-	    // Add change listeners to stores
-	    value: function componentDidMount() {}
+	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(0, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setConfig('categories', data);
+	      });
+	    }
 
 	    // Remove change listers from stores
 
 	  }, {
 	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
+	    value: function componentWillUnmount() {
+	      _RootscopeStore2.default.removeChangeListener(this._onRootstoreChange);
+	      _StorefrontStore2.default.removeChangeListener(this._onStoreFrontChange);
+	    }
+	  }, {
+	    key: '_onRootstoreChange',
+	    value: function _onRootstoreChange(event) {
+	      // if (event && event.type == 'config' && event.path == 'categories') {
+	      // console.log('[_onRootstoreChange]');
+	      // console.log(event);
+	      // console.log(RootscopeStore.getConfig('categories'));
+	      this.setState({
+	        categories: _RootscopeStore2.default.getConfig('categories'),
+	        products: _RootscopeStore2.default.getSession('products')
+	      });
+	      // }
+	    }
+	  }, {
+	    key: '_onStoreFrontChange',
+	    value: function _onStoreFrontChange() {
+	      this.setState({
+	        categoryIdFilter: _StorefrontStore2.default.getCategoryFilter()
+	      });
+	    }
+	  }, {
+	    key: 'categoryClick',
+	    value: function categoryClick(categoryID) {
+	      if (categoryID) {
+	        return _StorefrontActions2.default.toggleIDtoCategoryFilter(categoryID);
+	      }
+	      _StorefrontActions2.default.clearCategoryFilter();
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
+	      var _this2 = this;
+
+	      var allType = !this.state.categoryIdFilter.length ? "primary" : "hollow-primary";
 	      return _react2.default.createElement(
 	        _E.Row,
 	        null,
@@ -2762,12 +2828,78 @@
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
-	            'h2',
+	            _E.Row,
 	            null,
-	            'Storefront',
-	            _react2.default.createElement('br', null)
+	            _react2.default.createElement(
+	              _E.Col,
+	              { sm: '1/2' },
+	              _react2.default.createElement(
+	                'h2',
+	                null,
+	                'Storefront'
+	              )
+	            ),
+	            _react2.default.createElement(_E.Col, { sm: '1/2' })
+	          ),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Button,
+	              { type: allType, onClick: this.categoryClick.bind(this, null) },
+	              'All'
+	            ),
+	            this.state.categories ? this.state.categories.map(function (category, $index) {
+	              var type = _this2.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary" : "hollow-primary";
+	              return _react2.default.createElement(
+	                _E.Button,
+	                { key: $index, type: type, onClick: _this2.categoryClick.bind(_this2, category.categoryID) },
+	                category.categoryName
+	              );
+	            }) : null
+	          ),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Col,
+	              { sm: '2/3' },
+	              _react2.default.createElement(
+	                _E.Card,
+	                null,
+	                this.renderProducts()
+	              )
+	            )
 	          )
 	        )
+	      );
+	    }
+	  }, {
+	    key: 'renderProducts',
+	    value: function renderProducts() {
+	      var _this3 = this;
+
+	      if (!this.state.products.length) {
+	        return null;
+	      }
+	      var prods = this.state.products.map(function (P, idx) {
+	        var show = true;
+	        if (_this3.state.categoryIdFilter.length) {
+	          if (_this3.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
+	            show = false;
+	          }
+	        }
+	        if (show) {
+	          return _react2.default.createElement(_ProductListItem2.default, { key: idx, data: P });
+	        }
+	        return null;
+	      });
+
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        prods
 	      );
 	    }
 	  }]);
@@ -11637,6 +11769,9 @@
 		UPDATE_ROOT_CONFIG: null,
 		UPDATE_ROOT_CACHE: null,
 		UPDATE_ROOT_SESSION: null,
+
+		TOGGLE_CATEGORY_ID_TO_FILTER: null,
+		CLEAR_CATEGORY_FILTER: null,
 
 		TEST_EMULATOR_RESULT: null,
 
@@ -50426,6 +50561,144 @@
 	}(_react.Component);
 
 	exports.default = ProductListItem;
+
+/***/ },
+/* 378 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(83);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(84);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// import SocketAPI from '../utils/SocketAPI'
+	// import axios from 'axios'
+	// import { browserHistory } from 'react-router'
+
+	var StorefrontActions = {
+	  toggleIDtoCategoryFilter: function toggleIDtoCategoryFilter(ID) {
+	    _AppDispatcher2.default.handleServerAction({
+	      actionType: _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER,
+	      data: ID
+	    });
+	  },
+	  clearCategoryFilter: function clearCategoryFilter() {
+	    _AppDispatcher2.default.handleServerAction({
+	      actionType: _appConstants2.default.CLEAR_CATEGORY_FILTER,
+	      data: null
+	    });
+	  }
+	};
+
+	module.exports = StorefrontActions;
+
+/***/ },
+/* 379 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(83);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(84);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _TsvService = __webpack_require__(53);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(54);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _Object = __webpack_require__(73);
+
+	var _Object2 = _interopRequireDefault(_Object);
+
+	var _events = __webpack_require__(150);
+
+	var _muDB = __webpack_require__(89);
+
+	var _muDB2 = _interopRequireDefault(_muDB);
+
+	var _utils = __webpack_require__(4);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CHANGE_EVENT = 'change',
+	    _store = {
+			categoryIdFilter: []
+	}
+
+	// , _storeDB = new muDB()
+	;
+
+	function toggleIDtoCategoryFilter(ID) {
+			if (_store.categoryIdFilter.indexOf(ID) == -1) {
+					_store.categoryIdFilter.push(ID);
+			} else {
+					_store.categoryIdFilter.splice(_store.categoryIdFilter.indexOf(ID), 1);
+			}
+	}
+
+	function clearFilter() {
+			_store.categoryIdFilter = [];
+	}
+	// _storeDB.setDB(_store);
+
+	var StorefrontStore = (0, _Object2.default)({}, _events.EventEmitter.prototype, {
+			addChangeListener: function addChangeListener(cb) {
+					this.on(CHANGE_EVENT, cb);
+			},
+
+			removeChangeListener: function removeChangeListener(cb) {
+					this.removeListener(CHANGE_EVENT, cb);
+			},
+
+			emitChange: function emitChange() {
+					var args = Array.prototype.slice.call(arguments);
+					args.unshift(CHANGE_EVENT);
+					this.emit.apply(this, args);
+			},
+
+			getCategoryFilter: function getCategoryFilter() {
+					return _store.categoryIdFilter;
+			}
+	});
+
+	StorefrontStore.dispatch = _AppDispatcher2.default.register(function (payload) {
+			var action = payload.action;
+			switch (action.actionType) {
+
+					case _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER:
+							toggleIDtoCategoryFilter(action.data);
+							StorefrontStore.emitChange();
+							break;
+
+					case _appConstants2.default.CLEAR_CATEGORY_FILTER:
+							clearFilter();
+							StorefrontStore.emitChange();
+							break;
+
+					default:
+							return true;
+							break;
+			}
+	});
+
+	module.exports = StorefrontStore;
 
 /***/ }
 /******/ ]);
