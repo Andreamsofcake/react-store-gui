@@ -17,49 +17,24 @@ class Storefront extends Component {
     // MUST call super() before any this.*
     super(props, context);
     RootscopeActions.setSession('currentView', 'Storefront');
-    this.state = {
-      _Index: 0,
-      categories: RootscopeStore.getConfig('categories'),
-      products: RootscopeStore.getSession('products')
-    }
+    this.state = {}
 
-    if (!this.state.products) {
-      TsvService.fetchProduct(null, (err, data) => {
-        if (err) throw err;
-        this.setState({
-          products: data
-        });
-        console.log('products');
-        console.log(this.state.products);
-      });
-    }
-
-    TsvService.fetchProductCategoriesByParentCategoryID(0, (err, data) => {
-    	if (err) throw err;
-    	RootscopeActions.setConfig('categories', data);
-    });
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
-  }
-
-  fetchCategory(data) {
-    var categoryID = data
-  	TsvService.fetchProductCategoriesByParentCategoryID(categoryID, (err, data) => {
-    	if (err) throw err;
-    	RootscopeActions.setConfig('categories', data);
-    	if (data.length === 0) {
-    		TsvService.fetchProductByCategory(categoryID, (err, data) => {
-		    	if (err) throw err;
-		    	RootscopeActions.setConfig('products', data);
-		    	browserHistory.push("/Product_Search");
-		    });
-    	}
-    });
-
   }
 
   // Add change listeners to stores
   componentDidMount() {
     RootscopeStore.addChangeListener(this._onRootstoreChange);
+
+    TsvService.fetchProduct(null, (err, data) => {
+      if (err) throw err;
+      RootscopeActions.setSession('products', data)
+    });
+
+    TsvService.fetchProductCategoriesByParentCategoryID(0, (err, data) => {
+    	if (err) throw err;
+    	RootscopeActions.setConfig('categories', data);
+    });
   }
 
   // Remove change listers from stores
@@ -68,14 +43,15 @@ class Storefront extends Component {
   }
 
   _onRootstoreChange(event) {
-  	if (event && event.type == 'config' && event.path == 'categories') {
+  	// if (event && event.type == 'config' && event.path == 'categories') {
 		// console.log('[_onRootstoreChange]');
 		// console.log(event);
 		// console.log(RootscopeStore.getConfig('categories'));
 		this.setState({
-			categories: RootscopeStore.getConfig('categories')
+			categories: RootscopeStore.getConfig('categories'),
+      products: RootscopeStore.getSession('products')
 		});
-  	}
+  	// }
   }
 
   render() {
@@ -103,24 +79,30 @@ class Storefront extends Component {
           <_E.Row>
             <_E.Col sm="2/3">
               <_E.Card>
-              {this.state.products ? this.state.products.map((product, $index) => {
-                            return (
-
-                              <ProductListItem
-                                 key={$index}
-                                //  onClick={this.setPrdSelected.bind(this)}
-                                 data={product}
-                              />
-
-                            )
-                          }
-                        ):null}
+                {this.renderProducts()}
               </_E.Card>
             </_E.Col>
           </_E.Row>
         </_E.Col>
       </_E.Row>
     );
+  }
+
+  renderProducts(){
+    return (
+      {this.state.products ? this.state.products.map((product, $index) => {
+                    return (
+
+                      <ProductListItem
+                         key={$index}
+                        //  onClick={this.setPrdSelected.bind(this)}
+                         data={product}
+                      />
+
+                    )
+                  }
+                ):null}
+    )
   }
 
 }
