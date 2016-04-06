@@ -13,7 +13,7 @@ var Hapi = require('hapi')
 //	, hapi_mongoose = require('./lib/hapi-mongoose')
 //	, utils = require('./lib/utils')
 	, fs = require('fs')
-	
+
 	, SDK = require('sdk-core-lib')
 
 	, importerFunc = require('./lib/importer')
@@ -27,12 +27,12 @@ var Hapi = require('hapi')
 
 	improve this with Hapi Glue sometime soon
 	https://github.com/hapijs/glue
-	
+
 	>
-	
+
 	authorization: make a custom plugin based on hapi-auth-basic
 	so we can capture the inbound postbody.auth {} object from the library
-	
+
 	>
 
 ****/
@@ -64,16 +64,16 @@ io.on('connection', function (socket) {
 });
 */
 
-/*
+//*
 if (!process.env.COOKIE_PASSWORD) {
 	throw new Error('no cookie password found in env!');
 }
-*/
+// */
 
 server.register([
 //*
 // don't need yar in the Vending Machine app!
-// FALSE: using now for tracking 
+// FALSE: using now for tracking
 	{
 		register: require('yar'),
 		options: {
@@ -94,7 +94,7 @@ server.register([
 ], err => {
 
 	if (err) throw /* GIANT_TANTRUM() */ err;
-	
+
 	['assets', 'js', 'css', 'gfx'].forEach( DIR => {
 
 		server.route({
@@ -108,7 +108,7 @@ server.register([
 				}
 			}
 		});
-	
+
 	});
 
 	// allows some pre-config on server.app by delayed requiring:
@@ -153,7 +153,7 @@ server.register([
 		path: '/api/model-ui-config',
 		handler: ModelUiConfig
 	});
-	
+
 	server.route({
 		method: 'post',
 		path: '/api/model-item-save',
@@ -192,7 +192,7 @@ server.register([
 	var TsvProxy = require('./routes/TsvProxy')
 		, ComBusEmulator = require('./routes/ComBusEmulator')
 		;
-	
+
 	server.route({
 		method: 'post',
 		path: '/tsv-proxy/flashapi',
@@ -246,7 +246,7 @@ server.register([
 							//socketdebug('subscribed socket to flash-api-multi-event' );
 						} else {
 							//socketdebug('DID NOT SUBSCRIBE TO flash-api-multi-event' );
-							
+
 						}
 						ctx.socket.emit(ctx.event, ctx.result);
 						next();
@@ -261,7 +261,7 @@ server.register([
 		path: '/api/emulator',
 		handler: ComBusEmulator
 	});
-	
+
 	server.route({
 		method: 'get',
 		path: '/{route*}',

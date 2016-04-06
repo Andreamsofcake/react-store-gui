@@ -1,10 +1,13 @@
 h2, h3 { margin-top: 0.5em; }
+.product {
+	/*display: inline-block;*/
+}
 
 .Product_Search .flex-item {
 	overflow-x: hidden;
 }
 
-.Product_Search img {
+.Product_Search img,  .product > img{
 	max-width: 95% !important;
 }
 

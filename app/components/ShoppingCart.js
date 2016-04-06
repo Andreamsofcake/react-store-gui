@@ -304,11 +304,13 @@ class Shopping_Cart extends Component {
 
 	return this.state.cart.map((prd, $index) => {
 		return (
-      <ShoppingCartItem
-         key={$index}
-         onClick={this.setPrdSelected.bind(this)}
-         data={product}
-      />
+		  <ShoppingCartItem
+			 key={$index}
+			 data={prd}
+			 addQty={this.addQty.bind(this)}
+			 minusQty={this.minusQty.bind(this)}
+			 removeAllQty={this.removeAllQty.bind(this)}
+		  />
   		);
   	  }
   	)

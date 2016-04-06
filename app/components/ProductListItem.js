@@ -12,19 +12,18 @@ class ProductListItem extends Component {
   render() {
     var product = this.props.data
     return (
-      <_E.Col basis="25%" >
 
           <div className="product">
 
               <h4>{product.productName}</h4>
 
-              <img src={product.imagePath} title={product.description} onClick={this.clickHandler.bind(this)} />
+              <img src={product.imagePath} title={product.description}/>
 
               <p className="prdPrice">${TsvService.currencyFilter(product.price)} </p>
 
-          </div>
+              <_E.Button onClick={this.clickHandler.bind(this)}>Add</_E.Button>
 
-      </_E.Col>
+          </div>
 
     );
 

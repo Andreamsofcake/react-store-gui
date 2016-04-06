@@ -20,7 +20,8 @@ class Storefront extends Component {
     this.state = {
       categoryIdFilter:[],
       products: [],
-      categories: []
+      categories: [],
+      shoppingCart: []
     }
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
@@ -55,8 +56,8 @@ class Storefront extends Component {
 		// console.log(event);
 		// console.log(RootscopeStore.getConfig('categories'));
 		this.setState({
-			categories: RootscopeStore.getConfig('categories'),
-      products: RootscopeStore.getSession('products')
+			categories: RootscopeStore.getConfig('categories') || [],
+      products: RootscopeStore.getSession('products') || []
 		});
   	// }
   }
@@ -71,6 +72,10 @@ class Storefront extends Component {
       return StorefrontActions.toggleIDtoCategoryFilter(categoryID)
     }
     StorefrontActions.clearCategoryFilter()
+  }
+
+  setPrdSelected(product, e) {
+    StorefrontActions.addToCart(product, e)
   }
 
   render() {
@@ -97,13 +102,10 @@ class Storefront extends Component {
             ) : null}
           </_E.Row>
           <br />
-          <_E.Row>
-            <_E.Col sm="2/3">
-              <_E.Card>
+
+
                 {this.renderProducts()}
-              </_E.Card>
-            </_E.Col>
-          </_E.Row>
+
         </_E.Col>
       </_E.Row>
     );
@@ -122,14 +124,21 @@ class Storefront extends Component {
     	}
     	if (show) {
     		return (
-    			<ProductListItem key={idx} data={P} />
+
+          <_E.Col key={idx} basis="25%">
+            <ProductListItem
+            onClick={this.setPrdSelected.bind(this)}
+            data={P} />
+          </_E.Col>
     		);
     	}
     	return null;
     })
 
     return (
-    	<div>{prods}</div>
+      <_E.Row >
+    	{prods}
+      </_E.Row>
     );
   }
 

@@ -46061,24 +46061,56 @@
 					fontSize: '0.75em'
 				};
 
-				var buttons = [{
+				var buttons = [
+
+				// cash:
+				{
+					label: 'Insert $5',
+					cmd: ['insertCash', 5],
+					showFor: ['Cash_Card', 'Cash_Vending']
+				}, {
+					label: 'Insert $10',
+					cmd: ['insertCash', 10],
+					showFor: ['Cash_Card', 'Cash_Vending']
+				}, {
+					label: 'Insert $20',
+					cmd: ['insertCash', 20],
+					showFor: ['Cash_Card', 'Cash_Vending']
+				}, {
+					label: 'Insert $50',
+					cmd: ['insertCash', 50],
+					showFor: ['Cash_Card', 'Cash_Vending']
+				}, {
+					label: 'Insert $100',
+					cmd: ['insertCash', 100],
+					showFor: ['Cash_Card', 'Cash_Vending']
+				},
+
+				// credit cards:
+				{
 					label: 'CC Insert',
-					cmd: ['cardTransactionResponse', 'CARD_INSERTED']
+					cmd: ['cardTransactionResponse', 'CARD_INSERTED'],
+					showFor: ['Cash_Card', 'Card_Vending']
 				}, {
 					label: 'CC Processing',
-					cmd: ['cardTransactionResponse', 'CARD_PROCESSING']
+					cmd: ['cardTransactionResponse', 'CARD_PROCESSING'],
+					showFor: ['Cash_Card', 'Card_Vending']
 				}, {
 					label: 'CC Approve',
-					cmd: ['cardTransactionResponse', 'CARD_APPROVED']
+					cmd: ['cardTransactionResponse', 'CARD_APPROVED'],
+					showFor: ['Cash_Card', 'Card_Vending']
 				}, {
 					label: 'CC Connect Fail',
-					cmd: ['cardTransactionResponse', 'CARD_CONNECTION_FAILURE']
+					cmd: ['cardTransactionResponse', 'CARD_CONNECTION_FAILURE'],
+					showFor: ['Cash_Card', 'Card_Vending']
 				}, {
 					label: 'CC Decline',
-					cmd: ['cardTransactionResponse', 'CARD_DECLINED']
+					cmd: ['cardTransactionResponse', 'CARD_DECLINED'],
+					showFor: ['Cash_Card', 'Card_Vending']
 				}, {
 					label: 'CC Unknown Error',
-					cmd: ['cardTransactionResponse', 'CARD_UNKNOWN_ERROR']
+					cmd: ['cardTransactionResponse', 'CARD_UNKNOWN_ERROR'],
+					showFor: ['Cash_Card', 'Card_Vending']
 				}];
 
 				return _react2.default.createElement(
@@ -49024,8 +49056,10 @@
 	      return this.state.cart.map(function (prd, $index) {
 	        return _react2.default.createElement(_ShoppingCartItem2.default, {
 	          key: $index,
-	          onClick: _this5.setPrdSelected.bind(_this5),
-	          data: product
+	          data: prd,
+	          addQty: _this5.addQty.bind(_this5),
+	          minusQty: _this5.minusQty.bind(_this5),
+	          removeAllQty: _this5.removeAllQty.bind(_this5)
 	        });
 	      });
 	    }
@@ -49386,14 +49420,16 @@
 	    }
 	  }, {
 	    key: 'fetchCategory',
-	    value: function fetchCategory(data) {
-	      var categoryID = data;
-	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(categoryID, function (err, data) {
+	    value: function fetchCategory(cat) {
+	      //var categoryID = cat.categoryID;
+	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(cat.categoryID, function (err, data) {
 	        if (err) throw err;
 	        _RootscopeActions2.default.setConfig('categories', data);
 	        if (data.length === 0) {
-	          _TsvService2.default.fetchProductByCategory(categoryID, function (err, data) {
+	          _TsvService2.default.fetchProductByCategory(cat.categoryID, function (err, data) {
 	            if (err) throw err;
+	            console.log('setting products data................................................................................' + "\n................................................................................\n");
+	            console.log(data);
 	            _RootscopeActions2.default.setConfig('products', data);
 	            _reactRouter.browserHistory.push("/Product_Search");
 	          });
@@ -49610,7 +49646,8 @@
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Product_Search).call(this, props, context));
 
 	    _this.state = {
-	      bShowBackBtn: false,
+	      bShowBackBtn: _RootscopeStore2.default.getCache('custommachinesettings.bCategoryView'),
+	      products: [],
 	      _Index: 0
 	    };
 
@@ -49620,53 +49657,49 @@
 	    _RootscopeActions2.default.setSession('currentView', 'Product_Search');
 	    _RootscopeActions2.default.setCache('currentLocation', '/Product_Search');
 
-	    var products = _RootscopeStore2.default.getConfig('products');
-
-	    _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
-	      if (err) throw err;
-	      _RootscopeActions2.default.setCache('shoppingCart', data);
-	    });
-
 	    if (typeof window !== 'undefined') {
 	      window.RootscopeStore = _RootscopeStore2.default;
-	    }
-
-	    if (_RootscopeStore2.default.getCache('custommachinesettings.bCategoryView') === false) {
-
-	      if (products) {
-	        _this.state.products = products;
-	      } else {
-	        console.warn('have to go fetch all products!');
-	        console.log(_RootscopeStore2.default.getConfig('products'));
-	        _TsvService2.default.fetchProduct(null, function (err, data) {
-	          if (err) throw err;
-	          _this.setState({
-	            products: data
-	          });
-	        });
-	      }
-	    } else {
-
-	      if (products) {
-	        _this.state.products = products;
-	      } else {
-	        console.warn('have to go fetch all products!');
-	        console.log(_RootscopeStore2.default.getConfig('products'));
-	        _this.state.bShowBackBtn = true;
-	        _TsvService2.default.fetchProduct(null, function (err, data) {
-	          if (err) throw err;
-	          _RootscopeActions2.default.setConfig('products', data);
-	          _this.setState({
-	            products: data
-	          });
-	        });
-	      }
 	    }
 
 	    return _this;
 	  }
 
 	  _createClass(Product_Search, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setCache('shoppingCart', data);
+	      });
+
+	      var state = {
+	        products: _RootscopeStore2.default.getConfig('products'),
+	        bShowBackBtn: _RootscopeStore2.default.getCache('custommachinesettings.bCategoryView')
+	      };
+
+	      this.setState(state);
+
+	      if (!state.products) {
+	        console.warn('have to go fetch all products! (fix in refactor, but Product_Search is not long-term used anyway ... just old code for testing');
+	        //console.log(RootscopeStore.getConfig('products'));
+	        _TsvService2.default.fetchProduct(null, function (err, data) {
+	          if (err) throw err;
+	          _RootscopeActions2.default.setConfig('products', data);
+	          _this2.setState({
+	            products: data
+	          });
+	        });
+	      }
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
 	    key: 'setOpacity',
 	    value: function setOpacity(count) {
 	      return count == 0 ? 0.4 : 1;
@@ -49710,12 +49743,12 @@
 	  }, {
 	    key: 'updateCategory',
 	    value: function updateCategory(categoryID) {
-	      var _this2 = this;
+	      var _this3 = this;
 
 	      _TsvService2.default.fetchProductByCategory(categoryID, function (err, data) {
 	        if (err) throw err;
 	        _RootscopeActions2.default.setConfig('products', data);
-	        _this2.setState({
+	        _this3.setState({
 	          products: data
 	        });
 	      });
@@ -49725,22 +49758,10 @@
 	    value: function back() {
 	      _reactRouter.browserHistory.push("/Category_Search");
 	    }
-
-	    // Add change listeners to stores
-
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {}
-
-	    // Remove change listers from stores
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      var _this3 = this;
+	      var _this4 = this;
 
 	      var products = this.state.products;
 	      if (!products || !products.length) {
@@ -49787,11 +49808,10 @@
 	            }
 	            */
 	            return _react2.default.createElement(
-	              'div',
-	              { key: $index, style: { opacity: _this3.setOpacity(product.stockCount) } },
+	              _E.Col,
+	              { basis: '25%', key: $index, style: { opacity: _this4.setOpacity(product.stockCount) } },
 	              _react2.default.createElement(_ProductListItem2.default, {
-	                key: $index,
-	                onClick: _this3.setPrdSelected.bind(_this3),
+	                onClick: _this4.setPrdSelected.bind(_this4),
 	                data: product
 	              })
 	            );
@@ -49847,7 +49867,7 @@
 	  }, {
 	    key: 'renderCategoryTable',
 	    value: function renderCategoryTable() {
-	      var _this4 = this;
+	      var _this5 = this;
 
 	      var categories = _RootscopeStore2.default.getProductCategories();
 	      return _react2.default.createElement(
@@ -49856,8 +49876,8 @@
 	        categories.map(function (category, $index) {
 	          return _react2.default.createElement(
 	            _E.Col,
-	            { basis: '33%', key: $index, className: 'gallery' + (_this4.isActive($index) ? ' active' : '') },
-	            _react2.default.createElement('img', { src: category.imagePath, alt: category.description, title: category.description, onClick: _this4.updateCategory.bind(_this4, category.categoryID) })
+	            { basis: '33%', key: $index, className: 'gallery' + (_this5.isActive($index) ? ' active' : '') },
+	            _react2.default.createElement('img', { src: category.imagePath, alt: category.description, title: category.description, onClick: _this5.updateCategory.bind(_this5, category.categoryID) })
 	          );
 	        })
 	      );
@@ -49936,24 +49956,25 @@
 	        value: function render() {
 	            var product = this.props.data;
 	            return _react2.default.createElement(
-	                _E.Col,
-	                { basis: '25%' },
+	                'div',
+	                { className: 'product' },
 	                _react2.default.createElement(
-	                    'div',
-	                    { className: 'product' },
-	                    _react2.default.createElement(
-	                        'h4',
-	                        null,
-	                        product.productName
-	                    ),
-	                    _react2.default.createElement('img', { src: product.imagePath, title: product.description, onClick: this.clickHandler.bind(this) }),
-	                    _react2.default.createElement(
-	                        'p',
-	                        { className: 'prdPrice' },
-	                        '$',
-	                        _TsvService2.default.currencyFilter(product.price),
-	                        ' '
-	                    )
+	                    'h4',
+	                    null,
+	                    product.productName
+	                ),
+	                _react2.default.createElement('img', { src: product.imagePath, title: product.description }),
+	                _react2.default.createElement(
+	                    'p',
+	                    { className: 'prdPrice' },
+	                    '$',
+	                    _TsvService2.default.currencyFilter(product.price),
+	                    ' '
+	                ),
+	                _react2.default.createElement(
+	                    _E.Button,
+	                    { onClick: this.clickHandler.bind(this) },
+	                    'Add'
 	                )
 	            );
 	        }
@@ -50144,12 +50165,17 @@
 							this.props.onClick(this.props.data);
 					}
 			}, {
+					key: 'minusQty',
+					value: function minusQty(c) {
+							StorefrontActions.minusQty(c);
+					}
+			}, {
 					key: 'render',
 					value: function render() {
 							var prd = this.props.data;
 							return _react2.default.createElement(
 									_E.Row,
-									_defineProperty({ key: $index, className: 'cart' }, 'className', 'shoppingCart'),
+									_defineProperty({ className: 'cart' }, 'className', 'shoppingCart'),
 									_react2.default.createElement(
 											_E.Col,
 											{ md: '15%', lg: '15%', className: 'cart' },
@@ -50177,7 +50203,7 @@
 															null,
 															_react2.default.createElement(
 																	_E.Button,
-																	{ type: 'primary', onClick: this.minusQty.bind(this, prd.coilNumber) },
+																	{ type: 'primary', onClick: this.minusQty.bind(null, prd.coilNumber) },
 																	_react2.default.createElement(_E.Glyph, { icon: 'dash' })
 															)
 													),
@@ -50191,7 +50217,7 @@
 															null,
 															_react2.default.createElement(
 																	_E.Button,
-																	{ type: 'primary', onClick: this.addQty.bind(this, prd.coilNumber) },
+																	{ type: 'primary', onClick: this.props.addQty.bind(null, prd.coilNumber) },
 																	_react2.default.createElement(_E.Glyph, { icon: 'plus' })
 															)
 													)
@@ -50202,7 +50228,7 @@
 											{ md: '15%', lg: '15%', className: 'cart' },
 											_react2.default.createElement(
 													_E.Button,
-													{ type: 'danger', onClick: this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart) },
+													{ type: 'danger', onClick: this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },
 													_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
 											)
 									)
@@ -50489,7 +50515,8 @@
 	    _this.state = {
 	      categoryIdFilter: [],
 	      products: [],
-	      categories: []
+	      categories: [],
+	      shoppingCart: []
 	    };
 
 	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
@@ -50533,8 +50560,8 @@
 	      // console.log(event);
 	      // console.log(RootscopeStore.getConfig('categories'));
 	      this.setState({
-	        categories: _RootscopeStore2.default.getConfig('categories'),
-	        products: _RootscopeStore2.default.getSession('products')
+	        categories: _RootscopeStore2.default.getConfig('categories') || [],
+	        products: _RootscopeStore2.default.getSession('products') || []
 	      });
 	      // }
 	    }
@@ -50552,6 +50579,11 @@
 	        return _StorefrontActions2.default.toggleIDtoCategoryFilter(categoryID);
 	      }
 	      _StorefrontActions2.default.clearCategoryFilter();
+	    }
+	  }, {
+	    key: 'setPrdSelected',
+	    value: function setPrdSelected(product, e) {
+	      _StorefrontActions2.default.addToCart(product, e);
 	    }
 	  }, {
 	    key: 'render',
@@ -50597,19 +50629,7 @@
 	            }) : null
 	          ),
 	          _react2.default.createElement('br', null),
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Col,
-	              { sm: '2/3' },
-	              _react2.default.createElement(
-	                _E.Card,
-	                null,
-	                this.renderProducts()
-	              )
-	            )
-	          )
+	          this.renderProducts()
 	        )
 	      );
 	    }
@@ -50629,13 +50649,19 @@
 	          }
 	        }
 	        if (show) {
-	          return _react2.default.createElement(_ProductListItem2.default, { key: idx, data: P });
+	          return _react2.default.createElement(
+	            _E.Col,
+	            { key: idx, basis: '25%' },
+	            _react2.default.createElement(_ProductListItem2.default, {
+	              onClick: _this3.setPrdSelected.bind(_this3),
+	              data: P })
+	          );
 	        }
 	        return null;
 	      });
 
 	      return _react2.default.createElement(
-	        'div',
+	        _E.Row,
 	        null,
 	        prods
 	      );
@@ -50761,6 +50787,14 @@
 
 	var _appConstants2 = _interopRequireDefault(_appConstants);
 
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	// import SocketAPI from '../utils/SocketAPI'
@@ -50779,6 +50813,21 @@
 	      actionType: _appConstants2.default.CLEAR_CATEGORY_FILTER,
 	      data: null
 	    });
+	  },
+	  addToCart: function addToCart(product, e) {
+	    if (product.stockCount > 0) {
+	      _TsvService2.default.addToCartByProductID(product.productID, function (err, response) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setConfig('pvr', response);
+
+	        _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+	          if (err) throw err;
+	          _RootscopeActions2.default.setCache('shoppingCart', data);
+	          console.log('shopping cart');
+	          console.log(data);
+	        });
+	      });
+	    }
 	  }
 	};
 
