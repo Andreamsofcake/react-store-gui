@@ -17,14 +17,20 @@ class Storefront extends Component {
     // MUST call super() before any this.*
     super(props, context);
     RootscopeActions.setSession('currentView', 'Storefront');
-    this.state = {}
+    this.state = {
+      categoryIdFilter:[],
+      products: [],
+      categories: []
+    }
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
+    this._onStoreFrontChange = this._onStoreFrontChange.bind(this);
   }
 
   // Add change listeners to stores
   componentDidMount() {
     RootscopeStore.addChangeListener(this._onRootstoreChange);
+    StorefrontStore.addChangeListener(this._onStoreFrontChange);
 
     TsvService.fetchProduct(null, (err, data) => {
       if (err) throw err;
@@ -40,6 +46,7 @@ class Storefront extends Component {
   // Remove change listers from stores
   componentWillUnmount() {
     RootscopeStore.removeChangeListener(this._onRootstoreChange);
+    StorefrontStore.removeChangeListener(this._onStoreFrontChange);
   }
 
   _onRootstoreChange(event) {
@@ -53,8 +60,21 @@ class Storefront extends Component {
 		});
   	// }
   }
+  _onStoreFrontChange() {
+    this.setState({
+      categoryIdFilter: StorefrontStore.getCategoryFilter()
+    })
+  }
+
+  categoryClick(categoryID) {
+    if (categoryID) {
+      return StorefrontActions.toggleIDtoCategoryFilter(categoryID)
+    }
+    StorefrontActions.clearCategoryFilter()
+  }
 
   render() {
+    let allType = !this.state.categoryIdFilter.length ? "primary": "hollow-primary"
     return (
       <_E.Row >
         <_E.Col>
@@ -67,10 +87,11 @@ class Storefront extends Component {
             </_E.Col>
           </_E.Row>
           <_E.Row>
-            <_E.Button type="primary">All</_E.Button>
+            <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>
             {this.state.categories ? this.state.categories.map((category, $index) => {
+                let type=this.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary": "hollow-primary"
                 return (
-                  <_E.Button key={$index} type="primary">{category.categoryName}</_E.Button>
+                  <_E.Button key={$index} type={type} onClick={this.categoryClick.bind(this, category.categoryID)} >{category.categoryName}</_E.Button>
                 )
               }
             ) : null}
@@ -89,20 +110,27 @@ class Storefront extends Component {
   }
 
   renderProducts(){
+    if (!this.state.products.length) {
+      return null
+    }
+    let prods = this.state.products.map( (P, idx) => {
+    	let show = true;
+    	if (this.state.categoryIdFilter.length) {
+    		if (this.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
+    			show = false;
+    		}
+    	}
+    	if (show) {
+    		return (
+    			<ProductListItem key={idx} data={P} />
+    		);
+    	}
+    	return null;
+    })
+
     return (
-      {this.state.products ? this.state.products.map((product, $index) => {
-                    return (
-
-                      <ProductListItem
-                         key={$index}
-                        //  onClick={this.setPrdSelected.bind(this)}
-                         data={product}
-                      />
-
-                    )
-                  }
-                ):null}
-    )
+    	<div>{prods}</div>
+    );
   }
 
 }

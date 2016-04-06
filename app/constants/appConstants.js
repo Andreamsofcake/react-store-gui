@@ -21,7 +21,10 @@ var appConstants = keyMirror({
 	UPDATE_ROOT_CONFIG: null,
 	UPDATE_ROOT_CACHE: null,
 	UPDATE_ROOT_SESSION: null,
-	
+
+	TOGGLE_CATEGORY_ID_TO_FILTER: null,
+  CLEAR_CATEGORY_FILTER: null,
+
 	TEST_EMULATOR_RESULT: null,
 
 // Foo Section Describer (optional)

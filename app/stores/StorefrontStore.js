@@ -11,26 +11,25 @@ import { isClient } from '../utils'
 
 var CHANGE_EVENT = 'change'
 , _store = {
-
-  cache: {
-    shoppingCart: {},
-    productList: {},
-    planogram: {},
-    machineSettings: {},
-    // pre-setting this from the actual settings for testing:
-    custommachinesettings: {
-      paymentPageTimeout: 65000
-    },
-    machineList: {},
-    prdHashTable: {}
-  },
-
+  categoryIdFilter: []
 }
 
-, _storeDB = new muDB()
+// , _storeDB = new muDB()
 ;
 
-_storeDB.setDB(_store);
+function toggleIDtoCategoryFilter(ID) {
+  if(_store.categoryIdFilter.indexOf(ID)== -1){
+    _store.categoryIdFilter.push(ID);
+  }
+  else {
+    _store.categoryIdFilter.splice(_store.categoryIdFilter.indexOf(ID), 1)
+  }
+}
+
+function clearFilter(){
+  _store.categoryIdFilter = []
+}
+// _storeDB.setDB(_store);
 
 var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
   addChangeListener: function(cb) {
@@ -47,52 +46,26 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 		this.emit.apply(this, args );
 	},
 
-  getCreditMessage: function() {
-		if (_storeDB.get('config.bCashless')) {
-			return Translate.translate("BalanceLabel") + ":" + '\n' + TsvService.currencyFilter( _storeDB.get('config.fundsAvailable') );
-		}else {
-			return Translate.translate("CreditLabel") + ":"  + '\n'+  TsvService.currencyFilter( _storeDB.get('config.credit') );
-		}
-	},
-
-	getShowCredit: function() {
-		if (_storeDB.get('config.bCashless')) {
-			var fundsA = _storeDB.get('config.fundsAvailable');
-			return typeof fundsA !== 'undefined' && fundsA !== 0 && _storeDB.get('config.bShowCredit');
-		} else {
-			var credit = _storeDB.get('config.credit');
-			return typeof credit !== 'undefined' && credit !== 0 && _storeDB.get('config.bShowCredit');
-		}
-	}
+  getCategoryFilter: function() {
+    return _store.categoryIdFilter
+  }
 });
 
 StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 	var action = payload.action;
 	switch(action.actionType) {
 
-		case appConstants.UPDATE_ROOT_CONFIG:
-			_storeDB.set('config.' + action.data.path, action.data.value);
-			StorefrontStore.emitChange({ type: 'config', path: action.data.path });
-			break;
-
-		case appConstants.UPDATE_ROOT_CACHE:
-			_storeDB.set('cache.' + action.data.path, action.data.value);
-			StorefrontStore.emitChange({ type: 'cache', path: action.data.path });
-			//console.warn(' someone updated CACHE, args:');
-			//console.log(action.data);
-			break;
-
-		case appConstants.UPDATE_ROOT_SESSION:
-			_storeDB.set('session.' + action.data.path, action.data.value);
-			StorefrontStore.emitChange({ type: 'session', path: action.data.path });
-			break;
-
-		case appConstants.EXAMPLE_ACTION_CONSTANT:
-			if (action.data) {
-				setFoo(action.data);
-			}
+		case appConstants.TOGGLE_CATEGORY_ID_TO_FILTER:
+      toggleIDtoCategoryFilter(action.data)
 			StorefrontStore.emitChange();
 			break;
+
+		case appConstants.CLEAR_CATEGORY_FILTER:
+			clearFilter();
+			StorefrontStore.emitChange();
+			break;
+
+
 
 		default:
 			return true;
