@@ -5,26 +5,7 @@ import axios from 'axios'
 import { browserHistory } from 'react-router'
 
 var StorefrontActions = {
-  setConfig(path, value) {
-		AppDispatcher.handleServerAction({
-			actionType: appConstants.UPDATE_ROOT_CONFIG,
-			data: { path, value }
-		});
-	},
-  setCache(path, value) {
-		AppDispatcher.handleServerAction({
-			actionType: appConstants.UPDATE_ROOT_CACHE,
-			data: { path, value }
-		});
-	},
 
-	setSession(path, value) {
-		AppDispatcher.handleServerAction({
-			actionType: appConstants.UPDATE_ROOT_SESSION,
-			data: { path, value }
-		});
-	},
-  
   checkout() {
 		var bHasShoppingCart = TsvService.bCustomSetting('bHasShoppingCart', true)
 			, fundsAvailable = RootscopeStore.getConfig('fundsAvailable')

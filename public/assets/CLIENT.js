@@ -50436,6 +50436,14 @@
 
 	var Translate = _interopRequireWildcard(_Translate);
 
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
 	var _StorefrontActions = __webpack_require__(380);
 
 	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
@@ -50449,6 +50457,10 @@
 	var _elemental = __webpack_require__(300);
 
 	var _E = _interopRequireWildcard(_elemental);
+
+	var _ProductListItem = __webpack_require__(371);
+
+	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -50470,23 +50482,76 @@
 	    // MUST call super() before any this.*
 
 
-	    _StorefrontActions2.default.setSession('currentView', 'Storefront');
+	    _RootscopeActions2.default.setSession('currentView', 'Storefront');
+	    _this.state = {
+	      _Index: 0,
+	      categories: _RootscopeStore2.default.getConfig('categories'),
+	      products: _RootscopeStore2.default.getSession('products')
+	    };
 
+	    if (!_this.state.products) {
+	      _TsvService2.default.fetchProduct(null, function (err, data) {
+	        if (err) throw err;
+	        _this.setState({
+	          products: data
+	        });
+	        console.log('products');
+	        console.log(_this.state.products);
+	      });
+	    }
+
+	    _TsvService2.default.fetchProductCategoriesByParentCategoryID(0, function (err, data) {
+	      if (err) throw err;
+	      _RootscopeActions2.default.setConfig('categories', data);
+	    });
+	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(Storefront, [{
-	    key: 'componentDidMount',
-
+	    key: 'fetchCategory',
+	    value: function fetchCategory(data) {
+	      var categoryID = data;
+	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(categoryID, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setConfig('categories', data);
+	        if (data.length === 0) {
+	          _TsvService2.default.fetchProductByCategory(categoryID, function (err, data) {
+	            if (err) throw err;
+	            _RootscopeActions2.default.setConfig('products', data);
+	            _reactRouter.browserHistory.push("/Product_Search");
+	          });
+	        }
+	      });
+	    }
 
 	    // Add change listeners to stores
-	    value: function componentDidMount() {}
+
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
+	    }
 
 	    // Remove change listers from stores
 
 	  }, {
 	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
+	    value: function componentWillUnmount() {
+	      _RootscopeStore2.default.removeChangeListener(this._onRootstoreChange);
+	    }
+	  }, {
+	    key: '_onRootstoreChange',
+	    value: function _onRootstoreChange(event) {
+	      if (event && event.type == 'config' && event.path == 'categories') {
+	        // console.log('[_onRootstoreChange]');
+	        // console.log(event);
+	        // console.log(RootscopeStore.getConfig('categories'));
+	        this.setState({
+	          categories: _RootscopeStore2.default.getConfig('categories')
+	        });
+	      }
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -50497,13 +50562,55 @@
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
-	            'h2',
+	            _E.Row,
 	            null,
-	            'Storefront'
+	            _react2.default.createElement(
+	              _E.Col,
+	              { sm: '1/2' },
+	              _react2.default.createElement(
+	                'h2',
+	                null,
+	                'Storefront'
+	              )
+	            ),
+	            _react2.default.createElement(_E.Col, { sm: '1/2' })
 	          ),
-	          _react2.default.createElement(_E.Pill, { label: 'All', type: 'primary', onClear: this.handleClear }),
-	          _react2.default.createElement(_E.Pill, { label: 'Drinks', type: 'primary', onClear: this.handleClear }),
-	          _react2.default.createElement(_E.Pill, { label: 'Snacks', type: 'primary', onClear: this.handleClear })
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Button,
+	              { type: 'primary' },
+	              'All'
+	            ),
+	            this.state.categories ? this.state.categories.map(function (category, $index) {
+	              return _react2.default.createElement(
+	                _E.Button,
+	                { key: $index, type: 'primary' },
+	                category.categoryName
+	              );
+	            }) : null
+	          ),
+	          _react2.default.createElement('br', null),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Col,
+	              { sm: '2/3' },
+	              _react2.default.createElement(
+	                _E.Card,
+	                null,
+	                this.state.products ? this.state.products.map(function (product, $index) {
+	                  return _react2.default.createElement(_ProductListItem2.default, {
+	                    key: $index
+	                    //  onClick={this.setPrdSelected.bind(this)}
+	                    , data: product
+	                  });
+	                }) : null
+	              )
+	            )
+	          )
 	        )
 	      );
 	    }
@@ -50641,24 +50748,6 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var StorefrontActions = {
-		setConfig: function setConfig(path, value) {
-			_AppDispatcher2.default.handleServerAction({
-				actionType: _appConstants2.default.UPDATE_ROOT_CONFIG,
-				data: { path: path, value: value }
-			});
-		},
-		setCache: function setCache(path, value) {
-			_AppDispatcher2.default.handleServerAction({
-				actionType: _appConstants2.default.UPDATE_ROOT_CACHE,
-				data: { path: path, value: value }
-			});
-		},
-		setSession: function setSession(path, value) {
-			_AppDispatcher2.default.handleServerAction({
-				actionType: _appConstants2.default.UPDATE_ROOT_SESSION,
-				data: { path: path, value: value }
-			});
-		},
 		checkout: function checkout() {
 			var bHasShoppingCart = TsvService.bCustomSetting('bHasShoppingCart', true),
 			    fundsAvailable = RootscopeStore.getConfig('fundsAvailable'),
@@ -50726,8 +50815,6 @@
 
 	'use strict';
 
-	var _session;
-
 	var _AppDispatcher = __webpack_require__(243);
 
 	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
@@ -50760,30 +50847,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 	var CHANGE_EVENT = 'change',
 	    _store = {
-
-		appConfig: {
-			name: 'SDK-Vending-Gui',
-			version: '0.0.1',
-			date: '2016-03-22'
-		},
-
-		session: (_session = {
-			cashMsg: Translate.translate("Cash_Vending", "HintMessageInsertCash"),
-			cardMsg: Translate.translate("Card_Vending", "InstructionMessage"),
-			bVendedOldCredit: false,
-			bVendingInProcess: false,
-			vendErrorMsg1: "vendErrorMsg1",
-			vendErrorMsg2: "vendErrorMsg2",
-			vendSettleTotal: 0,
-			creditBalance: 0,
-			discount: 0,
-			bRunningAutoMap: false,
-			machineID: 0
-		}, _defineProperty(_session, 'bVendedOldCredit', false), _defineProperty(_session, 'categories', null), _defineProperty(_session, 'products', null), _session),
 
 		cache: {
 			shoppingCart: {},
@@ -50796,23 +50861,8 @@
 			},
 			machineList: {},
 			prdHashTable: {}
-		},
-
-		config: {
-			failing: true,
-			failCount: 0,
-			eventSubscriptions: {},
-			bShowLanguageFlag: false,
-			bShowLanguage: false,
-			bShowCredit: false,
-			bCashless: false,
-			bDualMachine: false,
-			itemsInCart: 0,
-			bInsufficientFunds: false,
-			bDisplayCgryNavigation: false,
-			bDisplayCgryNavigation2: false,
-			categories: []
 		}
+
 	},
 	    _storeDB = new _muDB2.default();
 
@@ -50833,33 +50883,6 @@
 			this.emit.apply(this, args);
 		},
 
-		getConfig: function getConfig(path, dflt) {
-			path = path ? 'config.' + path : 'config';
-			var result = _storeDB.get(path);
-			if (typeof result !== 'undefined') {
-				return result;
-			}
-			return dflt;
-		},
-
-		getCache: function getCache(path, dflt) {
-			path = path ? 'cache.' + path : 'cache';
-			var result = _storeDB.get(path);
-			if (typeof result !== 'undefined') {
-				return result;
-			}
-			return dflt;
-		},
-
-		getSession: function getSession(path, dflt) {
-			path = path ? 'session.' + path : 'session';
-			var result = _storeDB.get(path);
-			if (typeof result !== 'undefined') {
-				return result;
-			}
-			return dflt;
-		},
-
 		getCreditMessage: function getCreditMessage() {
 			if (_storeDB.get('config.bCashless')) {
 				return Translate.translate("BalanceLabel") + ":" + '\n' + _TsvService2.default.currencyFilter(_storeDB.get('config.fundsAvailable'));
@@ -50876,10 +50899,6 @@
 				var credit = _storeDB.get('config.credit');
 				return typeof credit !== 'undefined' && credit !== 0 && _storeDB.get('config.bShowCredit');
 			}
-		},
-
-		getAppConfig: function getAppConfig() {
-			return _storeDB.get('appConfig');
 		}
 	});
 
@@ -50916,10 +50935,6 @@
 				break;
 		}
 	});
-
-	if (_utils.isClient) {
-		window.RSS = StorefrontStore;
-	}
 
 	module.exports = StorefrontStore;
 

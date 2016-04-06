@@ -12,29 +12,6 @@ import { isClient } from '../utils'
 var CHANGE_EVENT = 'change'
 , _store = {
 
-  appConfig: {
-    name: 'SDK-Vending-Gui',
-    version: '0.0.1',
-    date: '2016-03-22'
-  },
-
-  session: {
-    cashMsg: Translate.translate("Cash_Vending", "HintMessageInsertCash"),
-    cardMsg: Translate.translate("Card_Vending", "InstructionMessage"),
-    bVendedOldCredit: false,
-    bVendingInProcess: false,
-    vendErrorMsg1: "vendErrorMsg1",
-    vendErrorMsg2: "vendErrorMsg2",
-    vendSettleTotal: 0,
-    creditBalance: 0,
-    discount: 0,
-    bRunningAutoMap: false,
-    machineID: 0,
-    bVendedOldCredit: false,
-    categories: null,
-    products: null
-  },
-
   cache: {
     shoppingCart: {},
     productList: {},
@@ -48,21 +25,6 @@ var CHANGE_EVENT = 'change'
     prdHashTable: {}
   },
 
-  config: {
-    failing:true,
-    failCount:0,
-    eventSubscriptions:{},
-    bShowLanguageFlag: false,
-    bShowLanguage: false,
-    bShowCredit: false,
-    bCashless: false,
-    bDualMachine: false,
-    itemsInCart: 0,
-    bInsufficientFunds: false,
-    bDisplayCgryNavigation: false,
-    bDisplayCgryNavigation2: false,
-    categories: []
-  }
 }
 
 , _storeDB = new muDB()
@@ -85,33 +47,6 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 		this.emit.apply(this, args );
 	},
 
-	getConfig: function(path, dflt) {
-		path = path ? 'config.' + path : 'config';
-		var result = _storeDB.get(path);
-		if (typeof result !== 'undefined') {
-			return result;
-		}
-		return dflt;
-	},
-
-	getCache: function(path, dflt) {
-		path = path ? 'cache.' + path : 'cache';
-		var result = _storeDB.get(path);
-		if (typeof result !== 'undefined') {
-			return result;
-		}
-		return dflt;
-	},
-
-	getSession: function(path, dflt) {
-		path = path ? 'session.' + path : 'session';
-		var result = _storeDB.get(path);
-		if (typeof result !== 'undefined') {
-			return result;
-		}
-		return dflt;
-	},
-
   getCreditMessage: function() {
 		if (_storeDB.get('config.bCashless')) {
 			return Translate.translate("BalanceLabel") + ":" + '\n' + TsvService.currencyFilter( _storeDB.get('config.fundsAvailable') );
@@ -128,10 +63,6 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 			var credit = _storeDB.get('config.credit');
 			return typeof credit !== 'undefined' && credit !== 0 && _storeDB.get('config.bShowCredit');
 		}
-	},
-
-  getAppConfig: function() {
-		return _storeDB.get('appConfig');
 	}
 });
 
@@ -168,9 +99,5 @@ StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 			break;
 	}
 });
-
-if (isClient) {
-	window.RSS = StorefrontStore;
-}
 
 module.exports = StorefrontStore;

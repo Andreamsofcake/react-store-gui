@@ -28,15 +28,15 @@ class Product_Search extends Component {
 
     var products = RootscopeStore.getConfig('products');
 
-	TsvService.fetchShoppingCart2(null, (err, data) => {
-		if (err) throw err;
-		RootscopeActions.setCache('shoppingCart', data);
-	});
+  	TsvService.fetchShoppingCart2(null, (err, data) => {
+  		if (err) throw err;
+  		RootscopeActions.setCache('shoppingCart', data);
+  	});
 
     if (typeof window !== 'undefined') {
     	window.RootscopeStore = RootscopeStore;
     }
-    
+
     if (RootscopeStore.getCache('custommachinesettings.bCategoryView') === false) {
 
     	if (products) {
@@ -145,7 +145,7 @@ class Product_Search extends Component {
     		</_E.Row>
     	);
     }
-    
+
     return (
 
       <_E.Row className="Product_Search" >
@@ -186,8 +186,7 @@ class Product_Search extends Component {
                     </div>
                     )
                   }
-                ):null
-    }
+                ):null}
 
           </_E.Row>
 
