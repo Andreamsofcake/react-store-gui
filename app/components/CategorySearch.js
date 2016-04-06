@@ -50,14 +50,16 @@ class Category_Search extends Component {
     return this.state._Index === index;
   }
 
-  fetchCategory(data) {
-    var categoryID = data
-  	TsvService.fetchProductCategoriesByParentCategoryID(categoryID, (err, data) => {
+  fetchCategory(cat) {
+    //var categoryID = cat.categoryID;
+  	TsvService.fetchProductCategoriesByParentCategoryID(cat.categoryID, (err, data) => {
     	if (err) throw err;
     	RootscopeActions.setConfig('categories', data);
     	if (data.length === 0) {
-    		TsvService.fetchProductByCategory(categoryID, (err, data) => {
+    		TsvService.fetchProductByCategory(cat.categoryID, (err, data) => {
 		    	if (err) throw err;
+		    	console.log('setting products data................................................................................' +"\n................................................................................\n");
+		    	console.log(data);
 		    	RootscopeActions.setConfig('products', data);
 		    	browserHistory.push("/Product_Search");
 		    });

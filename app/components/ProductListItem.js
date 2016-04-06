@@ -12,8 +12,6 @@ class ProductListItem extends Component {
   render() {
     var product = this.props.data
     return (
-      <_E.Col basis="25%" >
-
           <div className="product">
 
               <h4>{product.productName}</h4>
@@ -23,8 +21,6 @@ class ProductListItem extends Component {
               <p className="prdPrice">${TsvService.currencyFilter(product.price)} </p>
 
           </div>
-
-      </_E.Col>
 
     );
 

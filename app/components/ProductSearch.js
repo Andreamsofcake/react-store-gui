@@ -16,7 +16,8 @@ class Product_Search extends Component {
     super(props, context);
 
     this.state = {
-      bShowBackBtn: false,
+      bShowBackBtn: RootscopeStore.getCache('custommachinesettings.bCategoryView'),
+      products: [],
       _Index: 0
     }
 
@@ -26,50 +27,41 @@ class Product_Search extends Component {
     RootscopeActions.setSession('currentView', 'Product_Search');
     RootscopeActions.setCache('currentLocation', '/Product_Search');
 
-    var products = RootscopeStore.getConfig('products');
-
+    if (typeof window !== 'undefined') {
+    	window.RootscopeStore = RootscopeStore;
+    }
+    
+  }
+  
+  componentDidMount() {
 	TsvService.fetchShoppingCart2(null, (err, data) => {
 		if (err) throw err;
 		RootscopeActions.setCache('shoppingCart', data);
 	});
 
-    if (typeof window !== 'undefined') {
-    	window.RootscopeStore = RootscopeStore;
+    let state = {
+    	products: RootscopeStore.getConfig('products'),
+    	bShowBackBtn: RootscopeStore.getCache('custommachinesettings.bCategoryView')
     }
     
-    if (RootscopeStore.getCache('custommachinesettings.bCategoryView') === false) {
-
-    	if (products) {
-    		this.state.products = products;
-    	} else {
-    		console.warn('have to go fetch all products!');
-    		console.log(RootscopeStore.getConfig('products'));
-			TsvService.fetchProduct(null, (err, data) => {
-				if (err) throw err;
-				this.setState({
-					products: data
-				});
+    this.setState(state);
+    
+    if (!state.products) {
+		console.warn('have to go fetch all products! (fix in refactor, but Product_Search is not long-term used anyway ... just old code for testing');
+		//console.log(RootscopeStore.getConfig('products'));
+		TsvService.fetchProduct(null, (err, data) => {
+			if (err) throw err;
+			RootscopeActions.setConfig('products', data);
+			this.setState({
+				products: data
 			});
-		}
-
-    } else {
-
-    	if (products) {
-    		this.state.products = products;
-    	} else {
-    		console.warn('have to go fetch all products!');
-    		console.log(RootscopeStore.getConfig('products'));
-			this.state.bShowBackBtn = true;
-			TsvService.fetchProduct(null, (err, data) => {
-				if (err) throw err;
-				RootscopeActions.setConfig('products', data);
-				this.setState({
-					products: data
-				});
-			});
-		}
+		});
     }
 
+  }
+
+  // Remove change listers from stores
+  componentWillUnmount() {
   }
 
   setOpacity(count) {
@@ -123,14 +115,6 @@ class Product_Search extends Component {
       browserHistory.push("/Category_Search");
   }
 
-  // Add change listeners to stores
-  componentDidMount() {
-  }
-
-  // Remove change listers from stores
-  componentWillUnmount() {
-  }
-
   render() {
     var products = this.state.products;
     if (!products || !products.length) {
@@ -174,16 +158,12 @@ class Product_Search extends Component {
                   }
                   */
                     return (
-                      <div key={$index} style={{ opacity: this.setOpacity(product.stockCount) }}>
-
-
-                      <ProductListItem
-                         key={$index}
-                         onClick={this.setPrdSelected.bind(this)}
-                         data={product}
-                      />
-
-                    </div>
+						<_E.Col basis="25%" key={$index} style={{ opacity: this.setOpacity(product.stockCount) }}>
+						  <ProductListItem
+							 onClick={this.setPrdSelected.bind(this)}
+							 data={product}
+						  />
+                      </_E.Col>
                     )
                   }
                 ):null

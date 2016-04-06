@@ -16,6 +16,14 @@ module.exports = function(request, reply) {
 	
 	debug('send flash command: ' + JSON.stringify(emulator_command) );
 	
+	if (emulator_command && emulator_command[0] === 'insertCash') {
+		var amt = emulator_command[1];
+		var totalInserted = request.yar.get('emulatorInsertedCash') || 0
+		totalInserted += emulator_command[1];
+		request.yar.set('emulatorInsertedCash', totalInserted);
+		emulator_command = ['creditBalanceChanged', amt, totalInserted];
+	}
+	
 	// commands are sent through a "multi event" handler, which expects arrays of arrays
 	io.to('flash-api-multi-event').emit('flash-api-multi-event', [ emulator_command ]);
 	
