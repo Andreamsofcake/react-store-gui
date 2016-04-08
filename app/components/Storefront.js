@@ -21,7 +21,8 @@ class Storefront extends Component {
       categoryIdFilter:[],
       products: [],
       categories: [],
-      shoppingCart: []
+      shoppingCart: [],
+      quantity: null
     }
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
@@ -55,10 +56,22 @@ class Storefront extends Component {
 		// console.log('[_onRootstoreChange]');
 		// console.log(event);
 		// console.log(RootscopeStore.getConfig('categories'));
+
 		this.setState({
 			categories: RootscopeStore.getConfig('categories') || [],
-      products: RootscopeStore.getSession('products') || []
+      products: RootscopeStore.getSession('products') || [],
+      shoppingCart: RootscopeStore.getCache('shoppingCart.detail') || []
 		});
+
+    var qty = 0;
+    for (let value of this.state.shoppingCart) {
+        console.log('array')
+        qty += value.qtyInCart;
+        console.log(qty)
+      }
+    this.setState({
+      quantity: qty || null
+    })
   	// }
   }
   _onStoreFrontChange() {
@@ -87,8 +100,9 @@ class Storefront extends Component {
             <_E.Col sm="1/2">
               <h2>Storefront</h2>
             </_E.Col>
-            <_E.Col sm="1/2">
-
+            <_E.Col className="shopping-cart" sm="1/2">
+              <img src="/gfx/shop.png" />
+              <p>Quantity {this.state.quantity}</p>
             </_E.Col>
           </_E.Row>
           <_E.Row>

@@ -62,11 +62,11 @@
 
 	var _Routes2 = _interopRequireDefault(_Routes);
 
-	var _AppLayout = __webpack_require__(373);
+	var _AppLayout = __webpack_require__(380);
 
 	var _AppLayout2 = _interopRequireDefault(_AppLayout);
 
-	var _NoMatch = __webpack_require__(372);
+	var _NoMatch = __webpack_require__(379);
 
 	var _NoMatch2 = _interopRequireDefault(_NoMatch);
 
@@ -24891,55 +24891,55 @@
 
 	var _AdminSettings2 = _interopRequireDefault(_AdminSettings);
 
-	var _CustomerSignup = __webpack_require__(376);
+	var _CustomerSignup = __webpack_require__(362);
 
 	var _CustomerSignup2 = _interopRequireDefault(_CustomerSignup);
 
-	var _CustomerLogin = __webpack_require__(377);
+	var _CustomerLogin = __webpack_require__(363);
 
 	var _CustomerLogin2 = _interopRequireDefault(_CustomerLogin);
 
-	var _Storefront = __webpack_require__(378);
+	var _Storefront = __webpack_require__(364);
 
 	var _Storefront2 = _interopRequireDefault(_Storefront);
 
-	var _TransactionRefund = __webpack_require__(379);
+	var _TransactionRefund = __webpack_require__(368);
 
 	var _TransactionRefund2 = _interopRequireDefault(_TransactionRefund);
 
-	var _CardVending = __webpack_require__(362);
+	var _CardVending = __webpack_require__(369);
 
 	var _CardVending2 = _interopRequireDefault(_CardVending);
 
-	var _CashVending = __webpack_require__(363);
+	var _CashVending = __webpack_require__(370);
 
 	var _CashVending2 = _interopRequireDefault(_CashVending);
 
-	var _CashCard = __webpack_require__(364);
+	var _CashCard = __webpack_require__(371);
 
 	var _CashCard2 = _interopRequireDefault(_CashCard);
 
-	var _ShoppingCart = __webpack_require__(365);
+	var _ShoppingCart = __webpack_require__(372);
 
 	var _ShoppingCart2 = _interopRequireDefault(_ShoppingCart);
 
-	var _ThankYouMsg = __webpack_require__(366);
+	var _ThankYouMsg = __webpack_require__(374);
 
 	var _ThankYouMsg2 = _interopRequireDefault(_ThankYouMsg);
 
-	var _VendError = __webpack_require__(367);
+	var _VendError = __webpack_require__(375);
 
 	var _VendError2 = _interopRequireDefault(_VendError);
 
-	var _CategorySearch = __webpack_require__(368);
+	var _CategorySearch = __webpack_require__(376);
 
 	var _CategorySearch2 = _interopRequireDefault(_CategorySearch);
 
-	var _ProductSearch = __webpack_require__(370);
+	var _ProductSearch = __webpack_require__(378);
 
 	var _ProductSearch2 = _interopRequireDefault(_ProductSearch);
 
-	var _NoMatch = __webpack_require__(372);
+	var _NoMatch = __webpack_require__(379);
 
 	var _NoMatch2 = _interopRequireDefault(_NoMatch);
 
@@ -47942,6 +47942,826 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	var Customer_Signup = function (_Component) {
+	  _inherits(Customer_Signup, _Component);
+
+	  function Customer_Signup(props, context) {
+	    _classCallCheck(this, Customer_Signup);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_Signup).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _RootscopeActions2.default.setSession('currentView', 'Customer_Signup');
+
+	    return _this;
+	  }
+
+	  _createClass(Customer_Signup, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {}
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Customer Signup',
+	            _react2.default.createElement('br', null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Customer_Signup;
+	}(_react.Component);
+
+	exports.default = Customer_Signup;
+
+/***/ },
+/* 363 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Customer_Login = function (_Component) {
+	  _inherits(Customer_Login, _Component);
+
+	  function Customer_Login(props, context) {
+	    _classCallCheck(this, Customer_Login);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_Login).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _RootscopeActions2.default.setSession('currentView', 'Customer_Login');
+
+	    return _this;
+	  }
+
+	  _createClass(Customer_Login, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {}
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Customer Login',
+	            _react2.default.createElement('br', null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Customer_Login;
+	}(_react.Component);
+
+	exports.default = Customer_Login;
+
+/***/ },
+/* 364 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _StorefrontActions = __webpack_require__(365);
+
+	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
+
+	var _StorefrontStore = __webpack_require__(366);
+
+	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _ProductListItem = __webpack_require__(367);
+
+	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Storefront = function (_Component) {
+	  _inherits(Storefront, _Component);
+
+	  function Storefront(props, context) {
+	    _classCallCheck(this, Storefront);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _RootscopeActions2.default.setSession('currentView', 'Storefront');
+	    _this.state = {
+	      categoryIdFilter: [],
+	      products: [],
+	      categories: [],
+	      shoppingCart: [],
+	      quantity: null
+	    };
+
+	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
+	    _this._onStoreFrontChange = _this._onStoreFrontChange.bind(_this);
+	    return _this;
+	  }
+
+	  // Add change listeners to stores
+
+
+	  _createClass(Storefront, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
+	      _StorefrontStore2.default.addChangeListener(this._onStoreFrontChange);
+
+	      _TsvService2.default.fetchProduct(null, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setSession('products', data);
+	      });
+
+	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(0, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setConfig('categories', data);
+	      });
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _RootscopeStore2.default.removeChangeListener(this._onRootstoreChange);
+	      _StorefrontStore2.default.removeChangeListener(this._onStoreFrontChange);
+	    }
+	  }, {
+	    key: '_onRootstoreChange',
+	    value: function _onRootstoreChange(event) {
+	      // if (event && event.type == 'config' && event.path == 'categories') {
+	      // console.log('[_onRootstoreChange]');
+	      // console.log(event);
+	      // console.log(RootscopeStore.getConfig('categories'));
+
+	      this.setState({
+	        categories: _RootscopeStore2.default.getConfig('categories') || [],
+	        products: _RootscopeStore2.default.getSession('products') || [],
+	        shoppingCart: _RootscopeStore2.default.getCache('shoppingCart.detail') || []
+	      });
+
+	      var qty = 0;
+	      var _iteratorNormalCompletion = true;
+	      var _didIteratorError = false;
+	      var _iteratorError = undefined;
+
+	      try {
+	        for (var _iterator = this.state.shoppingCart[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	          var value = _step.value;
+
+	          console.log('array');
+	          qty += value.qtyInCart;
+	          console.log(qty);
+	        }
+	      } catch (err) {
+	        _didIteratorError = true;
+	        _iteratorError = err;
+	      } finally {
+	        try {
+	          if (!_iteratorNormalCompletion && _iterator.return) {
+	            _iterator.return();
+	          }
+	        } finally {
+	          if (_didIteratorError) {
+	            throw _iteratorError;
+	          }
+	        }
+	      }
+
+	      this.setState({
+	        quantity: qty || null
+	      });
+	      // }
+	    }
+	  }, {
+	    key: '_onStoreFrontChange',
+	    value: function _onStoreFrontChange() {
+	      this.setState({
+	        categoryIdFilter: _StorefrontStore2.default.getCategoryFilter()
+	      });
+	    }
+	  }, {
+	    key: 'categoryClick',
+	    value: function categoryClick(categoryID) {
+	      if (categoryID) {
+	        return _StorefrontActions2.default.toggleIDtoCategoryFilter(categoryID);
+	      }
+	      _StorefrontActions2.default.clearCategoryFilter();
+	    }
+	  }, {
+	    key: 'setPrdSelected',
+	    value: function setPrdSelected(product, e) {
+	      _StorefrontActions2.default.addToCart(product, e);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var allType = !this.state.categoryIdFilter.length ? "primary" : "hollow-primary";
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Col,
+	              { sm: '1/2' },
+	              _react2.default.createElement(
+	                'h2',
+	                null,
+	                'Storefront'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Col,
+	              { className: 'shopping-cart', sm: '1/2' },
+	              _react2.default.createElement('img', { src: '/gfx/shop.png' }),
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                'Quantity ',
+	                this.state.quantity
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Button,
+	              { type: allType, onClick: this.categoryClick.bind(this, null) },
+	              'All'
+	            ),
+	            this.state.categories ? this.state.categories.map(function (category, $index) {
+	              var type = _this2.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary" : "hollow-primary";
+	              return _react2.default.createElement(
+	                _E.Button,
+	                { key: $index, type: type, onClick: _this2.categoryClick.bind(_this2, category.categoryID) },
+	                category.categoryName
+	              );
+	            }) : null
+	          ),
+	          _react2.default.createElement('br', null),
+	          this.renderProducts()
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'renderProducts',
+	    value: function renderProducts() {
+	      var _this3 = this;
+
+	      if (!this.state.products.length) {
+	        return null;
+	      }
+	      var prods = this.state.products.map(function (P, idx) {
+	        var show = true;
+	        if (_this3.state.categoryIdFilter.length) {
+	          if (_this3.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
+	            show = false;
+	          }
+	        }
+	        if (show) {
+	          return _react2.default.createElement(
+	            _E.Col,
+	            { key: idx, basis: '25%' },
+	            _react2.default.createElement(_ProductListItem2.default, {
+	              onClick: _this3.setPrdSelected.bind(_this3),
+	              data: P })
+	          );
+	        }
+	        return null;
+	      });
+
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        prods
+	      );
+	    }
+	  }]);
+
+	  return Storefront;
+	}(_react.Component);
+
+	exports.default = Storefront;
+
+/***/ },
+/* 365 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(243);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	// import SocketAPI from '../utils/SocketAPI'
+	// import axios from 'axios'
+	// import { browserHistory } from 'react-router'
+
+	var StorefrontActions = {
+	  toggleIDtoCategoryFilter: function toggleIDtoCategoryFilter(ID) {
+	    _AppDispatcher2.default.handleServerAction({
+	      actionType: _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER,
+	      data: ID
+	    });
+	  },
+	  clearCategoryFilter: function clearCategoryFilter() {
+	    _AppDispatcher2.default.handleServerAction({
+	      actionType: _appConstants2.default.CLEAR_CATEGORY_FILTER,
+	      data: null
+	    });
+	  },
+	  addToCart: function addToCart(product, e) {
+	    if (product.stockCount > 0) {
+	      _TsvService2.default.addToCartByProductID(product.productID, function (err, response) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setConfig('pvr', response);
+
+	        _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+	          if (err) throw err;
+	          _RootscopeActions2.default.setCache('shoppingCart', data);
+	          console.log('shopping cart');
+	          console.log(data);
+	        });
+	      });
+	    }
+	  }
+	};
+
+	module.exports = StorefrontActions;
+
+/***/ },
+/* 366 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(243);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _Object = __webpack_require__(39);
+
+	var _Object2 = _interopRequireDefault(_Object);
+
+	var _events = __webpack_require__(298);
+
+	var _muDB = __webpack_require__(299);
+
+	var _muDB2 = _interopRequireDefault(_muDB);
+
+	var _utils = __webpack_require__(219);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CHANGE_EVENT = 'change',
+	    _store = {
+			categoryIdFilter: []
+	}
+
+	// , _storeDB = new muDB()
+	;
+
+	function toggleIDtoCategoryFilter(ID) {
+			if (_store.categoryIdFilter.indexOf(ID) == -1) {
+					_store.categoryIdFilter.push(ID);
+			} else {
+					_store.categoryIdFilter.splice(_store.categoryIdFilter.indexOf(ID), 1);
+			}
+	}
+
+	function clearFilter() {
+			_store.categoryIdFilter = [];
+	}
+	// _storeDB.setDB(_store);
+
+	var StorefrontStore = (0, _Object2.default)({}, _events.EventEmitter.prototype, {
+			addChangeListener: function addChangeListener(cb) {
+					this.on(CHANGE_EVENT, cb);
+			},
+
+			removeChangeListener: function removeChangeListener(cb) {
+					this.removeListener(CHANGE_EVENT, cb);
+			},
+
+			emitChange: function emitChange() {
+					var args = Array.prototype.slice.call(arguments);
+					args.unshift(CHANGE_EVENT);
+					this.emit.apply(this, args);
+			},
+
+			getCategoryFilter: function getCategoryFilter() {
+					return _store.categoryIdFilter;
+			}
+	});
+
+	StorefrontStore.dispatch = _AppDispatcher2.default.register(function (payload) {
+			var action = payload.action;
+			switch (action.actionType) {
+
+					case _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER:
+							toggleIDtoCategoryFilter(action.data);
+							StorefrontStore.emitChange();
+							break;
+
+					case _appConstants2.default.CLEAR_CATEGORY_FILTER:
+							clearFilter();
+							StorefrontStore.emitChange();
+							break;
+
+					default:
+							return true;
+							break;
+			}
+	});
+
+	module.exports = StorefrontStore;
+
+/***/ },
+/* 367 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ProductListItem = function (_Component) {
+	    _inherits(ProductListItem, _Component);
+
+	    function ProductListItem() {
+	        _classCallCheck(this, ProductListItem);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductListItem).apply(this, arguments));
+	    }
+
+	    _createClass(ProductListItem, [{
+	        key: 'clickHandler',
+	        value: function clickHandler(e) {
+	            this.props.onClick(this.props.data);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var product = this.props.data;
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'product' },
+	                _react2.default.createElement(
+	                    'h4',
+	                    null,
+	                    product.productName
+	                ),
+	                _react2.default.createElement('img', { src: product.imagePath, title: product.description }),
+	                _react2.default.createElement(
+	                    'p',
+	                    { className: 'prdPrice' },
+	                    '$',
+	                    _TsvService2.default.currencyFilter(product.price),
+	                    ' '
+	                ),
+	                _react2.default.createElement(
+	                    _E.Button,
+	                    { onClick: this.clickHandler.bind(this) },
+	                    'Add'
+	                )
+	            );
+	        }
+	    }]);
+
+	    return ProductListItem;
+	}(_react.Component);
+
+	exports.default = ProductListItem;
+
+/***/ },
+/* 368 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Transaction_Refund = function (_Component) {
+	  _inherits(Transaction_Refund, _Component);
+
+	  function Transaction_Refund(props, context) {
+	    _classCallCheck(this, Transaction_Refund);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Transaction_Refund).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _RootscopeActions2.default.setSession('currentView', 'Transaction_Refund');
+
+	    return _this;
+	  }
+
+	  _createClass(Transaction_Refund, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {}
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Transaction Refund',
+	            _react2.default.createElement('br', null)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Transaction_Refund;
+	}(_react.Component);
+
+	exports.default = Transaction_Refund;
+
+/***/ },
+/* 369 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 	var Card_Vending = function (_Component) {
 	  _inherits(Card_Vending, _Component);
 
@@ -48216,7 +49036,7 @@
 	exports.default = Card_Vending;
 
 /***/ },
-/* 363 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48498,7 +49318,7 @@
 	exports.default = Cash_Vending;
 
 /***/ },
-/* 364 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48665,7 +49485,7 @@
 	exports.default = Cash_Card;
 
 /***/ },
-/* 365 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48702,7 +49522,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _ShoppingCartItem = __webpack_require__(375);
+	var _ShoppingCartItem = __webpack_require__(373);
 
 	var _ShoppingCartItem2 = _interopRequireDefault(_ShoppingCartItem);
 
@@ -49096,7 +49916,134 @@
 	exports.default = Shopping_Cart;
 
 /***/ },
-/* 366 */
+/* 373 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+			value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ShoppingCartItem = function (_Component) {
+			_inherits(ShoppingCartItem, _Component);
+
+			function ShoppingCartItem() {
+					_classCallCheck(this, ShoppingCartItem);
+
+					return _possibleConstructorReturn(this, Object.getPrototypeOf(ShoppingCartItem).apply(this, arguments));
+			}
+
+			_createClass(ShoppingCartItem, [{
+					key: 'clickHandler',
+					value: function clickHandler(e) {
+							this.props.onClick(this.props.data);
+					}
+			}, {
+					key: 'minusQty',
+					value: function minusQty(c) {
+							StorefrontActions.minusQty(c);
+					}
+			}, {
+					key: 'render',
+					value: function render() {
+							var prd = this.props.data;
+							return _react2.default.createElement(
+									_E.Row,
+									_defineProperty({ className: 'cart' }, 'className', 'shoppingCart'),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '15%', lg: '15%', className: 'cart' },
+											_react2.default.createElement('img', { id: 'prdImg', src: prd.imagePath }),
+											' '
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '25%', lg: '25%', className: 'cart' },
+											prd.productName
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '8%', lg: '8%', className: 'cart' },
+											_TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '37%', lg: '37%', className: 'cart' },
+											_react2.default.createElement(
+													_E.Row,
+													null,
+													_react2.default.createElement(
+															_E.Col,
+															null,
+															_react2.default.createElement(
+																	_E.Button,
+																	{ type: 'primary', onClick: this.minusQty.bind(null, prd.coilNumber) },
+																	_react2.default.createElement(_E.Glyph, { icon: 'dash' })
+															)
+													),
+													_react2.default.createElement(
+															_E.Col,
+															{ id: 'qty' },
+															prd.qtyInCart
+													),
+													_react2.default.createElement(
+															_E.Col,
+															null,
+															_react2.default.createElement(
+																	_E.Button,
+																	{ type: 'primary', onClick: this.props.addQty.bind(null, prd.coilNumber) },
+																	_react2.default.createElement(_E.Glyph, { icon: 'plus' })
+															)
+													)
+											)
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ md: '15%', lg: '15%', className: 'cart' },
+											_react2.default.createElement(
+													_E.Button,
+													{ type: 'danger', onClick: this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },
+													_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
+											)
+									)
+							);
+					}
+			}]);
+
+			return ShoppingCartItem;
+	}(_react.Component);
+
+	exports.default = ShoppingCartItem;
+
+/***/ },
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49197,7 +50144,7 @@
 	exports.default = THANKYOU_MSG;
 
 /***/ },
-/* 367 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49318,7 +50265,7 @@
 	exports.default = Vend_Error;
 
 /***/ },
-/* 368 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49355,7 +50302,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _CategoryListItem = __webpack_require__(369);
+	var _CategoryListItem = __webpack_require__(377);
 
 	var _CategoryListItem2 = _interopRequireDefault(_CategoryListItem);
 
@@ -49513,7 +50460,7 @@
 	exports.default = Category_Search;
 
 /***/ },
-/* 369 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49584,7 +50531,7 @@
 	exports.default = CategoryListItem;
 
 /***/ },
-/* 370 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49615,7 +50562,7 @@
 
 	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
 
-	var _ProductListItem = __webpack_require__(371);
+	var _ProductListItem = __webpack_require__(367);
 
 	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
 
@@ -49904,89 +50851,7 @@
 	exports.default = Product_Search;
 
 /***/ },
-/* 371 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _elemental = __webpack_require__(300);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ProductListItem = function (_Component) {
-	    _inherits(ProductListItem, _Component);
-
-	    function ProductListItem() {
-	        _classCallCheck(this, ProductListItem);
-
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductListItem).apply(this, arguments));
-	    }
-
-	    _createClass(ProductListItem, [{
-	        key: 'clickHandler',
-	        value: function clickHandler(e) {
-	            this.props.onClick(this.props.data);
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var product = this.props.data;
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'product' },
-	                _react2.default.createElement(
-	                    'h4',
-	                    null,
-	                    product.productName
-	                ),
-	                _react2.default.createElement('img', { src: product.imagePath, title: product.description }),
-	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'prdPrice' },
-	                    '$',
-	                    _TsvService2.default.currencyFilter(product.price),
-	                    ' '
-	                ),
-	                _react2.default.createElement(
-	                    _E.Button,
-	                    { onClick: this.clickHandler.bind(this) },
-	                    'Add'
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ProductListItem;
-	}(_react.Component);
-
-	exports.default = ProductListItem;
-
-/***/ },
-/* 372 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50039,7 +50904,7 @@
 	exports.default = NoMatch;
 
 /***/ },
-/* 373 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -50112,827 +50977,6 @@
 	}(_react.Component);
 
 	module.exports = AppLayout;
-
-/***/ },
-/* 374 */,
-/* 375 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-			value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _elemental = __webpack_require__(300);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var ShoppingCartItem = function (_Component) {
-			_inherits(ShoppingCartItem, _Component);
-
-			function ShoppingCartItem() {
-					_classCallCheck(this, ShoppingCartItem);
-
-					return _possibleConstructorReturn(this, Object.getPrototypeOf(ShoppingCartItem).apply(this, arguments));
-			}
-
-			_createClass(ShoppingCartItem, [{
-					key: 'clickHandler',
-					value: function clickHandler(e) {
-							this.props.onClick(this.props.data);
-					}
-			}, {
-					key: 'minusQty',
-					value: function minusQty(c) {
-							StorefrontActions.minusQty(c);
-					}
-			}, {
-					key: 'render',
-					value: function render() {
-							var prd = this.props.data;
-							return _react2.default.createElement(
-									_E.Row,
-									_defineProperty({ className: 'cart' }, 'className', 'shoppingCart'),
-									_react2.default.createElement(
-											_E.Col,
-											{ md: '15%', lg: '15%', className: 'cart' },
-											_react2.default.createElement('img', { id: 'prdImg', src: prd.imagePath }),
-											' '
-									),
-									_react2.default.createElement(
-											_E.Col,
-											{ md: '25%', lg: '25%', className: 'cart' },
-											prd.productName
-									),
-									_react2.default.createElement(
-											_E.Col,
-											{ md: '8%', lg: '8%', className: 'cart' },
-											_TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
-									),
-									_react2.default.createElement(
-											_E.Col,
-											{ md: '37%', lg: '37%', className: 'cart' },
-											_react2.default.createElement(
-													_E.Row,
-													null,
-													_react2.default.createElement(
-															_E.Col,
-															null,
-															_react2.default.createElement(
-																	_E.Button,
-																	{ type: 'primary', onClick: this.minusQty.bind(null, prd.coilNumber) },
-																	_react2.default.createElement(_E.Glyph, { icon: 'dash' })
-															)
-													),
-													_react2.default.createElement(
-															_E.Col,
-															{ id: 'qty' },
-															prd.qtyInCart
-													),
-													_react2.default.createElement(
-															_E.Col,
-															null,
-															_react2.default.createElement(
-																	_E.Button,
-																	{ type: 'primary', onClick: this.props.addQty.bind(null, prd.coilNumber) },
-																	_react2.default.createElement(_E.Glyph, { icon: 'plus' })
-															)
-													)
-											)
-									),
-									_react2.default.createElement(
-											_E.Col,
-											{ md: '15%', lg: '15%', className: 'cart' },
-											_react2.default.createElement(
-													_E.Button,
-													{ type: 'danger', onClick: this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },
-													_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
-											)
-									)
-							);
-					}
-			}]);
-
-			return ShoppingCartItem;
-	}(_react.Component);
-
-	exports.default = ShoppingCartItem;
-
-/***/ },
-/* 376 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _Translate = __webpack_require__(240);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _RootscopeActions = __webpack_require__(242);
-
-	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
-
-	var _RootscopeStore = __webpack_require__(297);
-
-	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
-
-	var _reactRouter = __webpack_require__(160);
-
-	var _elemental = __webpack_require__(300);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Customer_Signup = function (_Component) {
-	  _inherits(Customer_Signup, _Component);
-
-	  function Customer_Signup(props, context) {
-	    _classCallCheck(this, Customer_Signup);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_Signup).call(this, props, context));
-	    // MUST call super() before any this.*
-
-
-	    _RootscopeActions2.default.setSession('currentView', 'Customer_Signup');
-
-	    return _this;
-	  }
-
-	  _createClass(Customer_Signup, [{
-	    key: 'componentDidMount',
-
-
-	    // Add change listeners to stores
-	    value: function componentDidMount() {}
-
-	    // Remove change listers from stores
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        _E.Row,
-	        null,
-	        _react2.default.createElement(
-	          _E.Col,
-	          null,
-	          _react2.default.createElement(
-	            'h2',
-	            null,
-	            'Customer Signup',
-	            _react2.default.createElement('br', null)
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Customer_Signup;
-	}(_react.Component);
-
-	exports.default = Customer_Signup;
-
-/***/ },
-/* 377 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _Translate = __webpack_require__(240);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _RootscopeActions = __webpack_require__(242);
-
-	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
-
-	var _RootscopeStore = __webpack_require__(297);
-
-	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
-
-	var _reactRouter = __webpack_require__(160);
-
-	var _elemental = __webpack_require__(300);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Customer_Login = function (_Component) {
-	  _inherits(Customer_Login, _Component);
-
-	  function Customer_Login(props, context) {
-	    _classCallCheck(this, Customer_Login);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_Login).call(this, props, context));
-	    // MUST call super() before any this.*
-
-
-	    _RootscopeActions2.default.setSession('currentView', 'Customer_Login');
-
-	    return _this;
-	  }
-
-	  _createClass(Customer_Login, [{
-	    key: 'componentDidMount',
-
-
-	    // Add change listeners to stores
-	    value: function componentDidMount() {}
-
-	    // Remove change listers from stores
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        _E.Row,
-	        null,
-	        _react2.default.createElement(
-	          _E.Col,
-	          null,
-	          _react2.default.createElement(
-	            'h2',
-	            null,
-	            'Customer Login',
-	            _react2.default.createElement('br', null)
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Customer_Login;
-	}(_react.Component);
-
-	exports.default = Customer_Login;
-
-/***/ },
-/* 378 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _Translate = __webpack_require__(240);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _RootscopeActions = __webpack_require__(242);
-
-	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
-
-	var _RootscopeStore = __webpack_require__(297);
-
-	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
-
-	var _StorefrontActions = __webpack_require__(380);
-
-	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
-
-	var _StorefrontStore = __webpack_require__(381);
-
-	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
-
-	var _reactRouter = __webpack_require__(160);
-
-	var _elemental = __webpack_require__(300);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	var _ProductListItem = __webpack_require__(371);
-
-	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Storefront = function (_Component) {
-	  _inherits(Storefront, _Component);
-
-	  function Storefront(props, context) {
-	    _classCallCheck(this, Storefront);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront).call(this, props, context));
-	    // MUST call super() before any this.*
-
-
-	    _RootscopeActions2.default.setSession('currentView', 'Storefront');
-	    _this.state = {
-	      categoryIdFilter: [],
-	      products: [],
-	      categories: [],
-	      shoppingCart: []
-	    };
-
-	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
-	    _this._onStoreFrontChange = _this._onStoreFrontChange.bind(_this);
-	    return _this;
-	  }
-
-	  // Add change listeners to stores
-
-
-	  _createClass(Storefront, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
-	      _StorefrontStore2.default.addChangeListener(this._onStoreFrontChange);
-
-	      _TsvService2.default.fetchProduct(null, function (err, data) {
-	        if (err) throw err;
-	        _RootscopeActions2.default.setSession('products', data);
-	      });
-
-	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(0, function (err, data) {
-	        if (err) throw err;
-	        _RootscopeActions2.default.setConfig('categories', data);
-	      });
-	    }
-
-	    // Remove change listers from stores
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      _RootscopeStore2.default.removeChangeListener(this._onRootstoreChange);
-	      _StorefrontStore2.default.removeChangeListener(this._onStoreFrontChange);
-	    }
-	  }, {
-	    key: '_onRootstoreChange',
-	    value: function _onRootstoreChange(event) {
-	      // if (event && event.type == 'config' && event.path == 'categories') {
-	      // console.log('[_onRootstoreChange]');
-	      // console.log(event);
-	      // console.log(RootscopeStore.getConfig('categories'));
-	      this.setState({
-	        categories: _RootscopeStore2.default.getConfig('categories') || [],
-	        products: _RootscopeStore2.default.getSession('products') || []
-	      });
-	      // }
-	    }
-	  }, {
-	    key: '_onStoreFrontChange',
-	    value: function _onStoreFrontChange() {
-	      this.setState({
-	        categoryIdFilter: _StorefrontStore2.default.getCategoryFilter()
-	      });
-	    }
-	  }, {
-	    key: 'categoryClick',
-	    value: function categoryClick(categoryID) {
-	      if (categoryID) {
-	        return _StorefrontActions2.default.toggleIDtoCategoryFilter(categoryID);
-	      }
-	      _StorefrontActions2.default.clearCategoryFilter();
-	    }
-	  }, {
-	    key: 'setPrdSelected',
-	    value: function setPrdSelected(product, e) {
-	      _StorefrontActions2.default.addToCart(product, e);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var allType = !this.state.categoryIdFilter.length ? "primary" : "hollow-primary";
-	      return _react2.default.createElement(
-	        _E.Row,
-	        null,
-	        _react2.default.createElement(
-	          _E.Col,
-	          null,
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Col,
-	              { sm: '1/2' },
-	              _react2.default.createElement(
-	                'h2',
-	                null,
-	                'Storefront'
-	              )
-	            ),
-	            _react2.default.createElement(_E.Col, { sm: '1/2' })
-	          ),
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Button,
-	              { type: allType, onClick: this.categoryClick.bind(this, null) },
-	              'All'
-	            ),
-	            this.state.categories ? this.state.categories.map(function (category, $index) {
-	              var type = _this2.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary" : "hollow-primary";
-	              return _react2.default.createElement(
-	                _E.Button,
-	                { key: $index, type: type, onClick: _this2.categoryClick.bind(_this2, category.categoryID) },
-	                category.categoryName
-	              );
-	            }) : null
-	          ),
-	          _react2.default.createElement('br', null),
-	          this.renderProducts()
-	        )
-	      );
-	    }
-	  }, {
-	    key: 'renderProducts',
-	    value: function renderProducts() {
-	      var _this3 = this;
-
-	      if (!this.state.products.length) {
-	        return null;
-	      }
-	      var prods = this.state.products.map(function (P, idx) {
-	        var show = true;
-	        if (_this3.state.categoryIdFilter.length) {
-	          if (_this3.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
-	            show = false;
-	          }
-	        }
-	        if (show) {
-	          return _react2.default.createElement(
-	            _E.Col,
-	            { key: idx, basis: '25%' },
-	            _react2.default.createElement(_ProductListItem2.default, {
-	              onClick: _this3.setPrdSelected.bind(_this3),
-	              data: P })
-	          );
-	        }
-	        return null;
-	      });
-
-	      return _react2.default.createElement(
-	        _E.Row,
-	        null,
-	        prods
-	      );
-	    }
-	  }]);
-
-	  return Storefront;
-	}(_react.Component);
-
-	exports.default = Storefront;
-
-/***/ },
-/* 379 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _Translate = __webpack_require__(240);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _RootscopeActions = __webpack_require__(242);
-
-	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
-
-	var _RootscopeStore = __webpack_require__(297);
-
-	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
-
-	var _reactRouter = __webpack_require__(160);
-
-	var _elemental = __webpack_require__(300);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Transaction_Refund = function (_Component) {
-	  _inherits(Transaction_Refund, _Component);
-
-	  function Transaction_Refund(props, context) {
-	    _classCallCheck(this, Transaction_Refund);
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Transaction_Refund).call(this, props, context));
-	    // MUST call super() before any this.*
-
-
-	    _RootscopeActions2.default.setSession('currentView', 'Transaction_Refund');
-
-	    return _this;
-	  }
-
-	  _createClass(Transaction_Refund, [{
-	    key: 'componentDidMount',
-
-
-	    // Add change listeners to stores
-	    value: function componentDidMount() {}
-
-	    // Remove change listers from stores
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        _E.Row,
-	        null,
-	        _react2.default.createElement(
-	          _E.Col,
-	          null,
-	          _react2.default.createElement(
-	            'h2',
-	            null,
-	            'Transaction Refund',
-	            _react2.default.createElement('br', null)
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return Transaction_Refund;
-	}(_react.Component);
-
-	exports.default = Transaction_Refund;
-
-/***/ },
-/* 380 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _AppDispatcher = __webpack_require__(243);
-
-	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
-
-	var _appConstants = __webpack_require__(247);
-
-	var _appConstants2 = _interopRequireDefault(_appConstants);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _RootscopeActions = __webpack_require__(242);
-
-	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	// import SocketAPI from '../utils/SocketAPI'
-	// import axios from 'axios'
-	// import { browserHistory } from 'react-router'
-
-	var StorefrontActions = {
-	  toggleIDtoCategoryFilter: function toggleIDtoCategoryFilter(ID) {
-	    _AppDispatcher2.default.handleServerAction({
-	      actionType: _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER,
-	      data: ID
-	    });
-	  },
-	  clearCategoryFilter: function clearCategoryFilter() {
-	    _AppDispatcher2.default.handleServerAction({
-	      actionType: _appConstants2.default.CLEAR_CATEGORY_FILTER,
-	      data: null
-	    });
-	  },
-	  addToCart: function addToCart(product, e) {
-	    if (product.stockCount > 0) {
-	      _TsvService2.default.addToCartByProductID(product.productID, function (err, response) {
-	        if (err) throw err;
-	        _RootscopeActions2.default.setConfig('pvr', response);
-
-	        _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
-	          if (err) throw err;
-	          _RootscopeActions2.default.setCache('shoppingCart', data);
-	          console.log('shopping cart');
-	          console.log(data);
-	        });
-	      });
-	    }
-	  }
-	};
-
-	module.exports = StorefrontActions;
-
-/***/ },
-/* 381 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _AppDispatcher = __webpack_require__(243);
-
-	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
-
-	var _appConstants = __webpack_require__(247);
-
-	var _appConstants2 = _interopRequireDefault(_appConstants);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _Translate = __webpack_require__(240);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _Object = __webpack_require__(39);
-
-	var _Object2 = _interopRequireDefault(_Object);
-
-	var _events = __webpack_require__(298);
-
-	var _muDB = __webpack_require__(299);
-
-	var _muDB2 = _interopRequireDefault(_muDB);
-
-	var _utils = __webpack_require__(219);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var CHANGE_EVENT = 'change',
-	    _store = {
-			categoryIdFilter: []
-	}
-
-	// , _storeDB = new muDB()
-	;
-
-	function toggleIDtoCategoryFilter(ID) {
-			if (_store.categoryIdFilter.indexOf(ID) == -1) {
-					_store.categoryIdFilter.push(ID);
-			} else {
-					_store.categoryIdFilter.splice(_store.categoryIdFilter.indexOf(ID), 1);
-			}
-	}
-
-	function clearFilter() {
-			_store.categoryIdFilter = [];
-	}
-	// _storeDB.setDB(_store);
-
-	var StorefrontStore = (0, _Object2.default)({}, _events.EventEmitter.prototype, {
-			addChangeListener: function addChangeListener(cb) {
-					this.on(CHANGE_EVENT, cb);
-			},
-
-			removeChangeListener: function removeChangeListener(cb) {
-					this.removeListener(CHANGE_EVENT, cb);
-			},
-
-			emitChange: function emitChange() {
-					var args = Array.prototype.slice.call(arguments);
-					args.unshift(CHANGE_EVENT);
-					this.emit.apply(this, args);
-			},
-
-			getCategoryFilter: function getCategoryFilter() {
-					return _store.categoryIdFilter;
-			}
-	});
-
-	StorefrontStore.dispatch = _AppDispatcher2.default.register(function (payload) {
-			var action = payload.action;
-			switch (action.actionType) {
-
-					case _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER:
-							toggleIDtoCategoryFilter(action.data);
-							StorefrontStore.emitChange();
-							break;
-
-					case _appConstants2.default.CLEAR_CATEGORY_FILTER:
-							clearFilter();
-							StorefrontStore.emitChange();
-							break;
-
-					default:
-							return true;
-							break;
-			}
-	});
-
-	module.exports = StorefrontStore;
 
 /***/ }
 /******/ ]);
