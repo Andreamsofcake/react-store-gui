@@ -33780,7 +33780,7 @@
 	/*****
 
 			WEBPACK IS PUKING on including this in a "watch" update,
-			have to stop and start it, which is fucking annoying.
+			have to stop and start it, which is image-containering annoying.
 			so, make my own key mirror.
 
 	********/
@@ -50607,7 +50607,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	    value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -50635,49 +50635,81 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var ProductListItem = function (_Component) {
-	    _inherits(ProductListItem, _Component);
+	  _inherits(ProductListItem, _Component);
 
-	    function ProductListItem() {
-	        _classCallCheck(this, ProductListItem);
+	  function ProductListItem() {
+	    _classCallCheck(this, ProductListItem);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductListItem).apply(this, arguments));
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductListItem).apply(this, arguments));
+	  }
+
+	  _createClass(ProductListItem, [{
+	    key: 'clickHandler',
+	    value: function clickHandler(e) {
+	      this.props.onClick(this.props.data);
 	    }
+	  }, {
+	    key: 'veiwProduct',
+	    value: function veiwProduct() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var product = this.props.data;
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'product' },
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'product_name' },
+	          _react2.default.createElement(
+	            'h4',
+	            null,
+	            product.productName
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { id: 'image-container' },
+	          _react2.default.createElement('img', { src: product.imagePath, title: product.description })
+	        ),
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            { sm: '1/3' },
+	            _react2.default.createElement(
+	              'p',
+	              { className: 'prdPrice' },
+	              '$',
+	              _TsvService2.default.currencyFilter(product.price),
+	              ' '
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Col,
+	            { sm: '1/3' },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { type: 'inactive', id: 'product-button', onClick: this.viewProduct },
+	              'View'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Col,
+	            { sm: '1/3' },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { id: 'product-button', onClick: this.clickHandler.bind(this) },
+	              'Add'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
 
-	    _createClass(ProductListItem, [{
-	        key: 'clickHandler',
-	        value: function clickHandler(e) {
-	            this.props.onClick(this.props.data);
-	        }
-	    }, {
-	        key: 'render',
-	        value: function render() {
-	            var product = this.props.data;
-	            return _react2.default.createElement(
-	                'div',
-	                { className: 'product' },
-	                _react2.default.createElement(
-	                    'h4',
-	                    null,
-	                    product.productName
-	                ),
-	                _react2.default.createElement('img', { src: product.imagePath, title: product.description }),
-	                _react2.default.createElement(
-	                    'p',
-	                    { className: 'prdPrice' },
-	                    '$',
-	                    _TsvService2.default.currencyFilter(product.price),
-	                    ' '
-	                ),
-	                _react2.default.createElement(
-	                    _E.Button,
-	                    { onClick: this.clickHandler.bind(this) },
-	                    'Add'
-	                )
-	            );
-	        }
-	    }]);
-
-	    return ProductListItem;
+	  return ProductListItem;
 	}(_react.Component);
 
 	exports.default = ProductListItem;

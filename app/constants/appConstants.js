@@ -1,7 +1,7 @@
 /*****
 
 		WEBPACK IS PUKING on including this in a "watch" update,
-		have to stop and start it, which is fucking annoying.
+		have to stop and start it, which is image-containering annoying.
 		so, make my own key mirror.
 
 ********/
