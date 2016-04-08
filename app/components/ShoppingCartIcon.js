@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
-import TsvService from '../../lib/TsvService'
+import { browserHistory } from 'react-router'
 
 class ProductListItem extends Component {
 

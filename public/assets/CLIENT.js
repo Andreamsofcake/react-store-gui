@@ -48342,7 +48342,7 @@
 	        if (show) {
 	          return _react2.default.createElement(
 	            _E.Col,
-	            { key: idx, basis: '25%' },
+	            { key: idx, lg: '1/4' },
 	            _react2.default.createElement(_ProductListItem2.default, {
 	              onClick: _this3.setPrdSelected.bind(_this3),
 	              data: P })
@@ -50649,15 +50649,17 @@
 	      this.props.onClick(this.props.data);
 	    }
 	  }, {
-	    key: 'veiwProduct',
-	    value: function veiwProduct() {}
+	    key: 'viewProduct',
+	    value: function viewProduct() {
+	      //make link to product detail component
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      var product = this.props.data;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'product' },
+	        { className: 'product', onClick: this.viewProduct.bind(this) },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'product_name' },
@@ -50686,15 +50688,7 @@
 	              ' '
 	            )
 	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { sm: '1/3' },
-	            _react2.default.createElement(
-	              _E.Button,
-	              { type: 'inactive', id: 'product-button', onClick: this.viewProduct },
-	              'View'
-	            )
-	          ),
+	          _react2.default.createElement(_E.Col, { sm: '1/3' }),
 	          _react2.default.createElement(
 	            _E.Col,
 	            { sm: '1/3' },
@@ -51023,9 +51017,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
+	var _reactRouter = __webpack_require__(160);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -51049,7 +51041,7 @@
 	  _createClass(ProductListItem, [{
 	    key: 'shoppingCartLink',
 	    value: function shoppingCartLink() {
-	      browserHistory.push("/Shopping_Cart");
+	      _reactRouter.browserHistory.push("/Shopping_Cart");
 	    }
 	  }, {
 	    key: 'render',

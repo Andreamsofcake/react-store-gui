@@ -136,7 +136,7 @@ class Storefront extends Component {
     	if (show) {
     		return (
 
-          <_E.Col key={idx} basis="25%">
+          <_E.Col key={idx} lg="1/4">
             <ProductListItem
             onClick={this.setPrdSelected.bind(this)}
             data={P} />
