@@ -22,7 +22,7 @@ class Storefront extends Component {
       products: [],
       categories: [],
       shoppingCart: [],
-      quantity: null
+      quantity: 0
     }
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
@@ -79,6 +79,9 @@ class Storefront extends Component {
       categoryIdFilter: StorefrontStore.getCategoryFilter()
     })
   }
+  shoppingCartLink() {
+    browserHistory.push("/Shopping_Cart");
+  }
 
   categoryClick(categoryID) {
     if (categoryID) {
@@ -101,7 +104,7 @@ class Storefront extends Component {
               <h2>Storefront</h2>
             </_E.Col>
             <_E.Col className="shopping-cart" sm="1/2">
-              <img src="/gfx/shop.png" />
+              <a><img onClick={this.shoppingCartLink} src="/gfx/shop.png" /></a>
               <p>Quantity {this.state.quantity}</p>
             </_E.Col>
           </_E.Row>
