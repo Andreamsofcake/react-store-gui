@@ -10,6 +10,7 @@ import StorefrontStore from '../stores/StorefrontStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
+import ShoppingCartIcon from './ShoppingCartIcon'
 
 class Storefront extends Component {
 
@@ -56,31 +57,25 @@ class Storefront extends Component {
 		// console.log('[_onRootstoreChange]');
 		// console.log(event);
 		// console.log(RootscopeStore.getConfig('categories'));
-
-		this.setState({
-			categories: RootscopeStore.getConfig('categories') || [],
-      products: RootscopeStore.getSession('products') || [],
-      shoppingCart: RootscopeStore.getCache('shoppingCart.detail') || []
-		});
-
     var qty = 0;
     for (let value of this.state.shoppingCart) {
         console.log('array')
         qty += value.qtyInCart;
         console.log(qty)
       }
-    this.setState({
-      quantity: qty || null
-    })
+		this.setState({
+			categories: RootscopeStore.getConfig('categories') || [],
+      products: RootscopeStore.getSession('products') || [],
+      shoppingCart: RootscopeStore.getCache('shoppingCart.detail') || [],
+      quantity: qty
+		});
+
   	// }
   }
   _onStoreFrontChange() {
     this.setState({
       categoryIdFilter: StorefrontStore.getCategoryFilter()
     })
-  }
-  shoppingCartLink() {
-    browserHistory.push("/Shopping_Cart");
   }
 
   categoryClick(categoryID) {
@@ -103,10 +98,9 @@ class Storefront extends Component {
             <_E.Col sm="1/2">
               <h2>Storefront</h2>
             </_E.Col>
-            <_E.Col className="shopping-cart" sm="1/2">
-              <a><img onClick={this.shoppingCartLink} src="/gfx/shop.png" /></a>
-              <p>Quantity {this.state.quantity}</p>
-            </_E.Col>
+            <ShoppingCartIcon
+              data = {this.state.quantity}
+            />
           </_E.Row>
           <_E.Row>
             <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>

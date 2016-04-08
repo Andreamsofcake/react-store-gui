@@ -48144,6 +48144,10 @@
 
 	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
 
+	var _ShoppingCartIcon = __webpack_require__(381);
+
+	var _ShoppingCartIcon2 = _interopRequireDefault(_ShoppingCartIcon);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -48213,13 +48217,6 @@
 	      // console.log('[_onRootstoreChange]');
 	      // console.log(event);
 	      // console.log(RootscopeStore.getConfig('categories'));
-
-	      this.setState({
-	        categories: _RootscopeStore2.default.getConfig('categories') || [],
-	        products: _RootscopeStore2.default.getSession('products') || [],
-	        shoppingCart: _RootscopeStore2.default.getCache('shoppingCart.detail') || []
-	      });
-
 	      var qty = 0;
 	      var _iteratorNormalCompletion = true;
 	      var _didIteratorError = false;
@@ -48249,8 +48246,12 @@
 	      }
 
 	      this.setState({
-	        quantity: qty || null
+	        categories: _RootscopeStore2.default.getConfig('categories') || [],
+	        products: _RootscopeStore2.default.getSession('products') || [],
+	        shoppingCart: _RootscopeStore2.default.getCache('shoppingCart.detail') || [],
+	        quantity: qty
 	      });
+
 	      // }
 	    }
 	  }, {
@@ -48259,11 +48260,6 @@
 	      this.setState({
 	        categoryIdFilter: _StorefrontStore2.default.getCategoryFilter()
 	      });
-	    }
-	  }, {
-	    key: 'shoppingCartLink',
-	    value: function shoppingCartLink() {
-	      _reactRouter.browserHistory.push("/Shopping_Cart");
 	    }
 	  }, {
 	    key: 'categoryClick',
@@ -48302,21 +48298,9 @@
 	                'Storefront'
 	              )
 	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { className: 'shopping-cart', sm: '1/2' },
-	              _react2.default.createElement(
-	                'a',
-	                null,
-	                _react2.default.createElement('img', { onClick: this.shoppingCartLink, src: '/gfx/shop.png' })
-	              ),
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                'Quantity ',
-	                this.state.quantity
-	              )
-	            )
+	            _react2.default.createElement(_ShoppingCartIcon2.default, {
+	              data: this.state.quantity
+	            })
 	          ),
 	          _react2.default.createElement(
 	            _E.Row,
@@ -50986,6 +50970,81 @@
 	});
 
 	module.exports = StorefrontStore;
+
+/***/ },
+/* 381 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ProductListItem = function (_Component) {
+	  _inherits(ProductListItem, _Component);
+
+	  function ProductListItem() {
+	    _classCallCheck(this, ProductListItem);
+
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ProductListItem).apply(this, arguments));
+	  }
+
+	  _createClass(ProductListItem, [{
+	    key: 'shoppingCartLink',
+	    value: function shoppingCartLink() {
+	      browserHistory.push("/Shopping_Cart");
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var qty = this.props.data;
+	      return _react2.default.createElement(
+	        _E.Col,
+	        { className: 'shopping-cart', sm: '1/2' },
+	        _react2.default.createElement(
+	          'a',
+	          null,
+	          _react2.default.createElement('img', { onClick: this.shoppingCartLink, src: '/gfx/shop.png' })
+	        ),
+	        _react2.default.createElement(
+	          'p',
+	          null,
+	          'Quantity ',
+	          qty
+	        )
+	      );
+	    }
+	  }]);
+
+	  return ProductListItem;
+	}(_react.Component);
+
+	exports.default = ProductListItem;
 
 /***/ }
 /******/ ]);
