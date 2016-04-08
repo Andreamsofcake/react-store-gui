@@ -49301,8 +49301,36 @@
 	    _RootscopeActions2.default.setSession('currentView', 'Shopping_Cart');
 	    _RootscopeActions2.default.setCache('currentLocation', '/Shopping_Cart');
 
+	    var prc = 0;
+	    var _iteratorNormalCompletion = true;
+	    var _didIteratorError = false;
+	    var _iteratorError = undefined;
+
+	    try {
+	      for (var _iterator = _RootscopeStore2.default.getCache('shoppingCart.detail')[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+	        var value = _step.value;
+
+	        console.log('price');
+	        prc += value.price * value.qtyInCart;
+	        console.log(prc);
+	      }
+	    } catch (err) {
+	      _didIteratorError = true;
+	      _iteratorError = err;
+	    } finally {
+	      try {
+	        if (!_iteratorNormalCompletion && _iterator.return) {
+	          _iterator.return();
+	        }
+	      } finally {
+	        if (_didIteratorError) {
+	          throw _iteratorError;
+	        }
+	      }
+	    }
+
 	    _this.state = {
-	      totalPrice: _RootscopeStore2.default.getCache('shoppingCart.summary.TotalPrice'),
+	      totalPrice: prc,
 	      cart: _RootscopeStore2.default.getCache('shoppingCart.detail'),
 	      salesTaxAmount: _RootscopeStore2.default.getCache('shoppingCart.summary.salesTaxAmount'),
 	      emptyCart: false,
@@ -49366,7 +49394,6 @@
 	          } else {
 	            _this2.setState({
 	              cart: data.detail,
-	              totalPrice: data.summary.TotalPrice,
 	              emptyCart: data.detail.length <= 0
 	            });
 	          }
@@ -49386,8 +49413,7 @@
 	          _RootscopeActions2.default.setCache('shoppingCart', data);
 
 	          _this3.setState({
-	            cart: data.detail,
-	            totalPrice: data.summary.TotalPrice
+	            cart: data.detail
 	          });
 	        });
 	      });
@@ -49442,7 +49468,7 @@
 	              } else {
 	                _this4.setState({
 	                  cart: data.detail,
-	                  totalPrice: data.summary.TotalPrice,
+	                  totalPrice: prc,
 	                  emptyCart: data.detail.length <= 0
 	                });
 	              }
@@ -49493,11 +49519,11 @@
 	          { id: 'wrapper' },
 	          _react2.default.createElement(
 	            _E.Row,
-	            { className: 'cart' },
+	            { className: 'row-border', id: 'shopping-cart-table' },
 	            _react2.default.createElement(
 	              _E.Col,
 	              { md: '40%', lg: '40%' },
-	              Translate.translate('Shopping_Cart', 'Product')
+	              'Items'
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
@@ -49506,15 +49532,19 @@
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { md: '37%', lg: '37%' },
+	              { md: '15%', lg: '15%' },
 	              Translate.translate('Shopping_Cart', 'Qty')
 	            ),
-	            _react2.default.createElement(_E.Col, { md: '15%', lg: '15%' })
+	            _react2.default.createElement(
+	              _E.Col,
+	              { md: '15%', lg: '15%' },
+	              'Remove'
+	            )
 	          ),
 	          this.renderShoppingCart(),
 	          _react2.default.createElement(
 	            _E.Row,
-	            { id: 'additionalInfo' },
+	            { className: 'row-border', id: 'shopping-cart-table' },
 	            this.state.bShowTax ? this.renderShowTax() : null,
 	            _react2.default.createElement(
 	              'p',
@@ -49716,11 +49746,6 @@
 							this.props.onClick(this.props.data);
 					}
 			}, {
-					key: 'minusQty',
-					value: function minusQty(c) {
-							StorefrontActions.minusQty(c);
-					}
-			}, {
 					key: 'render',
 					value: function render() {
 							var prd = this.props.data;
@@ -49729,23 +49754,23 @@
 									_defineProperty({ className: 'cart' }, 'className', 'shoppingCart'),
 									_react2.default.createElement(
 											_E.Col,
-											{ md: '15%', lg: '15%', className: 'cart' },
-											_react2.default.createElement('img', { id: 'prdImg', src: prd.imagePath }),
+											{ id: 'shopping-cart-image', md: '15%', lg: '15%', className: 'cart' },
+											_react2.default.createElement('img', { src: prd.imagePath }),
 											' '
 									),
 									_react2.default.createElement(
 											_E.Col,
-											{ md: '25%', lg: '25%', className: 'cart' },
+											{ id: 'shopping-cart-table', md: '25%', lg: '25%', className: 'cart' },
 											prd.productName
 									),
 									_react2.default.createElement(
 											_E.Col,
-											{ md: '8%', lg: '8%', className: 'cart' },
+											{ id: 'shopping-cart-table', md: '8%', lg: '8%', className: 'cart' },
 											_TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
 									),
 									_react2.default.createElement(
 											_E.Col,
-											{ md: '37%', lg: '37%', className: 'cart' },
+											{ md: '18%', lg: '18%', className: 'cart' },
 											_react2.default.createElement(
 													_E.Row,
 													null,
@@ -49754,13 +49779,13 @@
 															null,
 															_react2.default.createElement(
 																	_E.Button,
-																	{ type: 'primary', onClick: this.minusQty.bind(null, prd.coilNumber) },
-																	_react2.default.createElement(_E.Glyph, { icon: 'dash' })
+																	{ id: 'shopping-cart-button', type: 'primary', onClick: this.props.addQty.bind(null, prd.coilNumber) },
+																	_react2.default.createElement(_E.Glyph, { icon: 'plus' })
 															)
 													),
 													_react2.default.createElement(
 															_E.Col,
-															{ id: 'qty' },
+															{ id: 'shopping-cart-table' },
 															prd.qtyInCart
 													),
 													_react2.default.createElement(
@@ -49768,15 +49793,15 @@
 															null,
 															_react2.default.createElement(
 																	_E.Button,
-																	{ type: 'primary', onClick: this.props.addQty.bind(null, prd.coilNumber) },
-																	_react2.default.createElement(_E.Glyph, { icon: 'plus' })
+																	{ id: 'shopping-cart-button', type: 'primary', onClick: this.props.minusQty.bind(null, prd.coilNumber) },
+																	_react2.default.createElement(_E.Glyph, { icon: 'dash' })
 															)
 													)
 											)
 									),
 									_react2.default.createElement(
 											_E.Col,
-											{ md: '15%', lg: '15%', className: 'cart' },
+											{ md: '18%', lg: '18%', className: 'cart' },
 											_react2.default.createElement(
 													_E.Button,
 													{ type: 'danger', onClick: this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },

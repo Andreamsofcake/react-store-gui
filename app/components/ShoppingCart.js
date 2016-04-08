@@ -18,8 +18,14 @@ class Shopping_Cart extends Component {
     RootscopeActions.setSession('currentView', 'Shopping_Cart');
     RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
 
+    var prc = 0;
+    for (let value of RootscopeStore.getCache('shoppingCart.detail')) {
+        console.log('price')
+        prc += value.price * value.qtyInCart;
+        console.log(prc)
+      }
     this.state = {
-      totalPrice: RootscopeStore.getCache('shoppingCart.summary.TotalPrice'),
+      totalPrice: prc,
       cart: RootscopeStore.getCache('shoppingCart.detail'),
       salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
       emptyCart: false,
@@ -28,6 +34,8 @@ class Shopping_Cart extends Component {
       bShowTax: false,
       bShowCouponBtn: false
     };
+
+
 
     RootscopeActions.setConfig('summary', this.state.summary);
 
@@ -75,7 +83,6 @@ class Shopping_Cart extends Component {
 			} else {
 				this.setState({
 					cart: data.detail,
-					totalPrice: data.summary.TotalPrice,
 					emptyCart: data.detail.length <= 0
 				});
 			}
@@ -94,7 +101,6 @@ class Shopping_Cart extends Component {
 
 			this.setState({
 				cart: data.detail,
-				totalPrice: data.summary.TotalPrice
 			});
 
 		});
@@ -118,10 +124,10 @@ class Shopping_Cart extends Component {
   }
 
   removeAllQty(coil, qty) {
-  
+
 	  //console.warn("\n\nremoveAllQty()\n\n");
 	  //console.log(coil, qty);
-  
+
 	TsvService.fetchShoppingCart2(null, (err, data) => {
 
 		if (err) throw err;
@@ -148,7 +154,7 @@ class Shopping_Cart extends Component {
 					} else {
 						this.setState({
 							cart: data.detail,
-							totalPrice: data.summary.TotalPrice,
+							totalPrice: prc,
 							emptyCart: data.detail.length <= 0
 						});
 					}
@@ -185,7 +191,7 @@ class Shopping_Cart extends Component {
       <_E.Row className="Shopping_Cart" >
         <h2>{Translate.translate('Shopping_Cart', 'ShoppingCart')}</h2>
         <_E.Col id="wrapper">
-                <_E.Row className="cart">
+                <_E.Row className="row-border" id="shopping-cart-table">
                 	{/*
                 	<th></th>
                 	<th></th>
@@ -193,15 +199,15 @@ class Shopping_Cart extends Component {
                 	<th className="cart">{Translate.translate('Shopping_Cart','Qty')}</th>
                 	<th></th>
                 	*/}
-                	<_E.Col md="40%" lg="40%">{Translate.translate('Shopping_Cart','Product')}</_E.Col>
+                	<_E.Col md="40%" lg="40%">Items</_E.Col>
                 	<_E.Col md="8%" lg="8%">{Translate.translate('Shopping_Cart','Price')}</_E.Col>
-                	<_E.Col md="37%" lg="37%">{Translate.translate('Shopping_Cart','Qty')}</_E.Col>
-                	<_E.Col md="15%" lg="15%"></_E.Col>
+                	<_E.Col md="15%" lg="15%">{Translate.translate('Shopping_Cart','Qty')}</_E.Col>
+                	<_E.Col md="15%" lg="15%">Remove</_E.Col>
                 </_E.Row>
 
                 {this.renderShoppingCart()}
 
-            <_E.Row id="additionalInfo">
+            <_E.Row className="row-border" id="shopping-cart-table">
 
                 { this.state.bShowTax ? this.renderShowTax() : null }
 

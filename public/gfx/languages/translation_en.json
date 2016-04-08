@@ -1,7 +1,7 @@
 {
     "CreditLabel":"Credit",
     "BalanceLabel":"Balance",
-	
+
     "View0": {
         "Resetting": "Resetting",
         "PleaseWait": "Please Wait"
@@ -153,7 +153,7 @@
         "Qty": "Qty",
         "Tax":"Tax",
         "TotalPrice": "Total Price",
-		"SelectCategory":"Select A Category"
+		    "SelectCategory":"Select A Category"
     },
 
     "Make_Donation": {
@@ -171,15 +171,14 @@
         "EnterCouponCode": "Enter Coupon Code",
         "EnterEmail": "Enter Your Email Address"
     },
-	
+
 	"Category_Search": {
 		"WelcomeMsg":"",
 		"SelectCategory":"Select A Category"
     },
-	
+
 	"Product_Search": {
 		"WelcomeMsg":"",
 		"SelectProduct":"Select A Product"
     }
 }
-

@@ -14,6 +14,23 @@ h2, h3 { margin-top: 0.5em; }
 .product_name {
 	height: 3em;
 }
+.row-border{
+	 border-top: thin solid black;
+}
+#shopping-cart-button {
+	max-width: 40px;
+	text-align: center;
+}
+#shopping-cart-table {
+	font-size: 1.5em;
+}
+#shopping-cart-image {
+	text-align: center;
+
+}
+#shopping-cart-image img {
+	max-width: 95% !important;
+}
 #product-button {
 	font-size: .75em;
 }
