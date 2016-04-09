@@ -13,6 +13,15 @@ class ShoppingCartItem extends Component {
     StorefrontActions.minusQty(c)
   }
 
+  removeAllQty(c, q) {
+    StorefrontActions.removeAllQty(c, q)
+  }
+
+  addQty(c) {
+    StorefrontActions.addQty(c)
+  }
+
+
   render() {
     var prd = this.props.data
     return (
@@ -32,7 +41,7 @@ class ShoppingCartItem extends Component {
 
 					<_E.Row>
 
-						<_E.Col ><_E.Button id="shopping-cart-button" type="primary" onClick={this.props.addQty.bind(null, prd.coilNumber)}><_E.Glyph icon="plus" /></_E.Button></_E.Col>
+						<_E.Col ><_E.Button id="shopping-cart-button" type="primary" onClick={this.addQty.bind(null, prd.coilNumber)}><_E.Glyph icon="plus" /></_E.Button></_E.Col>
 						{/*<img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}>*/}
 
 						<_E.Col id="shopping-cart-table">{ prd.qtyInCart}</_E.Col>
@@ -45,7 +54,7 @@ class ShoppingCartItem extends Component {
 
 			</_E.Col>
 
-			<_E.Col md="20%" lg="20%" className="cart"><_E.Button type="danger" onClick={this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart)}><_E.Glyph icon="circle-slash" /></_E.Button></_E.Col>
+			<_E.Col md="20%" lg="20%" className="cart"><_E.Button type="danger" onClick={this.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart)}><_E.Glyph icon="circle-slash" /></_E.Button></_E.Col>
 			{/*<img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}>*/}
 		  </_E.Row>
     );

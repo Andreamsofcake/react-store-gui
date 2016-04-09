@@ -20,6 +20,54 @@ var StorefrontActions = {
   		});
   	});
   },
+  removeAllQty(coil, qty) {
+
+      //console.warn("\n\nremoveAllQty()\n\n");
+      //console.log(coil, qty);
+
+    TsvService.fetchShoppingCart2(null, (err, data) => {
+
+      if (err) throw err;
+      RootscopeActions.setCache('shoppingCart', data);
+
+      let removeQty = (qty) => {
+        if (qty > 0) {
+          qty -= 1;
+          TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
+            if (err) throw err;
+            TsvService.fetchShoppingCart2(null, (err, data) => {
+              if (err) throw err;
+              RootscopeActions.setCache('shoppingCart', data);
+              removeQty(qty);
+            });
+          });
+        } else {
+          TsvService.fetchShoppingCart2(null, (err, data) => {
+            if (err) throw err;
+            RootscopeActions.setCache('shoppingCart', data);
+          });
+        }
+      }
+
+      removeQty(qty);
+    });
+  },
+
+  addQty(coil) {
+  	TsvService.addToCartByCoil(coil, (err, ok) => {
+  		if (err) throw err;
+  		TsvService.fetchShoppingCart2(null, (err, data) => {
+
+  			if (err) throw err;
+  			RootscopeActions.setCache('shoppingCart', data);
+
+  			this.setState({
+  				cart: data.detail,
+  			});
+
+  		});
+  	});
+  },
 
   toggleIDtoCategoryFilter(ID) {
     AppDispatcher.handleServerAction({

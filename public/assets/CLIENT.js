@@ -49451,6 +49451,54 @@
 	      });
 	    });
 	  },
+	  removeAllQty: function removeAllQty(coil, qty) {
+
+	    //console.warn("\n\nremoveAllQty()\n\n");
+	    //console.log(coil, qty);
+
+	    _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+
+	      if (err) throw err;
+	      _RootscopeActions2.default.setCache('shoppingCart', data);
+
+	      var removeQty = function removeQty(qty) {
+	        if (qty > 0) {
+	          qty -= 1;
+	          _TsvService2.default.removeFromCartByCoilNo(coil, function (err, ok) {
+	            if (err) throw err;
+	            _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+	              if (err) throw err;
+	              _RootscopeActions2.default.setCache('shoppingCart', data);
+	              removeQty(qty);
+	            });
+	          });
+	        } else {
+	          _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+	            if (err) throw err;
+	            _RootscopeActions2.default.setCache('shoppingCart', data);
+	          });
+	        }
+	      };
+
+	      removeQty(qty);
+	    });
+	  },
+	  addQty: function addQty(coil) {
+	    var _this = this;
+
+	    _TsvService2.default.addToCartByCoil(coil, function (err, ok) {
+	      if (err) throw err;
+	      _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+
+	        if (err) throw err;
+	        _RootscopeActions2.default.setCache('shoppingCart', data);
+
+	        _this.setState({
+	          cart: data.detail
+	        });
+	      });
+	    });
+	  },
 	  toggleIDtoCategoryFilter: function toggleIDtoCategoryFilter(ID) {
 	    _AppDispatcher2.default.handleServerAction({
 	      actionType: _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER,
@@ -50792,7 +50840,7 @@
 	    if (_RootscopeStore2.default.getCache('custommachinesettings.bHasCouponCodes')) {
 	      _this.state.bShowCouponBtn = true;
 	    }
-
+	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
 	    return _this;
 	  }
 
@@ -50820,95 +50868,30 @@
 	      console.log(_reactRouter.browserHistory);
 	      _reactRouter.browserHistory.push("/Cash_Card");
 	    }
-	  }, {
-	    key: 'addQty',
-	    value: function addQty(coil) {
-	      var _this2 = this;
 
-	      _TsvService2.default.addToCartByCoil(coil, function (err, ok) {
-	        if (err) throw err;
-	        _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
-
-	          if (err) throw err;
-	          _RootscopeActions2.default.setCache('shoppingCart', data);
-
-	          _this2.setState({
-	            cart: data.detail
-	          });
-	        });
-	      });
-	      /*
-	      TsvService.addToCartByCoilAsync(coil)
-	      .then( ok => {
-	      	TsvService.fetchShoppingCart2Async()
-	      })
-	      .then( data => {
-	      	RootscopeActions.setCache('shoppingCart', data);
-	      	this.setState({
-	      		cart: data.detail,
-	      		totalPrice: data.summary.TotalPrice
-	      	});
-	      })
-	      .catch( (e) => {
-	      	throw e
-	      })
-	      */
-	    }
-	  }, {
-	    key: 'removeAllQty',
-	    value: function removeAllQty(coil, qty) {
-	      var _this3 = this;
-
-	      //console.warn("\n\nremoveAllQty()\n\n");
-	      //console.log(coil, qty);
-
-	      _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
-
-	        if (err) throw err;
-	        _RootscopeActions2.default.setCache('shoppingCart', data);
-
-	        var removeQty = function removeQty(qty) {
-	          if (qty > 0) {
-	            qty -= 1;
-	            _TsvService2.default.removeFromCartByCoilNo(coil, function (err, ok) {
-	              if (err) throw err;
-	              _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
-	                if (err) throw err;
-	                _RootscopeActions2.default.setCache('shoppingCart', data);
-	                removeQty(qty);
-	              });
-	            });
-	          } else {
-	            _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
-	              if (err) throw err;
-	              _RootscopeActions2.default.setCache('shoppingCart', data);
-
-	              if (!data.detail || !data.detail.length) {
-	                _TsvService2.default.gotoDefaultIdlePage();
-	              } else {
-	                _this3.setState({
-	                  cart: data.detail,
-	                  totalPrice: prc,
-	                  emptyCart: data.detail.length <= 0
-	                });
-	              }
-	            });
-	          }
-	        };
-
-	        removeQty(qty);
-	      });
-	    }
+	    /*
+	    TsvService.addToCartByCoilAsync(coil)
+	    .then( ok => {
+	    	TsvService.fetchShoppingCart2Async()
+	    })
+	    .then( data => {
+	    	RootscopeActions.setCache('shoppingCart', data);
+	    	this.setState({
+	    		cart: data.detail,
+	    		totalPrice: data.summary.TotalPrice
+	    	});
+	    })
+	    .catch( (e) => {
+	    	throw e
+	    })
+	    */
 
 	    // Add change listeners to stores
 
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-
-	      //RootscopeActions.setSession('currentView', 'Shopping_Cart');
-	      //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
-
+	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
 	      _TsvService2.default.subscribe("cardTransactionResponse", function (level) {
 	        if (!_RootscopeStore2.default.getSession('bVendingInProcess')) {
 	          if (_RootscopeStore2.default.getCache('currentLocation') != "/Card_Vending") {
@@ -50925,6 +50908,7 @@
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      _TsvService2.default.unsubscribe("cardTransactionResponse", "app.shoppingCart");
+	      _RootscopeStore2.default.removeChangeListener(this._onRootstoreChange);
 	    }
 	  }, {
 	    key: '_onRootstoreChange',
@@ -50988,7 +50972,7 @@
 	              null,
 	              Translate.translate('Shopping_Cart', 'TotalPrice'),
 	              ': ',
-	              _TsvService2.default.currencyFilter(this.state.totalPrice)
+	              this.state.totalPrice ? _TsvService2.default.currencyFilter(this.state.totalPrice) : 0.00
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -51084,8 +51068,6 @@
 	  }, {
 	    key: 'renderShoppingCart',
 	    value: function renderShoppingCart() {
-	      var _this4 = this;
-
 	      if (!this.state.cart || !this.state.cart.length) {
 	        return null;
 	      }
@@ -51093,9 +51075,7 @@
 	      return this.state.cart.map(function (prd, $index) {
 	        return _react2.default.createElement(_ShoppingCartItem2.default, {
 	          key: $index,
-	          data: prd,
-	          addQty: _this4.addQty.bind(_this4),
-	          removeAllQty: _this4.removeAllQty.bind(_this4)
+	          data: prd
 	        });
 	      });
 	    }
@@ -51138,7 +51118,7 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-			value: true
+	  value: true
 	});
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -51172,92 +51152,102 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 	var ShoppingCartItem = function (_Component) {
-			_inherits(ShoppingCartItem, _Component);
+	  _inherits(ShoppingCartItem, _Component);
 
-			function ShoppingCartItem() {
-					_classCallCheck(this, ShoppingCartItem);
+	  function ShoppingCartItem() {
+	    _classCallCheck(this, ShoppingCartItem);
 
-					return _possibleConstructorReturn(this, Object.getPrototypeOf(ShoppingCartItem).apply(this, arguments));
-			}
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(ShoppingCartItem).apply(this, arguments));
+	  }
 
-			_createClass(ShoppingCartItem, [{
-					key: 'clickHandler',
-					value: function clickHandler(e) {
-							this.props.onClick(this.props.data);
-					}
-			}, {
-					key: 'minusQty',
-					value: function minusQty(c) {
-							_StorefrontActions2.default.minusQty(c);
-					}
-			}, {
-					key: 'render',
-					value: function render() {
-							var prd = this.props.data;
-							return _react2.default.createElement(
-									_E.Row,
-									_defineProperty({ className: 'cart' }, 'className', 'shoppingCart'),
-									_react2.default.createElement(
-											_E.Col,
-											{ id: 'shopping-cart-image', md: '15%', lg: '15%', className: 'cart' },
-											_react2.default.createElement('img', { src: prd.imagePath }),
-											' '
-									),
-									_react2.default.createElement(
-											_E.Col,
-											{ id: 'shopping-cart-table', md: '25%', lg: '25%', className: 'cart' },
-											prd.productName
-									),
-									_react2.default.createElement(
-											_E.Col,
-											{ id: 'shopping-cart-table', md: '8%', lg: '8%', className: 'cart' },
-											_TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
-									),
-									_react2.default.createElement(
-											_E.Col,
-											{ md: '20%', lg: '20%', className: 'cart' },
-											_react2.default.createElement(
-													_E.Row,
-													null,
-													_react2.default.createElement(
-															_E.Col,
-															null,
-															_react2.default.createElement(
-																	_E.Button,
-																	{ id: 'shopping-cart-button', type: 'primary', onClick: this.props.addQty.bind(null, prd.coilNumber) },
-																	_react2.default.createElement(_E.Glyph, { icon: 'plus' })
-															)
-													),
-													_react2.default.createElement(
-															_E.Col,
-															{ id: 'shopping-cart-table' },
-															prd.qtyInCart
-													),
-													_react2.default.createElement(
-															_E.Col,
-															null,
-															_react2.default.createElement(
-																	_E.Button,
-																	{ id: 'shopping-cart-button', type: 'primary', onClick: this.minusQty.bind(null, prd.coilNumber) },
-																	_react2.default.createElement(_E.Glyph, { icon: 'dash' })
-															)
-													)
-											)
-									),
-									_react2.default.createElement(
-											_E.Col,
-											{ md: '20%', lg: '20%', className: 'cart' },
-											_react2.default.createElement(
-													_E.Button,
-													{ type: 'danger', onClick: this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },
-													_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
-											)
-									)
-							);
-					}
-			}]);
+	  _createClass(ShoppingCartItem, [{
+	    key: 'clickHandler',
+	    value: function clickHandler(e) {
+	      this.props.onClick(this.props.data);
+	    }
+	  }, {
+	    key: 'minusQty',
+	    value: function minusQty(c) {
+	      _StorefrontActions2.default.minusQty(c);
+	    }
+	  }, {
+	    key: 'removeAllQty',
+	    value: function removeAllQty(c, q) {
+	      _StorefrontActions2.default.removeAllQty(c, q);
+	    }
+	  }, {
+	    key: 'addQty',
+	    value: function addQty(c) {
+	      _StorefrontActions2.default.addQty(c);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var prd = this.props.data;
+	      return _react2.default.createElement(
+	        _E.Row,
+	        _defineProperty({ className: 'cart' }, 'className', 'shoppingCart'),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { id: 'shopping-cart-image', md: '15%', lg: '15%', className: 'cart' },
+	          _react2.default.createElement('img', { src: prd.imagePath }),
+	          ' '
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { id: 'shopping-cart-table', md: '25%', lg: '25%', className: 'cart' },
+	          prd.productName
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { id: 'shopping-cart-table', md: '8%', lg: '8%', className: 'cart' },
+	          _TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { md: '20%', lg: '20%', className: 'cart' },
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Col,
+	              null,
+	              _react2.default.createElement(
+	                _E.Button,
+	                { id: 'shopping-cart-button', type: 'primary', onClick: this.addQty.bind(null, prd.coilNumber) },
+	                _react2.default.createElement(_E.Glyph, { icon: 'plus' })
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Col,
+	              { id: 'shopping-cart-table' },
+	              prd.qtyInCart
+	            ),
+	            _react2.default.createElement(
+	              _E.Col,
+	              null,
+	              _react2.default.createElement(
+	                _E.Button,
+	                { id: 'shopping-cart-button', type: 'primary', onClick: this.minusQty.bind(null, prd.coilNumber) },
+	                _react2.default.createElement(_E.Glyph, { icon: 'dash' })
+	              )
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { md: '20%', lg: '20%', className: 'cart' },
+	          _react2.default.createElement(
+	            _E.Button,
+	            { type: 'danger', onClick: this.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },
+	            _react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
+	          )
+	        )
+	      );
+	    }
+	  }]);
 
-			return ShoppingCartItem;
+	  return ShoppingCartItem;
 	}(_react.Component);
 
 	exports.default = ShoppingCartItem;
