@@ -863,7 +863,7 @@
 
 				return _react2.default.createElement(
 					'div',
-					{ style: { maxWidth: '48em', margin: '0 auto' } },
+					null,
 					_react2.default.createElement(_CustomerStatusDisplay2.default, null),
 					_react2.default.createElement(_ComEmulator2.default, null),
 					_react2.default.createElement(
@@ -4141,12 +4141,14 @@
 	    value: function cancel() {
 	      _TsvService2.default.emptyCart(null, function () {});
 	      _RootscopeActions2.default.setConfig('itemsInCart', 0);
-	      _TsvService2.default.gotoDefaultIdlePage();
+	      //TsvService.gotoDefaultIdlePage();
+	      _reactRouter.browserHistory.push('/Storefront');
 	    }
 	  }, {
 	    key: 'shopmore',
 	    value: function shopmore() {
-	      _TsvService2.default.gotoDefaultIdlePage();
+	      //TsvService.gotoDefaultIdlePage();
+	      _reactRouter.browserHistory.push('/Storefront');
 	    }
 	  }, {
 	    key: 'checkout',
@@ -4202,7 +4204,8 @@
 	    value: function _onRootstoreChange() {
 	      var data = _RootscopeStore2.default.getCache('shoppingCart');
 	      if (!data.detail || !data.detail.length) {
-	        _TsvService2.default.gotoDefaultIdlePage();
+	        //TsvService.gotoDefaultIdlePage();
+	        _reactRouter.browserHistory.push('/Storefront');
 	      } else {
 	        this.setState({
 	          cart: data.detail,
