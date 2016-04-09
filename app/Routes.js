@@ -15,6 +15,7 @@ import AdminSettings from './components/AdminSettings'
 import CustomerSignup from './components/CustomerSignup'
 import CustomerLogin from './components/CustomerLogin'
 import Storefront from './components/Storefront'
+import ProductDetail from './components/ProductDetail'
 import TransactionRefund from './components/TransactionRefund'
 import CardVending from './components/CardVending'
 import CashVending from './components/CashVending'
@@ -25,6 +26,7 @@ import VendError from './components/VendError'
 
 import CategorySearch from './components/CategorySearch'
 import ProductSearch from './components/ProductSearch'
+
 
 import NoMatch from './components/NoMatch'
 
@@ -46,6 +48,7 @@ export default (
 		<Route path='Customer_Login/:step' component={CustomerLogin} />
 
 		<Route path='Storefront' component={Storefront} />
+		<Route path='Product_Detail/:productID' component={ProductDetail} />
 		<Route path='Transaction_Refund' component={TransactionRefund} />
 		<Route path='Card_Vending' component={CardVending} />
 		<Route path='Cash_Vending' component={CashVending} />
