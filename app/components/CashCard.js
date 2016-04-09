@@ -62,11 +62,11 @@ class Cash_Card extends Component {
       <_E.Col>
 		  <h2>{Translate.translate('Cash_Card', 'InstructionMessage')}</h2>
 		  <_E.Row>
-			  <_E.Col lg="1/2">
-				  <img className="paymentMethod" onClick={this.cash} src={Translate.localizedImage('cash.png')} alt="cash" />
+			  <_E.Col sm="1/2">
+				  <img className="paymentMethod" onClick={this.cash} src={Translate.localizedImage('cash.png')} alt="cash" style={{maxWidth:'90%'}} />
 				</_E.Col>
-			  <_E.Col lg="1/2">
-				  <img className="paymentMethod" onClick={this.card} src={Translate.localizedImage('card.png')} alt="card" />
+			  <_E.Col sm="1/2">
+				  <img className="paymentMethod" onClick={this.card} src={Translate.localizedImage('card.png')} alt="card" style={{maxWidth:'90%'}} />
 			  </_E.Col>
 		  </_E.Row>
 

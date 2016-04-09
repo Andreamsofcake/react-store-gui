@@ -42,6 +42,8 @@ h2, h3 { margin-top: 0.5em; }
 #image-container img{
 	max-width: 95%;
 	max-height: 100%;
+	border: 1px solid #aaa;
+	box-shadow: 0 0 8px rgba(0,0,0,0.2);
 }
 
 #ComEmulator {
