@@ -115,6 +115,8 @@ class Shopping_Cart extends Component {
     }
   }
 
+// w00t
+
   render() {
 
     return (

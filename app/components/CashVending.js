@@ -17,7 +17,7 @@ class Cash_Vending extends Component {
     //RootscopeActions.setCache('currentLocation', '/Cash_Vending');
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.updateCredit();
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH", () => {});
 
     this.state = {
       insertedAmount: RootscopeStore.getSession('creditBalance'),

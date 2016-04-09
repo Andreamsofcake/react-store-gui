@@ -50787,7 +50787,7 @@
 
 	    _RootscopeActions2.default.setConfig('bDisplayCgryNavigation', false);
 	    _RootscopeActions2.default.updateCredit();
-	    _TsvService2.default.enablePaymentDevice("PAYMENT_TYPE_CASH");
+	    _TsvService2.default.enablePaymentDevice("PAYMENT_TYPE_CASH", function () {});
 
 	    _this.state = {
 	      insertedAmount: _RootscopeStore2.default.getSession('creditBalance'),
@@ -51134,13 +51134,13 @@
 	            null,
 	            _react2.default.createElement(
 	              _E.Col,
-	              { lg: '1/2' },
-	              _react2.default.createElement('img', { className: 'paymentMethod', onClick: this.cash, src: Translate.localizedImage('cash.png'), alt: 'cash' })
+	              { sm: '1/2' },
+	              _react2.default.createElement('img', { className: 'paymentMethod', onClick: this.cash, src: Translate.localizedImage('cash.png'), alt: 'cash', style: { maxWidth: '90%' } })
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { lg: '1/2' },
-	              _react2.default.createElement('img', { className: 'paymentMethod', onClick: this.card, src: Translate.localizedImage('card.png'), alt: 'card' })
+	              { sm: '1/2' },
+	              _react2.default.createElement('img', { className: 'paymentMethod', onClick: this.card, src: Translate.localizedImage('card.png'), alt: 'card', style: { maxWidth: '90%' } })
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -51347,6 +51347,9 @@
 	        });
 	      }
 	    }
+
+	    // w00t
+
 	  }, {
 	    key: 'render',
 	    value: function render() {
