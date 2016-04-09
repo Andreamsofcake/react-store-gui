@@ -50943,22 +50943,22 @@
 	            { className: 'row-border', id: 'shopping-cart-table' },
 	            _react2.default.createElement(
 	              _E.Col,
-	              { md: '40%', lg: '40%' },
+	              { xs: '25%', sm: '25%', md: '40%', lg: '40%' },
 	              'Items'
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { md: '8%', lg: '8%' },
+	              { xs: '8%', sm: '8%', md: '8%', lg: '8%' },
 	              Translate.translate('Shopping_Cart', 'Price')
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { md: '15%', lg: '15%' },
+	              { xs: '20%', sm: '20%', md: '20%', lg: '20%' },
 	              Translate.translate('Shopping_Cart', 'Qty')
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { md: '15%', lg: '15%' },
+	              { xs: '20%', sm: '20%', md: '20%', lg: '20%' },
 	              'Remove'
 	            )
 	          ),
@@ -51189,43 +51189,43 @@
 	        _defineProperty({ className: 'cart' }, 'className', 'shoppingCart'),
 	        _react2.default.createElement(
 	          _E.Col,
-	          { id: 'shopping-cart-image', md: '15%', lg: '15%', className: 'cart' },
+	          { id: 'shopping-cart-image', sm: '25%', md: '15%', lg: '15%', className: 'cart' },
 	          _react2.default.createElement('img', { src: prd.imagePath }),
 	          ' '
 	        ),
 	        _react2.default.createElement(
 	          _E.Col,
-	          { id: 'shopping-cart-table', md: '25%', lg: '25%', className: 'cart' },
+	          { id: 'shopping-cart-table', xs: '25%', sm: '25%', md: '25%', lg: '25%', className: 'cart' },
 	          prd.productName
 	        ),
 	        _react2.default.createElement(
 	          _E.Col,
-	          { id: 'shopping-cart-table', md: '8%', lg: '8%', className: 'cart' },
+	          { id: 'shopping-cart-table', xs: '8%', sm: '8%', md: '8%', lg: '8%', className: 'cart' },
 	          _TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
 	        ),
 	        _react2.default.createElement(
 	          _E.Col,
-	          { md: '20%', lg: '20%', className: 'cart' },
+	          { xs: '20%', sm: '20%', md: '20%', lg: '20%', className: 'cart' },
 	          _react2.default.createElement(
 	            _E.Row,
 	            null,
 	            _react2.default.createElement(
 	              _E.Col,
-	              null,
+	              { sm: '1/3', id: 'shopping-cart-item' },
 	              _react2.default.createElement(
 	                _E.Button,
-	                { id: 'shopping-cart-button', type: 'primary', onClick: this.addQty.bind(null, prd.coilNumber) },
+	                { type: 'primary', onClick: this.addQty.bind(null, prd.coilNumber) },
 	                _react2.default.createElement(_E.Glyph, { icon: 'plus' })
 	              )
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { id: 'shopping-cart-table' },
+	              { id: 'shopping-cart-item', sm: '1/3' },
 	              prd.qtyInCart
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              null,
+	              { sm: '1/3', id: 'shopping-cart-item' },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { id: 'shopping-cart-button', type: 'primary', onClick: this.minusQty.bind(null, prd.coilNumber) },
@@ -51236,7 +51236,7 @@
 	        ),
 	        _react2.default.createElement(
 	          _E.Col,
-	          { md: '20%', lg: '20%', className: 'cart' },
+	          { xs: '20%', sm: '20%', md: '20%', lg: '20%', className: 'cart' },
 	          _react2.default.createElement(
 	            _E.Button,
 	            { type: 'danger', onClick: this.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },

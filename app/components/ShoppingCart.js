@@ -127,10 +127,10 @@ class Shopping_Cart extends Component {
                 	<th className="cart">{Translate.translate('Shopping_Cart','Qty')}</th>
                 	<th></th>
                 	*/}
-                	<_E.Col md="40%" lg="40%">Items</_E.Col>
-                	<_E.Col md="8%" lg="8%">{Translate.translate('Shopping_Cart','Price')}</_E.Col>
-                	<_E.Col md="15%" lg="15%">{Translate.translate('Shopping_Cart','Qty')}</_E.Col>
-                	<_E.Col md="15%" lg="15%">Remove</_E.Col>
+                	<_E.Col xs="25%" sm="25%" md="40%" lg="40%">Items</_E.Col>
+                	<_E.Col xs="8%" sm="8%" md="8%" lg="8%">{Translate.translate('Shopping_Cart','Price')}</_E.Col>
+                	<_E.Col xs="20%" sm="20%" md="20%" lg="20%">{Translate.translate('Shopping_Cart','Qty')}</_E.Col>
+                	<_E.Col xs="20%" sm="20%" md="20%" lg="20%">Remove</_E.Col>
                 </_E.Row>
 
                 {this.renderShoppingCart()}
