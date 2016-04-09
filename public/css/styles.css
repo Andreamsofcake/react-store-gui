@@ -17,8 +17,8 @@ h2, h3 { margin-top: 0.5em; }
 .row-border{
 	 border-top: thin solid black;
 }
-#shopping-cart-button {
-	max-width: 40px;
+#shopping-cart-item {
+	font-size: 1.5em;
 	text-align: center;
 }
 #shopping-cart-table {
