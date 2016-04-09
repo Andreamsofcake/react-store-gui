@@ -7,6 +7,8 @@ import objectAssign from 'react/lib/Object.assign'
 import { EventEmitter } from 'events'
 import muDB from '../../lib/muDB'
 
+import RootscopeStore from './RootscopeStore'
+
 import { isClient } from '../utils'
 
 var CHANGE_EVENT = 'change'
@@ -46,9 +48,26 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 		this.emit.apply(this, args );
 	},
 
-  getCategoryFilter: function() {
-    return _store.categoryIdFilter
-  }
+	getCategoryFilter: function() {
+		return _store.categoryIdFilter
+	},
+
+	getProductById: function(productID) {
+		/*
+			FIXME: KLOOOODGE ALERT:
+			we are still straddling old and new code,
+			currently all products are kept in the RootscopeStore,
+			eventually they will be here.
+		*/
+		let products = RootscopeStore.getSession('products');
+		if (products) {
+			let found = products.filter( P => { P.productID === productID } );
+			if (found && found.length) {
+				return found.pop();
+			}
+		}
+		return null;
+	}
 });
 
 StorefrontStore.dispatch = AppDispatcher.register(function(payload){
@@ -56,7 +75,7 @@ StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 	switch(action.actionType) {
 
 		case appConstants.TOGGLE_CATEGORY_ID_TO_FILTER:
-      toggleIDtoCategoryFilter(action.data)
+			toggleIDtoCategoryFilter(action.data);
 			StorefrontStore.emitChange();
 			break;
 
@@ -64,8 +83,6 @@ StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 			clearFilter();
 			StorefrontStore.emitChange();
 			break;
-
-
 
 		default:
 			return true;
