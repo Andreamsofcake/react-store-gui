@@ -23,7 +23,7 @@ class ShoppingCartItem extends Component {
 
 			<_E.Col id="shopping-cart-table" md="8%" lg="8%" className="cart">{ TsvService.currencyFilter(prd.price * prd.qtyInCart) }</_E.Col>
 
-			<_E.Col md="18%" lg="18%" className="cart">
+			<_E.Col md="20%" lg="20%" className="cart">
 
 
 					<_E.Row>
@@ -41,7 +41,7 @@ class ShoppingCartItem extends Component {
 
 			</_E.Col>
 
-			<_E.Col md="18%" lg="18%" className="cart"><_E.Button type="danger" onClick={this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart)}><_E.Glyph icon="circle-slash" /></_E.Button></_E.Col>
+			<_E.Col md="20%" lg="20%" className="cart"><_E.Button type="danger" onClick={this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart)}><_E.Glyph icon="circle-slash" /></_E.Button></_E.Col>
 			{/*<img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}>*/}
 		  </_E.Row>
     );

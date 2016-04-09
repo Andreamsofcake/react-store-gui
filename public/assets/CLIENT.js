@@ -49770,7 +49770,7 @@
 									),
 									_react2.default.createElement(
 											_E.Col,
-											{ md: '18%', lg: '18%', className: 'cart' },
+											{ md: '20%', lg: '20%', className: 'cart' },
 											_react2.default.createElement(
 													_E.Row,
 													null,
@@ -49801,7 +49801,7 @@
 									),
 									_react2.default.createElement(
 											_E.Col,
-											{ md: '18%', lg: '18%', className: 'cart' },
+											{ md: '20%', lg: '20%', className: 'cart' },
 											_react2.default.createElement(
 													_E.Button,
 													{ type: 'danger', onClick: this.props.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },
