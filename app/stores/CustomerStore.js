@@ -95,6 +95,12 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
 			break;
 
+		case appConstants.CUSTOMER_REFRESH:
+			clearSteps('login');
+			setCustomer(action.data.customer);
+			CustomerStore.emitChange({ type: appConstants.CUSTOMER_REFRESH, status: action.data.status });
+			break;
+
 		case appConstants.CUSTOMER_RESET_LOGIN:
 			clearSteps('login');
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_RESET_LOGIN });

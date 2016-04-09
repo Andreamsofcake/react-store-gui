@@ -43,6 +43,11 @@ class Storefront extends Component {
     	if (err) throw err;
     	RootscopeActions.setConfig('categories', data);
     });
+
+	TsvService.fetchShoppingCart2(null, (err, data) => {
+		if (err) throw err;
+		RootscopeActions.setCache('shoppingCart', data);
+	});
   }
 
   // Remove change listers from stores
@@ -91,8 +96,11 @@ class Storefront extends Component {
               <h2>Storefront</h2>
           </_E.Row>
           <_E.Row>
-            <p>Categories:{' '}
-            <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>{' '}
+            <_E.Col>
+            Categories:{' '}
+            <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>
+            <span style={{width:'1em', display: 'inline-block'}}>{' '}</span>
+            <_E.ButtonGroup>
             {this.state.categories ? this.state.categories.map((category, $index) => {
                 let type=this.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary": "hollow-primary"
                 return (
@@ -100,7 +108,8 @@ class Storefront extends Component {
                 )
               }
             ) : null}
-            </p>
+            </_E.ButtonGroup>
+            </_E.Col>
           </_E.Row>
 	      {this.renderProducts()}
         </_E.Col>

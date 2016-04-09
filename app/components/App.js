@@ -12,6 +12,7 @@ import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 
 import ComEmulator from './ComEmulator'
+import CustomerStatusDisplay from './CustomerStatusDisplay'
 
 class App extends Component {
 	
@@ -109,15 +110,18 @@ class App extends Component {
 	render() {
 
 		return (
+			<div style={{maxWidth: '48em', margin: '0 auto'}}>
+			<CustomerStatusDisplay />
+			<ComEmulator />
 			<_E.Row gutter={-20}>
 				<_E.Col className="route-content">
-					<ComEmulator />
 					{this.props.children || (<div>
 						<_E.Button component={(<Link to="/View2">View 2</Link>)} />
 						<_E.Button component={(<Link to="/Category_Search">Cat Search</Link>)} />
 						</div>)}
 				</_E.Col>
 			</_E.Row>
+			</div>
 		)
 	}
 }

@@ -7,7 +7,7 @@ var fsplit = __filename.split(path.sep)
 	, filen = __filename.split(path.sep).pop()
 	, ACTION = filen.substr(0, filen.lastIndexOf('.'))
 	, debug = require('debug')('vending-app-gui:routes:' + ACTION)
-	, simulatorDelay = 2000
+	, simulatorDelay = 3000
 	;
 
 module.exports = function(request, reply) {
@@ -38,7 +38,7 @@ module.exports = function(request, reply) {
 		if (simulatorMatch && simulatorMatch.license === simulatorMatch.print) {
 
 			/*
-			// to complete round of testing: need to load a customer from the DB!
+			// to really complete round of testing: need to load a customer from the DB!
 			let customerID;
 			switch (simulatorMatch.license) {
 				case 'KrisKhan':
@@ -76,13 +76,35 @@ module.exports = function(request, reply) {
 			}
 			*/
 			
-			let fake = {
-				firstname: 'Kent',
-				lastname: 'Steiner',
-				email: 'kent@sdkcore.com',
-				mobile_phone: '480 433 6701',
-			}
+			let fake;
 
+			switch (simulatorMatch.license) {
+				case 'KrisKhan':
+					fake = {
+						firstname: 'Kris',
+						lastname: 'Khan',
+						email: 'krislkout@hotmail.com',
+						mobile_phone: '888 555 1212',
+					}
+					break;
+				case 'MaryJaneSmith':
+					fake = {
+						firstname: 'Mary Jane',
+						lastname: 'Smith',
+						email: 'maryjanesmith@sdkcore.com',
+						mobile_phone: '888 555 1212',
+					}
+					break;
+				case 'BuddyGalore':
+					fake = {
+						firstname: 'Buddy',
+						lastname: 'Galore',
+						email: 'buddygalore@sdkcore.com',
+						mobile_phone: '888 555 1212',
+					}
+					break;
+			}
+			
 			// artificial delay on response for UI testing:
 			setTimeout(() => {
 				return reply({ status: 'ok', customer: fake }).code(200);

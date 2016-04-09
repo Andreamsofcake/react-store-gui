@@ -147,10 +147,12 @@ class Shopping_Cart extends Component {
                 <_E.Col basis="1/4"><img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/></_E.Col>
 */}
                 <_E.Col basis="25%"><_E.Button type="primary" onClick={this.shopmore.bind(this)}>{Translate.translate('Shopping_Cart','Shop More')}</_E.Button></_E.Col>
-                <_E.Col basis="25%"><_E.Button type="success" onClick={this.checkout.bind(this)}>{Translate.translate('Shopping_Cart','Checkout')}</_E.Button></_E.Col>
+                {this.renderCheckoutButton()}
                 <_E.Col basis="25%"><_E.Button type="warning" onClick={this.cancel.bind(this)}>{Translate.translate('Shopping_Cart','Cancel')}</_E.Button></_E.Col>
+                {/*
                 <_E.Col basis="25%"><_E.Button type="danger" component={(<Link to="/Product_Search">TEST: go to product search page</Link>)} /></_E.Col>
                 <_E.Col basis="25%"><_E.Button type="danger" component={(<Link to="/Category_Search">TEST: go to category search page</Link>)} /></_E.Col>
+                */}
 
                 { this.state.bShowCouponBtn ? this.renderCouponButton() : null }
 
@@ -244,6 +246,15 @@ class Shopping_Cart extends Component {
   		  />
   		);
   	  })
+  }
+  
+  renderCheckoutButton() {
+  	if (this.state.cart && this.state.cart.length) {
+  		return (
+			<_E.Col basis="25%"><_E.Button type="success" onClick={this.checkout.bind(this)}>{Translate.translate('Shopping_Cart','Checkout')}</_E.Button></_E.Col>  		
+  		);
+  	}
+  	return null;
   }
 
   renderCouponButton() {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
@@ -96,7 +96,6 @@ class Customer_Login extends Component {
   }
   
   render() {
-  	console.error("\n\n\n ------------- render CustomerLogin");
     return (
     	<div>
 		  <_E.Row >

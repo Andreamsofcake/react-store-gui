@@ -214,7 +214,7 @@ server.register([
 
 	server.route({
 		method: 'post',
-		path: '/activate-module',
+		path: '/api/activate-module',
 		handler: ActivateModule,
 		config: {
 			plugins: {
@@ -234,7 +234,7 @@ server.register([
 
 	server.route({
 		method: 'post',
-		path: '/customer-match-login',
+		path: '/api/customer-match-login',
 		handler: CustomerMatchLogin,
 		config: {
 			plugins: {
@@ -249,6 +249,37 @@ server.register([
 					}
 				}
 			}
+		}
+	});
+
+	server.route({
+		method: 'get',
+		path: '/api/customer-refresh',
+		handler: (request, reply) => {
+			var customer = request.yar.get('current_customer');
+			reply({ status: 'ok', customer: customer });
+		}
+	});
+
+	server.route({
+		method: 'get',
+		path: '/api/reset-current-customer',
+		handler: (request, reply) => {
+			request.yar.set('current_customer', null);
+			reply({ status: 'ok' });
+		}
+	});
+
+	// this is due to problem with session sharing between request/yar and IO
+	// hope to link it properly soon!
+	server.route({
+		method: 'post',
+		path: '/api/set-loggedin-customer',
+		handler: (request, reply) => {
+			if (request.payload.customer) {
+				request.yar.set('current_customer', request.payload.customer);
+			}
+			reply({ status: 'ok' });
 		}
 	});
 
