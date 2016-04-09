@@ -205,9 +205,9 @@ class Cash_Vending extends Component {
   }
 
   renderCancelBtnCash(){
-    // <img id="cancelImg" src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
+    // <img src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
     return(
-      <_E.Button type="warning" id="cancelImg" onClick={this.cancel.bind(this)}><_E.Glyph icon="cancel-slash" /></_E.Button>
+      <_E.Button type="warning" onClick={this.cancel.bind(this)}><_E.Glyph icon="cancel-slash" /></_E.Button>
     )
   }
 

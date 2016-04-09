@@ -1,5 +1,11 @@
 # vending-app-gui
 
+### how to run for dev:
+
+1. clone repo
+2. cd /path/to/repo
+3. npm install
+4. node index.js (or, use nodemon or forever for advanced options)
 
 ### to-dos:
 

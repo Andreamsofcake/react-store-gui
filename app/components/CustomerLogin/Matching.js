@@ -30,6 +30,7 @@ class Step1 extends Component {
 		  <_E.Row >
 			<_E.Col>
 			  <h2>One moment please while we find you in the cloud</h2>
+			  <_E.Spinner />
 			</_E.Col>
 		  </_E.Row>
 		  {this.renderSimulator()}

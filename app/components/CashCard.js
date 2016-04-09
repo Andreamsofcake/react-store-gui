@@ -72,7 +72,7 @@ class Cash_Card extends Component {
 
 		  <_E.Row>
 			  <_E.Col>
-				  <img id="cancelImg" src={Translate.localizedImage('cancel.png')} onClick={this.cancel} />
+				  <img src={Translate.localizedImage('cancel.png')} onClick={this.cancel} />
 			  </_E.Col>
 		  </_E.Row>
       </_E.Col>
@@ -91,7 +91,7 @@ class Cash_Card extends Component {
 
       </div>
 
-      <img id="cancelImg" src={Translate.localizedImage('cancel.png')} onClick={this.cancel()} />
+      <img src={Translate.localizedImage('cancel.png')} onClick={this.cancel()} />
 
       </div>
     );

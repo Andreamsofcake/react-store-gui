@@ -21,7 +21,7 @@ class ProductListItem extends Component {
               <div className="product_name">
                 <h4>{product.productName}</h4>
               </div>
-              <div onClick={this.viewProduct.bind(this)} id="image-container">
+              <div onClick={this.viewProduct.bind(this)} className="image-container">
 
 	              <img src={product.imagePath} title={product.description}/>
 
@@ -33,7 +33,7 @@ class ProductListItem extends Component {
                 <_E.Col sm="1/3">
                 </_E.Col>
                 <_E.Col sm="1/3">
-                  <_E.Button id="product-button" onClick={this.clickHandler.bind(this)}>Add</_E.Button>
+                  <_E.Button className="product-button" onClick={this.clickHandler.bind(this)}>Add</_E.Button>
                 </_E.Col>
               </_E.Row>
           </div>

@@ -10,7 +10,7 @@ import StorefrontStore from '../stores/StorefrontStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
-import ShoppingCartMini from './ShoppingCartIcon'
+import ShoppingCartMini from './ShoppingCartMini'
 
 class Storefront extends Component {
 
@@ -91,7 +91,7 @@ class Storefront extends Component {
     return (
       <_E.Row >
         <_E.Col>
-		  <ShoppingCartMini style={{float: 'right'}} />
+		  <ShoppingCartMini className="scart-mini" />
           <_E.Row>
               <h2>Storefront</h2>
           </_E.Row>
