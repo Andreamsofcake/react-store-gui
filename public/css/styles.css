@@ -33,7 +33,9 @@ h2, h3 { margin-top: 0.5em; }
 #product-button {
 	font-size: .75em;
 }
-
+#product-preview img {
+	max-width: 95%
+}
 #image-container {
 	text-align: center;
 	height: 6em;

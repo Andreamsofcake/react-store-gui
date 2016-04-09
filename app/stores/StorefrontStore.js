@@ -61,7 +61,7 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 		*/
 		let products = RootscopeStore.getSession('products');
 		if (products) {
-			let found = products.filter( P => { P.productID === productID } );
+			let found = products.filter( P => { return P.productID == productID } );
 			if (found && found.length) {
 				return found.pop();
 			}

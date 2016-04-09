@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
 import TsvService from '../../lib/TsvService'
+import { browserHistory } from 'react-router'
 
 class ProductListItem extends Component {
 
@@ -9,7 +10,7 @@ class ProductListItem extends Component {
   }
 
   viewProduct(){
-    //make link to product detail component
+    browserHistory.push("/Product_Detail/" + this.props.data.productID)
   }
 
   render() {
