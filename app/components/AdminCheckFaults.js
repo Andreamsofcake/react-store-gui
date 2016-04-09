@@ -12,7 +12,7 @@ class Admin_Check_Faults extends Component {
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    RootscopeActions.setSession('currentView', 'Admin_Check_Faults');
+    //RootscopeActions.setSession('currentView', 'Admin_Check_Faults');
     RootscopeActions.setCache('currentLocation', '/Admin_Check_Faults');
     this.state = {
       bRunningClearFaults: false,

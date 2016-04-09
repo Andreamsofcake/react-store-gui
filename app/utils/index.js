@@ -77,3 +77,17 @@ export function moneyformat(amount, n, s, c, x) {
 
     return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
 };
+
+/**
+ * Generate unique guid ID
+ * @function uniq
+ * @returns {string} uniq gui-ish ID
+ */
+export function uniq() {
+	var uniq = Math.random() + '',
+		ts = new Date().getTime();
+	uniq = uniq.split('.');
+	uniq = uniq[ uniq.length-1 ];
+	uniq = uniq.substr(0, 5);
+	return uniq;
+}

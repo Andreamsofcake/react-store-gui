@@ -13,7 +13,7 @@ class Keyboard extends Component {
     super(props, context);
     
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    RootscopeActions.setSession('currentView', 'Keyboard');
+    //RootscopeActions.setSession('currentView', 'Keyboard');
     
     // original code does both of these, not sure why:
     RootscopeActions.updateCredit();

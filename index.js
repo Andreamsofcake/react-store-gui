@@ -68,7 +68,10 @@ io.on('connection', function (socket) {
 if (!process.env.COOKIE_PASSWORD) {
 	throw new Error('no cookie password found in env!');
 }
-// */
+
+/*
+console.log('yep, we have a cookie password: '+process.env.COOKIE_PASSWORD);
+//*/
 
 server.register([
 //*
@@ -125,24 +128,6 @@ server.register([
 		;
 
 	server.route({
-		method: 'GET',
-		path: '/auth/user-account',
-		handler: UserAccount
-	});
-
-	server.route({
-		method: 'POST',
-		path: '/auth/user-account',
-		handler: UserAccount
-	});
-
-	server.route({
-		method: 'GET',
-		path: '/auth/logout',
-		handler: (req, rep) => { req.yar.reset(); rep.redirect('/') }
-	});
-
-	server.route({
 		method: 'post',
 		path: '/api/model-list-query',
 		handler: ModelListQuery
@@ -167,30 +152,10 @@ server.register([
 	});
 */
 
-	/*
-	server.route({
-		method: 'post',
-		path: '/api/{action*}',
-		handler: GeneralSdkQuery
-	});
-	*/
-
-	/*
-	server.route({
-		method: 'post',
-		path: '/api/{action*}',
-		handler: UnknownApiCall
-	});
-
-	server.route({
-		method: 'get',
-		path: '/index-test.html',
-		handler: { file: 'index-test.html' }
-	});
-	*/
-
 	var TsvProxy = require('./routes/TsvProxy')
 		, ComBusEmulator = require('./routes/ComBusEmulator')
+		, ActivateModule = require('./routes/ActivateModule')
+		, CustomerMatchLogin = require('./routes/CustomerMatchLogin')
 		;
 
 	server.route({
@@ -202,18 +167,9 @@ server.register([
 				'hapi-io': {
 					event: 'flash-api'
 					, mapping: {
-						headers: ['accept'],
-						query: ['returnType']
+
 					},
 					post: (ctx, next) => {
-						/*
-						//ctx.socket.join(ctx.data.roomId);
-						//throw new Error('wtf');
-						socketdebug('---------------------------- result? ');
-						socketdebug(ctx.res);
-						socketdebug(ctx.result);
-						socketdebug(ctx.data);
-						*/
 						ctx.socket.emit(ctx.event, ctx.result);
 						next();
 					}
@@ -248,6 +204,46 @@ server.register([
 							//socketdebug('DID NOT SUBSCRIBE TO flash-api-multi-event' );
 
 						}
+						ctx.socket.emit(ctx.event, ctx.result);
+						next();
+					}
+				}
+			}
+		}
+	});
+
+	server.route({
+		method: 'post',
+		path: '/activate-module',
+		handler: ActivateModule,
+		config: {
+			plugins: {
+				'hapi-io': {
+					event: 'activate-module'
+					, mapping: {
+
+					},
+					post: (ctx, next) => {
+						ctx.socket.emit(ctx.event, ctx.result);
+						next();
+					}
+				}
+			}
+		}
+	});
+
+	server.route({
+		method: 'post',
+		path: '/customer-match-login',
+		handler: CustomerMatchLogin,
+		config: {
+			plugins: {
+				'hapi-io': {
+					event: 'customer-match-login'
+					, mapping: {
+
+					},
+					post: (ctx, next) => {
 						ctx.socket.emit(ctx.event, ctx.result);
 						next();
 					}

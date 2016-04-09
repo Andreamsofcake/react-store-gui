@@ -13,7 +13,7 @@ class Admin_Auto_Map extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Admin_Auto_Map');
+    //RootscopeActions.setSession('currentView', 'Admin_Auto_Map');
     RootscopeActions.setSession('bRunningAutoMap', false);
 
     this.state = {

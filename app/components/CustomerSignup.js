@@ -12,7 +12,7 @@ class Customer_Signup extends Component {
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    RootscopeActions.setSession('currentView', 'Customer_Signup');
+    //RootscopeActions.setSession('currentView', 'Customer_Signup');
 
   };
 

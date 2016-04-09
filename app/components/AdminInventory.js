@@ -13,7 +13,7 @@ class Admin_Inventory extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Admin_Inventory');
+    //RootscopeActions.setSession('currentView', 'Admin_Inventory');
     TsvService.fetchMachineIds((err, ids) => {
         RootscopeActions.setCache('machineList', ids);
       });

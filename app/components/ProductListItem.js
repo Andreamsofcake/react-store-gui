@@ -12,18 +12,17 @@ class ProductListItem extends Component {
     //make link to product detail component
   }
 
-
   render() {
     var product = this.props.data
     return (
 
           <div className="product" onClick={this.viewProduct.bind(this)}>
-              <div className="product_name" >
+              <div className="product_name">
                 <h4>{product.productName}</h4>
               </div>
               <div id="image-container">
 
-              <img src={product.imagePath} title={product.description}/>
+	              <img src={product.imagePath} title={product.description}/>
 
               </div>
               <_E.Row>

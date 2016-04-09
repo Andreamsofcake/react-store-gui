@@ -8,6 +8,19 @@ import RootscopeActions from '../actions/RootscopeActions'
 // import { browserHistory } from 'react-router'
 
 var StorefrontActions = {
+
+  minusQty(coil) {
+  	TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
+  		if (err) throw err;
+  		TsvService.fetchShoppingCart2(null, (err, data) => {
+
+  			if (err) throw err;
+  			RootscopeActions.setCache('shoppingCart', data);
+
+  		});
+  	});
+  },
+
   toggleIDtoCategoryFilter(ID) {
     AppDispatcher.handleServerAction({
       actionType: appConstants.TOGGLE_CATEGORY_ID_TO_FILTER,

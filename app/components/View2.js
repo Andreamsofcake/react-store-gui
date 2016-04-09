@@ -13,8 +13,8 @@ class View2 extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'View2');
-    RootscopeActions.setCache('currentLocation', '/View2');
+    //RootscopeActions.setSession('currentView', 'View2');
+    //RootscopeActions.setCache('currentLocation', '/View2');
     TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD", () => {});
     TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH", () => {});
     TsvService.fetchShoppingCart2(null, function(err, cart) {

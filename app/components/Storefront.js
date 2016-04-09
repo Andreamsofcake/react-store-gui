@@ -10,19 +10,18 @@ import StorefrontStore from '../stores/StorefrontStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
-import ShoppingCartIcon from './ShoppingCartIcon'
+import ShoppingCartMini from './ShoppingCartIcon'
 
 class Storefront extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    RootscopeActions.setSession('currentView', 'Storefront');
+    //RootscopeActions.setSession('currentView', 'Storefront');
     this.state = {
       categoryIdFilter:[],
       products: [],
       categories: [],
-      shoppingCart: [],
       quantity: 0
     }
 
@@ -57,21 +56,14 @@ class Storefront extends Component {
 		// console.log('[_onRootstoreChange]');
 		// console.log(event);
 		// console.log(RootscopeStore.getConfig('categories'));
-    var qty = 0;
-    for (let value of this.state.shoppingCart) {
-        console.log('array')
-        qty += value.qtyInCart;
-        console.log(qty)
-      }
 		this.setState({
 			categories: RootscopeStore.getConfig('categories') || [],
-      products: RootscopeStore.getSession('products') || [],
-      shoppingCart: RootscopeStore.getCache('shoppingCart.detail') || [],
-      quantity: qty
+			products: RootscopeStore.getSession('products') || [],
 		});
 
   	// }
   }
+
   _onStoreFrontChange() {
     this.setState({
       categoryIdFilter: StorefrontStore.getCategoryFilter()
@@ -94,16 +86,13 @@ class Storefront extends Component {
     return (
       <_E.Row >
         <_E.Col>
+		  <ShoppingCartMini style={{float: 'right'}} />
           <_E.Row>
-            <_E.Col sm="1/2">
               <h2>Storefront</h2>
-            </_E.Col>
-            <ShoppingCartIcon
-              data = {this.state.quantity}
-            />
           </_E.Row>
           <_E.Row>
-            <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>
+            <p>Categories:{' '}
+            <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>{' '}
             {this.state.categories ? this.state.categories.map((category, $index) => {
                 let type=this.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary": "hollow-primary"
                 return (
@@ -111,12 +100,9 @@ class Storefront extends Component {
                 )
               }
             ) : null}
+            </p>
           </_E.Row>
-          <br />
-
-
-                {this.renderProducts()}
-
+	      {this.renderProducts()}
         </_E.Col>
       </_E.Row>
     );
@@ -124,7 +110,7 @@ class Storefront extends Component {
 
   renderProducts(){
     if (!this.state.products.length) {
-      return null
+      return null;
     }
     let prods = this.state.products.map( (P, idx) => {
     	let show = true;
@@ -135,12 +121,11 @@ class Storefront extends Component {
     	}
     	if (show) {
     		return (
-
-          <_E.Col key={idx} lg="1/4">
-            <ProductListItem
-            onClick={this.setPrdSelected.bind(this)}
-            data={P} />
-          </_E.Col>
+			  <_E.Col key={idx} xs="1/2" sm="1/3" md="1/4" lg="1/4">
+				<ProductListItem
+				onClick={this.setPrdSelected.bind(this)}
+				data={P} />
+			  </_E.Col>
     		);
     	}
     	return null;

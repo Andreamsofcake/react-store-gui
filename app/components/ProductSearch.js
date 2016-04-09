@@ -24,8 +24,8 @@ class Product_Search extends Component {
     RootscopeActions.setConfig('bDisplayCgry', false);
     RootscopeActions.updateCredit();
     RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance'))
-    RootscopeActions.setSession('currentView', 'Product_Search');
-    RootscopeActions.setCache('currentLocation', '/Product_Search');
+    //RootscopeActions.setSession('currentView', 'Product_Search');
+    //RootscopeActions.setCache('currentLocation', '/Product_Search');
 
     if (typeof window !== 'undefined') {
     	window.RootscopeStore = RootscopeStore;

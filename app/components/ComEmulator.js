@@ -3,14 +3,17 @@ import * as _E from 'elemental'
 
 import TestscopeActions from '../actions/TestscopeActions'
 import TestscopeStore from '../stores/TestscopeStore'
+import RootscopeStore from '../stores/RootscopeStore'
 
 class ComEmulator extends Component {
 	
 	constructor(props, context) {
 		super(props, context);
 		this._onTestscopeChange = this._onTestscopeChange.bind(this);
+		this._onRootscopeChange = this._onRootscopeChange.bind(this);
 		this.state = {
-			lastResult: ''
+			lastResult: '',
+			currentView: RootscopeStore.getSession('currentView')
 		}
 	}
 	
@@ -20,16 +23,26 @@ class ComEmulator extends Component {
 	
 	componentDidMount() {
 		TestscopeStore.addChangeListener(this._onTestscopeChange);
+		RootscopeStore.addChangeListener(this._onRootscopeChange);
 	}
 	
 	compomentWillUnmount() {
 		TestscopeStore.removeChangeListener(this._onTestscopeChange);
+		RootscopeStore.removeChangeListener(this._onRootscopeChange);
 	}
 	
 	_onTestscopeChange(result) {
 		this.setState({
 			lastResult: result
 		});
+	}
+
+	_onRootscopeChange(event) {
+		if (event.type === 'session' && event.path === 'currentView') {
+			this.setState({
+				currentView: RootscopeStore.getSession('currentView')
+			});
+		}
 	}
 
 	render() {
@@ -103,11 +116,28 @@ class ComEmulator extends Component {
 			},
 		];
 		
+		let showButtons = buttons.filter( B => {
+			return B.showFor.indexOf( this.state.currentView ) > -1;
+		});
+		
+		if (!showButtons.length) {
+			/*
+			setTimeout(() => {
+				console.warn('ComEmulator ----- no showButtons??? (delayed...)');
+				console.log(this.state.currentView);
+				console.log(RootscopeStore.getSession('currentView'));
+				console.log(buttons);
+				console.log(showButtons);
+			}, 1000);
+			//*/
+			return null;
+		}
+
 		return (
 			<div id="ComEmulator">
 				<h4>Send Test Commands:</h4>
 				<div>
-				{ buttons.map( (B, idx) => {
+				{ showButtons.map( (B, idx) => {
 					return (
 						<_E.Button key={idx} type="primary" size="sm" onClick={ this.sendCommand.bind(this, B.cmd ) }>{ B.label }</_E.Button>
 					);

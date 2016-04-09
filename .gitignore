@@ -35,3 +35,4 @@ local_config.js
 
 # webpack thing
 stats.generated.json
+simulatorMatch*

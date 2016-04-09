@@ -15,17 +15,11 @@ class Shopping_Cart extends Component {
 
     RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
     RootscopeActions.updateCredit();
-    RootscopeActions.setSession('currentView', 'Shopping_Cart');
-    RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
+    //RootscopeActions.setSession('currentView', 'Shopping_Cart');
+    //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
 
-    var prc = 0;
-    for (let value of RootscopeStore.getCache('shoppingCart.detail')) {
-        console.log('price')
-        prc += value.price * value.qtyInCart;
-        console.log(prc)
-      }
     this.state = {
-      totalPrice: prc,
+      totalPrice: RootscopeStore.getCache('shoppingCart.summary.totalPrice'),
       cart: RootscopeStore.getCache('shoppingCart.detail'),
       salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
       emptyCart: false,
@@ -34,8 +28,6 @@ class Shopping_Cart extends Component {
       bShowTax: false,
       bShowCouponBtn: false
     };
-
-
 
     RootscopeActions.setConfig('summary', this.state.summary);
 
@@ -70,26 +62,7 @@ class Shopping_Cart extends Component {
     browserHistory.push("/Cash_Card");
   }
 
-  minusQty(coil) {
-	TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
-		if (err) throw err;
-		TsvService.fetchShoppingCart2(null, (err, data) => {
 
-			if (err) throw err;
-			RootscopeActions.setCache('shoppingCart', data);
-
-			if (!data.detail || !data.detail.length) {
-				TsvService.gotoDefaultIdlePage();
-			} else {
-				this.setState({
-					cart: data.detail,
-					emptyCart: data.detail.length <= 0
-				});
-			}
-
-		});
-	});
-  }
 
   addQty(coil) {
 	TsvService.addToCartByCoil(coil, (err, ok) => {
@@ -169,6 +142,10 @@ class Shopping_Cart extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+
+    //RootscopeActions.setSession('currentView', 'Shopping_Cart');
+    //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
+
     TsvService.subscribe("cardTransactionResponse", (level) => {
       if(!RootscopeStore.getSession('bVendingInProcess')){
         if(RootscopeStore.getCache('currentLocation') != "/Card_Vending") {
@@ -182,6 +159,18 @@ class Shopping_Cart extends Component {
   // Remove change listers from stores
   componentWillUnmount() {
     TsvService.unsubscribe("cardTransactionResponse", "app.shoppingCart");
+  }
+
+  _onRootstoreChange() {
+    var data = RootscopeStore.getCache('shoppingCart');
+    if (!data.detail || !data.detail.length) {
+      TsvService.gotoDefaultIdlePage();
+    } else {
+      this.setState({
+        cart: data.detail,
+        summary: data.summary
+      })
+    }
   }
 
   render() {
@@ -314,7 +303,6 @@ class Shopping_Cart extends Component {
 			 key={$index}
 			 data={prd}
 			 addQty={this.addQty.bind(this)}
-			 minusQty={this.minusQty.bind(this)}
 			 removeAllQty={this.removeAllQty.bind(this)}
 		  />
   		);

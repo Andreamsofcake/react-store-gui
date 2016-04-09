@@ -14,8 +14,8 @@ class Vend_Error extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Vend_Error');
-    RootscopeActions.setCache('currentLocation', '/Vend_Error');
+    //RootscopeActions.setSession('currentView', 'Vend_Error');
+    //RootscopeActions.setCache('currentLocation', '/Vend_Error');
     RootscopeActions.updateCredit();
     this.state = {
       errorMsg1: RootscopeStore.getSession('vendErrorMsg1'),

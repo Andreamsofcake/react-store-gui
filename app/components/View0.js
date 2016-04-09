@@ -13,8 +13,8 @@ class View0 extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'View0');
-    RootscopeActions.setCache('currentLocation', '/View0');
+    //RootscopeActions.setSession('currentView', 'View0');
+    //RootscopeActions.setCache('currentLocation', '/View0');
     TsvService.startGeneralIdleTimer();
     console.error('<<<<        FIXME: need to attach events to click and mouseover globally to TsvService.resetGeneralIdleTimer()        >>>>');
   };

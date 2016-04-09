@@ -13,8 +13,8 @@ class Cash_Vending extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Cash_Vending');
-    RootscopeActions.setCache('currentLocation', '/Cash_Vending');
+    //RootscopeActions.setSession('currentView', 'Cash_Vending');
+    //RootscopeActions.setCache('currentLocation', '/Cash_Vending');
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.updateCredit();
     TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");

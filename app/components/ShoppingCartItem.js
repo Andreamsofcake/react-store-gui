@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
 import TsvService from '../../lib/TsvService'
+import StorefrontActions from '../actions/StorefrontActions'
 
 class ShoppingCartItem extends Component {
 
@@ -8,6 +9,9 @@ class ShoppingCartItem extends Component {
       this.props.onClick(this.props.data)
   }
 
+  minusQty(c) {
+    StorefrontActions.minusQty(c)
+  }
 
   render() {
     var prd = this.props.data
@@ -33,7 +37,7 @@ class ShoppingCartItem extends Component {
 
 						<_E.Col id="shopping-cart-table">{ prd.qtyInCart}</_E.Col>
 
-						<_E.Col><_E.Button id="shopping-cart-button" type="primary" onClick={this.props.minusQty.bind(null, prd.coilNumber)}><_E.Glyph icon="dash" /></_E.Button></_E.Col>
+						<_E.Col><_E.Button id="shopping-cart-button" type="primary" onClick={this.minusQty.bind(null, prd.coilNumber)}><_E.Glyph icon="dash" /></_E.Button></_E.Col>
 						{/*<img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}>*/}
 
 					</_E.Row>

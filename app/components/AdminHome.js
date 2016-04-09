@@ -14,7 +14,7 @@ class Admin_Home extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Admin_Home');
+    //RootscopeActions.setSession('currentView', 'Admin_Home');
 
   }
 

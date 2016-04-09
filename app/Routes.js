@@ -40,7 +40,11 @@ export default (
 		<Route path='Admin_Settings' component={AdminSettings} />
 
 		<Route path='Customer_Signup' component={CustomerSignup} />
+		<Route path='Customer_Signup/:step' component={CustomerSignup} />
+
 		<Route path='Customer_Login' component={CustomerLogin} />
+		<Route path='Customer_Login/:step' component={CustomerLogin} />
+
 		<Route path='Storefront' component={Storefront} />
 		<Route path='Transaction_Refund' component={TransactionRefund} />
 		<Route path='Card_Vending' component={CardVending} />
