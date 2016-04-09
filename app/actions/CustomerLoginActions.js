@@ -1,6 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import appConstants from '../constants/appConstants'
-//import TsvService from '../../lib/TsvService'
+import TsvService from '../../lib/TsvService'
 //import RootscopeActions from '../actions/RootscopeActions'
 
 import SocketAPI from '../utils/SocketAPI'
@@ -8,6 +8,22 @@ import axios from 'axios'
 import { browserHistory } from 'react-router'
 
 var CustomerLoginActions = {
+
+	refreshCustomer() {
+		axios.get('/api/customer-refresh')
+		.then(response => {
+			if (response.data && response.data.customer) {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.CUSTOMER_REFRESH,
+					data: response.data
+				});
+			}
+		})
+		.catch(error => {
+			console.error('[CustomerLoginActions] failed to refresh customer???');
+			console.log(error);
+		})
+	},
 
 	scanPrint(loginToken, simulatorPrintCustomer) {
 		SocketAPI.send('activate-module',
@@ -69,6 +85,20 @@ var CustomerLoginActions = {
 		SocketAPI.send('customer-match-login',
 			{ loginToken },
 			(data) => {
+
+				/**** temporary call, due to session probs with IO ****/
+				if (data && data.customer) {
+					axios.post('/api/set-loggedin-customer', { customer: data.customer })
+					.then(response => {
+						console.log('temp action: updated the current customer after login');
+					})
+					.catch(error => {
+						console.error('[CustomerLoginActions] failed to set current customer???');
+						console.log(error);
+					})
+				}
+				/**** END temporary call ****/
+				
 				// we're not validating here, either the scan completed or failed... pass it through.
 				// CustomerStore will decide if the event is ok or err
 				AppDispatcher.handleServerAction({
@@ -86,9 +116,17 @@ var CustomerLoginActions = {
 	},
 	
 	customerLogout() {
-		AppDispatcher.handleServerAction({
-			actionType: appConstants.CUSTOMER_LOGOUT
-		});
+		TsvService.emptyCart(null, () => {});
+		axios.get('/api/reset-current-customer')
+		.then(response => {
+			AppDispatcher.handleServerAction({
+				actionType: appConstants.CUSTOMER_LOGOUT
+			});
+		})
+		.catch(error => {
+			console.error('[CustomerLoginActions] failed to logout customer???');
+			console.log(error);
+		})
 	}
 
 

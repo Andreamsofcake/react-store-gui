@@ -747,6 +747,10 @@
 
 	var _ComEmulator2 = _interopRequireDefault(_ComEmulator);
 
+	var _CustomerStatusDisplay = __webpack_require__(386);
+
+	var _CustomerStatusDisplay2 = _interopRequireDefault(_CustomerStatusDisplay);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -858,25 +862,30 @@
 			value: function render() {
 
 				return _react2.default.createElement(
-					_E.Row,
-					{ gutter: -20 },
+					'div',
+					null,
+					_react2.default.createElement(_CustomerStatusDisplay2.default, null),
+					_react2.default.createElement(_ComEmulator2.default, null),
 					_react2.default.createElement(
-						_E.Col,
-						{ className: 'route-content' },
-						_react2.default.createElement(_ComEmulator2.default, null),
-						this.props.children || _react2.default.createElement(
-							'div',
-							null,
-							_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/View2' },
-									'View 2'
-								) }),
-							_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/Category_Search' },
-									'Cat Search'
-								) })
+						_E.Row,
+						{ gutter: -20 },
+						_react2.default.createElement(
+							_E.Col,
+							{ className: 'route-content' },
+							this.props.children || _react2.default.createElement(
+								'div',
+								null,
+								_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
+										_reactRouter.Link,
+										{ to: '/View2' },
+										'View 2'
+									) }),
+								_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
+										_reactRouter.Link,
+										{ to: '/Category_Search' },
+										'Cat Search'
+									) })
+							)
 						)
 					)
 				);
@@ -2608,10 +2617,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TsvService = __webpack_require__(53);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
 	var _Translate = __webpack_require__(54);
 
 	var Translate = _interopRequireWildcard(_Translate);
@@ -2665,6 +2670,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+
 
 	var Customer_Login = function (_Component) {
 	  _inherits(Customer_Login, _Component);
@@ -2762,7 +2769,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      console.error("\n\n\n ------------- render CustomerLogin");
 	      return _react2.default.createElement(
 	        'div',
 	        null,
@@ -3019,6 +3025,11 @@
 	        if (err) throw err;
 	        _RootscopeActions2.default.setConfig('categories', data);
 	      });
+
+	      _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setCache('shoppingCart', data);
+	      });
 	    }
 
 	    // Remove change listers from stores
@@ -3089,7 +3100,7 @@
 	            _E.Row,
 	            null,
 	            _react2.default.createElement(
-	              'p',
+	              _E.Col,
 	              null,
 	              'Categories:',
 	              ' ',
@@ -3098,15 +3109,23 @@
 	                { type: allType, onClick: this.categoryClick.bind(this, null) },
 	                'All'
 	              ),
-	              ' ',
-	              this.state.categories ? this.state.categories.map(function (category, $index) {
-	                var type = _this2.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary" : "hollow-primary";
-	                return _react2.default.createElement(
-	                  _E.Button,
-	                  { key: $index, type: type, onClick: _this2.categoryClick.bind(_this2, category.categoryID) },
-	                  category.categoryName
-	                );
-	              }) : null
+	              _react2.default.createElement(
+	                'span',
+	                { style: { width: '1em', display: 'inline-block' } },
+	                ' '
+	              ),
+	              _react2.default.createElement(
+	                _E.ButtonGroup,
+	                null,
+	                this.state.categories ? this.state.categories.map(function (category, $index) {
+	                  var type = _this2.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary" : "hollow-primary";
+	                  return _react2.default.createElement(
+	                    _E.Button,
+	                    { key: $index, type: type, onClick: _this2.categoryClick.bind(_this2, category.categoryID) },
+	                    category.categoryName
+	                  );
+	                }) : null
+	              )
 	            )
 	          ),
 	          this.renderProducts()
@@ -4354,15 +4373,7 @@
 	              Translate.translate('Shopping_Cart', 'Shop More')
 	            )
 	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { basis: '25%' },
-	            _react2.default.createElement(
-	              _E.Button,
-	              { type: 'success', onClick: this.checkout.bind(this) },
-	              Translate.translate('Shopping_Cart', 'Checkout')
-	            )
-	          ),
+	          this.renderCheckoutButton(),
 	          _react2.default.createElement(
 	            _E.Col,
 	            { basis: '25%' },
@@ -4371,24 +4382,6 @@
 	              { type: 'warning', onClick: this.cancel.bind(this) },
 	              Translate.translate('Shopping_Cart', 'Cancel')
 	            )
-	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { basis: '25%' },
-	            _react2.default.createElement(_E.Button, { type: 'danger', component: _react2.default.createElement(
-	                _reactRouter.Link,
-	                { to: '/Product_Search' },
-	                'TEST: go to product search page'
-	              ) })
-	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { basis: '25%' },
-	            _react2.default.createElement(_E.Button, { type: 'danger', component: _react2.default.createElement(
-	                _reactRouter.Link,
-	                { to: '/Category_Search' },
-	                'TEST: go to category search page'
-	              ) })
 	          ),
 	          this.state.bShowCouponBtn ? this.renderCouponButton() : null
 	        )
@@ -4453,6 +4446,22 @@
 	          removeAllQty: _this5.removeAllQty.bind(_this5)
 	        });
 	      });
+	    }
+	  }, {
+	    key: 'renderCheckoutButton',
+	    value: function renderCheckoutButton() {
+	      if (this.state.cart && this.state.cart.length) {
+	        return _react2.default.createElement(
+	          _E.Col,
+	          { basis: '25%' },
+	          _react2.default.createElement(
+	            _E.Button,
+	            { type: 'success', onClick: this.checkout.bind(this) },
+	            Translate.translate('Shopping_Cart', 'Checkout')
+	          )
+	        );
+	      }
+	      return null;
 	    }
 	  }, {
 	    key: 'renderCouponButton',
@@ -7795,6 +7804,9 @@
 					console.error('ha HA (pushing to View1)');
 					_reactRouter.browserHistory.push("/View1");
 					return;
+				} else if (TsvService.customSetting('txtSearchScene', 'coil_keypad').toLowerCase() === "storefront") {
+
+					_reactRouter.browserHistory.push("/Storefront");
 				} else if (TsvService.customSetting('txtSearchScene', 'coil_keypad').toLowerCase() === "category_search") {
 
 					if (_RootscopeStore2.default.getCache('custommachinesettings.bCategoryView', false)) {
@@ -9003,6 +9015,10 @@
 
 	var _appConstants2 = _interopRequireDefault(_appConstants);
 
+	var _TsvService = __webpack_require__(53);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
 	var _SocketAPI = __webpack_require__(95);
 
 	var _SocketAPI2 = _interopRequireDefault(_SocketAPI);
@@ -9016,6 +9032,19 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var CustomerLoginActions = {
+		refreshCustomer: function refreshCustomer() {
+			_axios2.default.get('/api/customer-refresh').then(function (response) {
+				if (response.data && response.data.customer) {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.CUSTOMER_REFRESH,
+						data: response.data
+					});
+				}
+			}).catch(function (error) {
+				console.error('[CustomerLoginActions] failed to refresh customer???');
+				console.log(error);
+			});
+		},
 		scanPrint: function scanPrint(loginToken, simulatorPrintCustomer) {
 			_SocketAPI2.default.send('activate-module', { action: 'scan-print', module: 'print-scanner', gui: 'login', loginToken: loginToken, simulatorPrintCustomer: simulatorPrintCustomer }, function (data) {
 				// we're not validating here, either the scan completed or failed... pass it through.
@@ -9058,6 +9087,18 @@
 		},
 		startMatching: function startMatching(loginToken) {
 			_SocketAPI2.default.send('customer-match-login', { loginToken: loginToken }, function (data) {
+
+				/**** temporary call, due to session probs with IO ****/
+				if (data && data.customer) {
+					_axios2.default.post('/api/set-loggedin-customer', { customer: data.customer }).then(function (response) {
+						console.log('temp action: updated the current customer after login');
+					}).catch(function (error) {
+						console.error('[CustomerLoginActions] failed to set current customer???');
+						console.log(error);
+					});
+				}
+				/**** END temporary call ****/
+
 				// we're not validating here, either the scan completed or failed... pass it through.
 				// CustomerStore will decide if the event is ok or err
 				_AppDispatcher2.default.handleServerAction({
@@ -9072,12 +9113,17 @@
 			});
 		},
 		customerLogout: function customerLogout() {
-			_AppDispatcher2.default.handleServerAction({
-				actionType: _appConstants2.default.CUSTOMER_LOGOUT
+			_TsvService2.default.emptyCart(null, function () {});
+			_axios2.default.get('/api/reset-current-customer').then(function (response) {
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.CUSTOMER_LOGOUT
+				});
+			}).catch(function (error) {
+				console.error('[CustomerLoginActions] failed to logout customer???');
+				console.log(error);
 			});
 		}
 	};
-	//import TsvService from '../../lib/TsvService'
 	//import RootscopeActions from '../actions/RootscopeActions'
 
 	module.exports = CustomerLoginActions;
@@ -9193,6 +9239,12 @@
 					clearCustomer();
 				}
 				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
+				break;
+
+			case _appConstants2.default.CUSTOMER_REFRESH:
+				clearSteps('login');
+				setCustomer(action.data.customer);
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_REFRESH, status: action.data.status });
 				break;
 
 			case _appConstants2.default.CUSTOMER_RESET_LOGIN:
@@ -52018,6 +52070,158 @@
 	yeast.decode = decode;
 	module.exports = yeast;
 
+
+/***/ },
+/* 386 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(92);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _reactRouter = __webpack_require__(8);
+
+	var _CustomerLoginActions = __webpack_require__(58);
+
+	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
+
+	var _CustomerStore = __webpack_require__(59);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	//import CL_Store from '../stores/CL_Store'
+
+	var CustomerStatusDisplay = function (_Component) {
+		_inherits(CustomerStatusDisplay, _Component);
+
+		function CustomerStatusDisplay(props, context) {
+			_classCallCheck(this, CustomerStatusDisplay);
+
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CustomerStatusDisplay).call(this, props, context));
+
+			_this.state = {
+				customer: _CustomerStore2.default.getCustomer()
+			};
+
+			_this._onCLStoreChange = _this._onCLStoreChange.bind(_this);
+			return _this;
+		}
+
+		// Add change listeners to stores
+
+
+		_createClass(CustomerStatusDisplay, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				_CustomerStore2.default.addChangeListener(this._onCLStoreChange);
+				_CustomerLoginActions2.default.refreshCustomer();
+				// tickle just in case:
+				//this._onCLStoreChange();
+			}
+
+			// Remove change listers from stores
+
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				_CustomerStore2.default.removeChangeListener(this._onCLStoreChange);
+			}
+		}, {
+			key: '_onCLStoreChange',
+			value: function _onCLStoreChange(event) {
+				this.setState({
+					customer: _CustomerStore2.default.getCustomer()
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					_E.Row,
+					null,
+					_react2.default.createElement(
+						_E.Col,
+						null,
+						_react2.default.createElement(
+							'div',
+							{ style: { backgroundColor: '#000', padding: '0.5em', fontSize: '0.85em', color: '#fff', textTransform: 'uppercase', textAlign: 'right', marginBottom: 0 } },
+							this.state.customer ? this.renderLoggedIn() : this.renderLoggedOut()
+						)
+					)
+				);
+			}
+		}, {
+			key: 'renderLoggedIn',
+			value: function renderLoggedIn() {
+				return _react2.default.createElement(
+					'p',
+					{ style: { marginBottom: 0 } },
+					'Welcome Back, ',
+					this.state.customer.firstname,
+					'! ... Credit Balance: $0.00',
+					' ',
+					_react2.default.createElement(
+						_E.Button,
+						{ size: 'xs', type: 'success', onClick: function onClick() {
+								_CustomerLoginActions2.default.customerLogout();
+							} },
+						'Logout'
+					)
+				);
+			}
+		}, {
+			key: 'renderLoggedOut',
+			value: function renderLoggedOut() {
+				return _react2.default.createElement(
+					'p',
+					{ style: { marginBottom: 0 } },
+					'Logged Out',
+					' ',
+					_react2.default.createElement(
+						_E.Button,
+						{ size: 'xs', type: 'success', onClick: function onClick() {
+								_reactRouter.browserHistory.push('/Customer_Login');
+							} },
+						'Login'
+					),
+					' ',
+					_react2.default.createElement(
+						_E.Button,
+						{ size: 'xs', type: 'success', onClick: function onClick() {
+								_reactRouter.browserHistory.push('/Customer_Signup');
+							} },
+						'Register'
+					)
+				);
+			}
+		}]);
+
+		return CustomerStatusDisplay;
+	}(_react.Component);
+
+	exports.default = CustomerStatusDisplay;
 
 /***/ }
 /******/ ]);
