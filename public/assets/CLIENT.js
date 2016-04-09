@@ -9937,6 +9937,10 @@
 
 	var _muDB2 = _interopRequireDefault(_muDB);
 
+	var _RootscopeStore = __webpack_require__(56);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
 	var _utils = __webpack_require__(4);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -9945,63 +9949,82 @@
 
 	var CHANGE_EVENT = 'change',
 	    _store = {
-			categoryIdFilter: []
+		categoryIdFilter: []
 	}
 
 	// , _storeDB = new muDB()
 	;
 
 	function toggleIDtoCategoryFilter(ID) {
-			if (_store.categoryIdFilter.indexOf(ID) == -1) {
-					_store.categoryIdFilter.push(ID);
-			} else {
-					_store.categoryIdFilter.splice(_store.categoryIdFilter.indexOf(ID), 1);
-			}
+		if (_store.categoryIdFilter.indexOf(ID) == -1) {
+			_store.categoryIdFilter.push(ID);
+		} else {
+			_store.categoryIdFilter.splice(_store.categoryIdFilter.indexOf(ID), 1);
+		}
 	}
 
 	function clearFilter() {
-			_store.categoryIdFilter = [];
+		_store.categoryIdFilter = [];
 	}
 	// _storeDB.setDB(_store);
 
 	var StorefrontStore = (0, _Object2.default)({}, _events.EventEmitter.prototype, {
-			addChangeListener: function addChangeListener(cb) {
-					this.on(CHANGE_EVENT, cb);
-			},
+		addChangeListener: function addChangeListener(cb) {
+			this.on(CHANGE_EVENT, cb);
+		},
 
-			removeChangeListener: function removeChangeListener(cb) {
-					this.removeListener(CHANGE_EVENT, cb);
-			},
+		removeChangeListener: function removeChangeListener(cb) {
+			this.removeListener(CHANGE_EVENT, cb);
+		},
 
-			emitChange: function emitChange() {
-					var args = Array.prototype.slice.call(arguments);
-					args.unshift(CHANGE_EVENT);
-					this.emit.apply(this, args);
-			},
+		emitChange: function emitChange() {
+			var args = Array.prototype.slice.call(arguments);
+			args.unshift(CHANGE_EVENT);
+			this.emit.apply(this, args);
+		},
 
-			getCategoryFilter: function getCategoryFilter() {
-					return _store.categoryIdFilter;
+		getCategoryFilter: function getCategoryFilter() {
+			return _store.categoryIdFilter;
+		},
+
+		getProductById: function getProductById(productID) {
+			/*
+	  	FIXME: KLOOOODGE ALERT:
+	  	we are still straddling old and new code,
+	  	currently all products are kept in the RootscopeStore,
+	  	eventually they will be here.
+	  */
+			var products = _RootscopeStore2.default.getSession('products');
+			if (products) {
+				var found = products.filter(function (P) {
+					P.productID === productID;
+				});
+				if (found && found.length) {
+					return found.pop();
+				}
 			}
+			return null;
+		}
 	});
 
 	StorefrontStore.dispatch = _AppDispatcher2.default.register(function (payload) {
-			var action = payload.action;
-			switch (action.actionType) {
+		var action = payload.action;
+		switch (action.actionType) {
 
-					case _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER:
-							toggleIDtoCategoryFilter(action.data);
-							StorefrontStore.emitChange();
-							break;
+			case _appConstants2.default.TOGGLE_CATEGORY_ID_TO_FILTER:
+				toggleIDtoCategoryFilter(action.data);
+				StorefrontStore.emitChange();
+				break;
 
-					case _appConstants2.default.CLEAR_CATEGORY_FILTER:
-							clearFilter();
-							StorefrontStore.emitChange();
-							break;
+			case _appConstants2.default.CLEAR_CATEGORY_FILTER:
+				clearFilter();
+				StorefrontStore.emitChange();
+				break;
 
-					default:
-							return true;
-							break;
-			}
+			default:
+				return true;
+				break;
+		}
 	});
 
 	module.exports = StorefrontStore;
