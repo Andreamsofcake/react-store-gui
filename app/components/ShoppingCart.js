@@ -18,14 +18,8 @@ class Shopping_Cart extends Component {
     //RootscopeActions.setSession('currentView', 'Shopping_Cart');
     //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
 
-    var prc = 0;
-    for (let value of RootscopeStore.getCache('shoppingCart.detail')) {
-        console.log('price')
-        prc += value.price * value.qtyInCart;
-        console.log(prc)
-      }
     this.state = {
-      totalPrice: prc,
+      totalPrice: RootscopeStore.getCache('shoppingCart.summary.totalPrice'),
       cart: RootscopeStore.getCache('shoppingCart.detail'),
       salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
       emptyCart: false,
@@ -44,7 +38,7 @@ class Shopping_Cart extends Component {
     if (RootscopeStore.getCache('custommachinesettings.bHasCouponCodes')) {
         this.state.bShowCouponBtn = true;
     }
-
+    this._onRootstoreChange = this._onRootstoreChange.bind(this);
   }
 
   back() {
@@ -68,41 +62,6 @@ class Shopping_Cart extends Component {
     browserHistory.push("/Cash_Card");
   }
 
-  minusQty(coil) {
-	TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
-		if (err) throw err;
-		TsvService.fetchShoppingCart2(null, (err, data) => {
-
-			if (err) throw err;
-			RootscopeActions.setCache('shoppingCart', data);
-
-			if (!data.detail || !data.detail.length) {
-				TsvService.gotoDefaultIdlePage();
-			} else {
-				this.setState({
-					cart: data.detail,
-					emptyCart: data.detail.length <= 0
-				});
-			}
-
-		});
-	});
-  }
-
-  addQty(coil) {
-	TsvService.addToCartByCoil(coil, (err, ok) => {
-		if (err) throw err;
-		TsvService.fetchShoppingCart2(null, (err, data) => {
-
-			if (err) throw err;
-			RootscopeActions.setCache('shoppingCart', data);
-
-			this.setState({
-				cart: data.detail,
-			});
-
-		});
-	});
 	/*
 	TsvService.addToCartByCoilAsync(coil)
 	.then( ok => {
@@ -119,58 +78,12 @@ class Shopping_Cart extends Component {
 		throw e
 	})
 	*/
-  }
 
-  removeAllQty(coil, qty) {
 
-	  //console.warn("\n\nremoveAllQty()\n\n");
-	  //console.log(coil, qty);
-
-	TsvService.fetchShoppingCart2(null, (err, data) => {
-
-		if (err) throw err;
-		RootscopeActions.setCache('shoppingCart', data);
-
-		let removeQty = (qty) => {
-			if (qty > 0) {
-				qty -= 1;
-				TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
-					if (err) throw err;
-					TsvService.fetchShoppingCart2(null, (err, data) => {
-						if (err) throw err;
-						RootscopeActions.setCache('shoppingCart', data);
-						removeQty(qty);
-					});
-				});
-			} else {
-				TsvService.fetchShoppingCart2(null, (err, data) => {
-					if (err) throw err;
-					RootscopeActions.setCache('shoppingCart', data);
-
-					if (!data.detail || !data.detail.length) {
-						TsvService.gotoDefaultIdlePage();
-					} else {
-						this.setState({
-							cart: data.detail,
-							totalPrice: prc,
-							emptyCart: data.detail.length <= 0
-						});
-					}
-
-				});
-			}
-		}
-
-		removeQty(qty);
-	});
-  }
 
   // Add change listeners to stores
   componentDidMount() {
-
-    //RootscopeActions.setSession('currentView', 'Shopping_Cart');
-    //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
-
+    RootscopeStore.addChangeListener(this._onRootstoreChange);
     TsvService.subscribe("cardTransactionResponse", (level) => {
       if(!RootscopeStore.getSession('bVendingInProcess')){
         if(RootscopeStore.getCache('currentLocation') != "/Card_Vending") {
@@ -184,6 +97,19 @@ class Shopping_Cart extends Component {
   // Remove change listers from stores
   componentWillUnmount() {
     TsvService.unsubscribe("cardTransactionResponse", "app.shoppingCart");
+    RootscopeStore.removeChangeListener(this._onRootstoreChange);
+  }
+
+  _onRootstoreChange() {
+    var data = RootscopeStore.getCache('shoppingCart');
+    if (!data.detail || !data.detail.length) {
+      TsvService.gotoDefaultIdlePage();
+    } else {
+      this.setState({
+        cart: data.detail,
+        summary: data.summary
+      })
+    }
   }
 
   render() {
@@ -213,7 +139,7 @@ class Shopping_Cart extends Component {
 
                 { this.state.bShowTax ? this.renderShowTax() : null }
 
-                <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { TsvService.currencyFilter(this.state.totalPrice) }</p>
+                <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { this.state.totalPrice ? TsvService.currencyFilter(this.state.totalPrice) : 0.00 }</p>
 
             </_E.Row>
 {/*
@@ -314,16 +240,12 @@ class Shopping_Cart extends Component {
 
 	return this.state.cart.map((prd, $index) => {
 		return (
-		  <ShoppingCartItem
-			 key={$index}
-			 data={prd}
-			 addQty={this.addQty.bind(this)}
-			 minusQty={this.minusQty.bind(this)}
-			 removeAllQty={this.removeAllQty.bind(this)}
-		  />
+  		  <ShoppingCartItem
+  			 key={$index}
+  			 data={prd}
+  		  />
   		);
-  	  }
-  	)
+  	  })
   }
   
   renderCheckoutButton() {

@@ -12,7 +12,6 @@ class Admin_Component_Control extends Component {
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'Admin_Component_Control');
     this.state = {
       versionInfos: TsvService.enumerateComponents()
     }
