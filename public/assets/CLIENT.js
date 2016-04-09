@@ -62,11 +62,11 @@
 
 	var _Routes2 = _interopRequireDefault(_Routes);
 
-	var _AppLayout = __webpack_require__(386);
+	var _AppLayout = __webpack_require__(387);
 
 	var _AppLayout2 = _interopRequireDefault(_AppLayout);
 
-	var _NoMatch = __webpack_require__(385);
+	var _NoMatch = __webpack_require__(386);
 
 	var _NoMatch2 = _interopRequireDefault(_NoMatch);
 
@@ -24863,83 +24863,83 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _Activate = __webpack_require__(355);
+	var _Activate = __webpack_require__(358);
 
 	var _Activate2 = _interopRequireDefault(_Activate);
 
-	var _View = __webpack_require__(356);
+	var _View = __webpack_require__(359);
 
 	var _View2 = _interopRequireDefault(_View);
 
-	var _View3 = __webpack_require__(357);
+	var _View3 = __webpack_require__(360);
 
 	var _View4 = _interopRequireDefault(_View3);
 
-	var _PageIdle = __webpack_require__(358);
+	var _PageIdle = __webpack_require__(361);
 
 	var _PageIdle2 = _interopRequireDefault(_PageIdle);
 
-	var _AdminLogin = __webpack_require__(359);
+	var _AdminLogin = __webpack_require__(362);
 
 	var _AdminLogin2 = _interopRequireDefault(_AdminLogin);
 
-	var _AdminHome = __webpack_require__(360);
+	var _AdminHome = __webpack_require__(363);
 
 	var _AdminHome2 = _interopRequireDefault(_AdminHome);
 
-	var _AdminSettings = __webpack_require__(361);
+	var _AdminSettings = __webpack_require__(364);
 
 	var _AdminSettings2 = _interopRequireDefault(_AdminSettings);
 
-	var _CustomerSignup = __webpack_require__(362);
+	var _CustomerSignup = __webpack_require__(365);
 
 	var _CustomerSignup2 = _interopRequireDefault(_CustomerSignup);
 
-	var _CustomerLogin = __webpack_require__(363);
+	var _CustomerLogin = __webpack_require__(366);
 
 	var _CustomerLogin2 = _interopRequireDefault(_CustomerLogin);
 
-	var _Storefront = __webpack_require__(369);
+	var _Storefront = __webpack_require__(370);
 
 	var _Storefront2 = _interopRequireDefault(_Storefront);
 
-	var _TransactionRefund = __webpack_require__(374);
+	var _TransactionRefund = __webpack_require__(375);
 
 	var _TransactionRefund2 = _interopRequireDefault(_TransactionRefund);
 
-	var _CardVending = __webpack_require__(375);
+	var _CardVending = __webpack_require__(376);
 
 	var _CardVending2 = _interopRequireDefault(_CardVending);
 
-	var _CashVending = __webpack_require__(376);
+	var _CashVending = __webpack_require__(377);
 
 	var _CashVending2 = _interopRequireDefault(_CashVending);
 
-	var _CashCard = __webpack_require__(377);
+	var _CashCard = __webpack_require__(378);
 
 	var _CashCard2 = _interopRequireDefault(_CashCard);
 
-	var _ShoppingCart = __webpack_require__(378);
+	var _ShoppingCart = __webpack_require__(379);
 
 	var _ShoppingCart2 = _interopRequireDefault(_ShoppingCart);
 
-	var _ThankYouMsg = __webpack_require__(380);
+	var _ThankYouMsg = __webpack_require__(381);
 
 	var _ThankYouMsg2 = _interopRequireDefault(_ThankYouMsg);
 
-	var _VendError = __webpack_require__(381);
+	var _VendError = __webpack_require__(382);
 
 	var _VendError2 = _interopRequireDefault(_VendError);
 
-	var _CategorySearch = __webpack_require__(382);
+	var _CategorySearch = __webpack_require__(383);
 
 	var _CategorySearch2 = _interopRequireDefault(_CategorySearch);
 
-	var _ProductSearch = __webpack_require__(384);
+	var _ProductSearch = __webpack_require__(385);
 
 	var _ProductSearch2 = _interopRequireDefault(_ProductSearch);
 
-	var _NoMatch = __webpack_require__(385);
+	var _NoMatch = __webpack_require__(386);
 
 	var _NoMatch2 = _interopRequireDefault(_NoMatch);
 
@@ -25016,7 +25016,7 @@
 
 	var _ComEmulator2 = _interopRequireDefault(_ComEmulator);
 
-	var _CustomerStatusDisplay = __webpack_require__(388);
+	var _CustomerStatusDisplay = __webpack_require__(355);
 
 	var _CustomerStatusDisplay2 = _interopRequireDefault(_CustomerStatusDisplay);
 
@@ -25132,7 +25132,7 @@
 
 				return _react2.default.createElement(
 					'div',
-					{ style: { maxWidth: '48em', margin: '0 auto' } },
+					null,
 					_react2.default.createElement(_CustomerStatusDisplay2.default, null),
 					_react2.default.createElement(_ComEmulator2.default, null),
 					_react2.default.createElement(
@@ -46372,6 +46372,423 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _CustomerLoginActions = __webpack_require__(356);
+
+	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
+
+	var _CustomerStore = __webpack_require__(357);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	//import CL_Store from '../stores/CL_Store'
+
+	var CustomerStatusDisplay = function (_Component) {
+		_inherits(CustomerStatusDisplay, _Component);
+
+		function CustomerStatusDisplay(props, context) {
+			_classCallCheck(this, CustomerStatusDisplay);
+
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CustomerStatusDisplay).call(this, props, context));
+
+			_this.state = {
+				customer: _CustomerStore2.default.getCustomer()
+			};
+
+			_this._onCLStoreChange = _this._onCLStoreChange.bind(_this);
+			return _this;
+		}
+
+		// Add change listeners to stores
+
+
+		_createClass(CustomerStatusDisplay, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				_CustomerStore2.default.addChangeListener(this._onCLStoreChange);
+				_CustomerLoginActions2.default.refreshCustomer();
+				// tickle just in case:
+				//this._onCLStoreChange();
+			}
+
+			// Remove change listers from stores
+
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				_CustomerStore2.default.removeChangeListener(this._onCLStoreChange);
+			}
+		}, {
+			key: '_onCLStoreChange',
+			value: function _onCLStoreChange(event) {
+				this.setState({
+					customer: _CustomerStore2.default.getCustomer()
+				});
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(
+					_E.Row,
+					null,
+					_react2.default.createElement(
+						_E.Col,
+						null,
+						_react2.default.createElement(
+							'div',
+							{ style: { backgroundColor: '#000', padding: '0.5em', fontSize: '0.85em', color: '#fff', textTransform: 'uppercase', textAlign: 'right', marginBottom: 0 } },
+							this.state.customer ? this.renderLoggedIn() : this.renderLoggedOut()
+						)
+					)
+				);
+			}
+		}, {
+			key: 'renderLoggedIn',
+			value: function renderLoggedIn() {
+				return _react2.default.createElement(
+					'p',
+					{ style: { marginBottom: 0 } },
+					'Welcome Back, ',
+					this.state.customer.firstname,
+					'! ... Credit Balance: $0.00',
+					' ',
+					_react2.default.createElement(
+						_E.Button,
+						{ size: 'xs', type: 'success', onClick: function onClick() {
+								_CustomerLoginActions2.default.customerLogout();
+							} },
+						'Logout'
+					)
+				);
+			}
+		}, {
+			key: 'renderLoggedOut',
+			value: function renderLoggedOut() {
+				return _react2.default.createElement(
+					'p',
+					{ style: { marginBottom: 0 } },
+					'Logged Out',
+					' ',
+					_react2.default.createElement(
+						_E.Button,
+						{ size: 'xs', type: 'success', onClick: function onClick() {
+								_reactRouter.browserHistory.push('/Customer_Login');
+							} },
+						'Login'
+					),
+					' ',
+					_react2.default.createElement(
+						_E.Button,
+						{ size: 'xs', type: 'success', onClick: function onClick() {
+								_reactRouter.browserHistory.push('/Customer_Signup');
+							} },
+						'Register'
+					)
+				);
+			}
+		}]);
+
+		return CustomerStatusDisplay;
+	}(_react.Component);
+
+	exports.default = CustomerStatusDisplay;
+
+/***/ },
+/* 356 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(243);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _SocketAPI = __webpack_require__(248);
+
+	var _SocketAPI2 = _interopRequireDefault(_SocketAPI);
+
+	var _axios = __webpack_require__(221);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _reactRouter = __webpack_require__(160);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CustomerLoginActions = {
+		refreshCustomer: function refreshCustomer() {
+			_axios2.default.get('/api/customer-refresh').then(function (response) {
+				if (response.data && response.data.customer) {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.CUSTOMER_REFRESH,
+						data: response.data
+					});
+				}
+			}).catch(function (error) {
+				console.error('[CustomerLoginActions] failed to refresh customer???');
+				console.log(error);
+			});
+		},
+		scanPrint: function scanPrint(loginToken, simulatorPrintCustomer) {
+			_SocketAPI2.default.send('activate-module', { action: 'scan-print', module: 'print-scanner', gui: 'login', loginToken: loginToken, simulatorPrintCustomer: simulatorPrintCustomer }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.PRINT_SCANNED_LOGIN,
+					data: data
+				});
+			});
+		},
+		scanLicense: function scanLicense(loginToken, simulatorLicenseName) {
+			_SocketAPI2.default.send('activate-module', { action: 'scan-license', module: 'license-scanner', gui: 'login', loginToken: loginToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.LICENSE_SCANNED_LOGIN,
+					data: data
+				});
+			});
+		},
+		swipeLicense: function swipeLicense(loginToken, simulatorLicenseName) {
+			_SocketAPI2.default.send('activate-module', { action: 'swipe-license', module: 'license-scanner', gui: 'login', loginToken: loginToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.LICENSE_SWIPED_LOGIN,
+					data: data
+				});
+			});
+		},
+		dipLicense: function dipLicense(loginToken, simulatorLicenseName) {
+			_SocketAPI2.default.send('activate-module', { action: 'dip-license', module: 'license-scanner', gui: 'login', loginToken: loginToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.LICENSE_DIPPED_LOGIN,
+					data: data
+				});
+			});
+		},
+		startMatching: function startMatching(loginToken) {
+			_SocketAPI2.default.send('customer-match-login', { loginToken: loginToken }, function (data) {
+
+				/**** temporary call, due to session probs with IO ****/
+				if (data && data.customer) {
+					_axios2.default.post('/api/set-loggedin-customer', { customer: data.customer }).then(function (response) {
+						console.log('temp action: updated the current customer after login');
+					}).catch(function (error) {
+						console.error('[CustomerLoginActions] failed to set current customer???');
+						console.log(error);
+					});
+				}
+				/**** END temporary call ****/
+
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.CUSTOMER_MATCHED_LOGIN,
+					data: data
+				});
+			});
+		},
+		clearSteps: function clearSteps() {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.CUSTOMER_RESET_LOGIN
+			});
+		},
+		customerLogout: function customerLogout() {
+			_TsvService2.default.emptyCart(null, function () {});
+			_axios2.default.get('/api/reset-current-customer').then(function (response) {
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.CUSTOMER_LOGOUT
+				});
+			}).catch(function (error) {
+				console.error('[CustomerLoginActions] failed to logout customer???');
+				console.log(error);
+			});
+		}
+	};
+	//import RootscopeActions from '../actions/RootscopeActions'
+
+	module.exports = CustomerLoginActions;
+
+/***/ },
+/* 357 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(243);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _Object = __webpack_require__(39);
+
+	var _Object2 = _interopRequireDefault(_Object);
+
+	var _events = __webpack_require__(298);
+
+	var _utils = __webpack_require__(219);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CHANGE_EVENT = 'change',
+	    _store = {
+		loginStepsComplete: [],
+		signupStepsComplete: [],
+		customer: null
+	};
+	//import muDB from '../../lib/muDB'
+
+	//import TsvService from '../../lib/TsvService'
+	//import * as Translate from '../../lib/Translate'
+
+	function pushStep(kind, step) {
+		if (_store[kind + 'StepsComplete']) {
+			if (_store[kind + 'StepsComplete'].indexOf(step) === -1) {
+				_store[kind + 'StepsComplete'].push(step);
+			}
+		}
+	}
+
+	function clearSteps(kind) {
+		if (_store[kind + 'StepsComplete']) {
+			_store[kind + 'StepsComplete'] = [];
+		}
+	}
+
+	function setCustomer(obj) {
+		_store.customer = obj;
+	}
+
+	function clearCustomer() {
+		_store.customer = null;
+	}
+
+	var CustomerStore = (0, _Object2.default)({}, _events.EventEmitter.prototype, {
+		addChangeListener: function addChangeListener(cb) {
+			this.on(CHANGE_EVENT, cb);
+		},
+
+		removeChangeListener: function removeChangeListener(cb) {
+			this.removeListener(CHANGE_EVENT, cb);
+		},
+
+		emitChange: function emitChange() {
+			var args = Array.prototype.slice.call(arguments);
+			args.unshift(CHANGE_EVENT);
+			this.emit.apply(this, args);
+		},
+
+		getStepsCompleted: function getStepsCompleted(kind) {
+			if (_store[kind + 'StepsComplete']) {
+				return _store[kind + 'StepsComplete'];
+			}
+			return [];
+		},
+
+		getCustomer: function getCustomer() {
+			return _store.customer;
+		}
+	});
+
+	CustomerStore.dispatch = _AppDispatcher2.default.register(function (payload) {
+		var action = payload.action;
+		switch (action.actionType) {
+
+			case _appConstants2.default.LICENSE_SCANNED_LOGIN:
+				if (action.data.status === 'ok') {
+					pushStep('login', _appConstants2.default.LICENSE_SCANNED_LOGIN);
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.LICENSE_SCANNED_LOGIN, status: action.data.status });
+				break;
+
+			case _appConstants2.default.PRINT_SCANNED_LOGIN:
+				if (action.data.status === 'ok') {
+					pushStep('login', _appConstants2.default.PRINT_SCANNED_LOGIN);
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.PRINT_SCANNED_LOGIN, status: action.data.status });
+				break;
+
+			case _appConstants2.default.CUSTOMER_MATCHED_LOGIN:
+				// CustomerStore will decide if the event is ok or err
+				if (action.data.status === 'ok' && action.data.customer) {
+					clearSteps('login');
+					setCustomer(action.data.customer);
+				} else {
+					clearCustomer();
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
+				break;
+
+			case _appConstants2.default.CUSTOMER_REFRESH:
+				clearSteps('login');
+				setCustomer(action.data.customer);
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_REFRESH, status: action.data.status });
+				break;
+
+			case _appConstants2.default.CUSTOMER_RESET_LOGIN:
+				clearSteps('login');
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_RESET_LOGIN });
+				break;
+
+			case _appConstants2.default.CUSTOMER_LOGOUT:
+				clearSteps('login');
+				clearCustomer();
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_LOGOUT });
+				break;
+
+			default:
+				return true;
+				break;
+		}
+	});
+
+	module.exports = CustomerStore;
+
+/***/ },
+/* 358 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
 
@@ -46510,7 +46927,7 @@
 	exports.default = Activate;
 
 /***/ },
-/* 356 */
+/* 359 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46637,7 +47054,7 @@
 	exports.default = View0;
 
 /***/ },
-/* 357 */
+/* 360 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -46994,7 +47411,7 @@
 	exports.default = View2;
 
 /***/ },
-/* 358 */
+/* 361 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47108,7 +47525,7 @@
 	exports.default = Page_Idle;
 
 /***/ },
-/* 359 */
+/* 362 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47406,7 +47823,7 @@
 	exports.default = Admin_Login;
 
 /***/ },
-/* 360 */
+/* 363 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47600,7 +48017,7 @@
 	exports.default = Admin_Home;
 
 /***/ },
-/* 361 */
+/* 364 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -47974,7 +48391,7 @@
 	exports.default = Admin_Settings;
 
 /***/ },
-/* 362 */
+/* 365 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48070,7 +48487,7 @@
 	exports.default = Customer_Signup;
 
 /***/ },
-/* 363 */
+/* 366 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48097,23 +48514,23 @@
 
 	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
 
-	var _CustomerLoginActions = __webpack_require__(364);
+	var _CustomerLoginActions = __webpack_require__(356);
 
 	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
 
-	var _CustomerStore = __webpack_require__(365);
+	var _CustomerStore = __webpack_require__(357);
 
 	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
 
-	var _Step = __webpack_require__(366);
+	var _Step = __webpack_require__(367);
 
 	var _Step2 = _interopRequireDefault(_Step);
 
-	var _Step3 = __webpack_require__(367);
+	var _Step3 = __webpack_require__(368);
 
 	var _Step4 = _interopRequireDefault(_Step3);
 
-	var _Matching = __webpack_require__(368);
+	var _Matching = __webpack_require__(369);
 
 	var _Matching2 = _interopRequireDefault(_Matching);
 
@@ -48388,272 +48805,7 @@
 	exports.default = Customer_Login;
 
 /***/ },
-/* 364 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _AppDispatcher = __webpack_require__(243);
-
-	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
-
-	var _appConstants = __webpack_require__(247);
-
-	var _appConstants2 = _interopRequireDefault(_appConstants);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _SocketAPI = __webpack_require__(248);
-
-	var _SocketAPI2 = _interopRequireDefault(_SocketAPI);
-
-	var _axios = __webpack_require__(221);
-
-	var _axios2 = _interopRequireDefault(_axios);
-
-	var _reactRouter = __webpack_require__(160);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var CustomerLoginActions = {
-		refreshCustomer: function refreshCustomer() {
-			_axios2.default.get('/api/customer-refresh').then(function (response) {
-				if (response.data && response.data.customer) {
-					_AppDispatcher2.default.handleServerAction({
-						actionType: _appConstants2.default.CUSTOMER_REFRESH,
-						data: response.data
-					});
-				}
-			}).catch(function (error) {
-				console.error('[CustomerLoginActions] failed to refresh customer???');
-				console.log(error);
-			});
-		},
-		scanPrint: function scanPrint(loginToken, simulatorPrintCustomer) {
-			_SocketAPI2.default.send('activate-module', { action: 'scan-print', module: 'print-scanner', gui: 'login', loginToken: loginToken, simulatorPrintCustomer: simulatorPrintCustomer }, function (data) {
-				// we're not validating here, either the scan completed or failed... pass it through.
-				// CustomerStore will decide if the event is ok or err
-				_AppDispatcher2.default.handleServerAction({
-					actionType: _appConstants2.default.PRINT_SCANNED_LOGIN,
-					data: data
-				});
-			});
-		},
-		scanLicense: function scanLicense(loginToken, simulatorLicenseName) {
-			_SocketAPI2.default.send('activate-module', { action: 'scan-license', module: 'license-scanner', gui: 'login', loginToken: loginToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
-				// we're not validating here, either the scan completed or failed... pass it through.
-				// CustomerStore will decide if the event is ok or err
-				_AppDispatcher2.default.handleServerAction({
-					actionType: _appConstants2.default.LICENSE_SCANNED_LOGIN,
-					data: data
-				});
-			});
-		},
-		swipeLicense: function swipeLicense(loginToken, simulatorLicenseName) {
-			_SocketAPI2.default.send('activate-module', { action: 'swipe-license', module: 'license-scanner', gui: 'login', loginToken: loginToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
-				// we're not validating here, either the scan completed or failed... pass it through.
-				// CustomerStore will decide if the event is ok or err
-				_AppDispatcher2.default.handleServerAction({
-					actionType: _appConstants2.default.LICENSE_SWIPED_LOGIN,
-					data: data
-				});
-			});
-		},
-		dipLicense: function dipLicense(loginToken, simulatorLicenseName) {
-			_SocketAPI2.default.send('activate-module', { action: 'dip-license', module: 'license-scanner', gui: 'login', loginToken: loginToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
-				// we're not validating here, either the scan completed or failed... pass it through.
-				// CustomerStore will decide if the event is ok or err
-				_AppDispatcher2.default.handleServerAction({
-					actionType: _appConstants2.default.LICENSE_DIPPED_LOGIN,
-					data: data
-				});
-			});
-		},
-		startMatching: function startMatching(loginToken) {
-			_SocketAPI2.default.send('customer-match-login', { loginToken: loginToken }, function (data) {
-
-				/**** temporary call, due to session probs with IO ****/
-				if (data && data.customer) {
-					_axios2.default.post('/api/set-loggedin-customer', { customer: data.customer }).then(function (response) {
-						console.log('temp action: updated the current customer after login');
-					}).catch(function (error) {
-						console.error('[CustomerLoginActions] failed to set current customer???');
-						console.log(error);
-					});
-				}
-				/**** END temporary call ****/
-
-				// we're not validating here, either the scan completed or failed... pass it through.
-				// CustomerStore will decide if the event is ok or err
-				_AppDispatcher2.default.handleServerAction({
-					actionType: _appConstants2.default.CUSTOMER_MATCHED_LOGIN,
-					data: data
-				});
-			});
-		},
-		clearSteps: function clearSteps() {
-			_AppDispatcher2.default.handleServerAction({
-				actionType: _appConstants2.default.CUSTOMER_RESET_LOGIN
-			});
-		},
-		customerLogout: function customerLogout() {
-			_TsvService2.default.emptyCart(null, function () {});
-			_axios2.default.get('/api/reset-current-customer').then(function (response) {
-				_AppDispatcher2.default.handleServerAction({
-					actionType: _appConstants2.default.CUSTOMER_LOGOUT
-				});
-			}).catch(function (error) {
-				console.error('[CustomerLoginActions] failed to logout customer???');
-				console.log(error);
-			});
-		}
-	};
-	//import RootscopeActions from '../actions/RootscopeActions'
-
-	module.exports = CustomerLoginActions;
-
-/***/ },
-/* 365 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _AppDispatcher = __webpack_require__(243);
-
-	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
-
-	var _appConstants = __webpack_require__(247);
-
-	var _appConstants2 = _interopRequireDefault(_appConstants);
-
-	var _Object = __webpack_require__(39);
-
-	var _Object2 = _interopRequireDefault(_Object);
-
-	var _events = __webpack_require__(298);
-
-	var _utils = __webpack_require__(219);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var CHANGE_EVENT = 'change',
-	    _store = {
-		loginStepsComplete: [],
-		signupStepsComplete: [],
-		customer: null
-	};
-	//import muDB from '../../lib/muDB'
-
-	//import TsvService from '../../lib/TsvService'
-	//import * as Translate from '../../lib/Translate'
-
-	function pushStep(kind, step) {
-		if (_store[kind + 'StepsComplete']) {
-			if (_store[kind + 'StepsComplete'].indexOf(step) === -1) {
-				_store[kind + 'StepsComplete'].push(step);
-			}
-		}
-	}
-
-	function clearSteps(kind) {
-		if (_store[kind + 'StepsComplete']) {
-			_store[kind + 'StepsComplete'] = [];
-		}
-	}
-
-	function setCustomer(obj) {
-		_store.customer = obj;
-	}
-
-	function clearCustomer() {
-		_store.customer = null;
-	}
-
-	var CustomerStore = (0, _Object2.default)({}, _events.EventEmitter.prototype, {
-		addChangeListener: function addChangeListener(cb) {
-			this.on(CHANGE_EVENT, cb);
-		},
-
-		removeChangeListener: function removeChangeListener(cb) {
-			this.removeListener(CHANGE_EVENT, cb);
-		},
-
-		emitChange: function emitChange() {
-			var args = Array.prototype.slice.call(arguments);
-			args.unshift(CHANGE_EVENT);
-			this.emit.apply(this, args);
-		},
-
-		getStepsCompleted: function getStepsCompleted(kind) {
-			if (_store[kind + 'StepsComplete']) {
-				return _store[kind + 'StepsComplete'];
-			}
-			return [];
-		},
-
-		getCustomer: function getCustomer() {
-			return _store.customer;
-		}
-	});
-
-	CustomerStore.dispatch = _AppDispatcher2.default.register(function (payload) {
-		var action = payload.action;
-		switch (action.actionType) {
-
-			case _appConstants2.default.LICENSE_SCANNED_LOGIN:
-				if (action.data.status === 'ok') {
-					pushStep('login', _appConstants2.default.LICENSE_SCANNED_LOGIN);
-				}
-				CustomerStore.emitChange({ type: _appConstants2.default.LICENSE_SCANNED_LOGIN, status: action.data.status });
-				break;
-
-			case _appConstants2.default.PRINT_SCANNED_LOGIN:
-				if (action.data.status === 'ok') {
-					pushStep('login', _appConstants2.default.PRINT_SCANNED_LOGIN);
-				}
-				CustomerStore.emitChange({ type: _appConstants2.default.PRINT_SCANNED_LOGIN, status: action.data.status });
-				break;
-
-			case _appConstants2.default.CUSTOMER_MATCHED_LOGIN:
-				// CustomerStore will decide if the event is ok or err
-				if (action.data.status === 'ok' && action.data.customer) {
-					clearSteps('login');
-					setCustomer(action.data.customer);
-				} else {
-					clearCustomer();
-				}
-				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
-				break;
-
-			case _appConstants2.default.CUSTOMER_REFRESH:
-				clearSteps('login');
-				setCustomer(action.data.customer);
-				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_REFRESH, status: action.data.status });
-				break;
-
-			case _appConstants2.default.CUSTOMER_RESET_LOGIN:
-				clearSteps('login');
-				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_RESET_LOGIN });
-				break;
-
-			case _appConstants2.default.CUSTOMER_LOGOUT:
-				clearSteps('login');
-				clearCustomer();
-				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_LOGOUT });
-				break;
-
-			default:
-				return true;
-				break;
-		}
-	});
-
-	module.exports = CustomerStore;
-
-/***/ },
-/* 366 */
+/* 367 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48668,11 +48820,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _CustomerLoginActions = __webpack_require__(364);
+	var _CustomerLoginActions = __webpack_require__(356);
 
 	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
 
-	var _CustomerStore = __webpack_require__(365);
+	var _CustomerStore = __webpack_require__(357);
 
 	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
 
@@ -48871,7 +49023,7 @@
 	exports.default = Step1;
 
 /***/ },
-/* 367 */
+/* 368 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -48886,11 +49038,11 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _CustomerLoginActions = __webpack_require__(364);
+	var _CustomerLoginActions = __webpack_require__(356);
 
 	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
 
-	var _CustomerStore = __webpack_require__(365);
+	var _CustomerStore = __webpack_require__(357);
 
 	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
 
@@ -49101,7 +49253,7 @@
 	exports.default = Step1;
 
 /***/ },
-/* 368 */
+/* 369 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49116,7 +49268,7 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _CustomerLoginActions = __webpack_require__(364);
+	var _CustomerLoginActions = __webpack_require__(356);
 
 	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
 
@@ -49222,7 +49374,7 @@
 	exports.default = Step1;
 
 /***/ },
-/* 369 */
+/* 370 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49253,11 +49405,11 @@
 
 	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
 
-	var _StorefrontActions = __webpack_require__(370);
+	var _StorefrontActions = __webpack_require__(371);
 
 	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
 
-	var _StorefrontStore = __webpack_require__(371);
+	var _StorefrontStore = __webpack_require__(372);
 
 	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
 
@@ -49267,11 +49419,11 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _ProductListItem = __webpack_require__(372);
+	var _ProductListItem = __webpack_require__(373);
 
 	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
 
-	var _ShoppingCartIcon = __webpack_require__(373);
+	var _ShoppingCartIcon = __webpack_require__(374);
 
 	var _ShoppingCartIcon2 = _interopRequireDefault(_ShoppingCartIcon);
 
@@ -49475,7 +49627,7 @@
 	exports.default = Storefront;
 
 /***/ },
-/* 370 */
+/* 371 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49593,7 +49745,7 @@
 	module.exports = StorefrontActions;
 
 /***/ },
-/* 371 */
+/* 372 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49694,7 +49846,7 @@
 	module.exports = StorefrontStore;
 
 /***/ },
-/* 372 */
+/* 373 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49802,7 +49954,7 @@
 	exports.default = ProductListItem;
 
 /***/ },
-/* 373 */
+/* 374 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -49948,7 +50100,7 @@
 	exports.default = ShoppingCartMini;
 
 /***/ },
-/* 374 */
+/* 375 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50044,7 +50196,7 @@
 	exports.default = Transaction_Refund;
 
 /***/ },
-/* 375 */
+/* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50366,7 +50518,7 @@
 	exports.default = Card_Vending;
 
 /***/ },
-/* 376 */
+/* 377 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50649,7 +50801,7 @@
 	exports.default = Cash_Vending;
 
 /***/ },
-/* 377 */
+/* 378 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50816,7 +50968,7 @@
 	exports.default = Cash_Card;
 
 /***/ },
-/* 378 */
+/* 379 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -50853,7 +51005,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _ShoppingCartItem = __webpack_require__(379);
+	var _ShoppingCartItem = __webpack_require__(380);
 
 	var _ShoppingCartItem2 = _interopRequireDefault(_ShoppingCartItem);
 
@@ -50916,12 +51068,14 @@
 	    value: function cancel() {
 	      _TsvService2.default.emptyCart(null, function () {});
 	      _RootscopeActions2.default.setConfig('itemsInCart', 0);
-	      _TsvService2.default.gotoDefaultIdlePage();
+	      //TsvService.gotoDefaultIdlePage();
+	      _reactRouter.browserHistory.push('/Storefront');
 	    }
 	  }, {
 	    key: 'shopmore',
 	    value: function shopmore() {
-	      _TsvService2.default.gotoDefaultIdlePage();
+	      //TsvService.gotoDefaultIdlePage();
+	      _reactRouter.browserHistory.push('/Storefront');
 	    }
 	  }, {
 	    key: 'checkout',
@@ -50977,7 +51131,8 @@
 	    value: function _onRootstoreChange() {
 	      var data = _RootscopeStore2.default.getCache('shoppingCart');
 	      if (!data.detail || !data.detail.length) {
-	        _TsvService2.default.gotoDefaultIdlePage();
+	        //TsvService.gotoDefaultIdlePage();
+	        _reactRouter.browserHistory.push('/Storefront');
 	      } else {
 	        this.setState({
 	          cart: data.detail,
@@ -51164,7 +51319,7 @@
 	exports.default = Shopping_Cart;
 
 /***/ },
-/* 379 */
+/* 380 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51187,7 +51342,7 @@
 
 	var _TsvService2 = _interopRequireDefault(_TsvService);
 
-	var _StorefrontActions = __webpack_require__(370);
+	var _StorefrontActions = __webpack_require__(371);
 
 	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
 
@@ -51305,7 +51460,7 @@
 	exports.default = ShoppingCartItem;
 
 /***/ },
-/* 380 */
+/* 381 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51406,7 +51561,7 @@
 	exports.default = THANKYOU_MSG;
 
 /***/ },
-/* 381 */
+/* 382 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51528,7 +51683,7 @@
 	exports.default = Vend_Error;
 
 /***/ },
-/* 382 */
+/* 383 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51565,7 +51720,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _CategoryListItem = __webpack_require__(383);
+	var _CategoryListItem = __webpack_require__(384);
 
 	var _CategoryListItem2 = _interopRequireDefault(_CategoryListItem);
 
@@ -51723,7 +51878,7 @@
 	exports.default = Category_Search;
 
 /***/ },
-/* 383 */
+/* 384 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51794,7 +51949,7 @@
 	exports.default = CategoryListItem;
 
 /***/ },
-/* 384 */
+/* 385 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -51825,7 +51980,7 @@
 
 	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
 
-	var _ProductListItem = __webpack_require__(372);
+	var _ProductListItem = __webpack_require__(373);
 
 	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
 
@@ -52114,7 +52269,7 @@
 	exports.default = Product_Search;
 
 /***/ },
-/* 385 */
+/* 386 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -52167,7 +52322,7 @@
 	exports.default = NoMatch;
 
 /***/ },
-/* 386 */
+/* 387 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -52240,159 +52395,6 @@
 	}(_react.Component);
 
 	module.exports = AppLayout;
-
-/***/ },
-/* 387 */,
-/* 388 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _elemental = __webpack_require__(300);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	var _reactRouter = __webpack_require__(160);
-
-	var _CustomerLoginActions = __webpack_require__(364);
-
-	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
-
-	var _CustomerStore = __webpack_require__(365);
-
-	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	//import CL_Store from '../stores/CL_Store'
-
-	var CustomerStatusDisplay = function (_Component) {
-		_inherits(CustomerStatusDisplay, _Component);
-
-		function CustomerStatusDisplay(props, context) {
-			_classCallCheck(this, CustomerStatusDisplay);
-
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CustomerStatusDisplay).call(this, props, context));
-
-			_this.state = {
-				customer: _CustomerStore2.default.getCustomer()
-			};
-
-			_this._onCLStoreChange = _this._onCLStoreChange.bind(_this);
-			return _this;
-		}
-
-		// Add change listeners to stores
-
-
-		_createClass(CustomerStatusDisplay, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				_CustomerStore2.default.addChangeListener(this._onCLStoreChange);
-				_CustomerLoginActions2.default.refreshCustomer();
-				// tickle just in case:
-				//this._onCLStoreChange();
-			}
-
-			// Remove change listers from stores
-
-		}, {
-			key: 'componentWillUnmount',
-			value: function componentWillUnmount() {
-				_CustomerStore2.default.removeChangeListener(this._onCLStoreChange);
-			}
-		}, {
-			key: '_onCLStoreChange',
-			value: function _onCLStoreChange(event) {
-				this.setState({
-					customer: _CustomerStore2.default.getCustomer()
-				});
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					_E.Row,
-					null,
-					_react2.default.createElement(
-						_E.Col,
-						null,
-						_react2.default.createElement(
-							'div',
-							{ style: { backgroundColor: '#000', padding: '0.5em', fontSize: '0.85em', color: '#fff', textTransform: 'uppercase', textAlign: 'right', marginBottom: 0 } },
-							this.state.customer ? this.renderLoggedIn() : this.renderLoggedOut()
-						)
-					)
-				);
-			}
-		}, {
-			key: 'renderLoggedIn',
-			value: function renderLoggedIn() {
-				return _react2.default.createElement(
-					'p',
-					{ style: { marginBottom: 0 } },
-					'Welcome Back, ',
-					this.state.customer.firstname,
-					'! ... Credit Balance: $0.00',
-					' ',
-					_react2.default.createElement(
-						_E.Button,
-						{ size: 'xs', type: 'success', onClick: function onClick() {
-								_CustomerLoginActions2.default.customerLogout();
-							} },
-						'Logout'
-					)
-				);
-			}
-		}, {
-			key: 'renderLoggedOut',
-			value: function renderLoggedOut() {
-				return _react2.default.createElement(
-					'p',
-					{ style: { marginBottom: 0 } },
-					'Logged Out',
-					' ',
-					_react2.default.createElement(
-						_E.Button,
-						{ size: 'xs', type: 'success', onClick: function onClick() {
-								_reactRouter.browserHistory.push('/Customer_Login');
-							} },
-						'Login'
-					),
-					' ',
-					_react2.default.createElement(
-						_E.Button,
-						{ size: 'xs', type: 'success', onClick: function onClick() {
-								_reactRouter.browserHistory.push('/Customer_Signup');
-							} },
-						'Register'
-					)
-				);
-			}
-		}]);
-
-		return CustomerStatusDisplay;
-	}(_react.Component);
-
-	exports.default = CustomerStatusDisplay;
 
 /***/ }
 /******/ ]);

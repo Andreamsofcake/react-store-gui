@@ -48,12 +48,14 @@ class Shopping_Cart extends Component {
   cancel(){
     TsvService.emptyCart(null, () => {});
     RootscopeActions.setConfig('itemsInCart', 0);
-    TsvService.gotoDefaultIdlePage();
+    //TsvService.gotoDefaultIdlePage();
+    browserHistory.push('/Storefront');
 
   }
 
   shopmore() {
-    TsvService.gotoDefaultIdlePage();
+    //TsvService.gotoDefaultIdlePage();
+    browserHistory.push('/Storefront');
   }
 
   checkout() {
@@ -103,7 +105,8 @@ class Shopping_Cart extends Component {
   _onRootstoreChange() {
     var data = RootscopeStore.getCache('shoppingCart');
     if (!data.detail || !data.detail.length) {
-      TsvService.gotoDefaultIdlePage();
+      //TsvService.gotoDefaultIdlePage();
+	    browserHistory.push('/Storefront');
     } else {
       this.setState({
         cart: data.detail,

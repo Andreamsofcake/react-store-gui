@@ -110,7 +110,7 @@ class App extends Component {
 	render() {
 
 		return (
-			<div style={{maxWidth: '48em', margin: '0 auto'}}>
+			<div>{/* style={{maxWidth: '48em', margin: '0 auto'}}*/}
 			<CustomerStatusDisplay />
 			<ComEmulator />
 			<_E.Row gutter={-20}>
