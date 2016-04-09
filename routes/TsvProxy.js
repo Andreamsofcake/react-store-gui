@@ -217,7 +217,7 @@ function handleCannedApiResponse(request, reply) {
 		
 		debug(payload);
 		if (payload[0]) {
-			debug(response);
+			//debug(response);
 		}
 		return reply( response ).code(200);
 	}

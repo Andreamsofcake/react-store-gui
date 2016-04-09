@@ -15,8 +15,8 @@ class Cash_Card extends Component {
     super(props, context);
 
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    RootscopeActions.setSession('currentView', 'Cash_Card');
-    RootscopeActions.setCache('currentLocation', '/Cash_Card');
+    //RootscopeActions.setSession('currentView', 'Cash_Card');
+    //RootscopeActions.setCache('currentLocation', '/Cash_Card');
     RootscopeActions.updateCredit();
 
   };
@@ -27,12 +27,12 @@ class Cash_Card extends Component {
   }
 
   cash() {
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH");
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH", () => {});
     browserHistory.push("/Cash_Vending");
   }
 
   card() {
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD");
+    TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD", () => {});
     browserHistory.push("/Card_Vending");
   }
 
@@ -42,10 +42,10 @@ class Cash_Card extends Component {
       (level) => {
         if(!RootscopeStore.getSession('bVendingInProcess')) {
             if(browserHistory.push() != "/Card_Vending"){
-                browserHistory.push("/Card_Vending");
+                return browserHistory.push("/Card_Vending");
             }
 
-            TsvService.cardTransaction(level);
+            TsvService.cardTransaction(level, () => {});
         }
     }
     , "app.cashCard");

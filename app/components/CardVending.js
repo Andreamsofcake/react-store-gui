@@ -13,7 +13,7 @@ class Card_Vending extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Card_Vending');
+    //RootscopeActions.setSession('currentView', 'Card_Vending');
     RootscopeActions.setCache('currentLocation', '/Card_Vending');
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     RootscopeActions.updateCredit();

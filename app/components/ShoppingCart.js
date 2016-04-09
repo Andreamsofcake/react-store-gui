@@ -15,8 +15,8 @@ class Shopping_Cart extends Component {
 
     RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
     RootscopeActions.updateCredit();
-    RootscopeActions.setSession('currentView', 'Shopping_Cart');
-    RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
+    //RootscopeActions.setSession('currentView', 'Shopping_Cart');
+    //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
 
     var prc = 0;
     for (let value of RootscopeStore.getCache('shoppingCart.detail')) {
@@ -34,8 +34,6 @@ class Shopping_Cart extends Component {
       bShowTax: false,
       bShowCouponBtn: false
     };
-
-
 
     RootscopeActions.setConfig('summary', this.state.summary);
 
@@ -169,6 +167,10 @@ class Shopping_Cart extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+
+    //RootscopeActions.setSession('currentView', 'Shopping_Cart');
+    //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
+
     TsvService.subscribe("cardTransactionResponse", (level) => {
       if(!RootscopeStore.getSession('bVendingInProcess')){
         if(RootscopeStore.getCache('currentLocation') != "/Card_Vending") {

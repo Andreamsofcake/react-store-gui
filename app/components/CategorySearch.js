@@ -24,8 +24,8 @@ class Category_Search extends Component {
     }
 
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    RootscopeActions.setSession('currentView', 'Category_Search');
-    RootscopeActions.setCache('currentLocation', '/Category_Search');
+    //RootscopeActions.setSession('currentView', 'Category_Search');
+    //RootscopeActions.setCache('currentLocation', '/Category_Search');
     RootscopeActions.updateCredit();
 
     TsvService.fetchProductCategoriesByParentCategoryID(0, (err, data) => {

@@ -13,7 +13,7 @@ class Admin_Settings extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Admin_Settings');
+    //RootscopeActions.setSession('currentView', 'Admin_Settings');
     this.state = {
       supportLanguages: RootscopeStore.getConfig('supportLanguages'),
       defaultLanguage: RootscopeStore.getCache('machineSettings.defaultLanguage'),

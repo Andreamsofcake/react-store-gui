@@ -13,7 +13,7 @@ class Admin_Jofemar_Exerciser extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Admin_Jofemar_Exerciser');
+    //RootscopeActions.setSession('currentView', 'Admin_Jofemar_Exerciser');
     TsvService.disableLoginDevices();
     TsvService.emptyCart();
     TsvService.fetchMachineIds((err, ids) => {

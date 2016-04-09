@@ -12,8 +12,8 @@ class Activate extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setSession('currentView', 'Activate');
-    RootscopeActions.setCache('currentLocation', '/Activate');
+    //RootscopeActions.setSession('currentView', 'Activate');
+    //RootscopeActions.setCache('currentLocation', '/Activate');
     this.state = {
       activationKey: '',
       serialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber')

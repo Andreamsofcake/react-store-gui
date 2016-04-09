@@ -26,7 +26,6 @@ h2, h3 { margin-top: 0.5em; }
 }
 #shopping-cart-image {
 	text-align: center;
-
 }
 #shopping-cart-image img {
 	max-width: 95% !important;
@@ -37,22 +36,22 @@ h2, h3 { margin-top: 0.5em; }
 
 #image-container {
 	text-align: center;
-	height: 12em;
+	height: 6em;
 	margin-bottom: 5px;
 }
 #image-container img{
- max-width: 95%;
- max-height: 12em;
- }
+	max-width: 95%;
+	max-height: 100%;
+}
 
 #ComEmulator {
 	position: fixed;
-	top: 0;
+	top: 40px;
 	right: 0;
 	margin: 10px;
 	background-color: rgba(255, 255, 255, 0.65);
 	border: 1px solid #dfdfdf;
 	border-radius: 5px;
 	padding: 10px;
-	max-width: 200px;
+	max-width: 260px;
 }

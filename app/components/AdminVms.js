@@ -12,7 +12,7 @@ class Admin_Vms extends Component {
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    RootscopeActions.setSession('currentView', 'Admin_Vms');
+    //RootscopeActions.setSession('currentView', 'Admin_Vms');
     TsvService.enumerateComponents((err, data) => {
        this.setState({ versionInfos: data })
     })
