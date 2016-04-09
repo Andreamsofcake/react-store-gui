@@ -49934,7 +49934,7 @@
 	      var product = this.props.data;
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'product', onClick: this.viewProduct.bind(this) },
+	        { className: 'product' },
 	        _react2.default.createElement(
 	          'div',
 	          { className: 'product_name' },
@@ -49946,7 +49946,7 @@
 	        ),
 	        _react2.default.createElement(
 	          'div',
-	          { id: 'image-container' },
+	          { onClick: this.viewProduct.bind(this), id: 'image-container' },
 	          _react2.default.createElement('img', { src: product.imagePath, title: product.description })
 	        ),
 	        _react2.default.createElement(

@@ -17,11 +17,11 @@ class ProductListItem extends Component {
     var product = this.props.data
     return (
 
-          <div className="product" onClick={this.viewProduct.bind(this)}>
+          <div className="product" >
               <div className="product_name">
                 <h4>{product.productName}</h4>
               </div>
-              <div id="image-container">
+              <div onClick={this.viewProduct.bind(this)} id="image-container">
 
 	              <img src={product.imagePath} title={product.description}/>
 
