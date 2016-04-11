@@ -30,11 +30,12 @@ class AppLayout extends Component {
 		*/}
 
 		<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-		
+
 		{/*<link rel="stylesheet" href="https://cdn.jsdelivr.net/foundation/6.1.0/foundation.min.css" />*/}
 		{/*<link rel="stylesheet" type="text/css" href="http://elemental-ui.com/site.css"/>*/}
 		<link rel="stylesheet" type="text/css" href="/css/elemental-site.css"/>
 		<link rel="stylesheet" type="text/css" href="/css/styles.css"/>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.3.15/slick.css" />
 		{/*
 		<link rel="stylesheet" href="/assets/css/react-datepicker-min.css"/>
 		<link rel="stylesheet" href="/assets/css/styles.css" />
