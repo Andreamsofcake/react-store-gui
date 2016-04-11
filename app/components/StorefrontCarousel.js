@@ -143,11 +143,14 @@ class Storefront_Carousel extends Component {
           prods.push(P)
       }
     })
-    return (
-          <_E.Row >
-          {this.renderProductGroup(prods)}
-          </_E.Row>
-    );
+
+    while(prods.length) {
+      return (
+            <_E.Row >
+            {this.renderProductGroup(prods.splice(0,9))}
+            </_E.Row>
+      );
+    }
   }
 
   renderProductGroup(products){

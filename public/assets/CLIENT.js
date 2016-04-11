@@ -50405,11 +50405,14 @@
 	          prods.push(P);
 	        }
 	      });
-	      return _react2.default.createElement(
-	        _E.Row,
-	        null,
-	        this.renderProductGroup(prods)
-	      );
+
+	      while (prods.length) {
+	        return _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          this.renderProductGroup(prods.splice(0, 9))
+	        );
+	      }
 	    }
 	  }, {
 	    key: 'renderProductGroup',
