@@ -92,14 +92,19 @@ class Storefront_Carousel extends Component {
     }
     let allType = !this.state.categoryIdFilter.length ? "primary": "hollow-primary"
     return (
-      <div className='container'>
-        <Slider {...settings}>
-        	<img src='http://placekitten.com/g/400/200' />
-          <img src='http://placekitten.com/g/400/200' />
-          <img src='http://placekitten.com/g/400/200' />
-          <img src='http://placekitten.com/g/400/200' />
-        </Slider>
-     </div>
+      <_E.Row >
+        <_E.Col>
+		        <ShoppingCartMini className="scart-mini" />
+          <_E.Row>
+              <h2>Storefront</h2>
+          </_E.Row>
+              <div className='container'>
+                <Slider {...settings}>
+                	{this.renderProducts()}
+                </Slider>
+             </div>
+       </_E.Col>
+      </_E.Row>
     );
   }
 

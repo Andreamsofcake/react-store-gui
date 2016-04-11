@@ -50322,15 +50322,30 @@
 	      };
 	      var allType = !this.state.categoryIdFilter.length ? "primary" : "hollow-primary";
 	      return _react2.default.createElement(
-	        'div',
-	        { className: 'container' },
+	        _E.Row,
+	        null,
 	        _react2.default.createElement(
-	          _reactSlick2.default,
-	          settings,
-	          _react2.default.createElement('img', { src: 'http://placekitten.com/g/400/200' }),
-	          _react2.default.createElement('img', { src: 'http://placekitten.com/g/400/200' }),
-	          _react2.default.createElement('img', { src: 'http://placekitten.com/g/400/200' }),
-	          _react2.default.createElement('img', { src: 'http://placekitten.com/g/400/200' })
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(_ShoppingCartMini2.default, { className: 'scart-mini' }),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Storefront'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'container' },
+	            _react2.default.createElement(
+	              _reactSlick2.default,
+	              settings,
+	              this.renderProducts()
+	            )
+	          )
 	        )
 	      );
 	    }
