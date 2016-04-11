@@ -98,6 +98,22 @@ class Storefront_Carousel extends Component {
           <_E.Row>
               <h2>Storefront</h2>
           </_E.Row>
+          <_E.Row>
+            <_E.Col>
+            Categories:{' '}
+            <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>
+            <span style={{width:'1em', display: 'inline-block'}}>{' '}</span>
+            <_E.ButtonGroup>
+            {this.state.categories ? this.state.categories.map((category, $index) => {
+                let type=this.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary": "hollow-primary"
+                return (
+                  <_E.Button key={$index} type={type} onClick={this.categoryClick.bind(this, category.categoryID)} >{category.categoryName}</_E.Button>
+                )
+              }
+            ) : null}
+            </_E.ButtonGroup>
+            </_E.Col>
+          </_E.Row>
               <div className='container'>
                 <Slider {...settings}>
                 	{this.renderProducts()}
@@ -109,6 +125,7 @@ class Storefront_Carousel extends Component {
   }
 
   renderProducts(){
+    var products_per_page = 9
     if (!this.state.products.length) {
       return null;
     }
@@ -121,20 +138,20 @@ class Storefront_Carousel extends Component {
     	}
     	if (show) {
     		return (
-			  <_E.Col key={idx} xs="1/2" sm="1/3" md="1/4" lg="1/4">
-				<ProductListItem
-				onClick={this.setPrdSelected.bind(this)}
-				data={P} />
-			  </_E.Col>
+  			  <_E.Col key={idx} xs="1/2" sm="1/3" md="1/4" lg="1/4">
+  				<ProductListItem
+  				onClick={this.setPrdSelected.bind(this)}
+  				data={P} />
+  			  </_E.Col>
     		);
     	}
     	return null;
     })
 
     return (
-      <_E.Row >
-    	{prods}
-      </_E.Row>
+          <_E.Row >
+        	{prods}
+          </_E.Row>
     );
   }
 
