@@ -124,35 +124,42 @@ class Storefront_Carousel extends Component {
     );
   }
 
+
   renderProducts(){
     var products_per_page = 9
+    // for each item that is shown
     if (!this.state.products.length) {
       return null;
     }
-    let prods = this.state.products.map( (P, idx) => {
-    	let show = true;
-    	if (this.state.categoryIdFilter.length) {
-    		if (this.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
-    			show = false;
-    		}
-    	}
-    	if (show) {
-    		return (
-  			  <_E.Col key={idx} xs="1/2" sm="1/3" md="1/4" lg="1/4">
-  				<ProductListItem
-  				onClick={this.setPrdSelected.bind(this)}
-  				data={P} />
-  			  </_E.Col>
-    		);
-    	}
-    	return null;
+    let prods = []
+    this.state.products.map( (P, $index) => {
+      let show = true;
+      if (this.state.categoryIdFilter.length) {
+        if (this.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
+          show = false;
+        }
+      }
+      if (show) {
+          prods.push(P)
+      }
     })
-
     return (
           <_E.Row >
-        	{prods}
+          {this.renderProductGroup(prods)}
           </_E.Row>
     );
+  }
+
+  renderProductGroup(products){
+    return products.map((prd, idx) => {
+      return (
+        <_E.Col key={idx} xs="1/2" sm="1/3" md="1/4" lg="1/4">
+        <ProductListItem
+        onClick={this.setPrdSelected.bind(this)}
+        data={prd} />
+        </_E.Col>
+      );
+    })
   }
 
 }

@@ -50389,10 +50389,12 @@
 	      var _this3 = this;
 
 	      var products_per_page = 9;
+	      // for each item that is shown
 	      if (!this.state.products.length) {
 	        return null;
 	      }
-	      var prods = this.state.products.map(function (P, idx) {
+	      var prods = [];
+	      this.state.products.map(function (P, $index) {
 	        var show = true;
 	        if (_this3.state.categoryIdFilter.length) {
 	          if (_this3.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
@@ -50400,22 +50402,29 @@
 	          }
 	        }
 	        if (show) {
-	          return _react2.default.createElement(
-	            _E.Col,
-	            { key: idx, xs: '1/2', sm: '1/3', md: '1/4', lg: '1/4' },
-	            _react2.default.createElement(_ProductListItem2.default, {
-	              onClick: _this3.setPrdSelected.bind(_this3),
-	              data: P })
-	          );
+	          prods.push(P);
 	        }
-	        return null;
 	      });
-
 	      return _react2.default.createElement(
 	        _E.Row,
 	        null,
-	        prods
+	        this.renderProductGroup(prods)
 	      );
+	    }
+	  }, {
+	    key: 'renderProductGroup',
+	    value: function renderProductGroup(products) {
+	      var _this4 = this;
+
+	      return products.map(function (prd, idx) {
+	        return _react2.default.createElement(
+	          _E.Col,
+	          { key: idx, xs: '1/2', sm: '1/3', md: '1/4', lg: '1/4' },
+	          _react2.default.createElement(_ProductListItem2.default, {
+	            onClick: _this4.setPrdSelected.bind(_this4),
+	            data: prd })
+	        );
+	      });
 	    }
 	  }]);
 
