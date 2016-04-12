@@ -14,8 +14,8 @@ import AdminSettings from './components/AdminSettings'
 
 import CustomerSignup from './components/CustomerSignup'
 import CustomerLogin from './components/CustomerLogin'
-import Storefront from './components/StorefrontStatic'
-import StorefrontCarousel from './components/Storefront'
+import StorefrontStatic from './components/StorefrontStatic'
+import Storefront from './components/Storefront'
 import ProductDetail from './components/ProductDetail'
 import TransactionRefund from './components/TransactionRefund'
 import CardVending from './components/CardVending'
@@ -48,8 +48,8 @@ export default (
 		<Route path='Customer_Login' component={CustomerLogin} />
 		<Route path='Customer_Login/:step' component={CustomerLogin} />
 
-		<Route path='Storefront' component={StorefrontStatic} />
-		<Route path='Storefront_Carousel' component={Storefront} />
+		<Route path='Storefront_Static' component={StorefrontStatic} />
+		<Route path='Storefront' component={Storefront} />
 		<Route path='Product_Detail/:productID' component={ProductDetail} />
 		<Route path='Transaction_Refund' component={TransactionRefund} />
 		<Route path='Card_Vending' component={CardVending} />

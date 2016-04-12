@@ -12,7 +12,7 @@ import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
 import ShoppingCartMini from './ShoppingCartMini'
 
-class Storefront_Carousel extends Component {
+class Storefront extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
@@ -168,4 +168,4 @@ class Storefront_Carousel extends Component {
   }
 
 }
-export default Storefront_Carousel
+export default Storefront

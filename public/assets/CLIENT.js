@@ -24966,8 +24966,8 @@
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Signup/:step', component: _CustomerSignup2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Login', component: _CustomerLogin2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Login/:step', component: _CustomerLogin2.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: 'Storefront', component: StorefrontStatic }),
-		_react2.default.createElement(_reactRouter.Route, { path: 'Storefront_Carousel', component: _StorefrontStatic2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Storefront_Static', component: _StorefrontStatic2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Storefront', component: _Storefront2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Product_Detail/:productID', component: _ProductDetail2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Transaction_Refund', component: _TransactionRefund2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Card_Vending', component: _CardVending2.default }),
@@ -49459,13 +49459,13 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Storefront_Carousel = function (_Component) {
-	  _inherits(Storefront_Carousel, _Component);
+	var Storefront = function (_Component) {
+	  _inherits(Storefront, _Component);
 
-	  function Storefront_Carousel(props, context) {
-	    _classCallCheck(this, Storefront_Carousel);
+	  function Storefront(props, context) {
+	    _classCallCheck(this, Storefront);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront_Carousel).call(this, props, context));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront).call(this, props, context));
 	    // MUST call super() before any this.*
 
 
@@ -49484,7 +49484,7 @@
 	  // Add change listeners to stores
 
 
-	  _createClass(Storefront_Carousel, [{
+	  _createClass(Storefront, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
@@ -49667,10 +49667,10 @@
 	    }
 	  }]);
 
-	  return Storefront_Carousel;
+	  return Storefront;
 	}(_react.Component);
 
-	exports.default = Storefront_Carousel;
+	exports.default = Storefront;
 
 /***/ },
 /* 371 */
@@ -54635,15 +54635,15 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Storefront = function (_Component) {
-	  _inherits(Storefront, _Component);
+	var Storefront_Static = function (_Component) {
+	  _inherits(Storefront_Static, _Component);
 
-	  function Storefront(props, context) {
-	    _classCallCheck(this, Storefront);
+	  function Storefront_Static(props, context) {
+	    _classCallCheck(this, Storefront_Static);
 
 	    //RootscopeActions.setSession('currentView', 'Storefront');
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront).call(this, props, context));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront_Static).call(this, props, context));
 	    // MUST call super() before any this.*
 
 
@@ -54662,7 +54662,7 @@
 	  // Add change listeners to stores
 
 
-	  _createClass(Storefront, [{
+	  _createClass(Storefront_Static, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
@@ -54819,10 +54819,10 @@
 	    }
 	  }]);
 
-	  return Storefront;
+	  return Storefront_Static;
 	}(_react.Component);
 
-	exports.default = Storefront;
+	exports.default = Storefront_Static;
 
 /***/ }
 /******/ ]);
