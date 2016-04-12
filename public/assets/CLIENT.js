@@ -24899,11 +24899,11 @@
 
 	var _CustomerLogin2 = _interopRequireDefault(_CustomerLogin);
 
-	var _StorefrontStatic = __webpack_require__(409);
+	var _StorefrontStatic = __webpack_require__(370);
 
 	var _StorefrontStatic2 = _interopRequireDefault(_StorefrontStatic);
 
-	var _Storefront = __webpack_require__(370);
+	var _Storefront = __webpack_require__(375);
 
 	var _Storefront2 = _interopRequireDefault(_Storefront);
 
@@ -49415,10 +49415,6 @@
 
 	var Translate = _interopRequireWildcard(_Translate);
 
-	var _reactSlick = __webpack_require__(390);
-
-	var _reactSlick2 = _interopRequireDefault(_reactSlick);
-
 	var _RootscopeActions = __webpack_require__(242);
 
 	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
@@ -49459,13 +49455,15 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Storefront = function (_Component) {
-	  _inherits(Storefront, _Component);
+	var Storefront_Static = function (_Component) {
+	  _inherits(Storefront_Static, _Component);
 
-	  function Storefront(props, context) {
-	    _classCallCheck(this, Storefront);
+	  function Storefront_Static(props, context) {
+	    _classCallCheck(this, Storefront_Static);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront).call(this, props, context));
+	    //RootscopeActions.setSession('currentView', 'Storefront');
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront_Static).call(this, props, context));
 	    // MUST call super() before any this.*
 
 
@@ -49484,7 +49482,7 @@
 	  // Add change listeners to stores
 
 
-	  _createClass(Storefront, [{
+	  _createClass(Storefront_Static, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
@@ -49553,9 +49551,6 @@
 	    value: function render() {
 	      var _this2 = this;
 
-	      var settings = {
-	        dots: true
-	      };
 	      var allType = !this.state.categoryIdFilter.length ? "primary" : "hollow-primary";
 	      return _react2.default.createElement(
 	        _E.Row,
@@ -49605,15 +49600,7 @@
 	              )
 	            )
 	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'slider-container' },
-	            _react2.default.createElement(
-	              _reactSlick2.default,
-	              settings,
-	              this.renderProducts()
-	            )
-	          )
+	          this.renderProducts()
 	        )
 	      );
 	    }
@@ -49622,13 +49609,10 @@
 	    value: function renderProducts() {
 	      var _this3 = this;
 
-	      var products_per_page = 9;
-	      // for each item that is shown
 	      if (!this.state.products.length) {
 	        return null;
 	      }
-	      var prods = [];
-	      this.state.products.map(function (P, $index) {
+	      var prods = this.state.products.map(function (P, idx) {
 	        var show = true;
 	        if (_this3.state.categoryIdFilter.length) {
 	          if (_this3.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
@@ -49636,41 +49620,29 @@
 	          }
 	        }
 	        if (show) {
-	          prods.push(P);
+	          return _react2.default.createElement(
+	            _E.Col,
+	            { key: idx, xs: '1/2', sm: '1/3', md: '1/4', lg: '1/4' },
+	            _react2.default.createElement(_ProductListItem2.default, {
+	              onClick: _this3.setPrdSelected.bind(_this3),
+	              data: P })
+	          );
 	        }
+	        return null;
 	      });
-	      var stack = [];
-	      while (prods.length) {
-	        var sorted = prods.splice(0, 9);
-	        stack.push(_react2.default.createElement(
-	          _E.Row,
-	          { className: 'slider-rows' },
-	          this.renderProductGroup(sorted)
-	        ));
-	      }
-	      return stack;
-	    }
-	  }, {
-	    key: 'renderProductGroup',
-	    value: function renderProductGroup(products) {
-	      var _this4 = this;
 
-	      return products.map(function (prd, idx) {
-	        return _react2.default.createElement(
-	          _E.Col,
-	          { key: idx, xs: '1/2', sm: '1/2', md: '1/3', lg: '1/3' },
-	          _react2.default.createElement(_ProductListItem2.default, {
-	            onClick: _this4.setPrdSelected.bind(_this4),
-	            data: prd })
-	        );
-	      });
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        prods
+	      );
 	    }
 	  }]);
 
-	  return Storefront;
+	  return Storefront_Static;
 	}(_react.Component);
 
-	exports.default = Storefront;
+	exports.default = Storefront_Static;
 
 /***/ },
 /* 371 */
@@ -50185,7 +50157,295 @@
 	exports.default = ShoppingCartMini;
 
 /***/ },
-/* 375 */,
+/* 375 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _reactSlick = __webpack_require__(390);
+
+	var _reactSlick2 = _interopRequireDefault(_reactSlick);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _StorefrontActions = __webpack_require__(371);
+
+	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
+
+	var _StorefrontStore = __webpack_require__(372);
+
+	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _ProductListItem = __webpack_require__(373);
+
+	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
+
+	var _ShoppingCartMini = __webpack_require__(374);
+
+	var _ShoppingCartMini2 = _interopRequireDefault(_ShoppingCartMini);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Storefront = function (_Component) {
+	  _inherits(Storefront, _Component);
+
+	  function Storefront(props, context) {
+	    _classCallCheck(this, Storefront);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _this.state = {
+	      categoryIdFilter: [],
+	      products: [],
+	      categories: [],
+	      quantity: 0
+	    };
+
+	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
+	    _this._onStoreFrontChange = _this._onStoreFrontChange.bind(_this);
+	    return _this;
+	  }
+
+	  // Add change listeners to stores
+
+
+	  _createClass(Storefront, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
+	      _StorefrontStore2.default.addChangeListener(this._onStoreFrontChange);
+
+	      _TsvService2.default.fetchProduct(null, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setSession('products', data);
+	      });
+
+	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(0, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setConfig('categories', data);
+	      });
+
+	      _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+	        if (err) throw err;
+	        _RootscopeActions2.default.setCache('shoppingCart', data);
+	      });
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _RootscopeStore2.default.removeChangeListener(this._onRootstoreChange);
+	      _StorefrontStore2.default.removeChangeListener(this._onStoreFrontChange);
+	    }
+	  }, {
+	    key: '_onRootstoreChange',
+	    value: function _onRootstoreChange(event) {
+	      // if (event && event.type == 'config' && event.path == 'categories') {
+	      // console.log('[_onRootstoreChange]');
+	      // console.log(event);
+	      // console.log(RootscopeStore.getConfig('categories'));
+	      this.setState({
+	        categories: _RootscopeStore2.default.getConfig('categories') || [],
+	        products: _RootscopeStore2.default.getSession('products') || []
+	      });
+
+	      // }
+	    }
+	  }, {
+	    key: '_onStoreFrontChange',
+	    value: function _onStoreFrontChange() {
+	      this.setState({
+	        categoryIdFilter: _StorefrontStore2.default.getCategoryFilter()
+	      });
+	    }
+	  }, {
+	    key: 'categoryClick',
+	    value: function categoryClick(categoryID) {
+	      if (categoryID) {
+	        return _StorefrontActions2.default.toggleIDtoCategoryFilter(categoryID);
+	      }
+	      _StorefrontActions2.default.clearCategoryFilter();
+	    }
+	  }, {
+	    key: 'setPrdSelected',
+	    value: function setPrdSelected(product, e) {
+	      _StorefrontActions2.default.addToCart(product, e);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _this2 = this;
+
+	      var allType = !this.state.categoryIdFilter.length ? "primary" : "hollow-primary";
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(_ShoppingCartMini2.default, { className: 'scart-mini' }),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Storefront'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Col,
+	              null,
+	              'Categories:',
+	              ' ',
+	              _react2.default.createElement(
+	                _E.Button,
+	                { type: allType, onClick: this.categoryClick.bind(this, null) },
+	                'All'
+	              ),
+	              _react2.default.createElement(
+	                'span',
+	                { style: { width: '1em', display: 'inline-block' } },
+	                ' '
+	              ),
+	              _react2.default.createElement(
+	                _E.ButtonGroup,
+	                null,
+	                this.state.categories ? this.state.categories.map(function (category, $index) {
+	                  var type = _this2.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary" : "hollow-primary";
+	                  return _react2.default.createElement(
+	                    _E.Button,
+	                    { key: $index, type: type, onClick: _this2.categoryClick.bind(_this2, category.categoryID) },
+	                    category.categoryName
+	                  );
+	                }) : null
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { className: 'product-container' },
+	            this.renderProducts()
+	          )
+	        )
+	      );
+	    }
+	  }, {
+	    key: 'renderProducts',
+	    value: function renderProducts() {
+	      var _this3 = this;
+
+	      var settings = {
+	        dots: true
+	      };
+	      var products_per_page = 12;
+	      // for each item that is shown
+	      if (!this.state.products.length) {
+	        return null;
+	      }
+	      var prods = [];
+	      this.state.products.map(function (P, $index) {
+	        var show = true;
+	        if (_this3.state.categoryIdFilter.length) {
+	          if (_this3.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
+	            show = false;
+	          }
+	        }
+	        if (show) {
+	          prods.push(P);
+	        }
+	      });
+	      if (prods <= products_per_page) {
+	        return _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          prods
+	        );
+	      } else {
+	        var stack = [];
+	        while (prods.length) {
+	          var sorted = prods.splice(0, products_per_page);
+	          stack.push(_react2.default.createElement(
+	            _E.Row,
+	            { className: 'slider-rows' },
+	            this.renderProductGroup(sorted)
+	          ));
+	        }
+	        return _react2.default.createElement(
+	          _reactSlick2.default,
+	          settings,
+	          stack
+	        );
+	      }
+	    }
+	  }, {
+	    key: 'renderProductGroup',
+	    value: function renderProductGroup(products) {
+	      var _this4 = this;
+
+	      return products.map(function (prd, idx) {
+	        return _react2.default.createElement(
+	          _E.Col,
+	          { key: idx, xs: '1/2', sm: '1/2', md: '1/3', lg: '1/3' },
+	          _react2.default.createElement(_ProductListItem2.default, {
+	            onClick: _this4.setPrdSelected.bind(_this4),
+	            data: prd })
+	        );
+	      });
+	    }
+	  }]);
+
+	  return Storefront;
+	}(_react.Component);
+
+	exports.default = Storefront;
+
+/***/ },
 /* 376 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -54570,259 +54830,6 @@
 		return new MediaQueryDispatch();
 
 	}));
-
-/***/ },
-/* 409 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
-	var _Translate = __webpack_require__(240);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _RootscopeActions = __webpack_require__(242);
-
-	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
-
-	var _RootscopeStore = __webpack_require__(297);
-
-	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
-
-	var _StorefrontActions = __webpack_require__(371);
-
-	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
-
-	var _StorefrontStore = __webpack_require__(372);
-
-	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
-
-	var _reactRouter = __webpack_require__(160);
-
-	var _elemental = __webpack_require__(300);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	var _ProductListItem = __webpack_require__(373);
-
-	var _ProductListItem2 = _interopRequireDefault(_ProductListItem);
-
-	var _ShoppingCartMini = __webpack_require__(374);
-
-	var _ShoppingCartMini2 = _interopRequireDefault(_ShoppingCartMini);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Storefront_Static = function (_Component) {
-	  _inherits(Storefront_Static, _Component);
-
-	  function Storefront_Static(props, context) {
-	    _classCallCheck(this, Storefront_Static);
-
-	    //RootscopeActions.setSession('currentView', 'Storefront');
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Storefront_Static).call(this, props, context));
-	    // MUST call super() before any this.*
-
-
-	    _this.state = {
-	      categoryIdFilter: [],
-	      products: [],
-	      categories: [],
-	      quantity: 0
-	    };
-
-	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
-	    _this._onStoreFrontChange = _this._onStoreFrontChange.bind(_this);
-	    return _this;
-	  }
-
-	  // Add change listeners to stores
-
-
-	  _createClass(Storefront_Static, [{
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      _RootscopeStore2.default.addChangeListener(this._onRootstoreChange);
-	      _StorefrontStore2.default.addChangeListener(this._onStoreFrontChange);
-
-	      _TsvService2.default.fetchProduct(null, function (err, data) {
-	        if (err) throw err;
-	        _RootscopeActions2.default.setSession('products', data);
-	      });
-
-	      _TsvService2.default.fetchProductCategoriesByParentCategoryID(0, function (err, data) {
-	        if (err) throw err;
-	        _RootscopeActions2.default.setConfig('categories', data);
-	      });
-
-	      _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
-	        if (err) throw err;
-	        _RootscopeActions2.default.setCache('shoppingCart', data);
-	      });
-	    }
-
-	    // Remove change listers from stores
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {
-	      _RootscopeStore2.default.removeChangeListener(this._onRootstoreChange);
-	      _StorefrontStore2.default.removeChangeListener(this._onStoreFrontChange);
-	    }
-	  }, {
-	    key: '_onRootstoreChange',
-	    value: function _onRootstoreChange(event) {
-	      // if (event && event.type == 'config' && event.path == 'categories') {
-	      // console.log('[_onRootstoreChange]');
-	      // console.log(event);
-	      // console.log(RootscopeStore.getConfig('categories'));
-	      this.setState({
-	        categories: _RootscopeStore2.default.getConfig('categories') || [],
-	        products: _RootscopeStore2.default.getSession('products') || []
-	      });
-
-	      // }
-	    }
-	  }, {
-	    key: '_onStoreFrontChange',
-	    value: function _onStoreFrontChange() {
-	      this.setState({
-	        categoryIdFilter: _StorefrontStore2.default.getCategoryFilter()
-	      });
-	    }
-	  }, {
-	    key: 'categoryClick',
-	    value: function categoryClick(categoryID) {
-	      if (categoryID) {
-	        return _StorefrontActions2.default.toggleIDtoCategoryFilter(categoryID);
-	      }
-	      _StorefrontActions2.default.clearCategoryFilter();
-	    }
-	  }, {
-	    key: 'setPrdSelected',
-	    value: function setPrdSelected(product, e) {
-	      _StorefrontActions2.default.addToCart(product, e);
-	    }
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      var _this2 = this;
-
-	      var allType = !this.state.categoryIdFilter.length ? "primary" : "hollow-primary";
-	      return _react2.default.createElement(
-	        _E.Row,
-	        null,
-	        _react2.default.createElement(
-	          _E.Col,
-	          null,
-	          _react2.default.createElement(_ShoppingCartMini2.default, { className: 'scart-mini' }),
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              'h2',
-	              null,
-	              'Storefront'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Col,
-	              null,
-	              'Categories:',
-	              ' ',
-	              _react2.default.createElement(
-	                _E.Button,
-	                { type: allType, onClick: this.categoryClick.bind(this, null) },
-	                'All'
-	              ),
-	              _react2.default.createElement(
-	                'span',
-	                { style: { width: '1em', display: 'inline-block' } },
-	                ' '
-	              ),
-	              _react2.default.createElement(
-	                _E.ButtonGroup,
-	                null,
-	                this.state.categories ? this.state.categories.map(function (category, $index) {
-	                  var type = _this2.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary" : "hollow-primary";
-	                  return _react2.default.createElement(
-	                    _E.Button,
-	                    { key: $index, type: type, onClick: _this2.categoryClick.bind(_this2, category.categoryID) },
-	                    category.categoryName
-	                  );
-	                }) : null
-	              )
-	            )
-	          ),
-	          this.renderProducts()
-	        )
-	      );
-	    }
-	  }, {
-	    key: 'renderProducts',
-	    value: function renderProducts() {
-	      var _this3 = this;
-
-	      if (!this.state.products.length) {
-	        return null;
-	      }
-	      var prods = this.state.products.map(function (P, idx) {
-	        var show = true;
-	        if (_this3.state.categoryIdFilter.length) {
-	          if (_this3.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
-	            show = false;
-	          }
-	        }
-	        if (show) {
-	          return _react2.default.createElement(
-	            _E.Col,
-	            { key: idx, xs: '1/2', sm: '1/3', md: '1/4', lg: '1/4' },
-	            _react2.default.createElement(_ProductListItem2.default, {
-	              onClick: _this3.setPrdSelected.bind(_this3),
-	              data: P })
-	          );
-	        }
-	        return null;
-	      });
-
-	      return _react2.default.createElement(
-	        _E.Row,
-	        null,
-	        prods
-	      );
-	    }
-	  }]);
-
-	  return Storefront_Static;
-	}(_react.Component);
-
-	exports.default = Storefront_Static;
 
 /***/ }
 /******/ ]);

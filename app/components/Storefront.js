@@ -87,9 +87,7 @@ class Storefront extends Component {
   }
 
   render() {
-    var settings = {
-    	dots: true
-    }
+
     let allType = !this.state.categoryIdFilter.length ? "primary": "hollow-primary"
     return (
       <_E.Row >
@@ -114,11 +112,9 @@ class Storefront extends Component {
             </_E.ButtonGroup>
             </_E.Col>
           </_E.Row>
-              <div className='slider-container'>
-                <Slider {...settings}>
+              <div className="product-container">
                 	{this.renderProducts()}
-                </Slider>
-             </div>
+              </div>
        </_E.Col>
       </_E.Row>
     );
@@ -126,7 +122,10 @@ class Storefront extends Component {
 
 
   renderProducts(){
-    var products_per_page = 9
+    var settings = {
+    	dots: true
+    }
+    var products_per_page = 12
     // for each item that is shown
     if (!this.state.products.length) {
       return null;
@@ -143,16 +142,28 @@ class Storefront extends Component {
           prods.push(P)
       }
     })
-    var stack = []
-    while(prods.length) {
-      let sorted = prods.splice(0,9)
-      stack.push((
-            <_E.Row className="slider-rows">
-            {this.renderProductGroup(sorted)}
-            </_E.Row>
-      ));
+    if (prods <= products_per_page) {
+      return (
+        <_E.Row>
+      	 {prods}
+        </_E.Row>
+      )
+    } else {
+      var stack = []
+      while(prods.length) {
+        let sorted = prods.splice(0, products_per_page)
+        stack.push((
+              <_E.Row className="slider-rows">
+              {this.renderProductGroup(sorted)}
+              </_E.Row>
+        ));
+      }
+      return (
+        <Slider {...settings}>
+          {stack}
+        </Slider>
+      )
     }
-    return stack
   }
 
   renderProductGroup(products){
