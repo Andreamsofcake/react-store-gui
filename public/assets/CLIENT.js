@@ -50409,7 +50409,7 @@
 	        var sorted = prods.splice(0, 9);
 	        stack.push(_react2.default.createElement(
 	          _E.Row,
-	          null,
+	          { className: 'slider-rows' },
 	          this.renderProductGroup(sorted)
 	        ));
 	      }

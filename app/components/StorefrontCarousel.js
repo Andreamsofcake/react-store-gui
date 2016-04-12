@@ -147,7 +147,7 @@ class Storefront_Carousel extends Component {
     while(prods.length) {
       let sorted = prods.splice(0,9)
       stack.push((
-            <_E.Row >
+            <_E.Row className="slider-rows">
             {this.renderProductGroup(sorted)}
             </_E.Row>
       ));

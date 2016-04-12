@@ -1,4 +1,8 @@
 h2, h3 { margin-top: 0.5em; }
+.slider-rows {
+	padding-left: 20px;
+	padding-right: 20px;
+}
 
 .product {
 	font-size: 1.5em;
