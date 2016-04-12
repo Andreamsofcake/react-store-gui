@@ -115,7 +115,7 @@ import * as _E from 'elemental'
      return (
        <_E.Row>
         <_E.Col>
-          <_E.Button size="lg" type="success" component={(<Link to="/Storefront_Carousel">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
+          <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
         </_E.Col>
        </_E.Row>
      );
