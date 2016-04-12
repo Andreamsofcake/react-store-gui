@@ -1,4 +1,5 @@
 //import SDK from 'sdk-core-lib'
+import RQ from 'request'
 
 var debug = require('debug')('vending-app-gui:tsv-proxy');
 
@@ -41,6 +42,23 @@ module.exports = {
 		return reply( data ).code(200);
 	}
 
+}
+
+function runTsvFlashApi(reply, payload) {
+	RQ.post({
+		url: 'http://localhost:8085/tsv/flashapi',
+		body: JSON.stringify(payload)
+	}, function(err, response) {
+		if (err) {
+			debug('FLASHAPI Proxy error:');
+			debug(err);
+			// DEV NOTE:: You cannot call reply().code() on an error, error will already be set?
+			return reply( err );
+		}
+		debug('FLASHAPI Proxy ok/response:');
+		debug(response);
+		return reply( response ).code(200);
+	});
 }
 
 function handleCannedApiResponse(request, reply) {
@@ -251,6 +269,10 @@ function handleCannedApiResponse(request, reply) {
 				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
 				break;
 			
+			case 'vendProduct':
+				return runTsvFlashApi(reply, payload);
+				break;
+
 			default:
 				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
 				break;

@@ -218,6 +218,10 @@
 
 	var _AdminSettings2 = _interopRequireDefault(_AdminSettings);
 
+	var _AdminExerciser = __webpack_require__(408);
+
+	var _AdminExerciser2 = _interopRequireDefault(_AdminExerciser);
+
 	var _CustomerSignup = __webpack_require__(17);
 
 	var _CustomerSignup2 = _interopRequireDefault(_CustomerSignup);
@@ -289,6 +293,7 @@
 		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Login', component: _AdminLogin2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Login', component: _AdminHome2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Settings', component: _AdminSettings2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Exerciser', component: _AdminExerciser2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Signup', component: _CustomerSignup2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Signup/:step', component: _CustomerSignup2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Login', component: _CustomerLogin2.default }),
@@ -8568,9 +8573,11 @@
 				try {
 					//pair[1].apply(pair[0], e);
 					pair[0].apply(null, e, function () {});
-					ds.push(pair[0]);
+					// don't push unless it fails to run, otherwise it's not dirty! :-)
+					//ds.push(pair[0]);
 				} catch (err) {
 					console.log("Failed invoking " + eventName + " handler: " + err);
+					ds.push(pair[0]);
 				}
 			}
 		}
@@ -54733,6 +54740,344 @@
 	  module.exports = false;
 	}
 
+
+/***/ },
+/* 408 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(7);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(55);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(56);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(57);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(58);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(8);
+
+	var _elemental = __webpack_require__(96);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Admin_Jofemar_Exerciser = function (_Component) {
+	  _inherits(Admin_Jofemar_Exerciser, _Component);
+
+	  function Admin_Jofemar_Exerciser(props, context) {
+	    _classCallCheck(this, Admin_Jofemar_Exerciser);
+
+	    //RootscopeActions.setSession('currentView', 'Admin_Jofemar_Exerciser');
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Admin_Jofemar_Exerciser).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _TsvService2.default.disableLoginDevices(null, function () {});
+	    _TsvService2.default.emptyCart(null, function () {});
+	    _TsvService2.default.fetchMachineIds(null, function (err, ids) {
+	      _RootscopeActions2.default.setCache('machineList', ids);
+	    });
+	    _this.state = {
+	      num: "",
+	      maxChars: _RootscopeStore2.default.getConfig('bDualMachine') ? 3 : 2,
+	      errs: 0,
+	      bShowDropDownForMachines: false,
+	      machineNumber: 0
+	    };
+
+	    if (_RootscopeStore2.default.getCache('machineList').length > 1) {
+	      _this.state.bShowDropDownForMachines = true;
+	    }
+
+	    return _this;
+	  }
+
+	  _createClass(Admin_Jofemar_Exerciser, [{
+	    key: 'vend',
+	    value: function vend() {
+	      _TsvService2.default.vendProduct(this.state.machineNumber, parseInt(this.state.num) + this.state.machineNumber * 100, function () {});
+	      this.setState({
+	        num: "",
+	        vmsStatus: ""
+	      });
+	    }
+	  }, {
+	    key: 'lightOn',
+	    value: function lightOn() {
+	      _TsvService2.default.setLights(this.state.machineNumber, true, function () {});
+	    }
+	  }, {
+	    key: 'lightOff',
+	    value: function lightOff() {
+	      _TsvService2.default.setLights(this.state.machineNumber, false, function () {});
+	    }
+	  }, {
+	    key: 'clear',
+	    value: function clear() {
+	      this.setState({
+	        num: ""
+	      });
+	    }
+	  }, {
+	    key: 'press',
+	    value: function press(digit) {
+	      var num = this.state.num + digit.toString();
+	      if (this.state.num.length < this.state.maxChars) {
+	        this.setState({
+	          num: num
+	        });
+	      }
+	    }
+
+	    // Add change listeners to stores
+
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      _TsvService2.default.subscribe("notifyVmsEvent", function (eventArgs) {
+	        if (_reactRouter.browserHistory.push() !== "/Admin_Jofemar_Exerciser") return;
+	        _this2.setState({
+	          vmsStatus: _this2.state.vmsStatus + eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')'
+	        });
+	      }, "app.jofemarExerciser");
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _TsvService2.default.unsubscribe("notifyVmsEvent", "app.jofemarExerciser");
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        { className: 'Admin_Jofemar_Exerciser' },
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            { id: 'instruction' },
+	            'Exerciser Jofemar'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.state.vmsStatus
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { style: { width: '50%', margn: '0 auto' } },
+	            _RootscopeStore2.default.getCache('machineList').length > 1 ? _react2.default.createElement(_E.FormSelect, { name: 'selectMachine', value: this.state.machineID, options: this.getMachineSelectOptions() }) : null,
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/2', md: '1/2', lg: '1/2' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.lightOn },
+	                  Translate.translate('Admin_Jofemar_Exerciser', 'LightOn')
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/2', md: '1/2', lg: '1/2' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.lightOff },
+	                  Translate.translate('Admin_Jofemar_Exerciser', 'LightOff')
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 1) },
+	                  '1'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 2) },
+	                  '2'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 3) },
+	                  '3'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 4) },
+	                  '4'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 5) },
+	                  '5'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 6) },
+	                  '6'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 7) },
+	                  '7'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 8) },
+	                  '8'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 9) },
+	                  '9'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { type: 'warning', onClick: this.clear.bind(this) },
+	                  'Clear'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 0) },
+	                  '0'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { type: 'primary', onClick: this.vend.bind(this) },
+	                  'Vend'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                null,
+	                _react2.default.createElement(
+	                  'p',
+	                  null,
+	                  'selection: ',
+	                  this.state.num
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/Admin_Home' },
+	              Translate.translate('Admin_Home', 'Home')
+	            ) })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Admin_Jofemar_Exerciser;
+	}(_react.Component);
+
+	exports.default = Admin_Jofemar_Exerciser;
 
 /***/ }
 /******/ ]);
