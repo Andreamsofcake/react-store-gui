@@ -5,59 +5,50 @@ import StorefrontActions from '../actions/StorefrontActions'
 
 class ShoppingCartItem extends Component {
 
-  clickHandler(e){
-      this.props.onClick(this.props.data)
+  minusQty() { // c
+    StorefrontActions.minusQty( this.props.data ) // , prd.coilNumber
   }
 
-  minusQty(c) {
-    StorefrontActions.minusQty(c)
+  removeAllQty() { // c, q
+    StorefrontActions.removeAllQty( this.props.data ) // , prd.coilNumber, prd.qtyInCart
   }
 
-  removeAllQty(c, q) {
-    StorefrontActions.removeAllQty(c, q)
+  addQty() { // c
+    StorefrontActions.addQty( this.props.data ) // prd.coilNumber
   }
-
-  addQty(c) {
-    StorefrontActions.addQty(c)
+  
+  productDetail() {
+  	browserHistory.push('/Product_Detail/' + this.props.data.productID);
   }
-
 
   render() {
-    var prd = this.props.data
+    var prd = this.props.data;
     return (
-      <_E.Row className="cart shoppingCart shoppingCartItem">
-			<_E.Col className="cart shopping-cart-image" sm="25%" md="15%" lg="15%">
+      <_E.Row className="shoppingCartItem">
 
-				<_E.Button type="danger" onClick={this.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart)}><_E.Glyph icon="circle-slash" /></_E.Button>
-				<img src={prd.imagePath} /> {/*err-src="../Images/ProductImageNotFound.png"*/}
+			<_E.Col sm="7%" md="6%" lg="5%">
+				<_E.Button type="danger" onClick={this.removeAllQty.bind(this)}><strong>X</strong></_E.Button>
+			</_E.Col>
+
+			<_E.Col className="shopping-cart-list-image" sm="18%" md="19%" lg="20%" onClick={this.productDetail.bind(this)} style={{textAlign: 'center'}}>
+
+				<img className="boxShadowed" src={prd.imagePath} /> {/*err-src="../Images/ProductImageNotFound.png"*/}
 
 			</_E.Col>
 
-			<_E.Col className="cart shopping-cart-table" xs="25%" sm="25%" md="25%" lg="25%">{ prd.productName }</_E.Col>
+			<_E.Col className="cart shopping-cart-table" xs="42%" sm="37%" md="39%" lg="42%" onClick={this.productDetail.bind(this)}>{ prd.productName }</_E.Col>
 
-			<_E.Col className="cart shopping-cart-table" xs="8%" sm="8%" md="8%" lg="8%">{ TsvService.currencyFilter(prd.price * prd.qtyInCart) }</_E.Col>
+			<_E.Col className="cart shopping-cart-table" xs="8%" sm="13%" md="13%" lg="13%" style={{textAlign: 'right'}}>${ TsvService.currencyFilter(prd.price * prd.qtyInCart) }</_E.Col>
 
-			<_E.Col xs="20%" sm="20%" md="20%" lg="20%" className="cart">
+			<_E.Col xs="20%" sm="25%" md="23%" lg="20%" className="productQuantity" style={{textAlign: 'right'}}>
 
-
-					<_E.Row>
-
-						<_E.Col sm="1/3" className="shopping-cart-item"><_E.Button  type="primary" onClick={this.addQty.bind(null, prd.coilNumber)}><_E.Glyph icon="plus" /></_E.Button></_E.Col>
-						{/*<img className="smallImg" src="../Images/minus.png" onClick={this.minusQty.bind(this, prd.coilNumber)}>*/}
-
-						<_E.Col className="shopping-cart-item" sm="1/3">{ prd.qtyInCart}</_E.Col>
-
-						<_E.Col sm="1/3" className="shopping-cart-item"><_E.Button className="shopping-cart-button" type="primary" onClick={this.minusQty.bind(null, prd.coilNumber)}><_E.Glyph icon="dash" /></_E.Button></_E.Col>
-						{/*<img className="smallImg" src="../Images/add.png" onClick={this.addQty.bind(this, prd.coilNumber)}>*/}
-
-					</_E.Row>
-
+				<_E.Button type="primary" size="sm" onClick={this.minusQty.bind(this)}><_E.Glyph icon="dash" /></_E.Button>
+				&nbsp;{' '}{ prd.qtyInCart }{' '}&nbsp;
+				<_E.Button  type="primary" size="sm" onClick={this.addQty.bind(this)}><_E.Glyph icon="plus" /></_E.Button>
 
 			</_E.Col>
 
-			<_E.Col xs="20%" sm="20%" md="20%" lg="20%" className="cart"><_E.Button type="danger" onClick={this.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart)}><_E.Glyph icon="circle-slash" /></_E.Button></_E.Col>
-			{/*<img className="smallImg" src="../Images/remove.png" onClick={this.removeAllQty.bind(this, prd.coilNumber, prd.qtyInCart)}>*/}
-		  </_E.Row>
+		</_E.Row>
     );
   }
 

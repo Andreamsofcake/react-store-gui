@@ -116,8 +116,7 @@ class App extends Component {
 			<_E.Row gutter={-20}>
 				<_E.Col className="route-content">
 					{this.props.children || (<div>
-						<_E.Button component={(<Link to="/View2">View 2</Link>)} />
-						<_E.Button component={(<Link to="/Category_Search">Cat Search</Link>)} />
+						<_E.Button component={(<Link to="/Storefront">Storefront</Link>)} />
 						</div>)}
 				</_E.Col>
 			</_E.Row>

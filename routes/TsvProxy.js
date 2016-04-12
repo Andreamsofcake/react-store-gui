@@ -58,11 +58,11 @@ function handleCannedApiResponse(request, reply) {
 		, prodExtras = { "stockCount": 30, "inventoryCount": 30, "isEmpty": false, "coilNumber": "N/A", "productCategory": null, "productType": "PRODUCT_RECORD", "Attributes": {} }
 
 		, cats = [
-			{"categoryID":10,"parentCategoryID":0,"categoryName":"Flower","categoryDescription":"Cannabis flower products","imagePath":"/gfx/Categories/618_CategoryImage1.jpg"},
-			{"categoryID":11,"parentCategoryID":0,"categoryName":"Edibles","categoryDescription":"Edible cannabis","imagePath":"/gfx/Categories/619_CategoryImage1.jpg"},
-			{"categoryID":12,"parentCategoryID":0,"categoryName":"CBD","categoryDescription":"Medical CBD - non psychoactive","imagePath":"/gfx/Categories/619_CategoryImage1.jpg"},
-			{"categoryID":13,"parentCategoryID":0,"categoryName":"Extracts and Concentrates","categoryDescription":"Wax, shatter, bubble hash, etc.","imagePath":"/gfx/Categories/619_CategoryImage1.jpg"},
-			{"categoryID":14,"parentCategoryID":0,"categoryName":"Vapor","categoryDescription":"E-Vapes and other similar products","imagePath":"/gfx/Categories/619_CategoryImage1.jpg"},
+			{"categoryID":10,"parentCategoryID":0,"categoryName":"Flower","categoryDescription":"Cannabis flower products","imagePath":"/gfx/Categories/"},
+			{"categoryID":11,"parentCategoryID":0,"categoryName":"Edibles","categoryDescription":"Edible cannabis","imagePath":"/gfx/Categories/"},
+			{"categoryID":12,"parentCategoryID":0,"categoryName":"CBD","categoryDescription":"Medical CBD - non psychoactive","imagePath":"/gfx/Categories/"},
+			{"categoryID":13,"parentCategoryID":0,"categoryName":"Extracts","categoryDescription":"Wax, shatter, bubble hash, etc.","imagePath":"/gfx/Categories/"},
+			{"categoryID":14,"parentCategoryID":0,"categoryName":"Vapor","categoryDescription":"E-Vapes and other similar products","imagePath":"/gfx/Categories/"},
 		]
 		, response
 		, default_cart = {"summary":{"discount":0,"discount1":0,"netDiscount":0,"subTotalPrice":0,"netSubTotalPrice":0,"TotalPrice":0,"netTotalPrice":0,"salesTaxRate":0,"salesTaxAmount":0,"netSalesTaxAmount":0,"shippingAmount":0,"vendItemCount":0,"dropshipItemCount":0,"maxItemCount":1,"maxDollarValue":10000,"vendFailCount":0},"detail":[]}
@@ -188,6 +188,11 @@ function handleCannedApiResponse(request, reply) {
 							}
 						}
 					}
+					test_cart.summary.TotalPrice = 0;
+					test_cart.detail.forEach( P => {
+						test_cart.summary.TotalPrice += P.price * P.qtyInCart;
+						test_cart.summary.vendItemCount += P.qtyInCart;
+					});
 					request.yar.set('test-shopping-cart', test_cart);
 				}
 				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
@@ -206,6 +211,12 @@ function handleCannedApiResponse(request, reply) {
 							cartItem.qtyInCart += 1;
 						}
 					}
+
+					test_cart.summary.TotalPrice = 0;
+					test_cart.detail.forEach( P => {
+						test_cart.summary.TotalPrice += P.price * P.qtyInCart;
+						test_cart.summary.vendItemCount += P.qtyInCart;
+					});
 					request.yar.set('test-shopping-cart', test_cart);
 				}
 				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
@@ -229,6 +240,12 @@ function handleCannedApiResponse(request, reply) {
 							});
 						}
 					}
+
+					test_cart.summary.TotalPrice = 0;
+					test_cart.detail.forEach( P => {
+						test_cart.summary.TotalPrice += P.price * P.qtyInCart;
+						test_cart.summary.vendItemCount += P.qtyInCart;
+					});
 					request.yar.set('test-shopping-cart', test_cart);
 				}
 				response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};

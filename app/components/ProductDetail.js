@@ -16,7 +16,8 @@ import * as _E from 'elemental'
      super(props, context);
      this.state = {
 		loadedAtLeastOnce: false,
-       product : {}
+		modalIsOpen: false,
+		product : {}
      }
      this._onStoreFrontChange = this._onStoreFrontChange.bind(this);
    };
@@ -26,7 +27,7 @@ import * as _E from 'elemental'
      StorefrontStore.addChangeListener(this._onStoreFrontChange);
      this.setState({
      	loadedAtLeastOnce: true,
-       product: StorefrontStore.getProductById(this.props.params.productID)
+		product: StorefrontStore.getProductById(this.props.params.productID)
      })
    }
 
@@ -40,8 +41,15 @@ import * as _E from 'elemental'
 			StorefrontActions.addToCart(this.state.product);
 		}
    }
+
    _onStoreFrontChange() {
 
+   }
+   
+   toggleModal() {
+	this.setState({
+		modalIsOpen: !(this.state.modalIsOpen)
+	});
    }
 
    render() {
@@ -52,7 +60,7 @@ import * as _E from 'elemental'
    			return (
 			   <_E.Row >
 				 <_E.Col>
-				 {this.renderMiniCart()}
+				 <ShoppingCartMini className="scart-mini" />
 				 <h2>Sorry, that product was not found.</h2>
 				 <_E.Button size="lg" type="default-success" component={(<Link to="/Help">{Translate.translate('Shopping_Cart','Get_Some_Help')}</Link>)} />
 				 {' '}
@@ -66,7 +74,7 @@ import * as _E from 'elemental'
    		return (
 			   <_E.Row >
 				 <_E.Col>
-				 {this.renderMiniCart()}
+				 <ShoppingCartMini className="scart-mini" />
 				 <h1>Searching, one moment please...</h1>
 				 <_E.Spinner />
 				 </_E.Col>
@@ -75,29 +83,41 @@ import * as _E from 'elemental'
    		
    	}
    	
+     let prod = this.state.product;
      return (
        <_E.Row >
-         <_E.Col>
-         {this.renderMiniCart()}
-           <h2 style={{marginBottom:0,marginTop:'1em',fontSize:'2.7em'}}>{this.state.product.productName}</h2>
+        <_E.Col>
+		  <ShoppingCartMini className="scart-mini" />
+          <_E.Row>
+			 <_E.Col className="productDetailHeader">
+			   <h2 style={{marginBottom:0,marginTop:'1em',fontSize:'2.7em'}}>{prod.productName}</h2>
+            	<p>{prod.description}</p>
+			 </_E.Col>
+          </_E.Row>
          </_E.Col>
          <_E.Col>
-           <div className="product" >
-               <div className="product_name" style={{maxWidth:'50%'}}>
-                 {/*<h2 style={{marginTop:0}}>{this.state.product.productName}</h2>*/}
-                 <p>{this.state.product.description}</p>
-               </div>
+           <div className="productDetailBody">
                <_E.Row>
                  <_E.Col basis="50%" className="product-preview">
-                   <img src={this.state.product.imagePath} title={this.state.product.description}/>
+                   <img src={prod.imagePath} title={prod.description} className="boxShadowed" onClick={this.toggleModal.bind(this)} />
                  </_E.Col>
                  <_E.Col basis="50%">
-                   <p className="prdPrice">Price ${TsvService.currencyFilter(this.state.product.price)} </p>
+                   <p className="prdPrice">Price ${TsvService.currencyFilter(prod.price)} </p>
                    <_E.Button className="product-button" onClick={this.setPrdSelected.bind(this)}>Add to cart</_E.Button>
+                   <hr style={{margin: '20px auto'}} />
+                   <_E.Button size="sm" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
                  </_E.Col>
                </_E.Row>
            </div>
          </_E.Col>
+         {prod.imagePath ? (
+         	<_E.Modal isOpen={this.state.modalIsOpen} backdropClosesModal={true}>
+         		<_E.ModalHeader text="Image Detail" showCloseButton={true} onClose={this.toggleModal.bind(this)} />
+         		<_E.ModalBody>
+	         		<img src={prod.imagePath} title={prod.description} className="productImageModalDetailView" />
+         		</_E.ModalBody>
+         	</_E.Modal>         	
+         ) : null}
        </_E.Row>
      );
    }

@@ -116,8 +116,13 @@ class ComEmulator extends Component {
 			},
 		];
 		
+		var pathname = '';
+		if (typeof window !== 'undefined') {
+			pathname = window.location.pathname.replace('/', '');
+		}
+		
 		let showButtons = buttons.filter( B => {
-			return B.showFor.indexOf( this.state.currentView ) > -1;
+			return pathname !== 'Cash_Card' && B.showFor.indexOf( pathname ) > -1;
 		});
 		
 		if (!showButtons.length) {
