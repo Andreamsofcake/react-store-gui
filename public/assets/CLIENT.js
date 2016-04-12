@@ -49967,7 +49967,7 @@
 	          null,
 	          _react2.default.createElement(
 	            _E.Col,
-	            { sm: '1/3' },
+	            { sm: '1/2' },
 	            _react2.default.createElement(
 	              'p',
 	              { className: 'prdPrice' },
@@ -49976,10 +49976,9 @@
 	              ' '
 	            )
 	          ),
-	          _react2.default.createElement(_E.Col, { sm: '1/3' }),
 	          _react2.default.createElement(
 	            _E.Col,
-	            { sm: '1/3' },
+	            { sm: '1/2' },
 	            _react2.default.createElement(
 	              _E.Button,
 	              { className: 'product-button', onClick: this.clickHandler.bind(this) },
@@ -50373,7 +50372,7 @@
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'container' },
+	            { className: 'slider-container' },
 	            _react2.default.createElement(
 	              _reactSlick2.default,
 	              settings,
@@ -50405,14 +50404,16 @@
 	          prods.push(P);
 	        }
 	      });
-
+	      var stack = [];
 	      while (prods.length) {
-	        return _react2.default.createElement(
+	        var sorted = prods.splice(0, 9);
+	        stack.push(_react2.default.createElement(
 	          _E.Row,
 	          null,
-	          this.renderProductGroup(prods.splice(0, 9))
-	        );
+	          this.renderProductGroup(sorted)
+	        ));
 	      }
+	      return stack;
 	    }
 	  }, {
 	    key: 'renderProductGroup',
@@ -50422,7 +50423,7 @@
 	      return products.map(function (prd, idx) {
 	        return _react2.default.createElement(
 	          _E.Col,
-	          { key: idx, xs: '1/2', sm: '1/3', md: '1/4', lg: '1/4' },
+	          { key: idx, xs: '1/2', sm: '1/2', md: '1/3', lg: '1/3' },
 	          _react2.default.createElement(_ProductListItem2.default, {
 	            onClick: _this4.setPrdSelected.bind(_this4),
 	            data: prd })
@@ -50602,6 +50603,7 @@
 	          _E.Col,
 	          null,
 	          this.renderMiniCart(),
+	          this.renderBack(),
 	          _react2.default.createElement(
 	            'h2',
 	            { style: { marginBottom: 0, marginTop: '1em', fontSize: '2.7em' } },
@@ -50658,6 +50660,23 @@
 	      /**** TODO: FIXME: this needs to be a css class, not embedded: ************/
 	      /**** ALSO: FIXME: ShoppingCartMini has the same problem: ************/
 	      return _react2.default.createElement(_ShoppingCartMini2.default, { className: 'scart-mini' });
+	    }
+	  }, {
+	    key: 'renderBack',
+	    value: function renderBack() {
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(_E.Button, { size: 'lg', type: 'success', component: _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/Storefront' },
+	              Translate.translate('Shopping_Cart', 'Shop_More')
+	            ) })
+	        )
+	      );
 	    }
 	  }]);
 

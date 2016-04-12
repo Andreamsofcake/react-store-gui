@@ -40,14 +40,15 @@ import * as _E from 'elemental'
 			StorefrontActions.addToCart(this.state.product);
 		}
    }
+
    _onStoreFrontChange() {
 
    }
 
    render() {
-   	
+
    	if (!this.state.product) {
-   		
+
    		if (this.state.loadedAtLeastOnce) {
    			return (
 			   <_E.Row >
@@ -62,7 +63,7 @@ import * as _E from 'elemental'
 			   </_E.Row>
    			);
    		}
-   		
+
    		return (
 			   <_E.Row >
 				 <_E.Col>
@@ -72,13 +73,14 @@ import * as _E from 'elemental'
 				 </_E.Col>
 			   </_E.Row>
    		);
-   		
+
    	}
-   	
+
      return (
        <_E.Row >
          <_E.Col>
          {this.renderMiniCart()}
+         {this.renderBack()}
            <h2 style={{marginBottom:0,marginTop:'1em',fontSize:'2.7em'}}>{this.state.product.productName}</h2>
          </_E.Col>
          <_E.Col>
@@ -101,13 +103,22 @@ import * as _E from 'elemental'
        </_E.Row>
      );
    }
-   
+
    renderMiniCart() {
 	   /**** TODO: FIXME: this needs to be a css class, not embedded: ************/
 	   /**** ALSO: FIXME: ShoppingCartMini has the same problem: ************/
    	return (
           <ShoppingCartMini className="scart-mini" />
 		);
+   }
+   renderBack() {
+     return (
+       <_E.Row>
+        <_E.Col>
+          <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
+        </_E.Col>
+       </_E.Row>
+     );
    }
 
  }

@@ -27,12 +27,10 @@ class ProductListItem extends Component {
 
               </div>
               <_E.Row>
-                <_E.Col sm="1/3">
+                <_E.Col sm="1/2">
                   <p className="prdPrice">${TsvService.currencyFilter(product.price)} </p>
                 </_E.Col>
-                <_E.Col sm="1/3">
-                </_E.Col>
-                <_E.Col sm="1/3">
+                <_E.Col sm="1/2">
                   <_E.Button className="product-button" onClick={this.clickHandler.bind(this)}>Add</_E.Button>
                 </_E.Col>
               </_E.Row>

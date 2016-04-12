@@ -114,7 +114,7 @@ class Storefront_Carousel extends Component {
             </_E.ButtonGroup>
             </_E.Col>
           </_E.Row>
-              <div className='container'>
+              <div className='slider-container'>
                 <Slider {...settings}>
                 	{this.renderProducts()}
                 </Slider>
@@ -143,20 +143,22 @@ class Storefront_Carousel extends Component {
           prods.push(P)
       }
     })
-
+    var stack = []
     while(prods.length) {
-      return (
+      let sorted = prods.splice(0,9)
+      stack.push((
             <_E.Row >
-            {this.renderProductGroup(prods.splice(0,9))}
+            {this.renderProductGroup(sorted)}
             </_E.Row>
-      );
+      ));
     }
+    return stack
   }
 
   renderProductGroup(products){
     return products.map((prd, idx) => {
       return (
-        <_E.Col key={idx} xs="1/2" sm="1/3" md="1/4" lg="1/4">
+        <_E.Col key={idx} xs="1/2" sm="1/2" md="1/3" lg="1/3">
         <ProductListItem
         onClick={this.setPrdSelected.bind(this)}
         data={prd} />
