@@ -50672,7 +50672,7 @@
 	          null,
 	          _react2.default.createElement(_E.Button, { size: 'lg', type: 'success', component: _react2.default.createElement(
 	              _reactRouter.Link,
-	              { to: '/Storefront' },
+	              { to: '/Storefront_Carousel' },
 	              Translate.translate('Shopping_Cart', 'Shop_More')
 	            ) })
 	        )
