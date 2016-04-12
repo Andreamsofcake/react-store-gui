@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
-import Slider from 'react-slick';
+
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import StorefrontActions from '../actions/StorefrontActions'
@@ -12,12 +12,12 @@ import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
 import ShoppingCartMini from './ShoppingCartMini'
 
-class Storefront extends Component {
+class Storefront_Static extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-
+    //RootscopeActions.setSession('currentView', 'Storefront');
     this.state = {
       categoryIdFilter:[],
       products: [],
@@ -87,12 +87,11 @@ class Storefront extends Component {
   }
 
   render() {
-
     let allType = !this.state.categoryIdFilter.length ? "primary": "hollow-primary"
     return (
       <_E.Row >
         <_E.Col>
-		        <ShoppingCartMini className="scart-mini" />
+		  <ShoppingCartMini className="scart-mini" />
           <_E.Row>
               <h2>Storefront</h2>
           </_E.Row>
@@ -112,71 +111,41 @@ class Storefront extends Component {
             </_E.ButtonGroup>
             </_E.Col>
           </_E.Row>
-              <div className="product-container">
-                	{this.renderProducts()}
-              </div>
-       </_E.Col>
+	      {this.renderProducts()}
+        </_E.Col>
       </_E.Row>
     );
   }
 
-
   renderProducts(){
-    var settings = {
-    	dots: true
-    }
-    var products_per_page = 12
-    // for each item that is shown
     if (!this.state.products.length) {
       return null;
     }
-    let prods = []
-    this.state.products.map( (P, $index) => {
-      let show = true;
-      if (this.state.categoryIdFilter.length) {
-        if (this.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
-          show = false;
-        }
-      }
-      if (show) {
-          prods.push(P)
-      }
+    let prods = this.state.products.map( (P, idx) => {
+    	let show = true;
+    	if (this.state.categoryIdFilter.length) {
+    		if (this.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
+    			show = false;
+    		}
+    	}
+    	if (show) {
+    		return (
+			  <_E.Col key={idx} xs="1/2" sm="1/3" md="1/4" lg="1/4">
+				<ProductListItem
+				onClick={this.setPrdSelected.bind(this)}
+				data={P} />
+			  </_E.Col>
+    		);
+    	}
+    	return null;
     })
-    if (prods <= products_per_page) {
-      return (
-        <_E.Row>
-      	 {prods}
-        </_E.Row>
-      )
-    } else {
-      var stack = []
-      while(prods.length) {
-        let sorted = prods.splice(0, products_per_page)
-        stack.push((
-              <_E.Row className="slider-rows">
-              {this.renderProductGroup(sorted)}
-              </_E.Row>
-        ));
-      }
-      return (
-        <Slider {...settings}>
-          {stack}
-        </Slider>
-      )
-    }
-  }
 
-  renderProductGroup(products){
-    return products.map((prd, idx) => {
-      return (
-        <_E.Col key={idx} xs="1/2" sm="1/2" md="1/3" lg="1/3">
-        <ProductListItem
-        onClick={this.setPrdSelected.bind(this)}
-        data={prd} />
-        </_E.Col>
-      );
-    })
+    return (
+      <_E.Row >
+    	{prods}
+      </_E.Row>
+    );
   }
 
 }
-export default Storefront
+export default Storefront_Static

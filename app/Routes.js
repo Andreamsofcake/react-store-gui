@@ -14,6 +14,7 @@ import AdminSettings from './components/AdminSettings'
 
 import CustomerSignup from './components/CustomerSignup'
 import CustomerLogin from './components/CustomerLogin'
+import StorefrontStatic from './components/StorefrontStatic'
 import Storefront from './components/Storefront'
 import ProductDetail from './components/ProductDetail'
 import TransactionRefund from './components/TransactionRefund'
@@ -47,6 +48,7 @@ export default (
 		<Route path='Customer_Login' component={CustomerLogin} />
 		<Route path='Customer_Login/:step' component={CustomerLogin} />
 
+		<Route path='Storefront_Static' component={StorefrontStatic} />
 		<Route path='Storefront' component={Storefront} />
 		<Route path='Product_Detail/:productID' component={ProductDetail} />
 		<Route path='Transaction_Refund' component={TransactionRefund} />
