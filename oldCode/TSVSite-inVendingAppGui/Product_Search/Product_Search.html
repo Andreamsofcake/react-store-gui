@@ -1,0 +1,54 @@
+<div class="Product_Search">
+    {/* Andrea refactor 3/14.*/}
+    <!--<img class="logo" id="smallLogo" ng-src='Images/logo.png' ng-click="logoClicked()">-->
+
+    <table ng-show= "bDisplayCgry" id="displayCategories">
+
+        <tr class="nav">
+
+            <td class = "gallery" ng-repeat="category in categories" ng-class="{'active':isActive($index)}">
+
+                <img ng-src="{{category.imagePath}}" alt="{{category.description}}" title="{{category.description}}" ng-click="updateCategory({{category.categoryID}});" />
+
+            </td>
+
+        </tr>
+
+    </table>
+
+    <h2>{{translate('SelectProduct')}}</h2>
+
+    <!-- slider container -->
+    <div class="container_slider">
+
+        <!-- enumerate all photos -->
+        <!--<img ng-repeat="product in products" class="slide" ng-swipe-right="showPrev()" ng-swipe-left="showNext()" ng-show="isActive($index)" ng-src="{{product.imagePath}}" />-->
+
+        <!-- prev / next controls
+        <div class="arrow prev" href="#" ng-click="showPrev()"></div>
+        <div class="arrow next" href="#" ng-click="showNext()"></div>-->
+
+        <!-- extra navigation controls-->
+        <ul class="flex-container">
+
+            <li class = "flex-item" ng-repeat="product in products" ng-class="{'active':isActive($index)}" style="{{setOpacity(product.stockCount)}}">
+
+                <figure id="prdImg{{$index}}" ng-click="setPrdSelected({{product.productID}}, {{product.stockCount}}, $index);">
+
+                    <figcaption>{{product.productName}}</figcaption>
+
+                    <img ng-src="{{product.imagePath}}" alt="{{product.description}}" title="{{product.description}}" />
+
+                    <p class="prdPrice">{{ currencyFilter(product.price) }}</p>
+
+                </figure>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <img class="regularBtn" id="backImg" ng-if="bShowBackBtn" id="back" ng-src="{{localizedImage('back.png')}}" err-src="../Images/ViewCart.png" alt="back" ng-click="back()">
+
+</div>

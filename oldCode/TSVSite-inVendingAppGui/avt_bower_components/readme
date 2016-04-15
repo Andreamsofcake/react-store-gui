@@ -1,0 +1,4 @@
+Author: Milan Alvarado
+This sub-directory is set up specifically for bower-components requiring custom/manual install. If we can prove that the
+up to date components are stable, and do not require custom setups, then we can redirect HTML pages to consume js in the
+bower_components directory.

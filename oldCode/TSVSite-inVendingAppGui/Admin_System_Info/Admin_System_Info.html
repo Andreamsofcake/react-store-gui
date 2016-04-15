@@ -1,0 +1,27 @@
+<div class="systemInfo">
+
+    <h2>{{translate('SystemInfo')}}</h2>
+
+    <div id = wrapper>
+
+        <table class ="systemInfo">
+
+            <tr ng-repeat="versionInfo in versionInfos" class="systemInfo">
+
+                <th class="systemInfo">
+                    {{ versionInfo.name }}
+                </th>
+
+                <td class="systemInfo">
+                    {{ versionInfo.versionString }}
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
+
+</div>

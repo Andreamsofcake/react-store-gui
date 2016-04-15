@@ -32,3 +32,7 @@ node_modules
 
 # Ignore local config overrides
 local_config.js
+
+# webpack thing
+stats.generated.json
+simulatorMatch*

@@ -1,0 +1,18 @@
+{
+  "name": "angular-tweenmax",
+  "version": "0.0.5",
+  "authors": [
+    "Pepijn Senders <p.senders92@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "greensock": "~1.14.2"
+  }
+}

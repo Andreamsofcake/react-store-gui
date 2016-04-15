@@ -1,0 +1,113 @@
+<div class="Category_Search">
+
+    <!--<img class="logo" id="bigLogo" ng-src='Images/logo.png'>-->
+
+    <button id="adminBtn" ng-show="true" ng-click="admin()"></button>
+
+    <h2>{{translate('SelectCategory')}}</h2>
+
+    <!--<img class="arrow prev" ng-src="Images/prev.png" alt="prev" ng-click="showPrev()">
+    <img class="arrow next" ng-src="Images/next.png" alt="next" ng-click="showNext()">-->
+
+    <!-- slider container-->
+    <div class="container_slider">
+
+        <ul class="nav">
+
+            <li class = "gallery" ng-repeat="category in categories">
+
+                <figure ng-click="setPrdSelected({{product.productID}});">
+
+                    <figcaption ng-if="bShowCgryTitle">{{category.categoryName}}</figcaption>
+
+                    <img id="img{{$index}}" ng-src="{{category.imagePath}}" alt="{{category.description}}" title="{{category.description}}" ng-click="fetchCategory({{category.categoryID}});" />
+
+                </figure>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!--<div class = "gallery">
+
+        <!--<div class = "img" ng-repeat="category in categories" ng-style="myStyle">
+
+        <div class = "img" ng-repeat="category in categories">
+
+        <!--<div class = "img" ng-repeat="category in categories" style="{{setPosition($index)}}">
+
+            <figure ng-click="setPrdSelected({{product.productID}});">
+
+                <figcaption ng-if="bShowCgryTitle">{{category.categoryName}}</figcaption>
+
+                <img id="img{{$index}}" ng-src="{{category.imagePath}}" alt="{{category.description}}" title="{{category.description}}" ng-click="fetchCategory({{category.categoryID}});" />
+
+            </figure>
+
+        </div>
+
+    </div>-->
+
+    <img class="regularBtn" id="backImg" ng-show="bSubCgry" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="back()">
+
+</div>
+
+
+<style>
+    .Category_Search{
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
+    .img{
+        display: inline;
+    }
+
+    .Category_Search div.img img {
+        display: inline;
+        margin: 5px;
+        width:250px;
+        height: 250px;
+    }
+            /*.Category_Search div.gallery {
+                -webkit-column-count: 2;
+                -webkit-column-gap: 20px;
+                -moz-column-count: 2;
+                -moz-column-gap: 20px;
+                column-count:2;
+                column-gap:20px;
+
+                position:absolute;
+                top:150px;
+            }
+
+            .Category_Search .gallery div {
+                text-align: center;
+            }
+
+            .Category_Search div.img {
+                margin: 12px 18px;
+                padding: 0px;
+                height: auto;;
+                width: auto;
+                float: left;
+                text-align: center;
+            }
+
+            .Category_Search div.img img {
+                display: inline;
+                margin: 5px;
+                width:250px;
+                height: 250px;
+            }
+
+            .Category_Search div.img a:hover img {
+            }
+
+            .Category_Search .gallery{
+                position:absolute;
+                top:150px;
+            }*/
+        </style>

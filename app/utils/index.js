@@ -59,3 +59,35 @@ export function cleanString(str, nodash) {
 		return clean;
 	}
 }
+
+/**
+ * moneyformat(amount, n, x, s, c)
+ * 
+ * @param number  amount to format
+ * @param integer n: length of decimal
+ * @param mixed   s: sections delimiter
+ * @param mixed   c: decimal delimiter
+ * @param integer x: length of whole part
+ *
+ * borrowed from: http://stackoverflow.com/questions/149055/how-can-i-format-numbers-as-money-in-javascript
+ */
+export function moneyformat(amount, n, s, c, x) {
+    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\D' : '$') + ')',
+        num = amount.toFixed(Math.max(0, ~~n));
+
+    return (c ? num.replace('.', c) : num).replace(new RegExp(re, 'g'), '$&' + (s || ','));
+};
+
+/**
+ * Generate unique guid ID
+ * @function uniq
+ * @returns {string} uniq gui-ish ID
+ */
+export function uniq() {
+	var uniq = Math.random() + '',
+		ts = new Date().getTime();
+	uniq = uniq.split('.');
+	uniq = uniq[ uniq.length-1 ];
+	uniq = uniq.substr(0, 5);
+	return uniq;
+}

@@ -1,0 +1,17 @@
+<div class="cash">
+
+    <img id="prdImg" ng-src="{{ item.imagePath }}" alt="productImage">
+
+    <div id = "cashMsg">
+        <p>Total: {{ summary.TotalPrice | currency }}</p>
+
+        <p>Inserted: {{ insertedAmount | currency }}</p>
+    </div>
+
+    <p id="hint">{{ hintMsg }}</p>
+
+    <img id="cancelImg" src="../Images/cancel.png" ng-show="showCancelBtnCash" ng-click="cancel()">
+
+    <canvas id="spinner"></canvas>
+
+</div>

@@ -34,37 +34,37 @@ function renderComponentWithRoot(Component, componentProps, initialData) {
 	
 }
 
-function handle404(res) {
+function handle404(reply) {
 	const wholeHtml = renderComponentWithRoot(NoMatch);
-	res.status(404).send(wholeHtml);
+	reply(wholeHtml).code(404);
 }
 
-function handleError(res, error) {
-	res.status(500).send(error.message);
+function handleError(reply, error) {
+	reply(error.message).code(500);
 }
 
-function handleRedirect(res, redirectLocation) {
-	res.redirect(302, redirectLocation.pathname + redirectLocation.search);
+function handleRedirect(reply, redirectLocation) {
+	reply.redirect(302, redirectLocation.pathname + redirectLocation.search);
 }
 
-function handleRoute(res, renderProps) {
+function handleRoute(reply, renderProps) {
 
-	const isDeveloping = process.env.NODE_ENV !== 'production';
+	//const isDeveloping = process.env.NODE_ENV !== 'production';
 	const routeProps = getPropsFromRoute(renderProps, ['requestState']);
 
-	function renderPage(response) {
-		const wholeHtml = renderComponentWithRoot(RouterContext, renderProps, response);
-		res.status(200).send(wholeHtml);
+	function renderPage(reply) {
+		const wholeHtml = renderComponentWithRoot(RouterContext, renderProps, reply);
+		reply(wholeHtml).code(200);
 	}
 
 	if (routeProps.requestState) {
 		routeProps.requestState().then(renderPage);
 	} else {
-		renderPage();
+		renderPage(reply);
 	}
 }
 
-function ServerRouter(req, res, next) {
+function ServerRouter(req, reply, next) {
 
 	match({ routes: Routes, location: req.url }, (error, redirectLocation, renderProps) => {
 		
@@ -87,15 +87,15 @@ function ServerRouter(req, res, next) {
 			if (error) {
 				console.log(' >>>>> error');
 				handleError(error);
-			} else if (res, redirectLocation) {
+			} else if (reply, redirectLocation) {
 				console.log(' >>>>> redirect');
-				handleRedirect(res, redirectLocation)
+				handleRedirect(reply, redirectLocation)
 			} else if (renderProps) {
 				console.log(' >>>>> renderProps');
-				handleRoute(res, renderProps);
+				handleRoute(reply, renderProps);
 			} else {
 				console.log(' >>>>> 404');
-				handle404(res);
+				handle404(reply);
 			}
 		}
 	});
@@ -105,6 +105,6 @@ function ServerRouter(req, res, next) {
 // found this is babel 5.x (keystone) vs babel 6 (newest release)
 // http://stackoverflow.com/questions/33505992/babel-6-changes-how-it-exports-default?lq=1
 // http://stackoverflow.com/questions/33500598/es6-export-default-imports-into-default-object
-export default ServerRouter;
+//export default ServerRouter;
 // old method was working, we are not in keystone for this app though so hopefully the (above) new way works?
-//module.exports = ServerRouter;
+module.exports = ServerRouter;

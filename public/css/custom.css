@@ -1,0 +1,70 @@
+/** Category_Search **/
+
+.Category_Search{
+		overflow-x: hidden;
+		overflow-y: hidden;
+}
+
+.img{
+		display: inline;
+}
+
+.Category_Search div.img img {
+		display: inline;
+		margin: 5px;
+		width:250px;
+		height: 250px;
+}
+
+/** end Category_Search **/
+
+/* from keyboard */
+.keyboard .btns{
+	display: inline-block;
+}
+#keyboard{
+	margin-top:300px;
+}
+.keyboard{
+	text-align: center;
+}
+.kb{
+	background-color: greenyellow;
+}
+
+.keyboard #keyboard{
+}
+.keyboard #kbInput{
+	width: 90%;;
+	text-align: center;
+	font-size: 20pt;
+	background-color:white;
+	color:black;
+	position: fixed;
+	top: 25%;
+	left: 5%;
+	right :5%;
+}
+
+.keyboard .form input.ng-invalid.ng-touched{
+	 background-color: #FA787E;
+ }
+.keyboard .form input.ng-valid.ng-touched{
+	background-color: #78FA89;
+}
+
+.keyboard span{
+	font-size: 20px;
+}
+
+.keyboard button{
+	display: inline-block;
+}
+
+.keyboard #btns{
+	text-align: center;
+	position: fixed;
+	top: 60%;
+	left: 0;
+	right: 0;
+}

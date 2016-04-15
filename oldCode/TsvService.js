@@ -6,7 +6,7 @@ import axios from 'axios'
  */
 
 //var avt = angular.module('avt', []);
-//avt.factory('TSVService', ['$rootScope', '$timeout', 'translate', '$filter', function($rootScope, $timeout, translate, $filter) {
+//avt.factory('TsvService', ['$rootScope', '$timeout', 'translate', '$filter', function($rootScope, $timeout, translate, $filter) {
 
     var tsvApi = [
         "activate",
@@ -104,9 +104,9 @@ import axios from 'axios'
     ];
 
     var tsv = {};
-
-    tsv.failing = true;
-    tsv.failCount = 0;
+    // *Andrea reconfigure 3/11
+    // tsv.failing = true;
+    // tsv.failCount = 0;
 
     function doRequest(args) {
 
@@ -160,34 +160,35 @@ import axios from 'axios'
     // RootscopeStore._store.cache
     // etc
 
-    tsv.session = {};
-    tsv.session.cashMsg = translate.translate("Cash_Vending", "HintMessageInsertCash");
-    tsv.session.cardMsg = translate.translate("Card_Vending", "InstructionMessage");
-    tsv.session.vendErrorMsg1 = "vendErrorMsg1";
-    tsv.session.vendErrorMsg2 = "vendErrorMsg2";
-    tsv.session.vendSettleTotal = 0;
-    tsv.session.creditBalance = 0;
-    tsv.session.discount = 0;
-    //tsv.session.thankyouTimer;
-    //tsv.session.vendErrorTimer;
-    //tsv.session.paymentTimer;
-    //tsv.session.generalIdleTimer;
-    //tsv.session.cardErrorTimer;
-    tsv.session.bRunningAutoMap = false;
-    tsv.session.machineID = 0;
-    //tsv.session.currentView;
-    tsv.session.bVendedOldCredit = false;
-    tsv.session.categories = null;
-    tsv.session.products = null;
+//*Andrea refactor 3/11
+    // tsv.session = {};
+    // tsv.session.cashMsg = translate.translate("Cash_Vending", "HintMessageInsertCash");
+    // tsv.session.cardMsg = translate.translate("Card_Vending", "InstructionMessage");
+    // tsv.session.vendErrorMsg1 = "vendErrorMsg1";
+    // tsv.session.vendErrorMsg2 = "vendErrorMsg2";
+    // tsv.session.vendSettleTotal = 0;
+    // tsv.session.creditBalance = 0;
+    // tsv.session.discount = 0;
+    // //tsv.session.thankyouTimer;
+    // //tsv.session.vendErrorTimer;
+    // //tsv.session.paymentTimer;
+    // //tsv.session.generalIdleTimer;
+    // //tsv.session.cardErrorTimer;
+    // tsv.session.bRunningAutoMap = false;
+    // tsv.session.machineID = 0;
+    // //tsv.session.currentView;
+    // tsv.session.bVendedOldCredit = false;
+    // tsv.session.categories = null;
+    // tsv.session.products = null;
 
-    tsv.cache = {};
-    tsv.cache.shoppingCart = {};
-    tsv.cache.productList = {};
-    tsv.cache.planogram = {};
-    tsv.cache.machineSettings = {};
-    tsv.cache.custommachinesettings = {};
-    tsv.cache.machineList = {};
-    tsv.cache.prdHashTable = {};
+    // tsv.cache = {};
+    // tsv.cache.shoppingCart = {};
+    // tsv.cache.productList = {};
+    // tsv.cache.planogram = {};
+    // tsv.cache.machineSettings = {};
+    // tsv.cache.custommachinesettings = {};
+    // tsv.cache.machineList = {};
+    // tsv.cache.prdHashTable = {};
 
 /**** METHODS below here still need refactoring, Kent is working on it *****/
     // override emptyCart so it clears any items from cached cart first
@@ -207,7 +208,8 @@ import axios from 'axios'
 
 /*** EVENTS, SUBSCRIPTIONS ***/
     // FIXME: change out eventSubscriptions here with utils/PubSub when ready
-    tsv.eventSubscriptions = {};
+    //Andrea reconfigure 3/11
+    // tsv.eventSubscriptions = {};
 
     tsv.isSubscribed = function(eventName, namespace) {
         var chain = tsv.eventSubscriptions[eventName];

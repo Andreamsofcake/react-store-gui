@@ -7,7 +7,7 @@ if (isClient) {
 	//localStorage.debug = '*';
 
 	/* set up websocket connection */
-	var io = require('ioClient')
+	var io = require('socket.io-client')
 		, socket_connected = false
 	//	, debug = true
 		, websocket
@@ -24,7 +24,8 @@ if (isClient) {
 		socket_connected = true;
 		if (queue.length) {
 			queue.forEach( Q => {
-				console.log('emit Q command: '+Q.command);
+				console.log('[WS] emit Q command: '+Q.command);
+				console.log(Q.data);
 				websocket.emit(Q.command, Q.data);
 			});
 		}
@@ -34,13 +35,13 @@ if (isClient) {
 		console.log('general message from server:');
 		console.log(response);
 	});
-	
+
 	websocket.on('set-webhook-token', function(token) {
 		console.log('webhook token from server:');
 		console.log(token);
 		webhook_token = token;
 	});
-	
+
 	// just a tester:
 	window.onbeforeunload = function() {
 		websocket.emit('beforeDisconnect', { msg: 'client is about to disconnect!', some: 'data' });
@@ -63,12 +64,15 @@ if (isClient) {
 		console.log(data);
 		console.log(' -----------------------------------------------------------------');
 		//*/
-		if (ActionHandlers[event] && typeof ActionHandlers[event] == 'function') {
-			ActionHandlers[event](data);
+		var handle = event;
+		//if (data && data.actionToken) { handle += ':' + actionToken }
+
+		if (ActionHandlers[handle] && typeof ActionHandlers[handle] == 'function') {
+			ActionHandlers[handle](data);
 		} else {
 			console.log(' -----------------------------------------------------------------');
 			console.log('[ >>>>> SOCKET catch-all, nobody was registered to handle this <<<<<< ] ... event, then data');
-			console.log(event);
+			console.log(handle);
 			console.log(data);
 			console.log(' -----------------------------------------------------------------');
 		}
@@ -80,18 +84,22 @@ if (isClient) {
 		// removes need for defining websocket.on('foo', function), also removes need to include all actions and processing logic here.
 		// explore using PubSub for handling multiple listeners per socket pingback events
 		// see: utils/PubSub.js
-		registerActionHandler(action, handler) {
-			console.log('registering action handler for: '+action);
-			ActionHandlers[action] = handler;
+		registerActionHandler(action, handler, actionToken) {
+			var handle = action;
+			//if (actionToken) { handle += ':' + actionToken }
+			console.log('registering action handler for: '+handle);
+			ActionHandlers[handle] = handler;
 		},
 
-		unregisterActionHandler(action, handler) {
+		unregisterActionHandler(action, handler, actionToken) {
 			throw new Error('unfinished function ... depends on PubSub / multiple listeners per action');
+			var handle = action;
+			//if (actionToken) { handle += ':' + actionToken }
 			if (!handler) {
 				// remove all
 			} else {
 				// remove single
-				ActionHandlers[action] = handler;
+				ActionHandlers[handle] = handler;
 			}
 		},
 
@@ -99,22 +107,23 @@ if (isClient) {
 			TD = TD || { some: 'test_data' }; // Test Data to ping with
 			SocketHandler.socket.emit('testResponse', TD);
 		},
-	
-		socketSendCommand(cmd, data, handler) {
+
+		socketSendCommand(cmd, data, handler, actionToken) {
 			// optional auto-link up to ActionHandler
 			if (handler && typeof handler == 'function') {
-				this.registerActionHandler(cmd, handler);
+				this.registerActionHandler(cmd, handler, actionToken);
 			}
+			//data.actionToken = actionToken;
 			SocketHandler.emit(cmd, data);
 		},
-		
+
 		getWebhookToken() {
 			return webhook_token;
 		}
-		
+
 	};
 
-	// aliases:	
+	// aliases:
 	module.exports.subscribe = module.exports.registerActionHandler;
 	module.exports.unsubscribe = module.exports.unregisterActionHandler;
 	module.exports.sub = module.exports.registerActionHandler;
@@ -131,10 +140,9 @@ if (isClient) {
 			queue.push({ command, data });
 		}
 	}
-	
-	//window.SH = SocketHandler;
+
+	//window.SH = { SocketHandler, expo: module.exports };
 
 } else {
 	module.exports = false;
 }
-

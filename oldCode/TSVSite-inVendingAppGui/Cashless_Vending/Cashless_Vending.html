@@ -1,0 +1,19 @@
+<div class="Cashless_Vending">
+
+    <!--<img id="prdImg" ng-src="{{ item.imagePath }}" alt="product Image">-->
+
+    <table class="cart">
+        <tr>
+            <td data-ng-repeat="prd in cart">
+                <img id="prdImg" ng-src="{{ prd.imagePath }}" err-src="../Images/ProductImageNotFound.png" alt="productImage">
+            </td>
+        </tr>
+    </table>
+
+    <p>{{ translate("TotalPriceLabel") }} {{ currencyFilter(summary.TotalPrice) }}</p>
+
+    <p id = "status">{{ translate("Status") }}</p>
+
+    <canvas id="spinner"></canvas>
+
+</div>
