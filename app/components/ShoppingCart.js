@@ -13,10 +13,15 @@ class Shopping_Cart extends Component {
     {/* MUST call super() before any this.*/}
     super(props, context);
 
-    RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
+    //RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
     RootscopeActions.updateCredit();
     //RootscopeActions.setSession('currentView', 'Shopping_Cart');
     //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
+
+	TsvService.fetchShoppingCart2(null, (err, data) => {
+		if (err) throw err;
+		RootscopeActions.setCache('shoppingCart', data);
+	});
 
     this.state = {
       totalPrice: RootscopeStore.getCache('shoppingCart.summary.totalPrice'),
@@ -29,7 +34,7 @@ class Shopping_Cart extends Component {
       bShowCouponBtn: false
     };
 
-    RootscopeActions.setConfig('summary', this.state.summary);
+    //RootscopeActions.setConfig('summary', this.state.summary);
 
     if (this.state.salesTaxAmount > 0) {
 		this.state.bShowTax = true;
@@ -38,50 +43,17 @@ class Shopping_Cart extends Component {
     if (RootscopeStore.getCache('custommachinesettings.bHasCouponCodes')) {
         this.state.bShowCouponBtn = true;
     }
-    this._onRootstoreChange = this._onRootstoreChange.bind(this);
-  }
 
-  back() {
-      browserHistory.push("/View2");
+    this._onRootstoreChange = this._onRootstoreChange.bind(this);
   }
 
   cancel(){
     TsvService.emptyCart(null, () => {});
-    RootscopeActions.setConfig('itemsInCart', 0);
+    //RootscopeActions.setConfig('itemsInCart', 0);
     //TsvService.gotoDefaultIdlePage();
     browserHistory.push('/Storefront');
 
   }
-
-  shopmore() {
-    //TsvService.gotoDefaultIdlePage();
-    browserHistory.push('/Storefront');
-  }
-
-  checkout() {
-  	console.warn('sanity check');
-  	console.log(browserHistory);
-    browserHistory.push("/Cash_Card");
-  }
-
-	/*
-	TsvService.addToCartByCoilAsync(coil)
-	.then( ok => {
-		TsvService.fetchShoppingCart2Async()
-	})
-	.then( data => {
-		RootscopeActions.setCache('shoppingCart', data);
-		this.setState({
-			cart: data.detail,
-			totalPrice: data.summary.TotalPrice
-		});
-	})
-	.catch( (e) => {
-		throw e
-	})
-	*/
-
-
 
   // Add change listeners to stores
   componentDidMount() {
@@ -104,18 +76,19 @@ class Shopping_Cart extends Component {
 
   _onRootstoreChange() {
     var data = RootscopeStore.getCache('shoppingCart');
-    if (!data.detail || !data.detail.length) {
-      //TsvService.gotoDefaultIdlePage();
-	    browserHistory.push('/Storefront');
-    } else {
-      this.setState({
-        cart: data.detail,
-        summary: data.summary
-      })
-    }
-  }
 
-// w00t
+	if (this.state.loadedCartOnce && (!data.detail || !data.detail.length)) {
+	  //TsvService.gotoDefaultIdlePage();
+		browserHistory.push('/Storefront');
+	} else {
+	  this.setState({
+		cart: data.detail,
+		summary: data.summary,
+		loadedCartOnce: true
+	  })
+	}
+
+  }
 
   render() {
 
@@ -124,7 +97,7 @@ class Shopping_Cart extends Component {
       <_E.Row className="Shopping_Cart" >
         <h2>{Translate.translate('Shopping_Cart', 'ShoppingCart')}</h2>
         <_E.Col className="wrapper">
-                <_E.Row className="row-border shopping-cart-table">
+                {/*<_E.Row className="row-border shopping-cart-table">*/}
                 	{/*
                 	<th></th>
                 	<th></th>
@@ -137,7 +110,7 @@ class Shopping_Cart extends Component {
                 	<_E.Col xs="20%" sm="20%" md="20%" lg="20%" className="columnHeader">{Translate.translate('Shopping_Cart','Qty')}</_E.Col>
                 	<_E.Col xs="20%" sm="20%" md="20%" lg="20%" className="columnHeader">Remove</_E.Col>
                 	*/}
-                </_E.Row>
+                {/*</_E.Row>*/}
 
                 {this.renderShoppingCart()}
 
@@ -153,7 +126,7 @@ class Shopping_Cart extends Component {
                 <_E.Col basis="1/4"><img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} onClick={this.shopmore()}/></_E.Col>
                 <_E.Col basis="1/4"><img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/></_E.Col>
 */}
-                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="primary" size="lg" onClick={this.shopmore.bind(this)}>{Translate.translate('Shopping_Cart','Shop_More')}</_E.Button></_E.Col>
+                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('Shopping_Cart','Shop_More')}</_E.Button></_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">{this.renderCheckoutButton()}</_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="danger" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />{Translate.translate('Shopping_Cart','Cancel')}</_E.Button></_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3" style={{marginTop:'4em'}}>{ this.state.bShowCouponBtn ? this.renderCouponButton() : null }</_E.Col>
@@ -190,7 +163,7 @@ class Shopping_Cart extends Component {
   renderCheckoutButton() {
   	if (this.state.cart && this.state.cart.length) {
   		return (
-			<_E.Button type="success" size="lg" onClick={this.checkout.bind(this)}>{Translate.translate('Shopping_Cart','Checkout')}</_E.Button>
+			<_E.Button type="success" size="lg" onClick={() => { browserHistory.push('/Cash_Card') }}>{Translate.translate('Shopping_Cart','Checkout')}</_E.Button>
   		);
   	}
   	return null;

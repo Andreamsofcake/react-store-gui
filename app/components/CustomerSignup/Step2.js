@@ -4,8 +4,8 @@ import React, { Component } from 'react'
 
 //import RootscopeActions from '../actions/RootscopeActions'
 //import RootscopeStore from '../stores/RootscopeStore'
-import CL_Actions from '../../actions/CustomerLoginActions'
-import CL_Store from '../../stores/CustomerStore'
+import CS_Actions from '../../actions/CustomerSignupActions'
+import CS_Store from '../../stores/CustomerStore'
 
 import appConstants from '../../constants/appConstants'
 
@@ -19,24 +19,24 @@ class Step extends Component {
     super(props, context);
     this.state = {
     	errorMsg: null,
-    	simulatorLicense: null
+    	simulatorPrint: null
     }
     
-    this._onCLStoreChange = this._onCLStoreChange.bind(this);
+    this._onCSStoreChange = this._onCSStoreChange.bind(this);
 
   };
 
   // Add change listeners to stores
   componentDidMount() {
-  	CL_Store.addChangeListener( this._onCLStoreChange );
+  	CS_Store.addChangeListener( this._onCSStoreChange );
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-  	CL_Store.removeChangeListener( this._onCLStoreChange );
+  	CS_Store.removeChangeListener( this._onCSStoreChange );
   }
   
-  _onCLStoreChange(event) {
+  _onCSStoreChange(event) {
   	if (event.type === appConstants.PRINT_SCANNED_SIGNUP) {
   		if (event.status === 'ok') {
   			this.setState({
@@ -50,17 +50,17 @@ class Step extends Component {
   	}
   }
   
-  selectSimulatorLicense(who, e) {
+  selectSimulatorPrint(who, e) {
   	this.setState({
-  		simulatorLicense: who
+  		simulatorPrint: who
   	});
   }
   
-  startLicenseScan() {
-  	if (this.props.testing && !this.state.simulatorLicense) {
-  		return alert('TESTING: Please choose a customer license from the orange buttons.');
+  startPrintScan() {
+  	if (this.props.testing && !this.state.simulatorPrint) {
+  		return alert('TESTING: Please choose a customer print from the orange buttons.');
   	}
-  	CL_Actions.scanLicense(this.props.loginToken, this.state.simulatorLicense);
+  	CS_Actions.scanPrint(this.props.signupToken, this.state.simulatorPrint);
   }
 
   render() {
@@ -68,9 +68,10 @@ class Step extends Component {
     	<div>
 		  <_E.Row >
 			<_E.Col>
-			  <h2>Scan your ID</h2>
-			  <p>Put your driver's license on the scanner to the left, press below to scan</p>
-			  <_E.Button type="primary" onClick={this.startLicenseScan.bind(this)}>Start Scan</_E.Button>
+			  <h2>Scan your finger or thumb print</h2>
+			  <p>Put your finger or thumb on the scanner to the left.</p>
+			  <_E.Alert type="info">Use the same finger or thumb that you used at sign up.<br /><strong>HINT: </strong>we asked for your thumb and your index finger from your dominant hand.</_E.Alert>
+			  <_E.Button type="warning" onClick={this.startPrintScan.bind(this)}>TESTING: Press to "record" the scan, this will happen automatically when hardware is attached.</_E.Button>
 			</_E.Col>
 		  </_E.Row>
 		  {this.renderSimulator()}
@@ -83,19 +84,19 @@ class Step extends Component {
   		return (
 		  <_E.Row style={{ border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' }}>
 			<_E.Col>
-			  <h4 style={{fontWeight: 'normal'}}>SIMULATOR: choose a customer license:</h4>
+			  <h4 style={{fontWeight: 'normal'}}>SIMULATOR: choose a customer finger/thumb print:</h4>
 			  <_E.Row style={{marginBottom: '1em'}}>
 				<_E.Col basis="33%" style={{textAlign: 'center', marginBottom: '1em'}}>
-					<_E.Button size="sm" type="warning" onClick={this.selectSimulatorLicense.bind(this, 'KrisKhan')}>Kris Khan</_E.Button>
+					<_E.Button size="sm" type="warning" onClick={this.selectSimulatorPrint.bind(this, 'KrisKhan')}>Kris Khan</_E.Button>
 				</_E.Col>
 				<_E.Col basis="33%" style={{textAlign: 'center', marginBottom: '1em'}}>
-					<_E.Button size="sm" type="warning" onClick={this.selectSimulatorLicense.bind(this, 'MaryJaneSmith')}>Mary Jane Smith</_E.Button>
+					<_E.Button size="sm" type="warning" onClick={this.selectSimulatorPrint.bind(this, 'MaryJaneSmith')}>Mary Jane Smith</_E.Button>
 				</_E.Col>
 				<_E.Col basis="33%" style={{textAlign: 'center', marginBottom: '1em'}}>
-					<_E.Button size="sm" type="warning" onClick={this.selectSimulatorLicense.bind(this, 'BuddyGalore')}>Buddy Galore</_E.Button>
+					<_E.Button size="sm" type="warning" onClick={this.selectSimulatorPrint.bind(this, 'BuddyGalore')}>Buddy Galore</_E.Button>
 				</_E.Col>
 			  </_E.Row>
-			  <p style={{fontSize: '0.75em'}}>Picked: {this.state.simulatorLicense || 'none yet'}, login token: <strong>{this.props.loginToken}</strong></p>
+			  <p style={{fontSize: '0.75em'}}>Picked: {this.state.simulatorPrint || 'none yet'}, signup token: <strong>{this.props.signupToken}</strong></p>
 			</_E.Col>
 		  </_E.Row>
 		);

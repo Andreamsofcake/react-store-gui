@@ -4,8 +4,8 @@ import React, { Component } from 'react'
 
 //import RootscopeActions from '../actions/RootscopeActions'
 //import RootscopeStore from '../stores/RootscopeStore'
-import CL_Actions from '../../actions/CustomerLoginActions'
-import CL_Store from '../../stores/CustomerStore'
+import CS_Actions from '../../actions/CustomerSignupActions'
+import CS_Store from '../../stores/CustomerStore'
 
 import appConstants from '../../constants/appConstants'
 
@@ -22,29 +22,29 @@ class Step extends Component {
     	simulatorLicense: null
     }
     
-    this._onCLStoreChange = this._onCLStoreChange.bind(this);
+    this._onCSStoreChange = this._onCSStoreChange.bind(this);
 
   };
 
   // Add change listeners to stores
   componentDidMount() {
-  	CL_Store.addChangeListener( this._onCLStoreChange );
+  	CS_Store.addChangeListener( this._onCSStoreChange );
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-  	CL_Store.removeChangeListener( this._onCLStoreChange );
+  	CS_Store.removeChangeListener( this._onCSStoreChange );
   }
   
-  _onCLStoreChange(event) {
-  	if (event.type === appConstants.PRINT_SCANNED_SIGNUP) {
+  _onCSStoreChange(event) {
+  	if (event.type === appConstants.LICENSE_SCANNED_LOGIN) {
   		if (event.status === 'ok') {
   			this.setState({
   				errorMsg: null
   			});
   		} else {
   			this.setState({
-  				errorMsg: 'There was a problem scanning your fingerprint, please try again.'
+  				errorMsg: 'There was a problem scanning your license, please try again.'
   			});
   		}
   	}
@@ -60,7 +60,7 @@ class Step extends Component {
   	if (this.props.testing && !this.state.simulatorLicense) {
   		return alert('TESTING: Please choose a customer license from the orange buttons.');
   	}
-  	CL_Actions.scanLicense(this.props.loginToken, this.state.simulatorLicense);
+  	CS_Actions.scanLicense(this.props.signupToken, this.state.simulatorLicense);
   }
 
   render() {
@@ -95,7 +95,7 @@ class Step extends Component {
 					<_E.Button size="sm" type="warning" onClick={this.selectSimulatorLicense.bind(this, 'BuddyGalore')}>Buddy Galore</_E.Button>
 				</_E.Col>
 			  </_E.Row>
-			  <p style={{fontSize: '0.75em'}}>Picked: {this.state.simulatorLicense || 'none yet'}, login token: <strong>{this.props.loginToken}</strong></p>
+			  <p style={{fontSize: '0.75em'}}>Picked: {this.state.simulatorLicense || 'none yet'}, login token: <strong>{this.props.signupToken}</strong></p>
 			</_E.Col>
 		  </_E.Row>
 		);

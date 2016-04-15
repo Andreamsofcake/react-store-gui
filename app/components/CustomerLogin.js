@@ -78,7 +78,7 @@ class Customer_Login extends Component {
 				// yay we are logged in!
 				let customer = CL_Store.getCustomer();
 				if (customer) {
-					// calling this action in sequence results in Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.
+					// FIXME: calling this action in sequence results in Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.
 					setTimeout(() => {
 						CL_Actions.clearSteps();
 					}, 100);
@@ -149,11 +149,11 @@ class Customer_Login extends Component {
 		  	WhatStep = Matching;
   			break;
 
-  		case 'Step2':
+  		case 'Step2': // finger / thumb print scan
 		  	WhatStep = Step2;
   			break;
 
-  		case 'Step1':
+  		case 'Step1': // ID scan
   		default:
 		  	WhatStep = Step1;
   			break;
@@ -163,7 +163,7 @@ class Customer_Login extends Component {
   		return (
   			<WhatStep
   				loginToken={this.state.loginToken}
-  				testing={true}
+  				testing={this.props.appTesting}
   				/>
   		);
   	}
@@ -173,7 +173,7 @@ class Customer_Login extends Component {
   }
 
   renderSimulator() {
-  	if (this.state.testing) {
+  	if (this.props.appTesting) {
   		return (
 		  <_E.Row style={{ border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' }}>
 			<_E.Col>

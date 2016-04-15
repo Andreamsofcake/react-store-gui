@@ -36,6 +36,8 @@ module.exports = function(request, reply) {
 		debug('what are we trying to match with?' + JSON.stringify(simulatorMatch));
 
 		if (simulatorMatch && simulatorMatch.license === simulatorMatch.print) {
+			
+			fs.unlinkSync('simulatorMatch_'+loginToken);
 
 			/*
 			// to really complete round of testing: need to load a customer from the DB!

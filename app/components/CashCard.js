@@ -23,7 +23,8 @@ class Cash_Card extends Component {
 
   cancel(){
     TsvService.emptyCart();
-    TsvService.gotoDefaultIdlePage();
+    //TsvService.gotoDefaultIdlePage();
+    browserHistory.push("/Storefront");
   }
 
   cash() {

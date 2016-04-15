@@ -4,8 +4,8 @@ import React, { Component } from 'react'
 
 //import RootscopeActions from '../actions/RootscopeActions'
 //import RootscopeStore from '../stores/RootscopeStore'
-import CL_Actions from '../../actions/CustomerLoginActions'
-//import CL_Store from '../../stores/CustomerStore'
+import CS_Actions from '../../actions/CustomerSignupActions'
+//import CS_Store from '../../stores/CustomerStore'
 
 import appConstants from '../../constants/appConstants'
 
@@ -21,7 +21,7 @@ class Step1 extends Component {
   };
   
   componentDidMount() {
-  	CL_Actions.startMatching(this.props.loginToken);
+  	CS_Actions.startRegistering(this.props.signupToken);
   }
 
   render() {
@@ -29,7 +29,7 @@ class Step1 extends Component {
     	<div>
 		  <_E.Row >
 			<_E.Col>
-			  <h2>One moment please while we match....</h2>
+			  <h2>One moment please while we create your account</h2>
 			  <_E.Spinner />
 			</_E.Col>
 		  </_E.Row>
@@ -43,8 +43,8 @@ class Step1 extends Component {
   		return (
 		  <_E.Row style={{ border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' }}>
 			<_E.Col>
-			  <h4 style={{fontWeight: 'normal'}}>SIMULATOR: trying to match the customer</h4>
-			  <p style={{fontSize: '0.75em'}}>login token: <strong>{this.props.loginToken}</strong></p>
+			  <h4 style={{fontWeight: 'normal'}}>SIMULATOR: trying to register the customer</h4>
+			  <p style={{fontSize: '0.75em'}}>signup token: <strong>{this.props.signupToken}</strong></p>
 			</_E.Col>
 		  </_E.Row>
 		);
