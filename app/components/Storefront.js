@@ -150,13 +150,16 @@ class Storefront extends Component {
       )
     } else {
       var stack = []
+      	, renderKey = 0
+      	;
       while(prods.length) {
         let sorted = prods.splice(0, products_per_page)
         stack.push((
-              <_E.Row className="slider-rows">
+              <_E.Row key={renderKey} className="slider-rows">
               {this.renderProductGroup(sorted)}
               </_E.Row>
         ));
+        renderKey += 1;
       }
       return (
         <Slider {...settings}>

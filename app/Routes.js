@@ -40,7 +40,7 @@ export default (
 		<Route path='View2' component={View2} />
 
 		<Route path='Admin_Login' component={AdminLogin} />
-		<Route path='Admin_Login' component={AdminHome} />
+		<Route path='Admin_Home' component={AdminHome} />
 		<Route path='Admin_Settings' component={AdminSettings} />
 		<Route path='Admin_Exerciser' component={AdminExerciser} />
 

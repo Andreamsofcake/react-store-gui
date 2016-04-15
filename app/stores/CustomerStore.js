@@ -70,6 +70,59 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 	var action = payload.action;
 	switch(action.actionType) {
 
+/// signup
+		case appConstants.LICENSE_SCANNED_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.LICENSE_SCANNED_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.LICENSE_SCANNED_SIGNUP, status: action.data.status });
+			break;
+
+		case appConstants.PRINT_SCANNED_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.PRINT_SCANNED_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.PRINT_SCANNED_SIGNUP, status: action.data.status });
+			break;
+		
+		case appConstants.EMAIL_CAPTURED_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.EMAIL_CAPTURED_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.EMAIL_CAPTURED_SIGNUP, status: action.data.status });
+			break;
+		
+		case appConstants.MOBILE_NUMBER_CAPTURED_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.MOBILE_NUMBER_CAPTURED_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.MOBILE_NUMBER_CAPTURED_SIGNUP, status: action.data.status });
+			break;
+		
+		case appConstants.ADMIN_VERIFIED_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.ADMIN_VERIFIED_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.ADMIN_VERIFIED_SIGNUP, status: action.data.status });
+			break;
+
+		case appConstants.CUSTOMER_REGISTERED_SIGNUP:
+			// CustomerStore will decide if the event is ok or err
+			if (action.data.status === 'ok' && action.data.customer) {
+				clearSteps('signup');
+				setCustomer(action.data.customer);
+			} else {
+				clearCustomer();
+			}
+			CustomerStore.emitChange({ type: appConstants.CUSTOMER_REGISTERED_SIGNUP, status: action.data.status });
+			break;
+
+		case appConstants.CUSTOMER_RESET_SIGNUP:
+			clearSteps('signup');
+			CustomerStore.emitChange({ type: appConstants.CUSTOMER_RESET_SIGNUP });
+			break;
+
+/// login
 		case appConstants.LICENSE_SCANNED_LOGIN:
 			if (action.data.status === 'ok') {
 				pushStep('login', appConstants.LICENSE_SCANNED_LOGIN);
@@ -95,19 +148,23 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
 			break;
 
-		case appConstants.CUSTOMER_REFRESH:
-			clearSteps('login');
-			setCustomer(action.data.customer);
-			CustomerStore.emitChange({ type: appConstants.CUSTOMER_REFRESH, status: action.data.status });
-			break;
-
 		case appConstants.CUSTOMER_RESET_LOGIN:
 			clearSteps('login');
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_RESET_LOGIN });
 			break;
 		
+		case appConstants.CUSTOMER_REFRESH:
+			clearSteps('login');
+			clearSteps('signup');
+			if (action.data) {
+				setCustomer(action.data.customer);
+			}
+			CustomerStore.emitChange({ type: appConstants.CUSTOMER_REFRESH, status: action.data.status });
+			break;
+
 		case appConstants.CUSTOMER_LOGOUT:
 			clearSteps('login');
+			clearSteps('signup');
 			clearCustomer();
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOGOUT });
 			break;

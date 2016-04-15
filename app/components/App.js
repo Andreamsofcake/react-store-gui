@@ -115,7 +115,7 @@ class App extends Component {
 			<ComEmulator />
 			<_E.Row gutter={-20}>
 				<_E.Col className="route-content">
-					{this.props.children || (<div>
+					{this.props.children && React.cloneElement(this.props.children, { appTesting: true }) || (<div>
 						<_E.Button component={(<Link to="/Storefront">Storefront</Link>)} />
 						</div>)}
 				</_E.Col>
