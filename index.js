@@ -156,6 +156,7 @@ server.register([
 		, ComBusEmulator = require('./routes/ComBusEmulator')
 		, ActivateModule = require('./routes/ActivateModule')
 		, CustomerMatchLogin = require('./routes/CustomerMatchLogin')
+		, CustomerRegisterModule = require('./routes/CustomerRegisterModule')
 		;
 
 	server.route({
@@ -220,6 +221,26 @@ server.register([
 			plugins: {
 				'hapi-io': {
 					event: 'activate-module'
+					, mapping: {
+
+					},
+					post: (ctx, next) => {
+						ctx.socket.emit(ctx.event, ctx.result);
+						next();
+					}
+				}
+			}
+		}
+	});
+
+	server.route({
+		method: 'post',
+		path: '/api/customer-signup-data',
+		handler: CustomerRegisterModule,
+		config: {
+			plugins: {
+				'hapi-io': {
+					event: 'customer-signup'
 					, mapping: {
 
 					},

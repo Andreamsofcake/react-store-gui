@@ -9,7 +9,7 @@ class ShoppingCartMini extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			qty: 0
+			qty: this.getCartData(true)
 		}
 		
 		this._onRootstoreChange = this._onRootstoreChange.bind(this);
@@ -33,18 +33,21 @@ class ShoppingCartMini extends Component {
 		this.getCartData();
 	}
 	
-	getCartData() {
+	getCartData(returnData) {
+		
+		returnData = returnData || false;
+
 		var qty = 0
 			, cart = RootscopeStore.getCache('shoppingCart.detail')
 			;
 
 		if (cart) {
 			for (let value of cart) {
-				console.log('array')
 				qty += value.qtyInCart;
-				console.log(qty)
 			}
 		}
+		
+		if (returnData) { return qty; }
 
 		this.setState({
 			qty: qty

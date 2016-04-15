@@ -19,7 +19,7 @@ module.exports = function(request, reply) {
 	if (emulator_command && emulator_command[0] === 'insertCash') {
 		var amt = emulator_command[1];
 		var totalInserted = request.yar.get('emulatorInsertedCash') || 0
-		totalInserted += emulator_command[1];
+		totalInserted += emulator_command[1] * 100; // guess we're dealing in cents!
 		request.yar.set('emulatorInsertedCash', totalInserted);
 		emulator_command = ['creditBalanceChanged', amt, totalInserted];
 	}

@@ -83,7 +83,7 @@ var CustomerLoginActions = {
 
 	startMatching(loginToken) {
 		SocketAPI.send('customer-match-login',
-			{ loginToken },
+			{ action: 'match', loginToken },
 			(data) => {
 
 				/**** temporary call, due to session probs with IO ****/

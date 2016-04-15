@@ -4,8 +4,10 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import { browserHistory } from 'react-router'
+import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
+
+import VendCartItem from './VendCartItem'
 
 class Cash_Vending extends Component {
 
@@ -61,18 +63,21 @@ class Cash_Vending extends Component {
   }
 
   checkBalance(){
-	  var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice');
+	  var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice')
+	  	, cart_detail = RootscopeStore.getCache('shoppingCart.detail') || []
+	  	, balance = RootscopeStore.getSession('creditBalance')
+	  	;
 
 	  // cash.js logic:
 	  //if ((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail', []).length > 0){
-	  if (RootscopeStore.getCache('creditBalance') >= total && RootscopeStore.getCache('shoppingCart.detail', []).length > 0) {
+	  if (balance >= total && cart_detail.length > 0) {
 
-		  TsvService.disablePaymentDevice();
+		  TsvService.disablePaymentDevice(null, () => {});
 
 		  if(!RootscopeStore.getSession('bVendingInProcess')){
 			  // only in cash.js:
-			  //RootscopeActions.setSession('bVendingInProcess', true);
-			  TsvService.startVend();
+			  RootscopeActions.setSession('bVendingInProcess', true);
+			  TsvService.startVend(null, () => {});
 
 			  this.setState({
 				  hintMsg: Translate.translate('Cash_Vending','HintMessageVending'),
@@ -80,15 +85,18 @@ class Cash_Vending extends Component {
 				  showSpinner: true
 			  });
 		  }
+		  console.warn('checkBalance() returning false [1]');
 		  return false;
 	  }
+	  console.warn('checkBalance() returning false [2]');
+	  console.log([cart_detail, balance]);
 	  return false;
   }
 
   // Add change listeners to stores
   componentDidMount() {
 
-    TvsService.subscribe("creditBalanceChanged", (ins, balance) => {
+    TsvService.subscribe("creditBalanceChanged", (ins, balance) => {
     	// only in cash.js:
         //if (RootscopeStore.getSession('currentView') != "Cash") return;
 
@@ -107,7 +115,7 @@ class Cash_Vending extends Component {
         }
 
         // only in cash.js:
-        //this.checkBalance();
+        this.checkBalance();
 
         TsvService.resetPaymentTimer();
         this.setState(state);
@@ -129,6 +137,9 @@ class Cash_Vending extends Component {
       TsvService.stopPaymentTimer();
 
     }, 'app.cashVending');
+    
+    // let's check the balance at module load:
+    this.checkBalance();
   }
 
   // Remove change listers from stores
@@ -139,75 +150,61 @@ class Cash_Vending extends Component {
   }
 
   render() {
+  	if (!this.state.cart || !this.state.cart.length) {
+  		//browserHistory.push('/Storefront');
+  		return (
+  			<div>
+				<h1>Error: no cart items found to purchase!</h1>
+				<pre>{ JSON.stringify(this.state.cart, null, 4) }</pre>
+				<_E.Button component={(<Link to="/Storefront">Storefront</Link>)} />
+  			</div>
+  		);
+  	}
     return (
-      <_E.Row className="Cash_Vending" >
-        <_E.Col>
+      <_E.Row>
+		<_E.Col sm="100%" lg="100%">
+		
+		<h2>Insert cash to complete your purchase</h2>
 
-              <_E.Row>
-            {cart.map( (prd, $index) => {
-                return (
-                  <VendCartItem
-                   key={$index}
-                   data={prd}
-                  />
-                )
-              })
-            }
-              </_E.Row>
+			  <_E.Col>
+			{this.state.cart.map( (prd, $index) => {
+				return (
+				  <VendCartItem
+				   key={$index}
+				   data={prd}
+				  />
+				)
+			  })
+			}
+			  </_E.Col>
 
-        </_E.Col>
-      <_E.Row id = "cashMsg">
-            <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(this.state.summary.TotalPrice) }</p>
+		</_E.Col>
 
-            <p>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} {TsvService.currencyFilter(this.state.insertedAmount) }</p>
-        </_E.Row>
+        { this.hintMsg ? (<p id="hint">{this.hintMsg}</p>) : null }
 
-        <p id="hint">{ this.hintMsg }</p>
+		<_E.Col sm="1/2">
+			<p style={{fontSize:'1.5em'}}>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: <strong>{ TsvService.currencyFilter(this.state.summary.TotalPrice) }</strong></p>
+		</_E.Col>
+		<_E.Col sm="1/2">
+			<p style={{fontSize:'1.5em'}}>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} <strong>${ this.state.insertedAmount ? TsvService.currencyFilter(this.state.insertedAmount) : '0.00' }</strong></p>
+		</_E.Col>
 
-
-        { this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null }
-
-        { this.state.showSpinner ? this.renderSpinner() : null }
+		<_E.Col sm="1/2">
+			{ this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null }
+		</_E.Col>
+		<_E.Col sm="1/2">
+			{ this.state.showSpinner ? this.renderSpinner() : null }
+		</_E.Col>
 
       </_E.Row>
     );
 
-    /*
-      <div className="Cash_Vending" >
-
-        <table class="cart">
-            <tr>
-          {cart.map( (prd, $index) => {
-              return (
-              <td key={$index}><img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" /></td>
-              )
-            })
-          }
-            </tr>
-        </table>
-
-          <div id = "cashMsg">
-                <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(this.state.summary.TotalPrice) }</p>
-
-                <p>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} {TsvService.currencyFilter(this.state.insertedAmount) }</p>
-            </div>
-
-            <p id="hint">{ this.hintMsg }</p>
-
-
-            { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
-
-            { if (this.state.showSpinner) { this.renderSpinner()} }
-
-      </div>
-
-    */
   }
 
   renderCancelBtnCash(){
     // <img src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
     return(
-      <_E.Button type="warning" onClick={this.cancel.bind(this)}><_E.Glyph icon="cancel-slash" /></_E.Button>
+      <_E.Button type="warning" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />Cancel Transaction</_E.Button>
     )
   }
 

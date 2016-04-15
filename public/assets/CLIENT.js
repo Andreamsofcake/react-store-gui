@@ -24891,6 +24891,10 @@
 
 	var _AdminSettings2 = _interopRequireDefault(_AdminSettings);
 
+	var _AdminExerciser = __webpack_require__(409);
+
+	var _AdminExerciser2 = _interopRequireDefault(_AdminExerciser);
+
 	var _CustomerSignup = __webpack_require__(365);
 
 	var _CustomerSignup2 = _interopRequireDefault(_CustomerSignup);
@@ -24960,8 +24964,9 @@
 		_react2.default.createElement(_reactRouter.Route, { path: 'View0', component: _View2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'View2', component: _View4.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Login', component: _AdminLogin2.default }),
-		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Login', component: _AdminHome2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Home', component: _AdminHome2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Settings', component: _AdminSettings2.default }),
+		_react2.default.createElement(_reactRouter.Route, { path: 'Admin_Exerciser', component: _AdminExerciser2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Signup', component: _CustomerSignup2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Signup/:step', component: _CustomerSignup2.default }),
 		_react2.default.createElement(_reactRouter.Route, { path: 'Customer_Login', component: _CustomerLogin2.default }),
@@ -25151,18 +25156,13 @@
 						_react2.default.createElement(
 							_E.Col,
 							{ className: 'route-content' },
-							this.props.children || _react2.default.createElement(
+							this.props.children && _react2.default.cloneElement(this.props.children, { appTesting: true }) || _react2.default.createElement(
 								'div',
 								null,
 								_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
 										_reactRouter.Link,
-										{ to: '/View2' },
-										'View 2'
-									) }),
-								_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
-										_reactRouter.Link,
-										{ to: '/Category_Search' },
-										'Cat Search'
+										{ to: '/Storefront' },
+										'Storefront'
 									) })
 							)
 						)
@@ -25381,8 +25381,14 @@
 	 } else {
 	 */
 
+		var flash_api_url = 'http://localhost:8087/tsv-proxy/flashapi';
+		if (typeof window !== 'undefined') {
+			if (window.location.port !== 8087) {
+				flash_api_url = location.protocol + '//' + location.host + '/tsv-proxy/flashapi';
+			}
+		}
 		//axios.post('http://localhost:8087/tsv-proxy/flashapi', requestJson, {
-		_axios2.default.post('/tsv-proxy/flashapi', requestJson, {
+		_axios2.default.post(flash_api_url, requestJson, {
 			headers: {
 				'Content-Type': 'application/json'
 			}
@@ -25392,7 +25398,7 @@
 			//console.log(response);
 			//console.log(args);
 
-			if (response.data) {
+			if (response.data || response.statusText === 'OK') {
 				callback(null, response.data);
 			} else {
 				if (response.data && response.data.error) {
@@ -25792,6 +25798,7 @@
 				break;
 			case "/Page_Idle":
 				return;
+
 			default:
 				console.log("Idle Timeout from " + _RootscopeStore2.default.getCache('currentLocation'));
 				TsvService.emptyCart();
@@ -25925,20 +25932,18 @@
 	   */
 
 				if (_RootscopeStore2.default.getCache('custommachinesettings.txtSearchScene', 'coil_keypad').toLowerCase() === "coil_keypad") {
-					console.error('ha HA (pushing to View1)');
-					_reactRouter.browserHistory.push("/View1");
-					return;
+					return _reactRouter.browserHistory.push("/View1");
 				} else if (TsvService.customSetting('txtSearchScene', 'coil_keypad').toLowerCase() === "storefront") {
 
-					_reactRouter.browserHistory.push("/Storefront");
+					return _reactRouter.browserHistory.push("/Storefront");
 				} else if (TsvService.customSetting('txtSearchScene', 'coil_keypad').toLowerCase() === "category_search") {
 
+					return _reactRouter.browserHistory.push("/Storefront");
+
 					if (_RootscopeStore2.default.getCache('custommachinesettings.bCategoryView', false)) {
-						_reactRouter.browserHistory.push("/Category_Search");
-						return;
+						return _reactRouter.browserHistory.push("/Category_Search");
 					} else {
-						_reactRouter.browserHistory.push("/Product_Search");
-						return;
+						return _reactRouter.browserHistory.push("/Product_Search");
 					}
 				}
 
@@ -25990,6 +25995,7 @@
 
 	TsvService.idleClicked = function () {
 		//$location, $rootScope){
+		return _reactRouter.browserHistory.push("/Storefront");
 		switch (_RootscopeStore2.default.getCache('custommachinesettings.txtSearchScene', '').toLowerCase()) {
 
 			case "make_donation":
@@ -26259,9 +26265,11 @@
 				try {
 					//pair[1].apply(pair[0], e);
 					pair[0].apply(null, e, function () {});
-					ds.push(pair[0]);
+					// don't push unless it fails to run, otherwise it's not dirty! :-)
+					//ds.push(pair[0]);
 				} catch (err) {
 					console.log("Failed invoking " + eventName + " handler: " + err);
+					ds.push(pair[0]);
 				}
 			}
 		}
@@ -26334,11 +26342,18 @@
 				});
 			} else {
 
+				var flash_api_url = 'http://localhost:8087/tsv-proxy/flashapi/multievent';
+				if (typeof window !== 'undefined') {
+					if (window.location.port !== 8087) {
+						flash_api_url = location.protocol + '//' + location.host + '/tsv-proxy/flashapi/multievent';
+					}
+				}
+
 				// set up event poller every 300 msec
 				myTimer = setInterval(function () {
 
 					//axios.post('http://localhost:8087/tsv-proxy/flashapi/multievent', {}, {
-					_axios2.default.post('/tsv-proxy/flashapi/multievent', {}, {
+					_axios2.default.post(flash_api_url, {}, {
 						headers: {
 							'Content-Type': 'application/json'
 						},
@@ -33273,6 +33288,12 @@
 	    "Product_Search": {
 	        "WelcomeMsg": "",
 	        "SelectProduct": "Select A Product"
+	    },
+
+	    "Customer": {
+	        "TryAgainButtonText": "Try again",
+	        "LoginButtonText": "Login to purchase products",
+	        "SignupButtonText": "Register your account to purchase products"
 	    }
 	};
 
@@ -33857,11 +33878,16 @@
 		LICENSE_SCANNED_LOGIN: null,
 		PRINT_SCANNED_LOGIN: null,
 		CUSTOMER_MATCHED_LOGIN: null,
+		CUSTOMER_RESET_LOGIN: null,
 
 		LICENSE_SCANNED_SIGNUP: null,
-		PRINT1_SCANNED_SIGNUP: null,
-		PRINT2_SCANNED_SIGNUP: null,
-		PRINT3_SCANNED_SIGNUP: null,
+		PRINT_SCANNED_SIGNUP: null,
+		MOBILE_NUMBER_CAPTURED_SIGNUP: null,
+		EMAIL_CAPTURED_SIGNUP: null,
+		CUSTOMER_REGISTERED_SIGNUP: null,
+		CUSTOMER_RESET_SIGNUP: null,
+		CUSTOMER_REFRESH: null,
+		ADMIN_VERIFIED_SIGNUP: null,
 
 		// Emulator:
 		TEST_EMULATOR_RESULT: null,
@@ -46190,8 +46216,13 @@
 					showFor: ['Cash_Card', 'Card_Vending']
 				}];
 
+				var pathname = '';
+				if (typeof window !== 'undefined') {
+					pathname = window.location.pathname.replace('/', '');
+				}
+
 				var showButtons = buttons.filter(function (B) {
-					return B.showFor.indexOf(_this2.state.currentView) > -1;
+					return pathname !== 'Cash_Card' && B.showFor.indexOf(pathname) > -1;
 				});
 
 				if (!showButtons.length) {
@@ -46619,7 +46650,7 @@
 			});
 		},
 		startMatching: function startMatching(loginToken) {
-			_SocketAPI2.default.send('customer-match-login', { loginToken: loginToken }, function (data) {
+			_SocketAPI2.default.send('customer-match-login', { action: 'match', loginToken: loginToken }, function (data) {
 
 				/**** temporary call, due to session probs with IO ****/
 				if (data && data.customer) {
@@ -46749,6 +46780,59 @@
 		var action = payload.action;
 		switch (action.actionType) {
 
+			/// signup
+			case _appConstants2.default.LICENSE_SCANNED_SIGNUP:
+				if (action.data.status === 'ok') {
+					pushStep('signup', _appConstants2.default.LICENSE_SCANNED_SIGNUP);
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.LICENSE_SCANNED_SIGNUP, status: action.data.status });
+				break;
+
+			case _appConstants2.default.PRINT_SCANNED_SIGNUP:
+				if (action.data.status === 'ok') {
+					pushStep('signup', _appConstants2.default.PRINT_SCANNED_SIGNUP);
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.PRINT_SCANNED_SIGNUP, status: action.data.status });
+				break;
+
+			case _appConstants2.default.EMAIL_CAPTURED_SIGNUP:
+				if (action.data.status === 'ok') {
+					pushStep('signup', _appConstants2.default.EMAIL_CAPTURED_SIGNUP);
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.EMAIL_CAPTURED_SIGNUP, status: action.data.status });
+				break;
+
+			case _appConstants2.default.MOBILE_NUMBER_CAPTURED_SIGNUP:
+				if (action.data.status === 'ok') {
+					pushStep('signup', _appConstants2.default.MOBILE_NUMBER_CAPTURED_SIGNUP);
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.MOBILE_NUMBER_CAPTURED_SIGNUP, status: action.data.status });
+				break;
+
+			case _appConstants2.default.ADMIN_VERIFIED_SIGNUP:
+				if (action.data.status === 'ok') {
+					pushStep('signup', _appConstants2.default.ADMIN_VERIFIED_SIGNUP);
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.ADMIN_VERIFIED_SIGNUP, status: action.data.status });
+				break;
+
+			case _appConstants2.default.CUSTOMER_REGISTERED_SIGNUP:
+				// CustomerStore will decide if the event is ok or err
+				if (action.data.status === 'ok' && action.data.customer) {
+					clearSteps('signup');
+					setCustomer(action.data.customer);
+				} else {
+					clearCustomer();
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_REGISTERED_SIGNUP, status: action.data.status });
+				break;
+
+			case _appConstants2.default.CUSTOMER_RESET_SIGNUP:
+				clearSteps('signup');
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_RESET_SIGNUP });
+				break;
+
+			/// login
 			case _appConstants2.default.LICENSE_SCANNED_LOGIN:
 				if (action.data.status === 'ok') {
 					pushStep('login', _appConstants2.default.LICENSE_SCANNED_LOGIN);
@@ -46774,19 +46858,23 @@
 				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
 				break;
 
-			case _appConstants2.default.CUSTOMER_REFRESH:
-				clearSteps('login');
-				setCustomer(action.data.customer);
-				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_REFRESH, status: action.data.status });
-				break;
-
 			case _appConstants2.default.CUSTOMER_RESET_LOGIN:
 				clearSteps('login');
 				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_RESET_LOGIN });
 				break;
 
+			case _appConstants2.default.CUSTOMER_REFRESH:
+				clearSteps('login');
+				clearSteps('signup');
+				if (action.data) {
+					setCustomer(action.data.customer);
+				}
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_REFRESH, status: action.data.status });
+				break;
+
 			case _appConstants2.default.CUSTOMER_LOGOUT:
 				clearSteps('login');
+				clearSteps('signup');
 				clearCustomer();
 				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_LOGOUT });
 				break;
@@ -48423,10 +48511,6 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _TsvService = __webpack_require__(220);
-
-	var _TsvService2 = _interopRequireDefault(_TsvService);
-
 	var _Translate = __webpack_require__(240);
 
 	var Translate = _interopRequireWildcard(_Translate);
@@ -48439,11 +48523,49 @@
 
 	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
 
+	var _CustomerSignupActions = __webpack_require__(410);
+
+	var _CustomerSignupActions2 = _interopRequireDefault(_CustomerSignupActions);
+
+	var _CustomerStore = __webpack_require__(357);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
+	var _Step = __webpack_require__(411);
+
+	var _Step2 = _interopRequireDefault(_Step);
+
+	var _Step3 = __webpack_require__(412);
+
+	var _Step4 = _interopRequireDefault(_Step3);
+
+	var _Step5 = __webpack_require__(413);
+
+	var _Step6 = _interopRequireDefault(_Step5);
+
+	var _Step7 = __webpack_require__(414);
+
+	var _Step8 = _interopRequireDefault(_Step7);
+
+	var _AdminVerify = __webpack_require__(415);
+
+	var _AdminVerify2 = _interopRequireDefault(_AdminVerify);
+
+	var _Registering = __webpack_require__(416);
+
+	var _Registering2 = _interopRequireDefault(_Registering);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
 	var _reactRouter = __webpack_require__(160);
 
 	var _elemental = __webpack_require__(300);
 
 	var _E = _interopRequireWildcard(_elemental);
+
+	var _utils = __webpack_require__(219);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -48454,6 +48576,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+
 
 	var Customer_Signup = function (_Component) {
 	  _inherits(Customer_Signup, _Component);
@@ -48461,9 +48585,20 @@
 	  function Customer_Signup(props, context) {
 	    _classCallCheck(this, Customer_Signup);
 
-	    // MUST call super() before any this.*
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_Signup).call(this, props, context));
 	    //RootscopeActions.setSession('currentView', 'Customer_Signup');
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_Signup).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _this.state = {
+	      params: _this.props.params,
+	      signupToken: null
+	    };
+
+	    _this._onCSStoreChange = _this._onCSStoreChange.bind(_this);
+	    _this.tryAgain = _this.tryAgain.bind(_this);
+	    return _this;
 	  }
 
 	  _createClass(Customer_Signup, [{
@@ -48471,30 +48606,260 @@
 
 
 	    // Add change listeners to stores
-	    value: function componentDidMount() {}
+	    value: function componentDidMount() {
+	      _CustomerStore2.default.addChangeListener(this._onCSStoreChange);
+	      // reset the signup token on mount, should take care of retries, timeouts, etc
+	      this.setState({
+	        signupToken: (0, _utils.uniq)()
+	      });
+	    }
 
 	    // Remove change listers from stores
 
 	  }, {
 	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
+	    value: function componentWillUnmount() {
+	      _CustomerStore2.default.removeChangeListener(this._onCSStoreChange);
+	    }
+	  }, {
+	    key: 'componentWillReceiveProps',
+	    value: function componentWillReceiveProps(nextProps) {
+	      console.log('Customer Signup componentWillReceiveProps(nextProps)');
+	      console.log(nextProps);
+	      if (nextProps.params) {
+	        this.setState({
+	          params: nextProps.params
+	        });
+	      }
+	    }
+	  }, {
+	    key: '_onCSStoreChange',
+	    value: function _onCSStoreChange(event) {
+	      switch (event.type) {
+	        case _appConstants2.default.LICENSE_SCANNED_SIGNUP:
+	          if (event.status === 'ok') {
+	            // go to next signup step:
+	            _reactRouter.browserHistory.push('/Customer_Signup/Step2');
+	          }
+	          break;
+
+	        case _appConstants2.default.PRINT_SCANNED_SIGNUP:
+	          if (event.status === 'ok') {
+	            // go to next signup step:
+	            _reactRouter.browserHistory.push('/Customer_Signup/Step3');
+	          }
+	          break;
+
+	        case _appConstants2.default.MOBILE_NUMBER_CAPTURED_SIGNUP:
+	          if (event.status === 'ok') {
+	            // go to next signup step:
+	            _reactRouter.browserHistory.push('/Customer_Signup/Step4');
+	          }
+	          break;
+
+	        case _appConstants2.default.EMAIL_CAPTURED_SIGNUP:
+	          if (event.status === 'ok') {
+	            // go to next signup step:
+	            /*
+	            if (unattendedAdminMode) {
+	            	return browserHistory.push('/Customer_Signup/Registering');
+	            }
+	            */
+	            _reactRouter.browserHistory.push('/Customer_Signup/AdminVerify');
+	          }
+	          break;
+
+	        case _appConstants2.default.ADMIN_VERIFIED_SIGNUP:
+	          if (event.status === 'ok') {
+	            // go to next signup step:
+	            _reactRouter.browserHistory.push('/Customer_Signup/Registering');
+	          }
+	          break;
+
+	        case _appConstants2.default.CUSTOMER_REGISTERED_SIGNUP:
+	          if (event.status === 'ok') {
+	            // yay we are logged in!
+	            var customer = _CustomerStore2.default.getCustomer();
+	            if (customer) {
+	              // FIXME: calling this action in sequence results in Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.
+	              setTimeout(function () {
+	                _CustomerSignupActions2.default.clearSteps();
+	              }, 100);
+	              return _reactRouter.browserHistory.push('/Storefront');
+	            }
+	          }
+	          _reactRouter.browserHistory.push('/Customer_Signup/FAIL');
+	          break;
+	      }
+	    }
+	  }, {
+	    key: 'tryAgain',
+	    value: function tryAgain() {
+	      //CS_Actions.customerLogout();
+	      _CustomerSignupActions2.default.clearSteps();
+	      _reactRouter.browserHistory.push('/Customer_Signup/Step1');
+	    }
 	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        _E.Row,
+	        'div',
 	        null,
 	        _react2.default.createElement(
-	          _E.Col,
+	          _E.Row,
 	          null,
 	          _react2.default.createElement(
-	            'h2',
+	            _E.Col,
 	            null,
-	            'Customer Signup',
-	            _react2.default.createElement('br', null)
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Customer Signup'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Before you can pick products and check out, we need to know who you are. :-)'
+	            )
 	          )
-	        )
+	        ),
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            this.renderStep()
+	          )
+	        ),
+	        this.renderLogin()
 	      );
+	    }
+	  }, {
+	    key: 'renderLogin',
+	    value: function renderLogin() {
+	      if (this.state.params.step !== 'Registering') {
+	        return _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              'Already signed up? Go back to the signup page'
+	            ),
+	            _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/Customer_Login' },
+	                Translate.translate('Customer', 'LoginButtonText')
+	              ) })
+	          )
+	        );
+	      }
+	      return null;
+	    }
+	  }, {
+	    key: 'renderStep',
+	    value: function renderStep() {
+
+	      var WhatStep = void 0;
+
+	      switch (this.state.params.step) {
+
+	        case 'FAIL':
+	          return _react2.default.createElement(
+	            'div',
+	            null,
+	            _react2.default.createElement(
+	              _E.Alert,
+	              { type: 'danger' },
+	              'Sorry, there was a problem registering your account.'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              ' '
+	            ),
+	            _react2.default.createElement(
+	              _E.Button,
+	              { type: 'primary', onClick: this.tryAgain },
+	              Translate.translate('Customer', 'TryAgainButtonText')
+	            ),
+	            this.renderSimulator()
+	          );
+	          break;
+
+	        case 'Registering':
+	          WhatStep = _Registering2.default;
+	          break;
+
+	        case 'AdminVerify':
+	          // ADMIN thumb (unless "unattended admin" mode)
+	          WhatStep = _AdminVerify2.default;
+	          break;
+
+	        case 'Step4':
+	          // ID scan
+	          WhatStep = _Step8.default;
+	          break;
+
+	        case 'Step3':
+	          // email
+	          WhatStep = _Step6.default;
+	          break;
+
+	        case 'Step2':
+	          // mobile number
+	          WhatStep = _Step4.default;
+	          break;
+
+	        case 'Step1': // thumb scan
+	        default:
+	          WhatStep = _Step2.default;
+	          break;
+	      }
+
+	      if (WhatStep) {
+	        return _react2.default.createElement(WhatStep, {
+	          signupToken: this.state.signupToken,
+	          testing: this.props.appTesting
+	        });
+	      }
+
+	      console.warn('CustomerSignup renderStep() ... unknown step requested: ' + this.state.params.step);
+	      return null;
+	    }
+	  }, {
+	    key: 'renderSimulator',
+	    value: function renderSimulator() {
+	      if (this.props.appTesting) {
+	        return _react2.default.createElement(
+	          _E.Row,
+	          { style: { border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' } },
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h4',
+	              { style: { fontWeight: 'normal' } },
+	              'SIMULATOR'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              { style: { fontSize: '0.75em' } },
+	              'signup token: ',
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                this.props.signupToken
+	              )
+	            )
+	          )
+	        );
+	      }
+	      return null;
 	    }
 	  }]);
 
@@ -48651,7 +49016,7 @@
 	            // yay we are logged in!
 	            var customer = _CustomerStore2.default.getCustomer();
 	            if (customer) {
-	              // calling this action in sequence results in Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.
+	              // FIXME: calling this action in sequence results in Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.
 	              setTimeout(function () {
 	                _CustomerLoginActions2.default.clearSteps();
 	              }, 100);
@@ -48765,10 +49130,11 @@
 	          break;
 
 	        case 'Step2':
+	          // finger / thumb print scan
 	          WhatStep = _Step4.default;
 	          break;
 
-	        case 'Step1':
+	        case 'Step1': // ID scan
 	        default:
 	          WhatStep = _Step2.default;
 	          break;
@@ -48777,7 +49143,7 @@
 	      if (WhatStep) {
 	        return _react2.default.createElement(WhatStep, {
 	          loginToken: this.state.loginToken,
-	          testing: true
+	          testing: this.props.appTesting
 	        });
 	      }
 
@@ -48787,7 +49153,7 @@
 	  }, {
 	    key: 'renderSimulator',
 	    value: function renderSimulator() {
-	      if (this.state.testing) {
+	      if (this.props.appTesting) {
 	        return _react2.default.createElement(
 	          _E.Row,
 	          { style: { border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' } },
@@ -48871,13 +49237,13 @@
 	//import RootscopeStore from '../stores/RootscopeStore'
 
 
-	var Step1 = function (_Component) {
-	  _inherits(Step1, _Component);
+	var Step = function (_Component) {
+	  _inherits(Step, _Component);
 
-	  function Step1(props, context) {
-	    _classCallCheck(this, Step1);
+	  function Step(props, context) {
+	    _classCallCheck(this, Step);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step1).call(this, props, context));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step).call(this, props, context));
 	    // MUST call super() before any this.*
 
 
@@ -48891,7 +49257,7 @@
 	    return _this;
 	  }
 
-	  _createClass(Step1, [{
+	  _createClass(Step, [{
 	    key: 'componentDidMount',
 
 
@@ -48910,14 +49276,14 @@
 	  }, {
 	    key: '_onCLStoreChange',
 	    value: function _onCLStoreChange(event) {
-	      if (event.type === _appConstants2.default.LICENSE_SCANNED_LOGIN) {
+	      if (event.type === _appConstants2.default.PRINT_SCANNED_SIGNUP) {
 	        if (event.status === 'ok') {
 	          this.setState({
 	            errorMsg: null
 	          });
 	        } else {
 	          this.setState({
-	            errorMsg: 'There was a problem scanning your license, please try again.'
+	            errorMsg: 'There was a problem scanning your fingerprint, please try again.'
 	          });
 	        }
 	      }
@@ -49034,10 +49400,10 @@
 	    }
 	  }]);
 
-	  return Step1;
+	  return Step;
 	}(_react.Component);
 
-	exports.default = Step1;
+	exports.default = Step;
 
 /***/ },
 /* 368 */
@@ -49089,13 +49455,13 @@
 	//import RootscopeStore from '../stores/RootscopeStore'
 
 
-	var Step1 = function (_Component) {
-	  _inherits(Step1, _Component);
+	var Step = function (_Component) {
+	  _inherits(Step, _Component);
 
-	  function Step1(props, context) {
-	    _classCallCheck(this, Step1);
+	  function Step(props, context) {
+	    _classCallCheck(this, Step);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step1).call(this, props, context));
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step).call(this, props, context));
 	    // MUST call super() before any this.*
 
 
@@ -49109,7 +49475,7 @@
 	    return _this;
 	  }
 
-	  _createClass(Step1, [{
+	  _createClass(Step, [{
 	    key: 'componentDidMount',
 
 
@@ -49128,14 +49494,14 @@
 	  }, {
 	    key: '_onCLStoreChange',
 	    value: function _onCLStoreChange(event) {
-	      if (event.type === _appConstants2.default.LICENSE_SCANNED_LOGIN) {
+	      if (event.type === _appConstants2.default.PRINT_SCANNED_LOGIN) {
 	        if (event.status === 'ok') {
 	          this.setState({
 	            errorMsg: null
 	          });
 	        } else {
 	          this.setState({
-	            errorMsg: 'There was a problem scanning your license, please try again.'
+	            errorMsg: 'There was a problem scanning your fingerprint, please try again.'
 	          });
 	        }
 	      }
@@ -49264,10 +49630,10 @@
 	    }
 	  }]);
 
-	  return Step1;
+	  return Step;
 	}(_react.Component);
 
-	exports.default = Step1;
+	exports.default = Step;
 
 /***/ },
 /* 369 */
@@ -49346,7 +49712,7 @@
 	            _react2.default.createElement(
 	              'h2',
 	              null,
-	              'One moment please while we find you in the cloud'
+	              'One moment please while we match....'
 	            ),
 	            _react2.default.createElement(_E.Spinner, null)
 	          )
@@ -49673,7 +50039,13 @@
 	// import { browserHistory } from 'react-router'
 
 	var StorefrontActions = {
-	  minusQty: function minusQty(coil) {
+	  minusQty: function minusQty(product) {
+	    // coil
+	    var coil = product.coilNumber;
+
+	    console.log('removeAllQty ///////');
+	    console.log(product, coil);
+
 	    _TsvService2.default.removeFromCartByCoilNo(coil, function (err, ok) {
 	      if (err) throw err;
 	      _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
@@ -49683,10 +50055,14 @@
 	      });
 	    });
 	  },
-	  removeAllQty: function removeAllQty(coil, qty) {
+	  removeAllQty: function removeAllQty(product) {
+	    // coil, qty
 
-	    //console.warn("\n\nremoveAllQty()\n\n");
-	    //console.log(coil, qty);
+	    var coil = product.coilNumber,
+	        qty = product.qtyInCart;
+
+	    console.log('removeAllQty ///////');
+	    console.log(product, coil, qty);
 
 	    _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
 
@@ -49715,8 +50091,13 @@
 	      removeQty(qty);
 	    });
 	  },
-	  addQty: function addQty(coil) {
-	    var _this = this;
+	  addQty: function addQty(product) {
+	    // coil
+
+	    var coil = product.coilNumber;
+
+	    console.log('removeAllQty ///////');
+	    console.log(product, coil);
 
 	    _TsvService2.default.addToCartByCoil(coil, function (err, ok) {
 	      if (err) throw err;
@@ -49724,10 +50105,6 @@
 
 	        if (err) throw err;
 	        _RootscopeActions2.default.setCache('shoppingCart', data);
-
-	        _this.setState({
-	          cart: data.detail
-	        });
 	      });
 	    });
 	  },
@@ -49945,26 +50322,35 @@
 	    key: 'render',
 	    value: function render() {
 	      var product = this.props.data;
+
 	      return _react2.default.createElement(
 	        'div',
-	        { className: 'product' },
+	        { className: 'product-list-item' },
 	        _react2.default.createElement(
-	          'div',
-	          { className: 'product_name' },
+	          _E.Row,
+	          { onClick: this.viewProduct.bind(this) },
 	          _react2.default.createElement(
-	            'h4',
-	            null,
-	            product.productName
+	            _E.Col,
+	            { className: 'product_name' },
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              product.productName
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
-	          'div',
-	          { onClick: this.viewProduct.bind(this), className: 'image-container' },
-	          _react2.default.createElement('img', { src: product.imagePath, title: product.description })
+	          _E.Row,
+	          { onClick: this.viewProduct.bind(this) },
+	          _react2.default.createElement(
+	            _E.Col,
+	            { className: 'image-container' },
+	            _react2.default.createElement('img', { src: product.imagePath, title: product.description, className: 'boxShadowed' })
+	          )
 	        ),
 	        _react2.default.createElement(
 	          _E.Row,
-	          null,
+	          { className: 'product-list-item-add-to-cart' },
 	          _react2.default.createElement(
 	            _E.Col,
 	            { sm: '1/2' },
@@ -50040,7 +50426,7 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ShoppingCartMini).call(this, props, context));
 
 			_this.state = {
-				qty: 0
+				qty: _this.getCartData(true)
 			};
 
 			_this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
@@ -50076,7 +50462,10 @@
 			}
 		}, {
 			key: 'getCartData',
-			value: function getCartData() {
+			value: function getCartData(returnData) {
+
+				returnData = returnData || false;
+
 				var qty = 0,
 				    cart = _RootscopeStore2.default.getCache('shoppingCart.detail');
 
@@ -50089,9 +50478,7 @@
 						for (var _iterator = cart[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 							var value = _step.value;
 
-							console.log('array');
 							qty += value.qtyInCart;
-							console.log(qty);
 						}
 					} catch (err) {
 						_didIteratorError = true;
@@ -50107,6 +50494,10 @@
 							}
 						}
 					}
+				}
+
+				if (returnData) {
+					return qty;
 				}
 
 				this.setState({
@@ -50407,14 +50798,16 @@
 	          prods
 	        );
 	      } else {
-	        var stack = [];
+	        var stack = [],
+	            renderKey = 0;
 	        while (prods.length) {
 	          var sorted = prods.splice(0, products_per_page);
 	          stack.push(_react2.default.createElement(
 	            _E.Row,
-	            { className: 'slider-rows' },
+	            { key: renderKey, className: 'slider-rows' },
 	            this.renderProductGroup(sorted)
 	          ));
+	          renderKey += 1;
 	        }
 	        return _react2.default.createElement(
 	          _reactSlick2.default,
@@ -52410,6 +52803,7 @@
 
 	    _this.state = {
 	      loadedAtLeastOnce: false,
+	      modalIsOpen: false,
 	      product: {}
 	    };
 	    _this._onStoreFrontChange = _this._onStoreFrontChange.bind(_this);
@@ -52447,6 +52841,13 @@
 	    key: '_onStoreFrontChange',
 	    value: function _onStoreFrontChange() {}
 	  }, {
+	    key: 'toggleModal',
+	    value: function toggleModal() {
+	      this.setState({
+	        modalIsOpen: !this.state.modalIsOpen
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 
@@ -52459,7 +52860,7 @@
 	            _react2.default.createElement(
 	              _E.Col,
 	              null,
-	              this.renderMiniCart(),
+	              _react2.default.createElement(_ShoppingCartMini2.default, { className: 'scart-mini' }),
 	              _react2.default.createElement(
 	                'h2',
 	                null,
@@ -52486,7 +52887,7 @@
 	          _react2.default.createElement(
 	            _E.Col,
 	            null,
-	            this.renderMiniCart(),
+	            _react2.default.createElement(_ShoppingCartMini2.default, { className: 'scart-mini' }),
 	            _react2.default.createElement(
 	              'h1',
 	              null,
@@ -52497,18 +52898,31 @@
 	        );
 	      }
 
+	      var prod = this.state.product;
 	      return _react2.default.createElement(
 	        _E.Row,
 	        null,
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
-	          this.renderMiniCart(),
-	          this.renderBack(),
+	          _react2.default.createElement(_ShoppingCartMini2.default, { className: 'scart-mini' }),
 	          _react2.default.createElement(
-	            'h2',
-	            { style: { marginBottom: 0, marginTop: '1em', fontSize: '2.7em' } },
-	            this.state.product.productName
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Col,
+	              { className: 'productDetailHeader' },
+	              _react2.default.createElement(
+	                'h2',
+	                { style: { marginBottom: 0, marginTop: '1em', fontSize: '2.7em' } },
+	                prod.productName
+	              ),
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                prod.description
+	              )
+	            )
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -52516,23 +52930,14 @@
 	          null,
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'product' },
-	            _react2.default.createElement(
-	              'div',
-	              { className: 'product_name', style: { maxWidth: '50%' } },
-	              _react2.default.createElement(
-	                'p',
-	                null,
-	                this.state.product.description
-	              )
-	            ),
+	            { className: 'productDetailBody' },
 	            _react2.default.createElement(
 	              _E.Row,
 	              null,
 	              _react2.default.createElement(
 	                _E.Col,
 	                { basis: '50%', className: 'product-preview' },
-	                _react2.default.createElement('img', { src: this.state.product.imagePath, title: this.state.product.description })
+	                _react2.default.createElement('img', { src: prod.imagePath, title: prod.description, className: 'boxShadowed', onClick: this.toggleModal.bind(this) })
 	              ),
 	              _react2.default.createElement(
 	                _E.Col,
@@ -52541,18 +52946,34 @@
 	                  'p',
 	                  { className: 'prdPrice' },
 	                  'Price $',
-	                  _TsvService2.default.currencyFilter(this.state.product.price),
+	                  _TsvService2.default.currencyFilter(prod.price),
 	                  ' '
 	                ),
 	                _react2.default.createElement(
 	                  _E.Button,
 	                  { className: 'product-button', onClick: this.setPrdSelected.bind(this) },
 	                  'Add to cart'
-	                )
+	                ),
+	                _react2.default.createElement('hr', { style: { margin: '20px auto' } }),
+	                _react2.default.createElement(_E.Button, { size: 'sm', type: 'success', component: _react2.default.createElement(
+	                    _reactRouter.Link,
+	                    { to: '/Storefront' },
+	                    Translate.translate('Shopping_Cart', 'Shop_More')
+	                  ) })
 	              )
 	            )
 	          )
-	        )
+	        ),
+	        prod.imagePath ? _react2.default.createElement(
+	          _E.Modal,
+	          { isOpen: this.state.modalIsOpen, backdropClosesModal: true },
+	          _react2.default.createElement(_E.ModalHeader, { text: 'Image Detail', showCloseButton: true, onClose: this.toggleModal.bind(this) }),
+	          _react2.default.createElement(
+	            _E.ModalBody,
+	            null,
+	            _react2.default.createElement('img', { src: prod.imagePath, title: prod.description, className: 'productImageModalDetailView' })
+	          )
+	        ) : null
 	      );
 	    }
 	  }, {
@@ -53042,6 +53463,10 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
+	var _VendCartItem = __webpack_require__(417);
+
+	var _VendCartItem2 = _interopRequireDefault(_VendCartItem);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -53114,18 +53539,20 @@
 	  }, {
 	    key: 'checkBalance',
 	    value: function checkBalance() {
-	      var total = _RootscopeStore2.default.getCache('shoppingCart.summary.TotalPrice');
+	      var total = _RootscopeStore2.default.getCache('shoppingCart.summary.TotalPrice'),
+	          cart_detail = _RootscopeStore2.default.getCache('shoppingCart.detail') || [],
+	          balance = _RootscopeStore2.default.getSession('creditBalance');
 
 	      // cash.js logic:
 	      //if ((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail', []).length > 0){
-	      if (_RootscopeStore2.default.getCache('creditBalance') >= total && _RootscopeStore2.default.getCache('shoppingCart.detail', []).length > 0) {
+	      if (balance >= total && cart_detail.length > 0) {
 
-	        _TsvService2.default.disablePaymentDevice();
+	        _TsvService2.default.disablePaymentDevice(null, function () {});
 
 	        if (!_RootscopeStore2.default.getSession('bVendingInProcess')) {
 	          // only in cash.js:
-	          //RootscopeActions.setSession('bVendingInProcess', true);
-	          _TsvService2.default.startVend();
+	          _RootscopeActions2.default.setSession('bVendingInProcess', true);
+	          _TsvService2.default.startVend(null, function () {});
 
 	          this.setState({
 	            hintMsg: Translate.translate('Cash_Vending', 'HintMessageVending'),
@@ -53133,8 +53560,11 @@
 	            showSpinner: true
 	          });
 	        }
+	        console.warn('checkBalance() returning false [1]');
 	        return false;
 	      }
+	      console.warn('checkBalance() returning false [2]');
+	      console.log([cart_detail, balance]);
 	      return false;
 	    }
 
@@ -53145,7 +53575,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 
-	      TvsService.subscribe("creditBalanceChanged", function (ins, balance) {
+	      _TsvService2.default.subscribe("creditBalanceChanged", function (ins, balance) {
 	        // only in cash.js:
 	        //if (RootscopeStore.getSession('currentView') != "Cash") return;
 
@@ -53164,7 +53594,7 @@
 	        }
 
 	        // only in cash.js:
-	        //this.checkBalance();
+	        _this2.checkBalance();
 
 	        _TsvService2.default.resetPaymentTimer();
 	        _this2.setState(state);
@@ -53185,6 +53615,9 @@
 	        _TsvService2.default.vendResponse(processStatus);
 	        _TsvService2.default.stopPaymentTimer();
 	      }, 'app.cashVending');
+
+	      // let's check the balance at module load:
+	      this.checkBalance();
 	    }
 
 	    // Remove change listers from stores
@@ -53199,71 +53632,97 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(
-	        _E.Row,
-	        { className: 'Cash_Vending' },
-	        _react2.default.createElement(
-	          _E.Col,
+	      if (!this.state.cart || !this.state.cart.length) {
+	        //browserHistory.push('/Storefront');
+	        return _react2.default.createElement(
+	          'div',
 	          null,
 	          _react2.default.createElement(
-	            _E.Row,
+	            'h1',
 	            null,
-	            cart.map(function (prd, $index) {
-	              return _react2.default.createElement(VendCartItem, {
+	            'Error: no cart items found to purchase!'
+	          ),
+	          _react2.default.createElement(
+	            'pre',
+	            null,
+	            JSON.stringify(this.state.cart, null, 4)
+	          ),
+	          _react2.default.createElement(_E.Button, { component: _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/Storefront' },
+	              'Storefront'
+	            ) })
+	        );
+	      }
+	      return _react2.default.createElement(
+	        _E.Row,
+	        null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          { sm: '100%', lg: '100%' },
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'Insert cash to complete your purchase'
+	          ),
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            this.state.cart.map(function (prd, $index) {
+	              return _react2.default.createElement(_VendCartItem2.default, {
 	                key: $index,
 	                data: prd
 	              });
 	            })
 	          )
 	        ),
-	        _react2.default.createElement(
-	          _E.Row,
-	          { id: 'cashMsg' },
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            Translate.translate('Cash_Vending', 'TotalAmountLabel'),
-	            ' Total: ',
-	            _TsvService2.default.currencyFilter(this.state.summary.TotalPrice)
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            Translate.translate('Cash_Vending', 'InsertedAmountLabel'),
-	            ' ',
-	            _TsvService2.default.currencyFilter(this.state.insertedAmount)
-	          )
-	        ),
-	        _react2.default.createElement(
+	        this.hintMsg ? _react2.default.createElement(
 	          'p',
 	          { id: 'hint' },
 	          this.hintMsg
+	        ) : null,
+	        _react2.default.createElement(
+	          _E.Col,
+	          { sm: '1/2' },
+	          _react2.default.createElement(
+	            'p',
+	            { style: { fontSize: '1.5em' } },
+	            Translate.translate('Cash_Vending', 'TotalAmountLabel'),
+	            ' Total: ',
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              _TsvService2.default.currencyFilter(this.state.summary.TotalPrice)
+	            )
+	          )
 	        ),
-	        this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null,
-	        this.state.showSpinner ? this.renderSpinner() : null
+	        _react2.default.createElement(
+	          _E.Col,
+	          { sm: '1/2' },
+	          _react2.default.createElement(
+	            'p',
+	            { style: { fontSize: '1.5em' } },
+	            Translate.translate('Cash_Vending', 'InsertedAmountLabel'),
+	            ' ',
+	            _react2.default.createElement(
+	              'strong',
+	              null,
+	              '$',
+	              this.state.insertedAmount ? _TsvService2.default.currencyFilter(this.state.insertedAmount) : '0.00'
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { sm: '1/2' },
+	          this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { sm: '1/2' },
+	          this.state.showSpinner ? this.renderSpinner() : null
+	        )
 	      );
-
-	      /*
-	        <div className="Cash_Vending" >
-	           <table class="cart">
-	              <tr>
-	            {cart.map( (prd, $index) => {
-	                return (
-	                <td key={$index}><img id={"prdImg"+$index} src={ prd.imagePath} alt="productImage" /></td>
-	                )
-	              })
-	            }
-	              </tr>
-	          </table>
-	             <div id = "cashMsg">
-	                  <p>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: { TsvService.currencyFilter(this.state.summary.TotalPrice) }</p>
-	                   <p>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} {TsvService.currencyFilter(this.state.insertedAmount) }</p>
-	              </div>
-	               <p id="hint">{ this.hintMsg }</p>
-	                { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
-	               { if (this.state.showSpinner) { this.renderSpinner()} }
-	         </div>
-	       */
 	    }
 	  }, {
 	    key: 'renderCancelBtnCash',
@@ -53272,7 +53731,8 @@
 	      return _react2.default.createElement(
 	        _E.Button,
 	        { type: 'warning', onClick: this.cancel.bind(this) },
-	        _react2.default.createElement(_E.Glyph, { icon: 'cancel-slash' })
+	        _react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
+	        'Cancel Transaction'
 	      );
 	    }
 	  }, {
@@ -53357,7 +53817,8 @@
 	    key: 'cancel',
 	    value: function cancel() {
 	      _TsvService2.default.emptyCart();
-	      _TsvService2.default.gotoDefaultIdlePage();
+	      //TsvService.gotoDefaultIdlePage();
+	      _reactRouter.browserHistory.push("/Storefront");
 	    }
 	  }, {
 	    key: 'cash',
@@ -53514,12 +53975,19 @@
 
 	    {/* MUST call super() before any this.*/}
 
+
+	    //RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
+
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Shopping_Cart).call(this, props, context));
 
-	    _RootscopeActions2.default.setConfig("bDisplayCgryNavigation2", _RootscopeStore2.default.getConfig('bDisplayCgryNavigation'));
 	    _RootscopeActions2.default.updateCredit();
 	    //RootscopeActions.setSession('currentView', 'Shopping_Cart');
 	    //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
+
+	    _TsvService2.default.fetchShoppingCart2(null, function (err, data) {
+	      if (err) throw err;
+	      _RootscopeActions2.default.setCache('shoppingCart', data);
+	    });
 
 	    _this.state = {
 	      totalPrice: _RootscopeStore2.default.getCache('shoppingCart.summary.totalPrice'),
@@ -53532,7 +54000,7 @@
 	      bShowCouponBtn: false
 	    };
 
-	    _RootscopeActions2.default.setConfig('summary', _this.state.summary);
+	    //RootscopeActions.setConfig('summary', this.state.summary);
 
 	    if (_this.state.salesTaxAmount > 0) {
 	      _this.state.bShowTax = true;
@@ -53541,53 +54009,19 @@
 	    if (_RootscopeStore2.default.getCache('custommachinesettings.bHasCouponCodes')) {
 	      _this.state.bShowCouponBtn = true;
 	    }
+
 	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(Shopping_Cart, [{
-	    key: 'back',
-	    value: function back() {
-	      _reactRouter.browserHistory.push("/View2");
-	    }
-	  }, {
 	    key: 'cancel',
 	    value: function cancel() {
 	      _TsvService2.default.emptyCart(null, function () {});
-	      _RootscopeActions2.default.setConfig('itemsInCart', 0);
+	      //RootscopeActions.setConfig('itemsInCart', 0);
 	      //TsvService.gotoDefaultIdlePage();
 	      _reactRouter.browserHistory.push('/Storefront');
 	    }
-	  }, {
-	    key: 'shopmore',
-	    value: function shopmore() {
-	      //TsvService.gotoDefaultIdlePage();
-	      _reactRouter.browserHistory.push('/Storefront');
-	    }
-	  }, {
-	    key: 'checkout',
-	    value: function checkout() {
-	      console.warn('sanity check');
-	      console.log(_reactRouter.browserHistory);
-	      _reactRouter.browserHistory.push("/Cash_Card");
-	    }
-
-	    /*
-	    TsvService.addToCartByCoilAsync(coil)
-	    .then( ok => {
-	    	TsvService.fetchShoppingCart2Async()
-	    })
-	    .then( data => {
-	    	RootscopeActions.setCache('shoppingCart', data);
-	    	this.setState({
-	    		cart: data.detail,
-	    		totalPrice: data.summary.TotalPrice
-	    	});
-	    })
-	    .catch( (e) => {
-	    	throw e
-	    })
-	    */
 
 	    // Add change listeners to stores
 
@@ -53617,19 +54051,18 @@
 	    key: '_onRootstoreChange',
 	    value: function _onRootstoreChange() {
 	      var data = _RootscopeStore2.default.getCache('shoppingCart');
-	      if (!data.detail || !data.detail.length) {
+
+	      if (this.state.loadedCartOnce && (!data.detail || !data.detail.length)) {
 	        //TsvService.gotoDefaultIdlePage();
 	        _reactRouter.browserHistory.push('/Storefront');
 	      } else {
 	        this.setState({
 	          cart: data.detail,
-	          summary: data.summary
+	          summary: data.summary,
+	          loadedCartOnce: true
 	        });
 	      }
 	    }
-
-	    // w00t
-
 	  }, {
 	    key: 'render',
 	    value: function render() {
@@ -53645,7 +54078,6 @@
 	        _react2.default.createElement(
 	          _E.Col,
 	          { className: 'wrapper' },
-	          _react2.default.createElement(_E.Row, { className: 'row-border shopping-cart-table' }),
 	          this.renderShoppingCart(),
 	          _react2.default.createElement(
 	            _E.Row,
@@ -53667,7 +54099,9 @@
 	              { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
 	              _react2.default.createElement(
 	                _E.Button,
-	                { type: 'primary', size: 'lg', onClick: this.shopmore.bind(this) },
+	                { type: 'primary', size: 'lg', onClick: function onClick() {
+	                    _reactRouter.browserHistory.push('/Storefront');
+	                  } },
 	                Translate.translate('Shopping_Cart', 'Shop_More')
 	              )
 	            ),
@@ -53715,7 +54149,9 @@
 	      if (this.state.cart && this.state.cart.length) {
 	        return _react2.default.createElement(
 	          _E.Button,
-	          { type: 'success', size: 'lg', onClick: this.checkout.bind(this) },
+	          { type: 'success', size: 'lg', onClick: function onClick() {
+	              _reactRouter.browserHistory.push('/Cash_Card');
+	            } },
 	          Translate.translate('Shopping_Cart', 'Checkout')
 	        );
 	      }
@@ -53797,24 +54233,27 @@
 	  }
 
 	  _createClass(ShoppingCartItem, [{
-	    key: 'clickHandler',
-	    value: function clickHandler(e) {
-	      this.props.onClick(this.props.data);
-	    }
-	  }, {
 	    key: 'minusQty',
-	    value: function minusQty(c) {
-	      _StorefrontActions2.default.minusQty(c);
+	    value: function minusQty() {
+	      // c
+	      _StorefrontActions2.default.minusQty(this.props.data); // , prd.coilNumber
 	    }
 	  }, {
 	    key: 'removeAllQty',
-	    value: function removeAllQty(c, q) {
-	      _StorefrontActions2.default.removeAllQty(c, q);
+	    value: function removeAllQty() {
+	      // c, q
+	      _StorefrontActions2.default.removeAllQty(this.props.data); // , prd.coilNumber, prd.qtyInCart
 	    }
 	  }, {
 	    key: 'addQty',
-	    value: function addQty(c) {
-	      _StorefrontActions2.default.addQty(c);
+	    value: function addQty() {
+	      // c
+	      _StorefrontActions2.default.addQty(this.props.data); // prd.coilNumber
+	    }
+	  }, {
+	    key: 'productDetail',
+	    value: function productDetail() {
+	      browserHistory.push('/Product_Detail/' + this.props.data.productID);
 	    }
 	  }, {
 	    key: 'render',
@@ -53822,66 +54261,54 @@
 	      var prd = this.props.data;
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'cart shoppingCart shoppingCartItem' },
+	        { className: 'shoppingCartItem' },
 	        _react2.default.createElement(
 	          _E.Col,
-	          { className: 'cart shopping-cart-image', sm: '25%', md: '15%', lg: '15%' },
+	          { sm: '7%', md: '6%', lg: '5%' },
 	          _react2.default.createElement(
 	            _E.Button,
-	            { type: 'danger', onClick: this.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },
-	            _react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
-	          ),
-	          _react2.default.createElement('img', { src: prd.imagePath }),
-	          ' '
-	        ),
-	        _react2.default.createElement(
-	          _E.Col,
-	          { className: 'cart shopping-cart-table', xs: '25%', sm: '25%', md: '25%', lg: '25%' },
-	          prd.productName
-	        ),
-	        _react2.default.createElement(
-	          _E.Col,
-	          { className: 'cart shopping-cart-table', xs: '8%', sm: '8%', md: '8%', lg: '8%' },
-	          _TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
-	        ),
-	        _react2.default.createElement(
-	          _E.Col,
-	          { xs: '20%', sm: '20%', md: '20%', lg: '20%', className: 'cart' },
-	          _react2.default.createElement(
-	            _E.Row,
-	            null,
+	            { type: 'danger', onClick: this.removeAllQty.bind(this) },
 	            _react2.default.createElement(
-	              _E.Col,
-	              { sm: '1/3', className: 'shopping-cart-item' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { type: 'primary', onClick: this.addQty.bind(null, prd.coilNumber) },
-	                _react2.default.createElement(_E.Glyph, { icon: 'plus' })
-	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { className: 'shopping-cart-item', sm: '1/3' },
-	              prd.qtyInCart
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { sm: '1/3', className: 'shopping-cart-item' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { className: 'shopping-cart-button', type: 'primary', onClick: this.minusQty.bind(null, prd.coilNumber) },
-	                _react2.default.createElement(_E.Glyph, { icon: 'dash' })
-	              )
+	              'strong',
+	              null,
+	              'X'
 	            )
 	          )
 	        ),
 	        _react2.default.createElement(
 	          _E.Col,
-	          { xs: '20%', sm: '20%', md: '20%', lg: '20%', className: 'cart' },
+	          { className: 'shopping-cart-list-image', sm: '18%', md: '19%', lg: '20%', onClick: this.productDetail.bind(this), style: { textAlign: 'center' } },
+	          _react2.default.createElement('img', { className: 'boxShadowed', src: prd.imagePath }),
+	          ' '
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { className: 'cart shopping-cart-table', xs: '42%', sm: '37%', md: '39%', lg: '42%', onClick: this.productDetail.bind(this) },
+	          prd.productName
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { className: 'cart shopping-cart-table', xs: '8%', sm: '13%', md: '13%', lg: '13%', style: { textAlign: 'right' } },
+	          '$',
+	          _TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { xs: '20%', sm: '25%', md: '23%', lg: '20%', className: 'productQuantity', style: { textAlign: 'right' } },
 	          _react2.default.createElement(
 	            _E.Button,
-	            { type: 'danger', onClick: this.removeAllQty.bind(null, prd.coilNumber, prd.qtyInCart) },
-	            _react2.default.createElement(_E.Glyph, { icon: 'circle-slash' })
+	            { type: 'primary', size: 'sm', onClick: this.minusQty.bind(this) },
+	            _react2.default.createElement(_E.Glyph, { icon: 'dash' })
+	          ),
+	          ' ',
+	          ' ',
+	          prd.qtyInCart,
+	          ' ',
+	          ' ',
+	          _react2.default.createElement(
+	            _E.Button,
+	            { type: 'primary', size: 'sm', onClick: this.addQty.bind(this) },
+	            _react2.default.createElement(_E.Glyph, { icon: 'plus' })
 	          )
 	        )
 	      );
@@ -54830,6 +55257,1767 @@
 	}(_react.Component);
 
 	module.exports = AppLayout;
+
+/***/ },
+/* 409 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _Translate = __webpack_require__(240);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _RootscopeActions = __webpack_require__(242);
+
+	var _RootscopeActions2 = _interopRequireDefault(_RootscopeActions);
+
+	var _RootscopeStore = __webpack_require__(297);
+
+	var _RootscopeStore2 = _interopRequireDefault(_RootscopeStore);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Admin_Jofemar_Exerciser = function (_Component) {
+	  _inherits(Admin_Jofemar_Exerciser, _Component);
+
+	  function Admin_Jofemar_Exerciser(props, context) {
+	    _classCallCheck(this, Admin_Jofemar_Exerciser);
+
+	    //RootscopeActions.setSession('currentView', 'Admin_Jofemar_Exerciser');
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Admin_Jofemar_Exerciser).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _TsvService2.default.disableLoginDevices(null, function () {});
+	    _TsvService2.default.emptyCart(null, function () {});
+	    _TsvService2.default.fetchMachineIds(null, function (err, ids) {
+	      _RootscopeActions2.default.setCache('machineList', ids);
+	    });
+	    _this.state = {
+	      num: "",
+	      maxChars: _RootscopeStore2.default.getConfig('bDualMachine') ? 3 : 2,
+	      errs: 0,
+	      bShowDropDownForMachines: false,
+	      machineNumber: 0
+	    };
+
+	    if (_RootscopeStore2.default.getCache('machineList').length > 1) {
+	      _this.state.bShowDropDownForMachines = true;
+	    }
+
+	    return _this;
+	  }
+
+	  _createClass(Admin_Jofemar_Exerciser, [{
+	    key: 'vend',
+	    value: function vend() {
+	      _TsvService2.default.vendProduct(this.state.machineNumber, parseInt(this.state.num) + this.state.machineNumber * 100, function () {});
+	      this.setState({
+	        num: "",
+	        vmsStatus: ""
+	      });
+	    }
+	  }, {
+	    key: 'lightOn',
+	    value: function lightOn() {
+	      _TsvService2.default.setLights(this.state.machineNumber, true, function () {});
+	    }
+	  }, {
+	    key: 'lightOff',
+	    value: function lightOff() {
+	      _TsvService2.default.setLights(this.state.machineNumber, false, function () {});
+	    }
+	  }, {
+	    key: 'clear',
+	    value: function clear() {
+	      this.setState({
+	        num: ""
+	      });
+	    }
+	  }, {
+	    key: 'press',
+	    value: function press(digit) {
+	      var num = this.state.num + digit.toString();
+	      if (this.state.num.length < this.state.maxChars) {
+	        this.setState({
+	          num: num
+	        });
+	      }
+	    }
+
+	    // Add change listeners to stores
+
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      _TsvService2.default.subscribe("notifyVmsEvent", function (eventArgs) {
+	        if (_reactRouter.browserHistory.push() !== "/Admin_Jofemar_Exerciser") return;
+	        _this2.setState({
+	          vmsStatus: _this2.state.vmsStatus + eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')'
+	        });
+	      }, "app.jofemarExerciser");
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _TsvService2.default.unsubscribe("notifyVmsEvent", "app.jofemarExerciser");
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      //curl -X POST -d '["DOOR_OPENED"]' http://localhost:8085/tsv/flashapi
+	      return _react2.default.createElement(
+	        _E.Row,
+	        { className: 'Admin_Jofemar_Exerciser' },
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            { id: 'instruction' },
+	            'Exerciser Jofemar'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.state.vmsStatus
+	          ),
+	          _react2.default.createElement(
+	            'div',
+	            { style: { width: '50%', margin: '0 auto' } },
+	            _RootscopeStore2.default.getCache('machineList').length > 1 ? _react2.default.createElement(_E.FormSelect, { name: 'selectMachine', value: this.state.machineID, options: this.getMachineSelectOptions() }) : null,
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.lightOn },
+	                  Translate.translate('Admin_Jofemar_Exerciser', 'LightOn')
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.lightOff },
+	                  Translate.translate('Admin_Jofemar_Exerciser', 'LightOff')
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                ' '
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 1) },
+	                  '1'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 2) },
+	                  '2'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 3) },
+	                  '3'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                ' '
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 4) },
+	                  '4'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 5) },
+	                  '5'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 6) },
+	                  '6'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                ' '
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 7) },
+	                  '7'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 8) },
+	                  '8'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 9) },
+	                  '9'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                ' '
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { type: 'warning', onClick: this.clear.bind(this) },
+	                  'Clear'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { onClick: this.press.bind(this, 0) },
+	                  '0'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { type: 'primary', onClick: this.vend.bind(this) },
+	                  'Vend'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                'p',
+	                null,
+	                ' '
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              null,
+	              _react2.default.createElement(
+	                _E.Col,
+	                null,
+	                _react2.default.createElement(
+	                  'div',
+	                  { style: { textAlign: 'center', border: '1px solid #dfdfdf', borderRadius: '4px', margin: '20px auto' } },
+	                  _react2.default.createElement(
+	                    'h2',
+	                    null,
+	                    'selection: ',
+	                    this.state.num
+	                  )
+	                )
+	              )
+	            )
+	          ),
+	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/Admin_Home' },
+	              Translate.translate('Admin_Home', 'Home')
+	            ) })
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Admin_Jofemar_Exerciser;
+	}(_react.Component);
+
+	exports.default = Admin_Jofemar_Exerciser;
+
+/***/ },
+/* 410 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(243);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	var _SocketAPI = __webpack_require__(248);
+
+	var _SocketAPI2 = _interopRequireDefault(_SocketAPI);
+
+	var _axios = __webpack_require__(221);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _reactRouter = __webpack_require__(160);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CustomerSignupActions = {
+		refreshCustomer: function refreshCustomer() {
+			_axios2.default.get('/api/customer-refresh').then(function (response) {
+				if (response.data && response.data.customer) {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.CUSTOMER_REFRESH,
+						data: response.data
+					});
+				}
+			}).catch(function (error) {
+				console.error('[CustomerSignupActions] failed to refresh customer???');
+				console.log(error);
+			});
+		},
+		captureEmail: function captureEmail(signupToken, email) {
+			_SocketAPI2.default.send('customer-signup', { action: 'capture-email', gui: 'signup', signupToken: signupToken, email: email }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.EMAIL_CAPTURED_SIGNUP,
+					data: data
+				});
+			});
+		},
+		captureMobileNumber: function captureMobileNumber(signupToken, mobileNumber) {
+			_SocketAPI2.default.send('customer-signup', { action: 'capture-mobile-number', gui: 'signup', signupToken: signupToken, mobileNumber: mobileNumber }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.MOBILE_NUMBER_CAPTURED_SIGNUP,
+					data: data
+				});
+			});
+		},
+		adminVerify: function adminVerify(signupToken, simulatorPrintAdmin) {
+			_SocketAPI2.default.send('customer-signup', { action: 'admin-verify', gui: 'signup', signupToken: signupToken, simulatorPrintAdmin: simulatorPrintAdmin }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.ADMIN_VERIFIED_SIGNUP,
+					data: data
+				});
+			});
+		},
+		scanPrint: function scanPrint(signupToken, simulatorPrintCustomer) {
+			_SocketAPI2.default.send('activate-module', { action: 'scan-print', module: 'print-scanner', gui: 'signup', signupToken: signupToken, simulatorPrintCustomer: simulatorPrintCustomer }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.PRINT_SCANNED_SIGNUP,
+					data: data
+				});
+			});
+		},
+		scanLicense: function scanLicense(signupToken, simulatorLicenseName) {
+			_SocketAPI2.default.send('activate-module', { action: 'scan-license', module: 'license-scanner', gui: 'signup', signupToken: signupToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.LICENSE_SCANNED_SIGNUP,
+					data: data
+				});
+			});
+		},
+		swipeLicense: function swipeLicense(signupToken, simulatorLicenseName) {
+			_SocketAPI2.default.send('activate-module', { action: 'swipe-license', module: 'license-scanner', gui: 'signup', signupToken: signupToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.LICENSE_SWIPED_SIGNUP,
+					data: data
+				});
+			});
+		},
+		dipLicense: function dipLicense(signupToken, simulatorLicenseName) {
+			_SocketAPI2.default.send('activate-module', { action: 'dip-license', module: 'license-scanner', gui: 'signup', signupToken: signupToken, simulatorLicenseName: simulatorLicenseName }, function (data) {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.LICENSE_DIPPED_SIGNUP,
+					data: data
+				});
+			});
+		},
+		startRegistering: function startRegistering(signupToken) {
+			_SocketAPI2.default.send('customer-signup', { action: 'register', signupToken: signupToken }, function (data) {
+
+				/**** temporary call, due to session probs with IO ****/
+				if (data && data.customer) {
+					_axios2.default.post('/api/set-loggedin-customer', { customer: data.customer }).then(function (response) {
+						console.log('temp action: updated the current customer after signup');
+					}).catch(function (error) {
+						console.error('[CustomerSignupActions] failed to set current customer???');
+						console.log(error);
+					});
+				}
+				/**** END temporary call ****/
+
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.CUSTOMER_REGISTERED_SIGNUP,
+					data: data
+				});
+			});
+		},
+		clearSteps: function clearSteps() {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.CUSTOMER_RESET_SIGNUP
+			});
+		}
+	};
+	//import RootscopeActions from '../actions/RootscopeActions'
+
+	module.exports = CustomerSignupActions;
+
+/***/ },
+/* 411 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CustomerSignupActions = __webpack_require__(410);
+
+	var _CustomerSignupActions2 = _interopRequireDefault(_CustomerSignupActions);
+
+	var _CustomerStore = __webpack_require__(357);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+	//import * as Translate from '../../lib/Translate'
+
+	//import RootscopeActions from '../actions/RootscopeActions'
+	//import RootscopeStore from '../stores/RootscopeStore'
+
+
+	var Step = function (_Component) {
+	  _inherits(Step, _Component);
+
+	  function Step(props, context) {
+	    _classCallCheck(this, Step);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _this.state = {
+	      errorMsg: null,
+	      simulatorLicense: null
+	    };
+
+	    _this._onCSStoreChange = _this._onCSStoreChange.bind(_this);
+
+	    return _this;
+	  }
+
+	  _createClass(Step, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {
+	      _CustomerStore2.default.addChangeListener(this._onCSStoreChange);
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _CustomerStore2.default.removeChangeListener(this._onCSStoreChange);
+	    }
+	  }, {
+	    key: '_onCSStoreChange',
+	    value: function _onCSStoreChange(event) {
+	      if (event.type === _appConstants2.default.LICENSE_SCANNED_LOGIN) {
+	        if (event.status === 'ok') {
+	          this.setState({
+	            errorMsg: null
+	          });
+	        } else {
+	          this.setState({
+	            errorMsg: 'There was a problem scanning your license, please try again.'
+	          });
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'selectSimulatorLicense',
+	    value: function selectSimulatorLicense(who, e) {
+	      this.setState({
+	        simulatorLicense: who
+	      });
+	    }
+	  }, {
+	    key: 'startLicenseScan',
+	    value: function startLicenseScan() {
+	      if (this.props.testing && !this.state.simulatorLicense) {
+	        return alert('TESTING: Please choose a customer license from the orange buttons.');
+	      }
+	      _CustomerSignupActions2.default.scanLicense(this.props.signupToken, this.state.simulatorLicense);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Scan your ID'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Put your driver\'s license on the scanner to the left, press below to scan'
+	            ),
+	            _react2.default.createElement(
+	              _E.Button,
+	              { type: 'primary', onClick: this.startLicenseScan.bind(this) },
+	              'Start Scan'
+	            )
+	          )
+	        ),
+	        this.renderSimulator()
+	      );
+	    }
+	  }, {
+	    key: 'renderSimulator',
+	    value: function renderSimulator() {
+	      if (this.props.testing) {
+	        return _react2.default.createElement(
+	          _E.Row,
+	          { style: { border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' } },
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h4',
+	              { style: { fontWeight: 'normal' } },
+	              'SIMULATOR: choose a customer license:'
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              { style: { marginBottom: '1em' } },
+	              _react2.default.createElement(
+	                _E.Col,
+	                { basis: '33%', style: { textAlign: 'center', marginBottom: '1em' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { size: 'sm', type: 'warning', onClick: this.selectSimulatorLicense.bind(this, 'KrisKhan') },
+	                  'Kris Khan'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { basis: '33%', style: { textAlign: 'center', marginBottom: '1em' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { size: 'sm', type: 'warning', onClick: this.selectSimulatorLicense.bind(this, 'MaryJaneSmith') },
+	                  'Mary Jane Smith'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { basis: '33%', style: { textAlign: 'center', marginBottom: '1em' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { size: 'sm', type: 'warning', onClick: this.selectSimulatorLicense.bind(this, 'BuddyGalore') },
+	                  'Buddy Galore'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              { style: { fontSize: '0.75em' } },
+	              'Picked: ',
+	              this.state.simulatorLicense || 'none yet',
+	              ', login token: ',
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                this.props.signupToken
+	              )
+	            )
+	          )
+	        );
+	      }
+	      return null;
+	    }
+	  }]);
+
+	  return Step;
+	}(_react.Component);
+
+	exports.default = Step;
+
+/***/ },
+/* 412 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CustomerSignupActions = __webpack_require__(410);
+
+	var _CustomerSignupActions2 = _interopRequireDefault(_CustomerSignupActions);
+
+	var _CustomerStore = __webpack_require__(357);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+	//import * as Translate from '../../lib/Translate'
+
+	//import RootscopeActions from '../actions/RootscopeActions'
+	//import RootscopeStore from '../stores/RootscopeStore'
+
+
+	var Step = function (_Component) {
+	  _inherits(Step, _Component);
+
+	  function Step(props, context) {
+	    _classCallCheck(this, Step);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _this.state = {
+	      errorMsg: null,
+	      simulatorPrint: null
+	    };
+
+	    _this._onCSStoreChange = _this._onCSStoreChange.bind(_this);
+
+	    return _this;
+	  }
+
+	  _createClass(Step, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {
+	      _CustomerStore2.default.addChangeListener(this._onCSStoreChange);
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _CustomerStore2.default.removeChangeListener(this._onCSStoreChange);
+	    }
+	  }, {
+	    key: '_onCSStoreChange',
+	    value: function _onCSStoreChange(event) {
+	      if (event.type === _appConstants2.default.PRINT_SCANNED_SIGNUP) {
+	        if (event.status === 'ok') {
+	          this.setState({
+	            errorMsg: null
+	          });
+	        } else {
+	          this.setState({
+	            errorMsg: 'There was a problem scanning your fingerprint, please try again.'
+	          });
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'selectSimulatorPrint',
+	    value: function selectSimulatorPrint(who, e) {
+	      this.setState({
+	        simulatorPrint: who
+	      });
+	    }
+	  }, {
+	    key: 'startPrintScan',
+	    value: function startPrintScan() {
+	      if (this.props.testing && !this.state.simulatorPrint) {
+	        return alert('TESTING: Please choose a customer print from the orange buttons.');
+	      }
+	      _CustomerSignupActions2.default.scanPrint(this.props.signupToken, this.state.simulatorPrint);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Scan your finger or thumb print'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Put your finger or thumb on the scanner to the left.'
+	            ),
+	            _react2.default.createElement(
+	              _E.Alert,
+	              { type: 'info' },
+	              'Use the same finger or thumb that you used at sign up.',
+	              _react2.default.createElement('br', null),
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                'HINT: '
+	              ),
+	              'we asked for your thumb and your index finger from your dominant hand.'
+	            ),
+	            _react2.default.createElement(
+	              _E.Button,
+	              { type: 'warning', onClick: this.startPrintScan.bind(this) },
+	              'TESTING: Press to "record" the scan, this will happen automatically when hardware is attached.'
+	            )
+	          )
+	        ),
+	        this.renderSimulator()
+	      );
+	    }
+	  }, {
+	    key: 'renderSimulator',
+	    value: function renderSimulator() {
+	      if (this.props.testing) {
+	        return _react2.default.createElement(
+	          _E.Row,
+	          { style: { border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' } },
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h4',
+	              { style: { fontWeight: 'normal' } },
+	              'SIMULATOR: choose a customer finger/thumb print:'
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              { style: { marginBottom: '1em' } },
+	              _react2.default.createElement(
+	                _E.Col,
+	                { basis: '33%', style: { textAlign: 'center', marginBottom: '1em' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { size: 'sm', type: 'warning', onClick: this.selectSimulatorPrint.bind(this, 'KrisKhan') },
+	                  'Kris Khan'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { basis: '33%', style: { textAlign: 'center', marginBottom: '1em' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { size: 'sm', type: 'warning', onClick: this.selectSimulatorPrint.bind(this, 'MaryJaneSmith') },
+	                  'Mary Jane Smith'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { basis: '33%', style: { textAlign: 'center', marginBottom: '1em' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { size: 'sm', type: 'warning', onClick: this.selectSimulatorPrint.bind(this, 'BuddyGalore') },
+	                  'Buddy Galore'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              { style: { fontSize: '0.75em' } },
+	              'Picked: ',
+	              this.state.simulatorPrint || 'none yet',
+	              ', signup token: ',
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                this.props.signupToken
+	              )
+	            )
+	          )
+	        );
+	      }
+	      return null;
+	    }
+	  }]);
+
+	  return Step;
+	}(_react.Component);
+
+	exports.default = Step;
+
+/***/ },
+/* 413 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CustomerSignupActions = __webpack_require__(410);
+
+	var _CustomerSignupActions2 = _interopRequireDefault(_CustomerSignupActions);
+
+	var _CustomerStore = __webpack_require__(357);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+	//import * as Translate from '../../lib/Translate'
+
+	//import RootscopeActions from '../actions/RootscopeActions'
+	//import RootscopeStore from '../stores/RootscopeStore'
+
+
+	var Step = function (_Component) {
+	  _inherits(Step, _Component);
+
+	  function Step(props, context) {
+	    _classCallCheck(this, Step);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _this.state = {
+	      errorMsg: null,
+	      simulatorPrint: null
+	    };
+
+	    _this._onCSStoreChange = _this._onCSStoreChange.bind(_this);
+
+	    return _this;
+	  }
+
+	  _createClass(Step, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {
+	      _CustomerStore2.default.addChangeListener(this._onCSStoreChange);
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _CustomerStore2.default.removeChangeListener(this._onCSStoreChange);
+	    }
+	  }, {
+	    key: '_onCSStoreChange',
+	    value: function _onCSStoreChange(event) {
+	      if (event.type === _appConstants2.default.MOBILE_NUMBER_ADDED_SIGNUP) {
+	        if (event.status === 'ok') {
+	          this.setState({
+	            errorMsg: null
+	          });
+	        } else {
+	          this.setState({
+	            errorMsg: 'There was a problem with your mobile number, please try again.'
+	          });
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'updateNumber',
+	    value: function updateNumber(e) {
+	      this.setState({
+	        mobileNumber: e.target.value
+	      });
+	    }
+	  }, {
+	    key: 'saveMobileNumber',
+	    value: function saveMobileNumber() {
+	      if (this.state.mobileNumber && this.mobileNumberIsOK()) {
+	        _CustomerSignupActions2.default.captureMobileNumber(this.props.signupToken, this.state.mobileNumber);
+	      }
+	    }
+	  }, {
+	    key: 'mobileNumberIsOK',
+	    value: function mobileNumberIsOK() {
+	      if (this.state.mobileNumber) {
+	        // eventually, validate it!
+	        return true;
+	      }
+	      return false;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Mobile Number'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Punch in your mobile number so we can send a receipt to your phone.'
+	            ),
+	            _react2.default.createElement(
+	              _E.InputGroup,
+	              { contiguous: true },
+	              _react2.default.createElement(
+	                _E.InputGroup.Section,
+	                { grow: true },
+	                _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Enter your mobile number', _vkenabled: 'true', onChange: this.updateNumber.bind(this) })
+	              ),
+	              _react2.default.createElement(
+	                _E.InputGroup.Section,
+	                null,
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { type: 'primary', onClick: this.saveMobileNumber.bind(this) },
+	                  'Add Phone Number'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Step;
+	}(_react.Component);
+
+	exports.default = Step;
+
+/***/ },
+/* 414 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CustomerSignupActions = __webpack_require__(410);
+
+	var _CustomerSignupActions2 = _interopRequireDefault(_CustomerSignupActions);
+
+	var _CustomerStore = __webpack_require__(357);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+	//import * as Translate from '../../lib/Translate'
+
+	//import RootscopeActions from '../actions/RootscopeActions'
+	//import RootscopeStore from '../stores/RootscopeStore'
+
+
+	var Step = function (_Component) {
+	  _inherits(Step, _Component);
+
+	  function Step(props, context) {
+	    _classCallCheck(this, Step);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _this.state = {
+	      errorMsg: null,
+	      simulatorPrint: null
+	    };
+
+	    _this._onCSStoreChange = _this._onCSStoreChange.bind(_this);
+
+	    return _this;
+	  }
+
+	  _createClass(Step, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {
+	      _CustomerStore2.default.addChangeListener(this._onCSStoreChange);
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _CustomerStore2.default.removeChangeListener(this._onCSStoreChange);
+	    }
+	  }, {
+	    key: '_onCSStoreChange',
+	    value: function _onCSStoreChange(event) {
+	      if (event.type === _appConstants2.default.MOBILE_NUMBER_ADDED_SIGNUP) {
+	        if (event.status === 'ok') {
+	          this.setState({
+	            errorMsg: null
+	          });
+	        } else {
+	          this.setState({
+	            errorMsg: 'There was a problem with your email, please try again.'
+	          });
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'updateNumber',
+	    value: function updateNumber(e) {
+	      this.setState({
+	        email: e.target.value
+	      });
+	    }
+	  }, {
+	    key: 'saveEmail',
+	    value: function saveEmail() {
+	      if (this.state.email && this.emailIsOK()) {
+	        _CustomerSignupActions2.default.captureEmail(this.props.signupToken, this.state.email);
+	      }
+	    }
+	  }, {
+	    key: 'emailIsOK',
+	    value: function emailIsOK() {
+	      if (this.state.email) {
+	        // eventually, validate it!
+	        return true;
+	      }
+	      return false;
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Email'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Add your email so we can send you refunds and change through interac.'
+	            ),
+	            _react2.default.createElement(
+	              _E.InputGroup,
+	              { contiguous: true },
+	              _react2.default.createElement(
+	                _E.InputGroup.Section,
+	                { grow: true },
+	                _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Enter your email', _vkenabled: 'true', onChange: this.updateNumber.bind(this) })
+	              ),
+	              _react2.default.createElement(
+	                _E.InputGroup.Section,
+	                null,
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { type: 'primary', onClick: this.saveEmail.bind(this) },
+	                  'Add Email'
+	                )
+	              )
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return Step;
+	}(_react.Component);
+
+	exports.default = Step;
+
+/***/ },
+/* 415 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CustomerSignupActions = __webpack_require__(410);
+
+	var _CustomerSignupActions2 = _interopRequireDefault(_CustomerSignupActions);
+
+	var _CustomerStore = __webpack_require__(357);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+	//import * as Translate from '../../lib/Translate'
+
+	//import RootscopeActions from '../actions/RootscopeActions'
+	//import RootscopeStore from '../stores/RootscopeStore'
+
+
+	var Step = function (_Component) {
+	  _inherits(Step, _Component);
+
+	  function Step(props, context) {
+	    _classCallCheck(this, Step);
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Step).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _this.state = {
+	      errorMsg: null,
+	      simulatorPrint: null
+	    };
+
+	    _this._onCSStoreChange = _this._onCSStoreChange.bind(_this);
+
+	    return _this;
+	  }
+
+	  _createClass(Step, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {
+	      _CustomerStore2.default.addChangeListener(this._onCSStoreChange);
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      _CustomerStore2.default.removeChangeListener(this._onCSStoreChange);
+	    }
+	  }, {
+	    key: '_onCSStoreChange',
+	    value: function _onCSStoreChange(event) {
+	      if (event.type === _appConstants2.default.ADMIN_VERIFIED_SIGNUP) {
+	        if (event.status === 'ok') {
+	          this.setState({
+	            errorMsg: null
+	          });
+	        } else {
+	          this.setState({
+	            errorMsg: 'There was a problem recognizing the admin, please try again.'
+	          });
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'selectSimulatorPrint',
+	    value: function selectSimulatorPrint(who, e) {
+	      this.setState({
+	        simulatorPrint: who
+	      });
+	    }
+	  }, {
+	    key: 'startPrintScan',
+	    value: function startPrintScan() {
+	      if (this.props.testing && !this.state.simulatorPrint) {
+	        return alert('TESTING: Please choose a customer print from the orange buttons.');
+	      }
+	      _CustomerSignupActions2.default.adminVerify(this.props.signupToken, this.state.simulatorPrint);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'Attendant verification of your signup'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              'Please alert one of the attendants to verify your identity, and then scan their fingerprint.'
+	            ),
+	            this.renderErrorMsg(),
+	            _react2.default.createElement(
+	              _E.Button,
+	              { type: 'warning', onClick: this.startPrintScan.bind(this) },
+	              'TESTING: Press to "record" the scan, this will happen automatically when hardware is attached.'
+	            )
+	          )
+	        ),
+	        this.renderSimulator()
+	      );
+	    }
+	  }, {
+	    key: 'renderErrorMsg',
+	    value: function renderErrorMsg() {
+	      if (this.state.errorMsg) {
+	        return _react2.default.createElement(
+	          _E.Alert,
+	          { type: 'danger' },
+	          this.state.errorMsg
+	        );
+	      }
+	      return null;
+	    }
+	  }, {
+	    key: 'renderSimulator',
+	    value: function renderSimulator() {
+	      if (this.props.testing) {
+	        return _react2.default.createElement(
+	          _E.Row,
+	          { style: { border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' } },
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h4',
+	              { style: { fontWeight: 'normal' } },
+	              'SIMULATOR: choose a customer finger/thumb print:'
+	            ),
+	            _react2.default.createElement(
+	              _E.Row,
+	              { style: { marginBottom: '1em' } },
+	              _react2.default.createElement(
+	                _E.Col,
+	                { basis: '33%', style: { textAlign: 'center', marginBottom: '1em' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { size: 'sm', type: 'warning', onClick: this.selectSimulatorPrint.bind(this, 'Admin') },
+	                  'ADMIN'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { basis: '33%', style: { textAlign: 'center', marginBottom: '1em' } },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { size: 'sm', type: 'warning', onClick: this.selectSimulatorPrint.bind(this, 'NotAdmin') },
+	                  'NOT admin'
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              { style: { fontSize: '0.75em' } },
+	              'Picked: ',
+	              this.state.simulatorPrint || 'none yet',
+	              ', signup token: ',
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                this.props.signupToken
+	              )
+	            )
+	          )
+	        );
+	      }
+	      return null;
+	    }
+	  }]);
+
+	  return Step;
+	}(_react.Component);
+
+	exports.default = Step;
+
+/***/ },
+/* 416 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _CustomerSignupActions = __webpack_require__(410);
+
+	var _CustomerSignupActions2 = _interopRequireDefault(_CustomerSignupActions);
+
+	var _appConstants = __webpack_require__(247);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _reactRouter = __webpack_require__(160);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+	//import * as Translate from '../../lib/Translate'
+
+	//import RootscopeActions from '../actions/RootscopeActions'
+	//import RootscopeStore from '../stores/RootscopeStore'
+
+	//import CS_Store from '../../stores/CustomerStore'
+
+	var Step1 = function (_Component) {
+	  _inherits(Step1, _Component);
+
+	  function Step1(props, context) {
+	    _classCallCheck(this, Step1);
+
+	    // MUST call super() before any this.*
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(Step1).call(this, props, context));
+	  }
+
+	  _createClass(Step1, [{
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      _CustomerSignupActions2.default.startRegistering(this.props.signupToken);
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h2',
+	              null,
+	              'One moment please while we create your account'
+	            ),
+	            _react2.default.createElement(_E.Spinner, null)
+	          )
+	        ),
+	        this.renderSimulator()
+	      );
+	    }
+	  }, {
+	    key: 'renderSimulator',
+	    value: function renderSimulator() {
+	      if (this.props.testing) {
+	        return _react2.default.createElement(
+	          _E.Row,
+	          { style: { border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' } },
+	          _react2.default.createElement(
+	            _E.Col,
+	            null,
+	            _react2.default.createElement(
+	              'h4',
+	              { style: { fontWeight: 'normal' } },
+	              'SIMULATOR: trying to register the customer'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              { style: { fontSize: '0.75em' } },
+	              'signup token: ',
+	              _react2.default.createElement(
+	                'strong',
+	                null,
+	                this.props.signupToken
+	              )
+	            )
+	          )
+	        );
+	      }
+	      return null;
+	    }
+	  }]);
+
+	  return Step1;
+	}(_react.Component);
+
+	exports.default = Step1;
+
+/***/ },
+/* 417 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+			value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _elemental = __webpack_require__(300);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _TsvService = __webpack_require__(220);
+
+	var _TsvService2 = _interopRequireDefault(_TsvService);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var VendCartItem = function (_Component) {
+			_inherits(VendCartItem, _Component);
+
+			function VendCartItem() {
+					_classCallCheck(this, VendCartItem);
+
+					return _possibleConstructorReturn(this, Object.getPrototypeOf(VendCartItem).apply(this, arguments));
+			}
+
+			_createClass(VendCartItem, [{
+					key: 'render',
+					value: function render() {
+							var prd = this.props.data;
+							return _react2.default.createElement(
+									_E.Row,
+									{ className: 'shoppingCartItem' },
+									_react2.default.createElement(
+											_E.Col,
+											{ className: 'shopping-cart-list-image', sm: '20%', md: '20%', lg: '20%', style: { textAlign: 'center' } },
+											_react2.default.createElement('img', { className: 'boxShadowed', src: prd.imagePath }),
+											' '
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ className: 'cart shopping-cart-table', xs: '42%', sm: '37%', md: '50%', lg: '50%' },
+											prd.productName
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ className: 'cart shopping-cart-table', xs: '8%', sm: '13%', md: '10%', lg: '10%', style: { textAlign: 'right' } },
+											'$',
+											_TsvService2.default.currencyFilter(prd.price * prd.qtyInCart)
+									),
+									_react2.default.createElement(
+											_E.Col,
+											{ xs: '20%', sm: '20%', md: '20%', lg: '20%', className: 'productQuantity', style: { textAlign: 'right' } },
+											' ',
+											' ',
+											prd.qtyInCart,
+											' ',
+											' '
+									)
+							);
+					}
+			}]);
+
+			return VendCartItem;
+	}(_react.Component);
+
+	exports.default = VendCartItem;
 
 /***/ }
 /******/ ]);
