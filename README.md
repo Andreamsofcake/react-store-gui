@@ -1,5 +1,6 @@
 # vending-app-gui
 
+<<<<<<< HEAD
 ### how to run for dev:
 
 1. clone repo
@@ -21,3 +22,6 @@ App "init" module (probably App.js) should:
 	=> requires "import { browserHistory } from 'react-router'"
 
 - tsv.customSetting(name, dflt) => RootscopeStore.getConfig('customSetting.'+name, dflt)
+=======
+GUI refactor for the vending machine!
+>>>>>>> 1885a0461224d2ba0f6fe1e6e5fb489f3e6b7d85
