@@ -27,7 +27,8 @@ module.exports = function(request, reply) {
 			// FIRST print
 			RQ.post({
 				url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/grabprint1',
-				json: true
+				json: true,
+				body: {}
 			}, (err, response, body) => {
 				if (err) {
 					return reply({ status: 'err', apiResponses: [err] }).code(500);
@@ -42,7 +43,8 @@ module.exports = function(request, reply) {
 			// SECOND print
 				RQ.post({
 					url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/grabprint2',
-					json: true
+					json: true,
+					body: {}
 				}, (err, response, body) => {
 					if (err) {
 						return reply({ status: 'err', apiResponses: [err] }).code(500);
@@ -57,7 +59,8 @@ module.exports = function(request, reply) {
 			// THIRD print
 					RQ.post({
 						url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/grabprint3',
-						json: true
+						json: true,
+						body: {}
 					}, (err, response, body) => {
 						if (err) {
 							return reply({ status: 'err', apiResponses: [err] }).code(500);
@@ -102,7 +105,8 @@ module.exports = function(request, reply) {
 			var msgs = [];
 			RQ.post({
 				url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/grabprint1',
-				json: true
+				json: true,
+				body: {}
 			}, (err, response, body) => {
 				if (err) {
 					return reply({ status: 'err', apiResponses: [err] }).code(500);
