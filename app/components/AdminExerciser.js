@@ -67,11 +67,9 @@ class Admin_Jofemar_Exerciser extends Component {
     // Add change listeners to stores
   componentDidMount() {
     TsvService.subscribe("notifyVmsEvent", (eventArgs) => {
-        if (browserHistory.push() !== "/Admin_Jofemar_Exerciser")
-            return;
         this.setState({
-              vmsStatus: this.state.vmsStatus + eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')'
-            })
+		  vmsStatus: this.state.vmsStatus + eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')'
+		})
     }, "app.jofemarExerciser");
 
   }

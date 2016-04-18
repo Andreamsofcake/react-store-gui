@@ -46,6 +46,11 @@ var appConstants = keyMirror({
 // Emulator:
 	TEST_EMULATOR_RESULT: null,
 
+// Admin panel:
+	TEST_REGISTER_PRINT: null,
+	TEST_MATCH_PRINT: null,
+	CLEAR_API_RESPONSES: null,
+
 // Foo Section Describer (optional)
 	EXAMPLE_ACTION_CONSTANT: null,
 
