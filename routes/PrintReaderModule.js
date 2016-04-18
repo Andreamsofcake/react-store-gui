@@ -30,6 +30,8 @@ module.exports = function(request, reply) {
 				json: true,
 				body: {}
 			}, (err, response, body) => {
+				console.log('grab1 response:');
+				console.log(body);
 				if (err) {
 					return reply({ status: 'err', apiResponses: [err] }).code(500);
 				}
@@ -46,6 +48,8 @@ module.exports = function(request, reply) {
 					json: true,
 					body: {}
 				}, (err, response, body) => {
+					console.log('grab2 response:');
+					console.log(body);
 					if (err) {
 						return reply({ status: 'err', apiResponses: [err] }).code(500);
 					}
@@ -62,6 +66,8 @@ module.exports = function(request, reply) {
 						json: true,
 						body: {}
 					}, (err, response, body) => {
+						console.log('grab3 response:');
+						console.log(body);
 						if (err) {
 							return reply({ status: 'err', apiResponses: [err] }).code(500);
 						}
@@ -83,6 +89,8 @@ module.exports = function(request, reply) {
 							}
 
 						}, (err, response, body) => {
+							console.log('addprint response:');
+							console.log(body);
 							if (err) {
 								return reply({ status: 'err', apiResponses: msgs.concat(err) }).code(500);
 							}
@@ -108,11 +116,14 @@ module.exports = function(request, reply) {
 				json: true,
 				body: {}
 			}, (err, response, body) => {
+				console.log('grab response:');
+				console.log(body);
+
 				if (err) {
-					return reply({ status: 'err', apiResponses: [err] }).code(500);
+					return reply({ status: 'err', check1a: true, apiResponses: [err] }).code(500);
 				}
 				if (!body || body.status !== 'ok') { 
-					return reply({ status: 'err', apiResponses: [body.data || body.msg] }).code(500);
+					return reply({ status: 'err', check2a: true, apiResponses: [body.data || body.msg] }).code(500);
 				}
 				let M = body.data;
 				if (body.msg) M += ': ' + body.msg;
@@ -125,11 +136,13 @@ module.exports = function(request, reply) {
 						userid: user_id || null
 					}
 				}, (err, response, body) => {
+					console.log('matchprint response:');
+					console.log(body);
 					if (err) {
-						return reply({ status: 'err', apiResponses: msgs.concat(err) }).code(500);
+						return reply({ status: 'err', check1: true, apiResponses: msgs.concat(err) }).code(500);
 					}
 					if (!body || body.status !== 'ok') { 
-						return reply({ status: 'err', apiResponses: msgs.concat(body.data || body.msg) }).code(500);
+						return reply({ status: 'err', check2: true, apiResponses: msgs.concat(body.data || body.msg) }).code(500);
 					}
 					let M = body.data;
 					if (body.msg) M += ': ' + body.msg;
