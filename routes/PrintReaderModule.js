@@ -119,6 +119,8 @@ module.exports = function(request, reply) {
 				console.log('grab response:');
 				console.log(body);
 
+fs.writeFileSync('grabprint1-response-body.txt', response.body);
+
 let foo = body;
 try {
 	if (typeof foo === 'string') {
@@ -152,6 +154,8 @@ msgs.push(foo);
 				}, (err, response, body) => {
 					console.log('matchprint response:');
 					console.log(body);
+
+fs.writeFileSync('matchprint-response-body.txt', response.body);
 
 let foo = body;
 try {

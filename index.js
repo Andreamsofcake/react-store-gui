@@ -15,6 +15,7 @@ var Hapi = require('hapi')
 	, fs = require('fs')
 
 	, SDK = require('sdk-core-lib')
+	, RQ = require('request')
 
 	, importerFunc = require('./lib/importer')
 //	, handler_dir = __dirname + '/route-handlers'
@@ -302,6 +303,20 @@ server.register([
 				request.yar.set('current_customer', request.payload.customer);
 			}
 			reply({ status: 'ok' });
+		}
+	});
+	
+	server.route({
+		method: 'get',
+		path: '/kf-test',
+		handler: (request, reply) => {
+			RQ.get({
+				url: 'http://localhost:8087'
+			}, (err, response, body) => {
+				console.log('kf test response.body:');
+				console.log(response.body);
+			})
+			reply('testing yo').code(200);
 		}
 	});
 
