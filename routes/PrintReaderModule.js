@@ -119,6 +119,17 @@ module.exports = function(request, reply) {
 				console.log('grab response:');
 				console.log(body);
 
+let foo = body;
+try {
+	if (typeof foo === 'string') {
+		foo = JSON.parse(foo);
+	}
+} catch (e) {
+	foo = 'cannot parse the json: ' + e;
+}
+msgs.push('grabprint response follows');
+msgs.push(foo);
+
 				if (err) {
 					return reply({ status: 'err', check1a: true, apiResponses: [err] }).code(500);
 				}
@@ -141,11 +152,25 @@ module.exports = function(request, reply) {
 				}, (err, response, body) => {
 					console.log('matchprint response:');
 					console.log(body);
+
+let foo = body;
+try {
+	if (typeof foo === 'string') {
+		foo = JSON.parse(foo);
+	}
+} catch (e) {
+	foo = 'cannot parse the json: ' + e;
+}
+msgs.push('matchprint response follows');
+msgs.push(foo);
+
 					if (err) {
 						return reply({ status: 'err', check1: true, apiResponses: msgs.concat(err) }).code(500);
 					}
 					if (!body || body.status !== 'ok') { 
-						return reply({ status: 'err', check2: true, apiResponses: msgs.concat(body.data || body.msg) }).code(500);
+						let M = body.data;
+						if (body.msg) M += ': ' + body.msg;
+						return reply({ status: 'err', check2: true, apiResponses: msgs.concat(M) }).code(500);
 					}
 					let M = body.data;
 					if (body.msg) M += ': ' + body.msg;
