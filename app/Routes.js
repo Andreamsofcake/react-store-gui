@@ -12,6 +12,7 @@ import AdminLogin from './components/AdminLogin'
 import AdminHome from './components/AdminHome'
 import AdminSettings from './components/AdminSettings'
 import AdminExerciser from './components/AdminExerciser'
+import AdminPrintReaderTester from './components/AdminPrintReaderTester'
 
 import CustomerSignup from './components/CustomerSignup'
 import CustomerLogin from './components/CustomerLogin'
@@ -43,6 +44,7 @@ export default (
 		<Route path='Admin_Home' component={AdminHome} />
 		<Route path='Admin_Settings' component={AdminSettings} />
 		<Route path='Admin_Exerciser' component={AdminExerciser} />
+		<Route path='Admin_PrintTester' component={AdminPrintReaderTester} />
 
 		<Route path='Customer_Signup' component={CustomerSignup} />
 		<Route path='Customer_Signup/:step' component={CustomerSignup} />

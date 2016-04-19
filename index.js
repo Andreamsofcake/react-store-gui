@@ -157,6 +157,7 @@ server.register([
 		, ActivateModule = require('./routes/ActivateModule')
 		, CustomerMatchLogin = require('./routes/CustomerMatchLogin')
 		, CustomerRegisterModule = require('./routes/CustomerRegisterModule')
+		, PrintReaderModule = require('./routes/PrintReaderModule')
 		;
 
 	server.route({
@@ -301,6 +302,26 @@ server.register([
 				request.yar.set('current_customer', request.payload.customer);
 			}
 			reply({ status: 'ok' });
+		}
+	});
+
+	server.route({
+		method: 'post',
+		path: '/api/print-reader/{action}',
+		handler: PrintReaderModule,
+		config: {
+			plugins: {
+				'hapi-io': {
+					event: 'api-print-reader' // optional, currently only used by ajax in the client
+					, mapping: {
+
+					},
+					post: (ctx, next) => {
+						ctx.socket.emit(ctx.event, ctx.result);
+						next();
+					}
+				}
+			}
 		}
 	});
 
