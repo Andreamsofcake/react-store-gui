@@ -80,7 +80,7 @@ class Step extends Component {
 
 <_E.InputGroup contiguous>
 	<_E.InputGroup.Section grow>
-		<_E.FormInput type="text" placeholder="Enter your mobile number" _vkenabled="true" onChange={this.updateNumber.bind(this)} />
+		<_E.FormInput type="text" placeholder="Enter your mobile number" _vkenabled="true" onKeyUp={this.updateNumber.bind(this)} />
 	</_E.InputGroup.Section>
 	<_E.InputGroup.Section>
 		<_E.Button type="primary" onClick={this.saveMobileNumber.bind(this)}>Add Phone Number</_E.Button>

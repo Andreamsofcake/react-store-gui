@@ -127,8 +127,12 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   updateState(what, e) {
+  	console.warn('updateState(what, e)');
+  	console.log(what);
+  	console.log(e.target.value);
   	let state = {};
   	state[what] = e.target.value;
+  	console.log(state);
   	this.setState(state);
   }
   
@@ -164,6 +168,13 @@ class Admin_Print_Reader_Tester extends Component {
 	  			<pre style={{fontSize: '1em', padding: '1em'}}>
 	  			{this.state.apiResponse.join("\n")}
 	  			</pre>
+	  			<pre style={{fontSize: '0.75em', padding: '1em', backgroundColor: '#dfdfdf'}}>
+	  			Virtual Keyboard Sanity check:{"\n"}
+	  			User ID: {this.state.user_id}{"\n"}
+	  			Client ID: {this.state.client_id}{"\n"}
+	  			Location ID: {this.state.location_id}{"\n"}
+	  			Machine ID: {this.state.machine_id}{"\n"}
+	  			</pre>
   			</_E.Col>
   		</_E.Row>
   	);
@@ -178,7 +189,7 @@ class Admin_Print_Reader_Tester extends Component {
   			<_E.Col sm="50%" md="50%" lg="50%">
 	  			<_E.Form type="horizontal">
 					<_E.FormField label="User ID" htmlFor="user_id">
-						<_E.FormInput type="text" placeholder="Set user ID" name="user_id" value={this.state.user_id} _vkenabled="true" onChange={this.updateState.bind(this, 'user_id')} />
+						<_E.FormInput type="text" placeholder="Set user ID" name="user_id" value={this.state.user_id} _vkenabled="true" onKeyUp={this.updateState.bind(this, 'user_id')} />
 					</_E.FormField>	  			
 					<_E.FormField offsetAbsentLabel>
 						<_E.Button onClick={this.matchPrint.bind(this)}>Start matching...</_E.Button>
@@ -191,6 +202,13 @@ class Admin_Print_Reader_Tester extends Component {
   				<p>Api Responses (if any):</p>
 	  			<pre style={{fontSize: '1em', padding: '1em'}}>
 	  			{this.state.apiResponse.join("\n")}
+	  			</pre>
+	  			<pre style={{fontSize: '0.75em', padding: '1em', backgroundColor: '#dfdfdf'}}>
+	  			Virtual Keyboard Sanity check:{"\n"}
+	  			User ID: {this.state.user_id}{"\n"}
+	  			Client ID: {this.state.client_id}{"\n"}
+	  			Location ID: {this.state.location_id}{"\n"}
+	  			Machine ID: {this.state.machine_id}{"\n"}
 	  			</pre>
   			</_E.Col>
   		</_E.Row>
