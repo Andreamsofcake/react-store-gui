@@ -133,7 +133,10 @@ module.exports = function(request, reply) {
 					url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/matchprint',
 					json: true,
 					body: {
-						userid: user_id || null
+						userid: user_id || null,
+						clientid: null,
+						locationid: null,
+						machineid: null,
 					}
 				}, (err, response, body) => {
 					console.log('matchprint response:');
