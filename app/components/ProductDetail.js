@@ -104,8 +104,8 @@ import * as _E from 'elemental'
                  <_E.Col basis="50%">
                    <p className="prdPrice">Price ${TsvService.currencyFilter(prod.price)} </p>
                    <_E.Button className="product-button" onClick={this.setPrdSelected.bind(this)}>Add to cart</_E.Button>
-                   <hr style={{margin: '20px auto'}} />
-                   <_E.Button size="sm" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
+                   <hr style={{margin: '20px auto', height: '2px'}} />
+                   <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
                  </_E.Col>
                </_E.Row>
            </div>

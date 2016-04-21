@@ -60,7 +60,7 @@ class Step extends Component {
   	if (this.props.testing && !this.state.simulatorPrint) {
   		return alert('TESTING: Please choose a customer print from the orange buttons.');
   	}
-  	CL_Actions.scanPrint(this.props.loginToken, this.state.simulatorPrint);
+  	CL_Actions.scanPrint(this.props.loginToken, 1, this.state.simulatorPrint);
   }
 
   render() {

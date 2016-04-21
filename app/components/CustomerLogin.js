@@ -121,6 +121,8 @@ class Customer_Login extends Component {
 			<_E.Col>
 				<h3>First time here? Let's register your account!</h3>
 				<_E.Button type="primary" component={(<Link to="/Customer_Signup">{Translate.translate('Customer','SignupButtonText')}</Link>)} />
+				{' '}
+				<_E.Button type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
 			</_E.Col>
 		  </_E.Row>
   		);

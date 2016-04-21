@@ -53,28 +53,28 @@ var CustomerSignupActions = {
 		);
 	},
 	
-	adminVerify(signupToken, simulatorPrintAdmin) {
-		SocketAPI.send('customer-signup',
-			{ action: 'admin-verify', gui: 'signup', signupToken, simulatorPrintAdmin },
+	grabPhoto(signupToken, simulatorPhotoCustomer) {
+		SocketAPI.send('activate-module',
+			{ action: 'scan-print', module: 'camera', gui: 'signup', signupToken, simulatorPhotoCustomer },
 			(data) => {
 				// we're not validating here, either the scan completed or failed... pass it through.
 				// CustomerStore will decide if the event is ok or err
 				AppDispatcher.handleServerAction({
-					actionType: appConstants.ADMIN_VERIFIED_SIGNUP,
+					actionType: appConstants.PHOTO_TAKEN_SIGNUP,
 					data: data
 				});
 			}
 		);
 	},
 
-	scanPrint(signupToken, simulatorPrintCustomer) {
+	scanPrint(signupToken, whichPrint, simulatorPrintCustomer) {
 		SocketAPI.send('activate-module',
 			{ action: 'scan-print', module: 'print-scanner', gui: 'signup', signupToken, simulatorPrintCustomer },
 			(data) => {
 				// we're not validating here, either the scan completed or failed... pass it through.
 				// CustomerStore will decide if the event is ok or err
 				AppDispatcher.handleServerAction({
-					actionType: appConstants.PRINT_SCANNED_SIGNUP,
+					actionType: appConstants['PRINT_'+whichPrint+'SCANNED_SIGNUP'],
 					data: data
 				});
 			}
@@ -123,7 +123,21 @@ var CustomerSignupActions = {
 		);
 	},
 
-	startRegistering(signupToken) {
+	adminVerify(signupToken, simulatorPrintAdmin) {
+		SocketAPI.send('customer-signup',
+			{ action: 'admin-verify', gui: 'signup', signupToken, simulatorPrintAdmin },
+			(data) => {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.ADMIN_VERIFIED_SIGNUP,
+					data: data
+				});
+			}
+		);
+	},
+	
+	finishRegistering(signupToken) {
 		SocketAPI.send('customer-signup',
 			{ action: 'register', signupToken },
 			(data) => {

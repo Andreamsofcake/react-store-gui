@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react'
 import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
@@ -101,15 +100,7 @@ class Storefront extends Component {
             Categories:{' '}
             <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>
             <span style={{width:'1em', display: 'inline-block'}}>{' '}</span>
-            <_E.ButtonGroup>
-            {this.state.categories ? this.state.categories.map((category, $index) => {
-                let type=this.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary": "hollow-primary"
-                return (
-                  <_E.Button key={$index} type={type} onClick={this.categoryClick.bind(this, category.categoryID)} >{category.categoryName}</_E.Button>
-                )
-              }
-            ) : null}
-            </_E.ButtonGroup>
+            {this.renderCategories()}
             </_E.Col>
           </_E.Row>
               <div className="product-container">
@@ -120,44 +111,87 @@ class Storefront extends Component {
     );
   }
 
+	renderCategories() {
+		if (this.state.categories) {
+			return (
+				<_E.ButtonGroup>
+				{this.state.categories.map((category, $index) => {
+					let type=this.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary": "hollow-primary"
+					return (
+					  <_E.Button key={$index} type={type} onClick={this.categoryClick.bind(this, category.categoryID)} >{category.categoryName}</_E.Button>
+					)
+				  }
+				)}
+				</_E.ButtonGroup>
+			);
+		}
+		return null;
+	}
 
   renderProducts(){
+
     var settings = {
-    	dots: true
+    	dots: true,
+    	adaptiveHeight: false,
+    	arrows: true,
+    	//fade: true,
+    	infinite: false,
+    	swipeToSlide: true,
     }
-    var products_per_page = 12
+
+    var products_per_page = 12;
     // for each item that is shown
     if (!this.state.products.length) {
       return null;
     }
-    let prods = []
+
+    var prods = [];
+
     this.state.products.map( (P, $index) => {
-      let show = true;
+      //let show = true;
       if (this.state.categoryIdFilter.length) {
-        if (this.state.categoryIdFilter.indexOf(P.productCategoryID) === -1) {
-          show = false;
-        }
-      }
-      if (show) {
+        if (this.state.categoryIdFilter.indexOf(P.productCategoryID) > -1) {
+          //show = false;
           prods.push(P)
+        }
+      } else {
+      	prods.push(P)
       }
     })
+
+    // testing, skip the <Slider />:
+    //prods = prods.slice(0,products_per_page);
+    
+    if (!prods || !prods.length) {
+    	if (this.state.categoryIdFilter.length) {
+    		return (
+    			<div>
+    			<h2 style={{margin: '40px auto'}}>No products found, looks like you chose an empty category.</h2>
+    			<p><em><strong>HINT:</strong> Press the <strong style={{color:'#0A6BE2'}}>"All"</strong> button in the top left corner</em></p>
+    			</div>
+    		);
+    	}
+    	return (
+    		<h2 style={{margin: '40px auto'}}>No products found in this machine at this time, please try again later.</h2>
+    	);
+    }
+
     if (prods <= products_per_page) {
       return (
-        <_E.Row>
+        <div className="storefront-product-carousel-group">
       	 {prods}
-        </_E.Row>
+        </div>
       )
     } else {
       var stack = []
       	, renderKey = 0
       	;
       while(prods.length) {
-        let sorted = prods.splice(0, products_per_page)
+        let prodslice = prods.splice(0, products_per_page)
         stack.push((
-              <_E.Row key={renderKey} className="slider-rows">
-              {this.renderProductGroup(sorted)}
-              </_E.Row>
+        	<div key={renderKey} className="storefront-product-carousel-group">
+              {this.renderProductGroup(prodslice)}
+            </div>
         ));
         renderKey += 1;
       }
@@ -172,11 +206,11 @@ class Storefront extends Component {
   renderProductGroup(products){
     return products.map((prd, idx) => {
       return (
-        <_E.Col key={idx} xs="1/2" sm="1/2" md="1/3" lg="1/3">
         <ProductListItem
-        onClick={this.setPrdSelected.bind(this)}
-        data={prd} />
-        </_E.Col>
+        	key={idx}
+			onClick={this.setPrdSelected.bind(this)}
+			data={prd}
+		/>
       );
     })
   }

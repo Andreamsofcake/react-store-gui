@@ -77,14 +77,43 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			}
 			CustomerStore.emitChange({ type: appConstants.LICENSE_SCANNED_SIGNUP, status: action.data.status });
 			break;
-
+/*
 		case appConstants.PRINT_SCANNED_SIGNUP:
 			if (action.data.status === 'ok') {
 				pushStep('signup', appConstants.PRINT_SCANNED_SIGNUP);
 			}
 			CustomerStore.emitChange({ type: appConstants.PRINT_SCANNED_SIGNUP, status: action.data.status });
 			break;
+*/		
+
+		case appConstants.PRINT_1SCANNED_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.PRINT_1SCANNED_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.PRINT_1SCANNED_SIGNUP, status: action.data.status });
+			break;
+
+		case appConstants.PRINT_2SCANNED_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.PRINT_2SCANNED_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.PRINT_2SCANNED_SIGNUP, status: action.data.status });
+			break;
+
+		case appConstants.PRINT_3SCANNED_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.PRINT_3SCANNED_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.PRINT_3SCANNED_SIGNUP, status: action.data.status });
+			break;
 		
+		case appConstants.PHOTO_TAKEN_SIGNUP:
+			if (action.data.status === 'ok') {
+				pushStep('signup', appConstants.PHOTO_TAKEN_SIGNUP);
+			}
+			CustomerStore.emitChange({ type: appConstants.PHOTO_TAKEN_SIGNUP, status: action.data.status });
+			break;
+
 		case appConstants.EMAIL_CAPTURED_SIGNUP:
 			if (action.data.status === 'ok') {
 				pushStep('signup', appConstants.EMAIL_CAPTURED_SIGNUP);

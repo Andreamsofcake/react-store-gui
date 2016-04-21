@@ -55,22 +55,17 @@ class ShoppingCartMini extends Component {
 	}
 
 	render() {
+		var ITEMS = this.state.qty + ' item';
+		if (this.state.qty == 0 || this.state.qty > 1) {
+			ITEMS += 's';
+		}
 		return (
 			<div className={this.props.className || ''}>
-			<_E.Alert type="success">
-				<a style={{
-						textAlign:'center',
-						display:'block',
-					}}><img onClick={() => {browserHistory.push("/Shopping_Cart")}} src="/gfx/shop.png" /></a>
-				<p style={{
-							paddingTop:'8px',
-							textAlign:'right',
-							fontSize:'1.8em',
-							fontWeight:'light',
-							fontStyle:'italic'
-						}}
-					>{this.state.qty} item{this.state.qty == 0 || this.state.qty > 1 ? 's' : ''}</p>
-			</_E.Alert>
+				<p>
+					<a><img onClick={() => {browserHistory.push("/Shopping_Cart")}} src="/gfx/shop.png" /></a>
+					{' '}
+					{ITEMS}
+				</p>
 			</div>
 		);
 	}

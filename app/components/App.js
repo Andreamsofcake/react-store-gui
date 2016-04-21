@@ -13,11 +13,14 @@ import RootscopeStore from '../stores/RootscopeStore'
 
 import ComEmulator from './ComEmulator'
 import CustomerStatusDisplay from './CustomerStatusDisplay'
+import AdminLoginButton from './AdminLoginButton'
 
 class App extends Component {
 	
 	constructor(props, context) {
 		super(props, context);
+		
+		this.appTesting = true;
 		
 		TsvService.init();
 		TsvService.registerKF();
@@ -111,11 +114,12 @@ class App extends Component {
 
 		return (
 			<div>{/* style={{maxWidth: '48em', margin: '0 auto'}}*/}
+			<AdminLoginButton testing={this.appTesting} />
 			<CustomerStatusDisplay />
 			<ComEmulator />
 			<_E.Row gutter={-20}>
 				<_E.Col className="route-content">
-					{this.props.children && React.cloneElement(this.props.children, { appTesting: true }) || (<div>
+					{this.props.children && React.cloneElement(this.props.children, { appTesting: this.appTesting }) || (<div>
 						<_E.Button component={(<Link to="/Storefront">Storefront</Link>)} />
 						</div>)}
 				</_E.Col>

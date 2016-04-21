@@ -44,7 +44,7 @@ class Step extends Component {
   			});
   		} else {
   			this.setState({
-  				errorMsg: 'There was a problem with your mobile number, please try again.'
+  				errorMsg: 'There was a problem with your email, please try again.'
   			});
   		}
   	}
@@ -52,18 +52,18 @@ class Step extends Component {
   
   updateNumber(e) {
   	this.setState({
-  		mobileNumber: e.target.value
+  		email: e.target.value
   	});
   }
   
-  saveMobileNumber() {
-  	if (this.state.mobileNumber && this.mobileNumberIsOK()) {
-  		CS_Actions.captureMobileNumber(this.props.signupToken, this.state.mobileNumber);
+  saveEmail() {
+  	if (this.state.email && this.emailIsOK()) {
+  		CS_Actions.captureEmail(this.props.signupToken, this.state.email);
   	}
   }
   
-  mobileNumberIsOK() {
-  	if (this.state.mobileNumber) {
+  emailIsOK() {
+  	if (this.state.email) {
   		// eventually, validate it!
   		return true;
   	}
@@ -75,15 +75,15 @@ class Step extends Component {
     	<div>
 		  <_E.Row >
 			<_E.Col>
-			  <h2>Mobile Number</h2>
-			  <p>Punch in your mobile number so we can send a receipt to your phone.</p>
+			  <h2>Email</h2>
+			  <p>Add your email so we can send you refunds and change through interac.</p>
 
 <_E.InputGroup contiguous>
 	<_E.InputGroup.Section grow>
-		<_E.FormInput type="text" placeholder="Enter your mobile number" _vkenabled="true" onKeyUp={this.updateNumber.bind(this)} />
+		<_E.FormInput type="text" placeholder="Enter your email" _vkenabled="true" onKeyUp={this.updateNumber.bind(this)} />
 	</_E.InputGroup.Section>
 	<_E.InputGroup.Section>
-		<_E.Button type="primary" onClick={this.saveMobileNumber.bind(this)}>Add Phone Number</_E.Button>
+		<_E.Button type="primary" onClick={this.saveEmail.bind(this)}>Add Email</_E.Button>
 	</_E.InputGroup.Section>
 </_E.InputGroup>
 

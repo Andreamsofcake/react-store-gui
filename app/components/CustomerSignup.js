@@ -12,6 +12,7 @@ import Step1 from './CustomerSignup/Step1'
 import Step2 from './CustomerSignup/Step2'
 import Step3 from './CustomerSignup/Step3'
 import Step4 from './CustomerSignup/Step4'
+import Step5 from './CustomerSignup/Step5'
 import AdminVerify from './CustomerSignup/AdminVerify'
 import Registering from './CustomerSignup/Registering'
 
@@ -63,23 +64,39 @@ class Customer_Signup extends Component {
   _onCSStoreChange(event) {
   	switch (event.type) {
   		case appConstants.LICENSE_SCANNED_SIGNUP:
+  		case appConstants.PRINT_1SCANNED_SIGNUP:
+  		case appConstants.PRINT_2SCANNED_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
 				browserHistory.push('/Customer_Signup/Step2');
 			}
   			break;
-
+/*
   		case appConstants.PRINT_SCANNED_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
 				browserHistory.push('/Customer_Signup/Step3');
 			}
   			break;
+*/
+  		case appConstants.PRINT_3SCANNED_SIGNUP:
+			if (event.status === 'ok') {
+				// go to next signup step:
+				browserHistory.push('/Customer_Signup/Step3');
+			}
+  			break;
+
+  		case appConstants.PHOTO_TAKEN_SIGNUP:
+			if (event.status === 'ok') {
+				// go to next signup step:
+				browserHistory.push('/Customer_Signup/Step4');
+			}
+  			break;
 
   		case appConstants.MOBILE_NUMBER_CAPTURED_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
-				browserHistory.push('/Customer_Signup/Step4');
+				browserHistory.push('/Customer_Signup/Step5');
 			}
   			break;
 
@@ -151,6 +168,8 @@ class Customer_Signup extends Component {
 			<_E.Col>
 				<h3>Already signed up? Go back to the signup page</h3>
 				<_E.Button type="primary" component={(<Link to="/Customer_Login">{Translate.translate('Customer','LoginButtonText')}</Link>)} />
+				{' '}
+				<_E.Button type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
 			</_E.Col>
 		  </_E.Row>
   		);
@@ -183,19 +202,23 @@ class Customer_Signup extends Component {
 		  	WhatStep = AdminVerify;
   			break;
 
-  		case 'Step4': // ID scan
+  		case 'Step5': // email
+		  	WhatStep = Step5;
+  			break;
+
+  		case 'Step4': // mobile
 		  	WhatStep = Step4;
   			break;
 
-  		case 'Step3': // email
+  		case 'Step3': // photo
 		  	WhatStep = Step3;
   			break;
 
-  		case 'Step2': // mobile number
+  		case 'Step2': // thumb scan
 		  	WhatStep = Step2;
   			break;
 
-  		case 'Step1': // thumb scan
+  		case 'Step1': // license
   		default:
 		  	WhatStep = Step1;
   			break;

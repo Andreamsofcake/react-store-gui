@@ -97,22 +97,10 @@ class Shopping_Cart extends Component {
       <_E.Row className="Shopping_Cart" >
         <h2>{Translate.translate('Shopping_Cart', 'ShoppingCart')}</h2>
         <_E.Col className="wrapper">
-                {/*<_E.Row className="row-border shopping-cart-table">*/}
-                	{/*
-                	<th></th>
-                	<th></th>
-                	<th className="cart">{Translate.translate('Shopping_Cart','Price')}</th>
-                	<th className="cart">{Translate.translate('Shopping_Cart','Qty')}</th>
-                	<th></th>
-                	* /}
-                	<_E.Col xs="40%" sm="40%" md="40%" lg="40%" className="columnHeader">Items</_E.Col>
-                	<_E.Col xs="8%" sm="8%" md="8%" lg="8%" className="columnHeader">{Translate.translate('Shopping_Cart','Price')}</_E.Col>
-                	<_E.Col xs="20%" sm="20%" md="20%" lg="20%" className="columnHeader">{Translate.translate('Shopping_Cart','Qty')}</_E.Col>
-                	<_E.Col xs="20%" sm="20%" md="20%" lg="20%" className="columnHeader">Remove</_E.Col>
-                	*/}
-                {/*</_E.Row>*/}
 
                 {this.renderShoppingCart()}
+
+                {this.state.cart && this.state.cart.length ? (
 
             <_E.Row className="row-border shopping-cart-table">
 
@@ -121,20 +109,13 @@ class Shopping_Cart extends Component {
                 <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { this.state.totalPrice ? TsvService.currencyFilter(this.state.totalPrice) : 0.00 }</p>
 
             </_E.Row>
+                ) : (<p style={{margin: '40px auto'}}>&nbsp;</p>)}
             <_E.Row>
-{/*
-                <_E.Col basis="1/4"><img className="regularBtn" alt="ShopMore" id="shopMoreImg" src={Translate.localizedImage('ShopMore.png')} onClick={this.shopmore()}/></_E.Col>
-                <_E.Col basis="1/4"><img className="regularBtn" alt="Check Out" id="checkoutImg" src={Translate.localizedImage('checkout.png')} onClick={this.checkout()}/></_E.Col>
-*/}
+
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('Shopping_Cart','Shop_More')}</_E.Button></_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">{this.renderCheckoutButton()}</_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="danger" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />{Translate.translate('Shopping_Cart','Cancel')}</_E.Button></_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3" style={{marginTop:'4em'}}>{ this.state.bShowCouponBtn ? this.renderCouponButton() : null }</_E.Col>
-
-{/*
-                <_E.Col basis="25%"><_E.Button type="danger" component={(<Link to="/Product_Search">TEST: go to product search page</Link>)} /></_E.Col>
-                <_E.Col basis="25%"><_E.Button type="danger" component={(<Link to="/Category_Search">TEST: go to category search page</Link>)} /></_E.Col>
-*/}
 
             </_E.Row>
 
@@ -147,7 +128,11 @@ class Shopping_Cart extends Component {
 
   renderShoppingCart() {
   	if (!this.state.cart || !this.state.cart.length) {
-  		return null;
+  		return (
+  			<div>
+  				<h2 style={{margin: '40px auto'}}>You don't have any items in your cart</h2>
+  			</div>
+  		);
   	}
 
 	return this.state.cart.map((prd, $index) => {

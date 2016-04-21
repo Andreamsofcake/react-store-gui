@@ -19,7 +19,8 @@ class Step extends Component {
     super(props, context);
     this.state = {
     	errorMsg: null,
-    	simulatorPrint: null
+    	simulatorPrint: null,
+    	completedSteps: []
     }
     
     this._onCSStoreChange = this._onCSStoreChange.bind(this);
@@ -37,17 +38,29 @@ class Step extends Component {
   }
   
   _onCSStoreChange(event) {
-  	if (event.type === appConstants.PRINT_SCANNED_SIGNUP) {
-  		if (event.status === 'ok') {
-  			this.setState({
-  				errorMsg: null
-  			});
-  		} else {
-  			this.setState({
-  				errorMsg: 'There was a problem scanning your fingerprint, please try again.'
-  			});
-  		}
-  	}
+  	var scanEvents = [appConstants.PRINT_1SCANNED_SIGNUP, appConstants.PRINT_2SCANNED_SIGNUP, appConstants.PRINT_3SCANNED_SIGNUP];
+  	if (scanEvents.indexOf(event.type) > -1) {
+		var state = {
+			completedSteps: CS_Store.getStepsCompleted('signup')
+		};
+		this.setState(state);
+		/*
+		if (event.type === appConstants.PRINT_SCANNED_SIGNUP) {
+			if (event.status === 'ok') {
+				this.setState({
+					errorMsg: null
+				});
+			} else {
+				this.setState({
+					errorMsg: 'There was a problem scanning your fingerprint, please try again.'
+				});
+			}
+		}
+		*/
+	} else {
+		console.error('HAY not a known event???');
+		console.log(event);
+	}
   }
   
   selectSimulatorPrint(who, e) {
@@ -60,7 +73,23 @@ class Step extends Component {
   	if (this.props.testing && !this.state.simulatorPrint) {
   		return alert('TESTING: Please choose a customer print from the orange buttons.');
   	}
-  	CS_Actions.scanPrint(this.props.signupToken, this.state.simulatorPrint);
+  	
+  	var whichPrint = 1
+  		, cs = this.state.completedSteps
+  		;
+  	if (cs && cs.length) {
+  		if (cs.indexOf( appConstants.PRINT_3SCANNED_SIGNUP ) > -1) {
+  			whichPrint = 4;
+  		} else if (cs.indexOf( appConstants.PRINT_2SCANNED_SIGNUP ) > -1) {
+  			whichPrint = 3;
+  		} else if (cs.indexOf( appConstants.PRINT_1SCANNED_SIGNUP ) > -1) {
+  			whichPrint = 2;
+  		}
+  	}
+  	
+  	if (whichPrint < 4) {
+	  	CS_Actions.scanPrint(this.props.signupToken, whichPrint, this.state.simulatorPrint);
+	}
   }
 
   render() {
@@ -69,14 +98,52 @@ class Step extends Component {
 		  <_E.Row >
 			<_E.Col>
 			  <h2>Scan your finger or thumb print</h2>
-			  <p>Put your finger or thumb on the scanner to the left.</p>
-			  <_E.Alert type="info">Use the same finger or thumb that you used at sign up.<br /><strong>HINT: </strong>we asked for your thumb and your index finger from your dominant hand.</_E.Alert>
+			  <p>We need to take three scans of your finger or thumb.</p>
+			  <_E.Row>
+			  	<_E.Col sm="33%" md="33%" lg="33%">
+			  	{this.renderThumb(1)}
+			  	</_E.Col>
+			  	<_E.Col sm="33%" md="33%" lg="33%">
+			  	{this.renderThumb(2)}
+			  	</_E.Col>
+			  	<_E.Col sm="33%" md="33%" lg="33%">
+			  	{this.renderThumb(3)}
+			  	</_E.Col>
+			  </_E.Row>
+			  <_E.Alert type="info">Use the same finger or thumb for each scan.</_E.Alert>
 			  <_E.Button type="warning" onClick={this.startPrintScan.bind(this)}>TESTING: Press to "record" the scan, this will happen automatically when hardware is attached.</_E.Button>
 			</_E.Col>
 		  </_E.Row>
 		  {this.renderSimulator()}
 		</div>
     );
+  }
+  
+  renderThumb(whichOne) {
+  	var checkConstant = appConstants['PRINT_'+whichOne+'SCANNED_SIGNUP']
+  		, cs = this.state.completedSteps
+  		, RESULT
+  		;
+  	if (cs && cs.length && cs.indexOf(checkConstant) > -1) {
+  		RESULT = (
+  			<div>
+	  			<_E.Button type="success"><_E.Glyph icon="check" /></_E.Button>
+	  			<span style={{display:'block'}}>Complete!</span>
+	  		</div>
+  		);
+  	} else {
+  		RESULT = (
+  			<div>
+	  			<_E.Button type="danger"><_E.Glyph icon="issue-opened" /></_E.Button>
+	  			<span style={{display:'block'}}>Not scanned</span>
+	  		</div>
+  		);
+  	}
+  	return (
+  		<div style={{textAlign:'center'}}>
+  			{RESULT}
+  		</div>
+  	);
   }
   
   renderSimulator() {
@@ -97,6 +164,7 @@ class Step extends Component {
 				</_E.Col>
 			  </_E.Row>
 			  <p style={{fontSize: '0.75em'}}>Picked: {this.state.simulatorPrint || 'none yet'}, signup token: <strong>{this.props.signupToken}</strong></p>
+			  <pre style={{fontSize: '0.75em'}}>{ JSON.stringify(this.state.completedSteps) }</pre>
 			</_E.Col>
 		  </_E.Row>
 		);

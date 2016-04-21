@@ -118,8 +118,8 @@ module.exports = function(request, reply) {
 			}, (err, response, body) => {
 				console.log('grab response:');
 				console.log(body);
-
-fs.writeFileSync('grabprint1-response-body.txt', response.body);
+/*
+fs.writeFileSync('grabprint1-response-body.txt', err || response && response.body || 'no grabprint1 response.body!');
 
 let foo = body;
 try {
@@ -131,7 +131,7 @@ try {
 }
 msgs.push('grabprint response follows');
 msgs.push(foo);
-
+*/
 				if (err) {
 					return reply({ status: 'err', check1a: true, apiResponses: [err] }).code(500);
 				}
@@ -154,8 +154,8 @@ msgs.push(foo);
 				}, (err, response, body) => {
 					console.log('matchprint response:');
 					console.log(body);
-
-fs.writeFileSync('matchprint-response-body.txt', response.body);
+/*
+fs.writeFileSync('matchprint-response-body.txt', err || response && response.body || 'no matchprint response.body!' );
 
 let foo = body;
 try {
@@ -167,7 +167,7 @@ try {
 }
 msgs.push('matchprint response follows');
 msgs.push(foo);
-
+*/
 					if (err) {
 						return reply({ status: 'err', check1: true, apiResponses: msgs.concat(err) }).code(500);
 					}

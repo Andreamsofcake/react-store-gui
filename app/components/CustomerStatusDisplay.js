@@ -39,13 +39,9 @@ class CustomerStatusDisplay extends Component {
 	
 	render() {
 		return (
-			<_E.Row>
-			<_E.Col>
-				<div style={{backgroundColor: '#000', padding: '0.5em', fontSize: '0.85em', color: '#fff', textTransform: 'uppercase', textAlign: 'right', marginBottom: 0}}>
+			<div style={{backgroundColor: '#000', padding: '0.5em', fontSize: '0.85em', color: '#fff', textTransform: 'uppercase', textAlign: 'right', marginBottom: 0}}>
 				{this.state.customer ? this.renderLoggedIn() : this.renderLoggedOut()}
-				</div>
-			</_E.Col>
-			</_E.Row>
+			</div>
 		);
 	}
 	

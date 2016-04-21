@@ -159,6 +159,7 @@ server.register([
 		, CustomerMatchLogin = require('./routes/CustomerMatchLogin')
 		, CustomerRegisterModule = require('./routes/CustomerRegisterModule')
 		, PrintReaderModule = require('./routes/PrintReaderModule')
+		, ClientSideSetup = require('./routes/ClientSideSetup')
 		;
 
 	server.route({
@@ -349,7 +350,8 @@ server.register([
 	server.route({
 		method: 'get',
 		path: '/{route*}',
-		handler: require('./app/Router.js')
+		//handler: require('./app/Router.js')
+		handler: ClientSideSetup // skipping server side rendering, causing visual flutters
 	});
 
 	server.start(function(err) {

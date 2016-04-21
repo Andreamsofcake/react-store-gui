@@ -4,7 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import { browserHistory } from 'react-router'
+import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
 class Admin_Login extends Component {
@@ -14,12 +14,12 @@ class Admin_Login extends Component {
     super(props, context);
 
     //RootscopeActions.setSession('currentView', 'Admin_Login');
-    TsvService.disableLoginDevices();
-    TsvService.emptyCart();
+    TsvService.disableLoginDevices(null, () => { });
+    TsvService.emptyCart(null, () => { });
     this.state = {
       num: "",
       maxChars: 6,
-      instructionMessage: Translate.translate('Admin_Login','Password')
+      instructionMessage: Translate.translate('Admin_Login','LoginMsg')
     };
   }
 
@@ -43,7 +43,7 @@ class Admin_Login extends Component {
 
   clear() {
     this.setState({
-      instructionMessage : Translate.translate('Admin_Login', 'Password'),
+      instructionMessage : Translate.translate('Admin_Login', 'LoginMsg'),
       num: ""
     })
   }
@@ -72,32 +72,55 @@ class Admin_Login extends Component {
       <_E.Row className="Admin_Login" >
         <_E.Col>
 
-          <h2 id="instruction">{ this.instructionMessage }</h2>
+          <div style={{width:'60%',margin: '0 auto'}}>
 
-          <_E.Button type="primary" component={(<Link to="/Page_Idle">{Translate.translate('Admin_Home','Home')}</Link>)} />
+          <h2 id="instruction">{ this.state.instructionMessage }</h2>
 
-          <_E.Row>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
-          </_E.Row>
-          <_E.Row>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
-          </_E.Row>
-          <_E.Row>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
-          </_E.Row>
-          <_E.Row>
-              <_E.Col basis="1/3"><_E.Button type="warning" onClick={this.clear}>Clear</_E.Button></_E.Col>
-              <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
-              <_E.Col basis="1/3"><_E.Button type="primary" onClick={this.enter}>Enter</_E.Button></_E.Col>
-          </_E.Row>>
+			  <_E.Row><p>{' '}</p></_E.Row>
+			  <_E.Row>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
+			  </_E.Row>
 
-          <input id="coilInput" type="password" value={this.state.num} />
+			  <_E.Row><p>{' '}</p></_E.Row>
+			  <_E.Row>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
+			  </_E.Row>
+
+			  <_E.Row><p>{' '}</p></_E.Row>
+			  <_E.Row>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
+			  </_E.Row>
+
+			  <_E.Row><p>{' '}</p></_E.Row>
+			  <_E.Row>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3"></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  size="lg" onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3"></_E.Col>
+			  </_E.Row>
+
+			  <_E.Row><p>{' '}&nbsp;</p></_E.Row>
+			  <_E.Row>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="warning" onClick={this.clear.bind(this)}>Clear</_E.Button></_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>
+					<div style={{width: '100%', fontSize: '1.5em', padding: '0.45em', border: '1px solid #ddd', borderRadius: '4px', margin: '0 auto'}}>
+						&nbsp;{this.state.num}&nbsp;
+				  	</div>
+				  	<p>{' '}&nbsp;</p>
+				  	<p>{' '}&nbsp;</p>
+				  	<_E.Button type="primary" component={(<Link to="/Storefront">{Translate.translate('Admin_Login','BackToStore')}</Link>)} />
+				  </_E.Col>
+				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="primary" onClick={this.enter.bind(this)}>Enter</_E.Button></_E.Col>
+			  </_E.Row>
+
+			  
+
+          </div>
 
           </_E.Col>
       </_E.Row>

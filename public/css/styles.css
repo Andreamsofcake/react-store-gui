@@ -1,13 +1,15 @@
 h2, h3 { margin-top: 0.5em; }
 
 .slider-rows {
+/*
 	padding-left: 30px;
 	padding-right: 20px;
+*/
 }
 
 .product-container{
-	padding-left: 30px;
-	padding-right: 30px;
+	padding-left: 1em;
+	padding-right: 1em;
 }
 
 .productDetailBody {
@@ -19,7 +21,7 @@ h2, h3 { margin-top: 0.5em; }
 	overflow-x: hidden;
 }
 
-.Product_Search img,  .productDetailBody > img{
+.Product_Search img,  .productDetailBody > img {
 	max-width: 95% !important;
 }
 
@@ -32,6 +34,19 @@ h2, h3 { margin-top: 0.5em; }
 
 .product-list-item {
 	padding: 1em;
+	/*
+	height: 12em;
+	max-height: 12em;
+	*/
+}
+
+.slick-slide {
+	height: auto !important;
+}
+
+.storefront-product-carousel-group > div {
+	width: 33%;
+	float: left;
 }
 
 .product-list-item-add-to-cart {
@@ -41,16 +56,40 @@ h2, h3 { margin-top: 0.5em; }
 	box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-.product-list-item .product_name {
+.product-list-item-add-to-cart > div {
+	width: 100%;
+	display: inline-block;
+}
+
+.product-list-item .product-name {
 	height: 4em;
+	max-height: 4em;
 }
 
 .product-list-item .prdPrice {
 	font-weight: bold;
+	font-size: 1.8em;
+	margin-bottom: 0;
 }
 
-.product_name h3 {
+.storefront-product-carousel-group {
+	/* testing bg color to see the slide WxH background-color: #ffdddd; */
+}
+
+.storefront-product-carousel-group .product-list-item .prdPrice {
+	float: right;
+	margin-right: 0.35em;
+}
+
+.storefront-product-carousel-group .product-list-item .product-button {
+	float: right;
+}
+
+.product-list-item .product-name h3 {
 	font-weight: normal;
+	text-align: center;
+	font-size: 2em;
+	overflow: hidden;
 	/*height: 3em;*/
 }
 .row-border{
@@ -61,14 +100,14 @@ h2, h3 { margin-top: 0.5em; }
 	text-align: center;
 }
 .shopping-cart-table {
-	font-size: 1.5em;
+	font-size: 2em;
 }
 .shopping-cart-list-image img {
 	max-width: 95% !important;
 	max-height: 6em;
 }
 .product-button {
-	font-size: .75em;
+	/*font-size: .75em;*/
 }
 .product-preview img {
 	max-width: 95%
@@ -76,12 +115,14 @@ h2, h3 { margin-top: 0.5em; }
 
 .product-list-item .image-container {
 	text-align: center;
-	height: 10em;
+	/*height: 10em;*/
 }
 
 .product-list-item .image-container img {
 	max-width: 95%;
 	max-height: 100%;
+	margin: 0 auto;
+	display: inline-block;
 }
 
 img.boxShadowed {
@@ -113,8 +154,30 @@ img.boxShadowed {
 
 .scart-mini {
 	float: right;
-	width: 120px;
-	margin-top: 1.2em;
+	margin-top: 1em;
+	padding: 0.65em;
+	background-color: #E6F9E7;
+	border-radius: 1em;
+}
+
+.scart-mini p {
+	margin-bottom: 0;
+	font-size: 1.8em;
+	font-weight: light;
+	font-style: italic;
+	/*color: #fff !important;*/
+	vertical-align: bottom;
+	white-space: nowrap;
+	text-align: left;
+}
+
+.scart-mini p a {
+	display: inline-block;
+	max-height: 1.8em;
+}
+
+.scart-mini p a img {
+	max-height: 1.5em;
 }
 
 #ComEmulator {

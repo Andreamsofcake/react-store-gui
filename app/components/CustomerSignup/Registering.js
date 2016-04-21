@@ -21,7 +21,7 @@ class Step1 extends Component {
   };
   
   componentDidMount() {
-  	CS_Actions.startRegistering(this.props.signupToken);
+  	CS_Actions.finishRegistering(this.props.signupToken);
   }
 
   render() {
