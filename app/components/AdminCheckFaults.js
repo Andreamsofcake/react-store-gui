@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
+
+import TsvActions from '../actions/TsvActions'
 
 class Admin_Check_Faults extends Component {
 
@@ -17,60 +19,56 @@ class Admin_Check_Faults extends Component {
     this.state = {
       bRunningClearFaults: false,
       machineID: 0,
-
     };
-    TsvService.getFaultCodes(this.state.machineID.toString(), (err, data)=>{
-      this.setState({
-        faults: data
-      })
-    });
 
     if (RootscopeStore.getCache('machineList').length > 1) {
-      this.setState({
-        bShowDropDownForMachines: true,
-      })
+    	this.state.bShowDropDownForMachines = true;
     };
 
+	this._onTsvChange = this._onTsvChange.bind(this);
   }
 
   back(){
     browserHistory.push("/Admin_Home")
   }
+  
+  getFaultCodes(machine_id) {
+    TsvActions.apiCall('getFaultCodes', machine_id.toString(), (err, data) => {
+      this.setState({
+        faults: data
+      })
+    });
+  }
 
   clearFaults(){
       if(!this.state.bRunningClearFaults){
         this.setState({
-          bRunningClearFaults:true
+          bRunningClearFaults: true
         })
-        TsvService.getFaultCodes(this.state.machineID.toString(), (err, data)=>{
-          this.setState({
-            faults: data
-          })
-        })
+        getFaultCodes(this.state.machineID);
       }
   }
 
   // Add change listeners to stores
-  componentDidMount() {
+	componentDidMount() {
+		getFaultCodes(this.state.machineID);
+		TsvStore.addChangeListener(this._onTsvChange);
+	}
+	
+	componentWillUnmount() {
+		TsvStore.removeChangeListener(this._onTsvChange);
+	}
+	
+  _onTsvChange(event) {
+	if (event && event.method === 'notifyResetComplete') {
+		let machineID = event.data;
 
-      TsvService.subscribe("notifyResetComplete", (machineID) => {
         this.setState({
-          bRunningClearFaults: false,
+          bRunningClearFaults: false
         })
-
-        TsvService.getFaultCodes(machineID.toString(), (err, data)=>{
-          this.setState({
-            faults: data
-          })
-        })
-      }, "app.checkFaults");
-  }
-
-  // Remove change listers from stores
-  componentWillUnmount() {
-
-    TsvService.unsubscribe("notifyResetComplete", "app.checkFaults");
-
+        
+        getFaultCodes(machineID);
+	}
   }
 
   getMachineSelectOptions() {
@@ -98,16 +96,8 @@ class Admin_Check_Faults extends Component {
                       <_E.Col basis="1/3" className="faults">{Translate.translate('Admin_Check_Faults','EventID')}</_E.Col>
                       <_E.Col basis="1/3" className="faults">{Translate.translate('Admin_Check_Faults','Description')}</_E.Col>
                   </_E.Row>
-
-                  {this.state.faults.map((fault, $index) => {
-                      return (
-                        <_E.Row key={$index}>
-                          <_E.Col basis="1/3" className="faults">{ fault.faultCode }</_E.Col>
-                          <_E.Col basis="1/3" className="faults">{ fault.vmsEventID }</_E.Col>
-                          <_E.Col basis="1/3" className="faults">{ fault.faultDescription }</_E.Col>
-                        </_E.Row>
-                      )}
-                    )}
+                  
+                  {this.state.renderFaults()}
 
               </_E.Col>
 
@@ -118,37 +108,20 @@ class Admin_Check_Faults extends Component {
       </div>
 
     );
-    /*
-    <div class="check_faults">
-
-        <select id="selectMachine" data-ng-show="bShowDropDownForMachines"></select>
-
-        <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
-
-        <div id="wrapper">
-
-            <table class="faults">
-
-                <tr class="faults">
-                    <_E.Col class="faults">{{translate("FaultCode")}}</_E.Col>
-                    <th class="faults">{{translate("EventID")}}</th>
-                    <th class="faults">{{translate("Description")}}</th>
-                </tr>
-
-                <tr class="faults" ng-repeat='fault in faults'>
-                    <td class="faults">{{ fault.faultCode }}</td>
-                    <td class="faults">{{ fault.vmsEventID }}</td>
-                    <td style="word-break: break-all" class="faults">{{ fault.faultDescription }}</td>
-                </tr>
-
-            </table>
-
-        </div>
-
-        <button data-ng-click="clearFaults()">{{translate("Clear")}}</button>
-
-    </div>
-    */
+  }
+  
+  renderFaults() {
+	  if (this.state.faults && this.state.faults.length) {
+	  	return this.state.faults.map((fault, $index) => {
+		  return (
+			<_E.Row key={$index}>
+			  <_E.Col basis="1/3" className="faults">{ fault.faultCode }</_E.Col>
+			  <_E.Col basis="1/3" className="faults">{ fault.vmsEventID }</_E.Col>
+			  <_E.Col basis="1/3" className="faults">{ fault.faultDescription }</_E.Col>
+			</_E.Row>
+		  )});
+	  }
+	  return (<p>No faults... maybe they are loading</p>);
   }
 
 }

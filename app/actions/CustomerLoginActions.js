@@ -1,11 +1,18 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import appConstants from '../constants/appConstants'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 //import RootscopeActions from '../actions/RootscopeActions'
 
 import SocketAPI from '../utils/SocketAPI'
 import axios from 'axios'
 import { browserHistory } from 'react-router'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	emptyCart,
+} from '../utils/TsvUtils'
+
 
 var CustomerLoginActions = {
 
@@ -116,7 +123,7 @@ var CustomerLoginActions = {
 	},
 	
 	customerLogout() {
-		TsvService.emptyCart(null, () => {});
+		emptyCart();
 		axios.get('/api/reset-current-customer')
 		.then(response => {
 			AppDispatcher.handleServerAction({

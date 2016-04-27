@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
@@ -7,18 +7,25 @@ import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
 
+import TsvActions from '../actions/TsvActions'
+
 class Admin_Component_Control extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
     this.state = {
-      versionInfos: TsvService.enumerateComponents()
+      versionInfos: null
     }
 
   }
+
   restartGUI() {
-    TsvService.refreshIndexPage();
+    if (typeof window !== 'undefined') {
+	    window.location.reload();
+	} else {
+		console.error('cannot reset GUI, I have no window???');
+	}
   }
 
   back(){
@@ -27,6 +34,13 @@ class Admin_Component_Control extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+
+	TsvActions.apiCall('enumerateComponents', (err, data) => {
+      if (err) throw err;
+      this.setState({
+      	versionInfos: data
+      });
+	}
   }
 
   // Remove change listers from stores

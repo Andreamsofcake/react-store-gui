@@ -1,11 +1,22 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
+
+import { currencyFilter } from '../utils/TsvUtils'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	startGeneralIdleTimer,
+	gotoDefaultIdlePage,
+	emptyCart,
+	cardTransaction,
+} from '../utils/TsvUtils'
 
 class View2 extends Component {
 
@@ -15,20 +26,20 @@ class View2 extends Component {
 
     //RootscopeActions.setSession('currentView', 'View2');
     //RootscopeActions.setCache('currentLocation', '/View2');
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD", () => {});
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH", () => {});
-    TsvService.fetchShoppingCart2(null, function(err, cart) {
+    TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CREDIT_CARD");
+    TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
+    TsvActions.apiCall('fetchShoppingCart2', (err, cart) => {
     	if (err) throw err;
     	RootscopeActions.setCache('shoppingCart', cart);
     })
 
-    RootscopeActions.updateCredit();
+    updateCredit();
     var item = RootscopeStore.getConfig('pvr');
 
     // moved up here, closer to the actual declaration
     //if (!RootscopeStore.getConfig('pvr')) {
     if (!item) {
-        return TsvService.gotoDefaultIdlePage();
+        return gotoDefaultIdlePage();
         //return;
     }
 
@@ -83,10 +94,10 @@ class View2 extends Component {
 
   back() {
       if (RootscopeStore.getCache('custommachinesettings.bHasShoppingCart')) {
-          TsvService.emptyCart();
+          emptyCart();
           RootscopeActions.setConfig('itemsInCart', 0);
       }
-      TsvService.gotoDefaultIdlePage();
+      gotoDefaultIdlePage();
   }
 
   cardTransactionHandler(level) {
@@ -99,7 +110,7 @@ class View2 extends Component {
           return;
       }
 
-      TsvService.cardTransaction(level);
+      cardTransaction(event.data[0]);
 
       if (!RootscopeStore.getSession('bVendingInProcess')) {
           switch(level){
@@ -121,14 +132,38 @@ class View2 extends Component {
   }
 
   // Add change listeners to stores
-  componentDidMount() {
-    TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.View2");
-  }
+	componentDidMount() {
+		TsvStore.addChangeListener(this._onTsvChange);
+	}
+	
+	componentWillUnmount() {
+		TsvStore.removeChangeListener(this._onTsvChange);
+	}
+	
+	_onTsvChange(event) {
+		if (event && event.method === 'cardTransactionResponse') {
+			let level = event.data[0];
+			cardTransaction(level);
+			if (!RootscopeStore.getSession('bVendingInProcess')) {
+			  switch(level){
+				  case "CARD_INVALID_READ":
+				  case "CARD_DECLINED":
+				  case "CARD_CONNECTION_FAILURE":
+				  case "CARD_UNKNOWN_ERROR":
+					  //Do nothing, don't go to card_vending page
+					  break;
 
-  // Remove change listers from stores
-  componentWillUnmount() {
-    TsvService.subscribe("cardTransactionResponse", "app.View2");
-  }
+				  default:
+					  if(RootscopeStore.getCache('currentLocation') != "/Card_Vending"){
+						  browserHistory.push("/Card_Vending");
+					  }
+					  break;
+			  }
+			} else {
+			  console.log("Ignoring credit card event, from View2, vend is in progress?");
+			}
+		}
+	}
 
   render() {
     return (
@@ -157,7 +192,7 @@ class View2 extends Component {
                         <_E.Col lg="50%" className="detail">
 
                                  <_E.Row className="detail">
-                                     <p>{ TsvService.currencyFilter( this.state.item.price )}</p>
+                                     <p>{ currencyFilter( this.state.item.price )}</p>
                                  </_E.Row>
 
                         </_E.Col>
@@ -175,59 +210,6 @@ class View2 extends Component {
 
     );
 
-    /*
-    <h3>Dev warning: this may be a broken component, old code had disconnections in it</h3>
-        <div className="prdDetail">
-
-            <img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} ng-click="back()">
-
-            <img className="regularBtn" ng-if="bShowCheckout" id="checkoutImg" src={ checkoutOrAddToCartUrl } ng-click="checkout()">
-
-            { if (this.state.bShowCouponBtn) { this.renderCouponButton() } }
-
-             <div id="View2Title">
-
-                  <h1>{Translate.translate('View2', 'instructionMessage')}</h1> {/*what are these: data-fittext="1" data-fittext-min="20" data-fittext-max="36" }
-
-             </div>
-
-             <div id="prdWrapper">
-
-                 <table className="detail">
-
-                    <tr className="detail">
-
-                    <td className="detail">
-                        <img id="prdDetailImage" src={ this.imagePath } />
-                    </td>
-
-                    <td className="detail">
-
-                         <table className="detail">
-
-                             <tr className="detail">
-                                 <p>{ TsvService.currencyFilter(item.price)}</p>
-                             </tr>
-                             </table>
-
-                        </td>
-
-                    </tr>
-
-                </table>
-
-             </div>
-
-             <p id="prdName">{ this.productName }</p>
-
-             {if (this.bDisplayPrdGalleryOnDetailPage){ this.renderPrdGalleryOnDetailPage()}}
-
-         </div>
-
-      </div>
-
-
-    */
   }
 
   renderPrdGalleryOnDetailPage() {
@@ -248,7 +230,7 @@ class View2 extends Component {
 
                         <img src={product.imagePath} alt={product.description} title={product.description} />
 
-                        <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
+                        <p className="prdPrice"> {currencyFilter(product.price) }</p>
 
                     </figure>
 
@@ -261,39 +243,6 @@ class View2 extends Component {
       </_E.Row>
     );
 
-
-    /*
-      <div className="navGallery">
-
-          <p id="navCgryTitle">{this.state.navCgryTitle || 'No navCgryTitle'}</p>
-
-          <div className="container_slider">
-
-          <ul className="flex-container">
-
-            {products.map( (product, $index) => {
-              return (
-                <li key={$index} className={'flex-item' + (this.isActive($index) ? ' active' : '' )} >
-
-                    <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
-
-                        <figcaption>{product.productName}</figcaption>
-
-                        <img src={product.imagePath} alt={product.description} title={product.description} />
-
-                        <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
-
-                    </figure>
-
-                </li>
-              )
-            })}
-
-          </ul>
-
-	      </div>
-      </div>
-    */
   }
 
   renderCouponButton() {

@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	emptyCart
+} from '../utils/TsvUtils'
 
 class Admin_Jofemar_Exerciser extends Component {
 
@@ -14,9 +20,9 @@ class Admin_Jofemar_Exerciser extends Component {
     super(props, context);
 
     //RootscopeActions.setSession('currentView', 'Admin_Jofemar_Exerciser');
-    TsvService.disableLoginDevices(null, () => {});
-    TsvService.emptyCart(null, () => {});
-    TsvService.fetchMachineIds(null, (err, ids) => {
+    TsvActions.apiCall('disableLoginDevices');
+    emptyCart();
+    TsvActions.apiCall('fetchMachineIds', (err, ids) => {
       	RootscopeActions.setCache('machineList', ids);
       });
     this.state = {
@@ -27,14 +33,16 @@ class Admin_Jofemar_Exerciser extends Component {
       machineNumber: 0
     };
 
-    if(RootscopeStore.getCache('machineList').length > 1){
+    if (RootscopeStore.getCache('machineList').length > 1) {
         this.state.bShowDropDownForMachines = true;
     }
+    
+    this._onTsvChange = this._onTsvChange.bind(this);
 
   }
 
   vend(){
-    TsvService.vendProduct(this.state.machineNumber, parseInt(this.state.num) + this.state.machineNumber * 100, () => {});
+    TsvActions.apiCall('vendProduct', this.state.machineNumber, parseInt(this.state.num) + this.state.machineNumber * 100);
     this.setState({
       num: "",
       vmsStatus: ""
@@ -42,11 +50,11 @@ class Admin_Jofemar_Exerciser extends Component {
   }
 
   lightOn() {
-    TsvService.setLights(this.state.machineNumber, true, () => {});
+    TsvActions.apiCall('setLights', this.state.machineNumber, true);
   }
 
   lightOff() {
-    TsvService.setLights(this.state.machineNumber, false, () => {});
+    TsvActions.apiCall('setLights', this.state.machineNumber, false);
   }
 
   clear() {
@@ -66,18 +74,22 @@ class Admin_Jofemar_Exerciser extends Component {
 
     // Add change listeners to stores
   componentDidMount() {
-    TsvService.subscribe("notifyVmsEvent", (eventArgs) => {
-        this.setState({
-		  vmsStatus: this.state.vmsStatus + eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')'
-		})
-    }, "app.jofemarExerciser");
-
+  	TsvStore.addChangeListener(this._onTsvChange);
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-    TsvService.unsubscribe("notifyVmsEvent", "app.jofemarExerciser");
+  	TsvStore.removeChangeListener(this._onTsvChange);
   }
+  
+    _onTsvChange(event) {
+    	if (event && event.method == 'notifyVmsEvent') {
+			this.setState({
+			  vmsStatus: this.state.vmsStatus + eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')'
+			})
+		}
+    }
+
 
   render() {
 //curl -X POST -d '["DOOR_OPENED"]' http://localhost:8085/tsv/flashapi

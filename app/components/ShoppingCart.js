@@ -1,11 +1,21 @@
 import React, { Component } from 'react'
 import RootscopeActions from '../actions/RootscopeActions'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 import ShoppingCartItem from './ShoppingCartItem'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	currencyFilter,
+	gotoDefaultIdlePage,
+	cardTransaction,
+	updateCredit,
+} from '../utils/TsvUtils'
+
 
 class Shopping_Cart extends Component {
 
@@ -14,14 +24,9 @@ class Shopping_Cart extends Component {
     super(props, context);
 
     //RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
-    RootscopeActions.updateCredit();
+    updateCredit();
     //RootscopeActions.setSession('currentView', 'Shopping_Cart');
     //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
-
-	TsvService.fetchShoppingCart2(null, (err, data) => {
-		if (err) throw err;
-		RootscopeActions.setCache('shoppingCart', data);
-	});
 
     this.state = {
       totalPrice: RootscopeStore.getCache('shoppingCart.summary.totalPrice'),
@@ -45,41 +50,48 @@ class Shopping_Cart extends Component {
     }
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
+    this._onTsvChange = this._onTsvChange.bind(this);
   }
 
   cancel(){
-    TsvService.emptyCart(null, () => {});
+    emptyCart();
     //RootscopeActions.setConfig('itemsInCart', 0);
-    //TsvService.gotoDefaultIdlePage();
+    //gotoDefaultIdlePage();
     browserHistory.push('/Storefront');
 
   }
 
-  // Add change listeners to stores
-  componentDidMount() {
-    RootscopeStore.addChangeListener(this._onRootstoreChange);
-    TsvService.subscribe("cardTransactionResponse", (level) => {
-      if(!RootscopeStore.getSession('bVendingInProcess')){
-        if(RootscopeStore.getCache('currentLocation') != "/Card_Vending") {
-          browserHistory.push( "/Card_Vending" );
-        }
-        TsvService.cardTransaction(level);
-      }
-    }, "app.shoppingCart");
-  }
+	componentDidMount() {
+		RootscopeStore.addChangeListener(this._onRootstoreChange);
+		TsvStore.addChangeListener(this._onTsvChange);
+		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+			if (err) throw err;
+			RootscopeActions.setCache('shoppingCart', data);
+		});
 
-  // Remove change listers from stores
-  componentWillUnmount() {
-    TsvService.unsubscribe("cardTransactionResponse", "app.shoppingCart");
-    RootscopeStore.removeChangeListener(this._onRootstoreChange);
-  }
+	}
+	
+	componentWillUnmount() {
+		RootscopeStore.removeChangeListener(this._onRootstoreChange);
+		TsvStore.removeChangeListener(this._onTsvChange);
+	}
 
+	_onTsvChange(event) {
+		if (event && event.method === 'cardTransactionResponse') {
+			if (!RootscopeStore.getSession('bVendingInProcess')) {
+				cardTransaction(event.data[0]);
+				browserHistory.push( "/Card_Vending" );
+			}
+		}
+	}
+	
   _onRootstoreChange() {
     var data = RootscopeStore.getCache('shoppingCart');
 
 	if (this.state.loadedCartOnce && (!data.detail || !data.detail.length)) {
-	  //TsvService.gotoDefaultIdlePage();
+	  	//gotoDefaultIdlePage();
 		browserHistory.push('/Storefront');
+
 	} else {
 	  this.setState({
 		cart: data.detail,
@@ -106,7 +118,7 @@ class Shopping_Cart extends Component {
 
                 { this.state.bShowTax ? this.renderShowTax() : null }
 
-                <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { this.state.totalPrice ? TsvService.currencyFilter(this.state.totalPrice) : 0.00 }</p>
+                <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { this.state.totalPrice ? currencyFilter(this.state.totalPrice) : 0.00 }</p>
 
             </_E.Row>
                 ) : (<p style={{margin: '40px auto'}}>&nbsp;</p>)}
@@ -163,7 +175,7 @@ class Shopping_Cart extends Component {
 
   renderShowTax() {
     return (
-     <p>{Translate.translate('Shopping_Cart', 'Tax')}: { TsvService.currencyFilter(this.state.salesTaxAmount) }</p>
+     <p>{Translate.translate('Shopping_Cart', 'Tax')}: { currencyFilter(this.state.salesTaxAmount) }</p>
     )
   }
 }

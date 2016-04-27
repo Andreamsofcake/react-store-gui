@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import * as _E from 'elemental'
@@ -7,6 +7,10 @@ import * as _E from 'elemental'
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
+
+import {
+	gotoDefaultIdlePage
+} from '../utils/TsvUtils'
 
 class Vend_Error extends Component {
 
@@ -16,12 +20,12 @@ class Vend_Error extends Component {
 
     //RootscopeActions.setSession('currentView', 'Vend_Error');
     //RootscopeActions.setCache('currentLocation', '/Vend_Error');
-    RootscopeActions.updateCredit();
+    updateCredit();
     this.state = {
       errorMsg1: RootscopeStore.getSession('vendErrorMsg1'),
       errorMsg2: RootscopeStore.getSession('vendErrorMsg2')
     }
-    RootscopeActions.setSession('vendErrorTimer', () => { TsvService.gotoDefaultIdlePage() }, 10000);
+    RootscopeActions.setSession('vendErrorTimer', () => { gotoDefaultIdlePage() }, 10000);
 
   };
 
@@ -42,15 +46,6 @@ class Vend_Error extends Component {
       	</_E.Col>
       </_E.Row>
   	);
-  	/*
-    return (
-      <div className="VendError">
-        <p>{this.errorMsg1}</p>
-
-        <p>{this.errorMsg2}</p>
-      </div>
-    );
-    */
   }
 
 }

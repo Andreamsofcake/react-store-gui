@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import { browserHistory } from 'react-router'
+
+import { currencyFilter } from '../utils/TsvUtils'
 
 class ProductListItem extends Component {
 
@@ -28,7 +30,7 @@ class ProductListItem extends Component {
               <div className="product-list-item-add-to-cart clearfix">
               	<div>
                   <_E.Button className="product-button" onClick={this.clickHandler.bind(this)}>Add</_E.Button>
-                  <p className="prdPrice">${TsvService.currencyFilter(product.price)} </p>
+                  <p className="prdPrice">${currencyFilter(product.price)} </p>
                 </div>
               </div>
           </div>

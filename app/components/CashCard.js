@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import * as _E from 'elemental'
@@ -7,6 +7,15 @@ import * as _E from 'elemental'
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	updateCredit,
+	emptyCart,
+	gotoDefaultIdlePage,
+} from '../utils/TsvUtils'
+
 
 class Cash_Card extends Component {
 
@@ -17,45 +26,45 @@ class Cash_Card extends Component {
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     //RootscopeActions.setSession('currentView', 'Cash_Card');
     //RootscopeActions.setCache('currentLocation', '/Cash_Card');
-    RootscopeActions.updateCredit();
+    updateCredit();
 
   };
 
   cancel(){
-    TsvService.emptyCart();
-    //TsvService.gotoDefaultIdlePage();
+	emptyCart();
+    //gotoDefaultIdlePage();
     browserHistory.push("/Storefront");
   }
 
   cash() {
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CASH", () => {});
+    TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
     browserHistory.push("/Cash_Vending");
   }
 
   card() {
-    TsvService.enablePaymentDevice("PAYMENT_TYPE_CREDIT_CARD", () => {});
+    TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CREDIT_CARD");
     browserHistory.push("/Card_Vending");
   }
 
   // Add change listeners to stores
-  componentDidMount() {
-    TsvService.subscribe("cardTransactionResponse",
-      (level) => {
-        if(!RootscopeStore.getSession('bVendingInProcess')) {
-            if(browserHistory.push() != "/Card_Vending"){
-                return browserHistory.push("/Card_Vending");
-            }
+	componentDidMount() {
+		TsvStore.addChangeListener(this._onTsvChange);
+	}
 
-            TsvService.cardTransaction(level, () => {});
-        }
-    }
-    , "app.cashCard");
-  }
-
-  // Remove change listers from stores
-  componentWillUnmount() {
-    TsvService.unsubscribe("cardTransactionResponse", "app.cashCard");
-  }
+	// Remove change listers from stores
+	componentWillUnmount() {
+		TsvStore.removeChangeListener(this._onTsvChange);
+	}
+	
+	_onTsvChange(event) {
+		if (event && event.method == 'cardTransactionResponse') {
+			if (!RootscopeStore.getSession('bVendingInProcess')) {
+				let level = event.data;
+				cardTransaction(level);
+				browserHistory.push("/Card_Vending");
+			}
+		}
+	}
 
   render() {
     return (

@@ -196,12 +196,12 @@ server.register([
 						//query: ['returnType']
 					},
 					post: (ctx, next) => {
-						var pl = typeof ctx.req.payload === 'string' ? JSON.parse(ctx.req.payload) : ctx.req.payload;
-						if (pl._ws_args) { pl = pl._ws_args; }
+						var payload = typeof ctx.req.payload === 'string' ? JSON.parse(ctx.req.payload) : ctx.req.payload;
+						if (payload._ws_args) { payload = payload._ws_args; }
 						//socketdebug( 'what is PL? ' + typeof pl );
 						//socketdebug( pl );
 
-						if (pl.subscribe_to_externals) {
+						if (payload.subscribe_to_externals) {
 							ctx.socket.join( 'flash-api-multi-event' );
 							//socketdebug('subscribed socket to flash-api-multi-event' );
 						} else {
@@ -360,6 +360,20 @@ server.register([
 			console.log(err);
 		} else {
 			console.log('VENDING APP GUI server is listening');
+			
+			/********
+
+
+					and right about here is where you can
+					set up the ping loop on the NetTSV, that you feed via websocket
+					
+					ACTUALLY NO:
+					
+					it should be in TsvProxy, triggered after the app first websockets out for multievent
+					(it's definitely ready at that time)
+
+
+			****************************************/
 		}
 	});
 

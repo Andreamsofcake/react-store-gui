@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
@@ -11,6 +11,8 @@ import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
 import ShoppingCartMini from './ShoppingCartMini'
+
+import TsvActions from '../actions/TsvActions'
 
 class Storefront_Static extends Component {
 
@@ -34,17 +36,17 @@ class Storefront_Static extends Component {
     RootscopeStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
 
-    TsvService.fetchProduct(null, (err, data) => {
+    TsvActions.apiCall('fetchProduct', (err, data) => {
       if (err) throw err;
       RootscopeActions.setSession('products', data)
     });
 
-    TsvService.fetchProductCategoriesByParentCategoryID(0, (err, data) => {
+    TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
     	if (err) throw err;
     	RootscopeActions.setConfig('categories', data);
     });
 
-	TsvService.fetchShoppingCart2(null, (err, data) => {
+	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 		if (err) throw err;
 		RootscopeActions.setCache('shoppingCart', data);
 	});

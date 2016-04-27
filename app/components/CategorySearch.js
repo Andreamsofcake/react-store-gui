@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
@@ -7,6 +7,11 @@ import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import CategoryListItem from './CategoryListItem'
+
+import TsvActions from '../actions/TsvActions'
+import {
+	isCartEmpty,
+} from '../utils/TsvUtils'
 
 class Category_Search extends Component {
 
@@ -26,18 +31,7 @@ class Category_Search extends Component {
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     //RootscopeActions.setSession('currentView', 'Category_Search');
     //RootscopeActions.setCache('currentLocation', '/Category_Search');
-    RootscopeActions.updateCredit();
-
-    TsvService.fetchProductCategoriesByParentCategoryID(0, (err, data) => {
-    	if (err) throw err;
-    	RootscopeActions.setConfig('categories', data);
-    });
-
-    TsvService.isCartEmpty( isEmpty => {
-		if (RootscopeStore.getCache('custommachinesettings.txtIdleScene') === "category_search" || !isEmpty ) {
-			TsvService.startGeneralIdleTimer();
-		}
-    })
+    updateCredit();
 
 	this._onRootstoreChange = this._onRootstoreChange.bind(this);
   }
@@ -52,11 +46,11 @@ class Category_Search extends Component {
 
   fetchCategory(cat) {
     //var categoryID = cat.categoryID;
-  	TsvService.fetchProductCategoriesByParentCategoryID(cat.categoryID, (err, data) => {
+  	TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', cat.categoryID, (err, data) => {
     	if (err) throw err;
     	RootscopeActions.setConfig('categories', data);
     	if (data.length === 0) {
-    		TsvService.fetchProductByCategory(cat.categoryID, (err, data) => {
+    		TsvActions.apiCall('fetchProductByCategory', cat.categoryID, (err, data) => {
 		    	if (err) throw err;
 		    	console.log('setting products data................................................................................' +"\n................................................................................\n");
 		    	console.log(data);
@@ -71,6 +65,16 @@ class Category_Search extends Component {
   // Add change listeners to stores
   componentDidMount() {
 		RootscopeStore.addChangeListener(this._onRootstoreChange);
+		TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
+			if (err) throw err;
+			RootscopeActions.setConfig('categories', data);
+		});
+
+		isCartEmpty( (err, isEmpty) => {
+			if (RootscopeStore.getCache('custommachinesettings.txtIdleScene') === "category_search" || !isEmpty ) {
+				TsvService.startGeneralIdleTimer();
+			}
+		})
   }
 
   // Remove change listers from stores

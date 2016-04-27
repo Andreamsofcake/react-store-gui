@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
@@ -7,16 +7,20 @@ import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
-class THANKYOU_MSG extends Component {
+import {
+	gotoDefaultIdlePage
+} from '../utils/TsvUtils'
+
+class ThankYou_Msg extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
     RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
-    RootscopeActions.updateCredit();
+    updateCredit();
 
-    var timer = setTimeout( () => { TsvService.gotoDefaultIdlePage() }, RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ) );
+    var timer = setTimeout( () => { gotoDefaultIdlePage() }, RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ) );
     RootscopeActions.setSession('thankyouTimer', timer);
 
   };
@@ -43,4 +47,4 @@ class THANKYOU_MSG extends Component {
 
 }
 
-export default THANKYOU_MSG
+export default ThankYou_Msg

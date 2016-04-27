@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
+
+import TsvActions from '../actions/TsvActions'
 
 class Keyboard extends Component {
 
@@ -16,7 +18,7 @@ class Keyboard extends Component {
     //RootscopeActions.setSession('currentView', 'Keyboard');
     
     // original code does both of these, not sure why:
-    RootscopeActions.updateCredit();
+    updateCredit();
     RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance') );
 
     keyboardTitle = "EnterEmailTitle";
@@ -64,7 +66,7 @@ class Keyboard extends Component {
 	});
     
     // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
-    //TsvService.disableLoginDevices();
+    //TsvActions.apiCall('disableLoginDevices');
   }
   
   // Add change listeners to stores

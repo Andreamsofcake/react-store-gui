@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
@@ -7,19 +7,21 @@ import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
+import TsvActions from '../actions/TsvActions'
+
 class Page_Idle extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setCache('currentLocation', '/Page_Idle');
-
-    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    RootscopeActions.setConfig('bShowCredit', RootscopeStore.getCache('credit') && true);
+    RootscopeActions.setConfig({
+    	bDisplayCgryNavigation: false,
+    	bShowCredit: RootscopeStore.getCache('credit') && true
+    });
 
     // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
-    TsvService.disableLoginDevices(() => {});
+    TsvActions.callApi('disableLoginDevices');
 
 	var binders = [
 		'idleClicked',

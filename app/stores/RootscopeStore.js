@@ -1,11 +1,13 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import appConstants from '../constants/appConstants'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import objectAssign from 'react/lib/Object.assign'
 import { EventEmitter } from 'events'
 import muDB from '../../lib/muDB'
+
+import { currencyFilter } from '../utils/TsvUtils'
 
 import { isClient } from '../utils'
 
@@ -51,6 +53,7 @@ var CHANGE_EVENT = 'change'
 		},
 
 		config: {
+			currencyType: 'currency',
 			failing:true,
 			failCount:0,
 			eventSubscriptions:{},
@@ -134,9 +137,9 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 	
 	getCreditMessage: function() {
 		if (_storeDB.get('config.bCashless')) {
-			return Translate.translate("BalanceLabel") + ":" + '\n' + TsvService.currencyFilter( _storeDB.get('config.fundsAvailable') );
+			return Translate.translate("BalanceLabel") + ":" + '\n' + currencyFilter( _storeDB.get('config.fundsAvailable') );
 		}else {
-			return Translate.translate("CreditLabel") + ":"  + '\n'+  TsvService.currencyFilter( _storeDB.get('config.credit') );
+			return Translate.translate("CreditLabel") + ":"  + '\n'+  currencyFilter( _storeDB.get('config.credit') );
 		}
 	},
 	
@@ -161,19 +164,40 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 	switch(action.actionType) {
 
 		case appConstants.UPDATE_ROOT_CONFIG:
-			_storeDB.set('config.' + action.data.path, action.data.value);
+			if (!action.data.value && action.data.path && typeof action.data.path === 'object') {
+				Object.keys(action.data.path).forEach( KEY => {
+					_storeDB.set('config.' + KEY, action.data.path[KEY]);
+					action.data.path = '__multiple__';
+				});
+			} else {
+				_storeDB.set('config.' + action.data.path, action.data.value);
+			}
 			RootscopeStore.emitChange({ type: 'config', path: action.data.path });
 			break;
 			
 		case appConstants.UPDATE_ROOT_CACHE:
-			_storeDB.set('cache.' + action.data.path, action.data.value);
+			if (!action.data.value && action.data.path && typeof action.data.path === 'object') {
+				Object.keys(action.data.path).forEach( KEY => {
+					_storeDB.set('cache.' + KEY, action.data.path[KEY]);
+					action.data.path = '__multiple__';
+				});
+			} else {
+				_storeDB.set('cache.' + action.data.path, action.data.value);
+			}
 			RootscopeStore.emitChange({ type: 'cache', path: action.data.path });
 			//console.warn(' someone updated CACHE, args:');
 			//console.log(action.data);
 			break;
 			
 		case appConstants.UPDATE_ROOT_SESSION:
-			_storeDB.set('session.' + action.data.path, action.data.value);
+			if (!action.data.value && action.data.path && typeof action.data.path === 'object') {
+				Object.keys(action.data.path).forEach( KEY => {
+					_storeDB.set('session.' + KEY, action.data.path[KEY]);
+					action.data.path = '__multiple__';
+				});
+			} else {
+				_storeDB.set('session.' + action.data.path, action.data.value);
+			}
 			RootscopeStore.emitChange({ type: 'session', path: action.data.path });
 			break;
 			
@@ -190,7 +214,7 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 	}
 });
 
-console.warn("\n\n -------------------------------------------------------\n\n RootscopeStore loaded!\n\n -------------------------------------------------------\n\n");
+//console.warn("\n\n -------------------------------------------------------\n\n RootscopeStore loaded!\n\n -------------------------------------------------------\n\n");
 
 if (isClient) {
 	window.RSS = RootscopeStore;

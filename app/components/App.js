@@ -3,8 +3,9 @@ import { Link } from 'react-router'
 //import './scss/App.scss'
 
 import { isClient } from '../utils'
+import { updateCredit } from '../utils/TsvUtils'
 
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import * as _E from 'elemental'
 
@@ -15,6 +16,16 @@ import ComEmulator from './ComEmulator'
 import CustomerStatusDisplay from './CustomerStatusDisplay'
 import AdminLoginButton from './AdminLoginButton'
 
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	init,
+	registerKF,
+	gotoDefaultIdlePage
+} from '../utils/TsvUtils'
+
+import { foo } from '../utils/Test'
+
 class App extends Component {
 	
 	constructor(props, context) {
@@ -22,10 +33,14 @@ class App extends Component {
 		
 		this.appTesting = true;
 		
-		TsvService.init();
-		TsvService.registerKF();
+		console.log('App Top');
+		foo();
+		//console.log( RootscopeStore.getShowCredit() );
 		
-		TsvService.fetchAllMachineSettings(null, function(err, data) {
+		init();
+		registerKF();
+		
+		TsvActions.apiCall('fetchAllMachineSettings', (err, data) => {
 			if (err) throw err;
 
 			if (!data) {
@@ -33,23 +48,17 @@ class App extends Component {
 				return;
 			}
 			
+			if (!data.currencyFilter) { data.currencyFilter = 'currency'; }
+			
 			RootscopeActions.setCache('machineSettings', data);
 
             if (data.MachineCount && data.MachineCount > 1) {
                 RootscopeActions.setConfig('bDualMachine', true);
             }
 
-			var currencyType = data.currencyFilter || 'currency';
-			
-			TsvService.setCurrencyFilterType(currencyType);
-
-			RootscopeActions.setConfig('currencyFilter', function(model) {
-				return $filter(currencyType)(model);
-			});
-
 		});
 
-		TsvService.fetchAllCustomSettings(null, function(err, data) {
+		TsvActions.apiCall('fetchAllCustomSettings', (err, data) => {
 			if (err) throw err;
 			
 			if (!data) {
@@ -65,15 +74,17 @@ class App extends Component {
 			data.txtSearchScene = 'category_search';
 
 			RootscopeActions.setCache('custommachinesettings', data);
-			RootscopeActions.setConfig('supportLanguages', data.languageSupported || 'En');
-			RootscopeActions.setConfig('bDualLanguage', multipleLangs);
-			RootscopeActions.setConfig('bShowLanguageFlag', multipleLangs);
-			RootscopeActions.setConfig('bDisplayCgryNavigation2', data.bDisplayCgryNavigation || false);
-			RootscopeActions.setConfig('selectedLanguage', LANG);
+			RootscopeActions.setConfig({
+				supportLanguages: data.languageSupported || 'En',
+				bDualLanguage: multipleLangs,
+				bShowLanguageFlag: multipleLangs,
+				bDisplayCgryNavigation2: data.bDisplayCgryNavigation || false,
+				selectedLanguage: LANG
+			});
 			Translate.selectLanguage(LANG);
 		});
 
-		TsvService.fetchMachineIds(null, function(err, data) {
+		TsvActions.apiCall('fetchMachineIds', (err, data) => {
 			if (err) throw err;
 
 			if (!data) {
@@ -84,30 +95,44 @@ class App extends Component {
 			RootscopeActions.setCache('machineList', data);
 		});
 		
-		RootscopeActions.setConfig('cgryNavTitle', Translate.translate('Category_Search', 'NavTitle'));
+		//RootscopeActions.setConfig('cgryNavTitle', Translate.translate('Category_Search', 'NavTitle'));
 
-        TsvService.subscribe("notifyTSVReady", function() {
-            console.log("Got event notifyTSVReady");
-            if (RootscopeStore.getCache('currentLocation') === '/View0') {
-                console.log("Redirect to default idle page or reload");
-
-                if (!RootscopeStore.getCache('custommachinesettings')) {
-                    TsvService.reloadPage();
-
-                } else {
-                    TsvService.registerKF();
-                    TsvService.gotoDefaultIdlePage();
-                }
-            }
-        }, "app");
+        updateCredit();
         
-        RootscopeActions.updateCredit();
+        this._onTsvChange = this._onTsvChange.bind(this);
 
+	}
+	
+	componentDidMount() {
+		TsvStore.addChangeListener(this._onTsvChange);
+        //TsvService.subscribe("notifyTSVReady", function, "app");
+	}
+	
+	componentWillUnmount() {
+		TsvStore.removeChangeListener(this._onTsvChange);
+	}
+	
+	_onTsvChange(event) {
+		if (event && event.method === 'notifyTSVReady') {
+			console.log("Got event notifyTSVReady");
+			if (RootscopeStore.getCache('currentLocation') === '/View0') {
+				console.log("Redirect to default idle page or reload");
+
+				if (!RootscopeStore.getCache('custommachinesettings')) {
+					//TsvService.reloadPage();
+					window.location.reload();
+
+				} else {
+					registerKF();
+					gotoDefaultIdlePage();
+				}
+			}
+		}
 	}
 	
 	logoClicked(e) {
 		e.preventDefault();
-		TsvService.gotoDefaultIdlePage();
+		gotoDefaultIdlePage();
 	}
 	
 	render() {

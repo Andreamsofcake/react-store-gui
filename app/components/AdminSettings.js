@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
+
+import TsvActions from '../actions/TsvActions'
 
 class Admin_Settings extends Component {
 
@@ -16,33 +18,33 @@ class Admin_Settings extends Component {
     //RootscopeActions.setSession('currentView', 'Admin_Settings');
     this.state = {
       supportLanguages: RootscopeStore.getConfig('supportLanguages'),
+
       defaultLanguage: RootscopeStore.getCache('machineSettings.defaultLanguage'),
-      ccProcessorMode: RootscopeStore.getCache('machineSettings.CCProcessorMode'),
-      machineSerialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber'),
-      merchantKey: RootscopeStore.getCache('machineSettings.CCMerchantKey'),
-      merchantID: RootscopeStore.getCache('machineSettings.CCMerchantID'),
-      dropSensorAttached: RootscopeStore.getCache('machineSettings.DropSensorAttached'),
-      ccReaderType: RootscopeStore.getCache('machineSettings.CCReaderType'),
-      vmcPlatform: RootscopeStore.getCache('machineSettings.VMCPlatform'),
-      machineCount: RootscopeStore.getCache('machineSettings.MachineCount'),
-      comPort: RootscopeStore.getCache('machineSettings.VMCControlCOMPort'),
-      salesTaxRate: RootscopeStore.getCache('machineSettings.SalesTaxRate'),
-      shoppingCartMaxItemCount: RootscopeStore.getCache('machineSettings.ShoppingCartMaxItemCount'),
+      CCProcessorMode: RootscopeStore.getCache('machineSettings.CCProcessorMode'),
+      MachineSerialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber'),
+      CCMerchantKey: RootscopeStore.getCache('machineSettings.CCMerchantKey'),
+      CCMerchantID: RootscopeStore.getCache('machineSettings.CCMerchantID'),
+      DropSensorAttached: RootscopeStore.getCache('machineSettings.DropSensorAttached'),
+      CCReaderType: RootscopeStore.getCache('machineSettings.CCReaderType'),
+      VMCPlatform: RootscopeStore.getCache('machineSettings.VMCPlatform'),
+      MachineCount: RootscopeStore.getCache('machineSettings.MachineCount'),
+      VMCControlCOMPort: RootscopeStore.getCache('machineSettings.VMCControlCOMPort'),
+      SalesTaxRate: RootscopeStore.getCache('machineSettings.SalesTaxRate'),
+      ShoppingCartMaxItemCount: RootscopeStore.getCache('machineSettings.ShoppingCartMaxItemCount'),
+
       bHasShoppingCart: RootscopeStore.getCache('custommachinesettings.bHasShoppingCart'),
       singleProductDonation: RootscopeStore.getCache('custommachinesettings.singleProductDonation'),
       minimumDonationAmount: RootscopeStore.getCache('custommachinesettings.minimumDonationAmount'),
     };
-
-
-  };
-
+    
+  }
 
   save(e) {
 
   	if (e) { e.preventDefault(); }
 
   	var machineSettingsProps = [
-  		'defaultLanguage', 'CCProcessorMode', 'MachineSerialNumber', 'CCMerchantKey', 'CCMerchantID', 'DropSensorAttached', 'CCReaderType', 'VMCPlatform', 'MachineCount', 'MCControlCOMPort', 'SalesTaxRate', 'ShoppingCartMaxItemCount'
+  		'defaultLanguage', 'CCProcessorMode', 'MachineSerialNumber', 'CCMerchantKey', 'CCMerchantID', 'DropSensorAttached', 'CCReaderType', 'VMCPlatform', 'MachineCount', 'VMCControlCOMPort', 'SalesTaxRate', 'ShoppingCartMaxItemCount'
   	];
 
   	var customMachineSettingsProps = [
@@ -52,23 +54,37 @@ class Admin_Settings extends Component {
   	machineSettingsProps.forEach( PROP => {
   		var val = this.state[PROP];
   		if (val !== RootscopeStore.getCache('machineSettings.'+PROP)) {
-  			TsvService.setMachineSetting(PROP, val, () => {});
+  			TsvActions.apiCall('setMachineSetting', PROP, val);
   		}
   	});
 
   	customMachineSettingsProps.forEach( PROP => {
   		var val = this.state[PROP];
   		if (val !== RootscopeStore.getCache('custommachinesettings.'+PROP)) {
-  			TsvService.setCustomMachineSetting(PROP, val, () => {});
+  			TsvActions.apiCall('setCustomMachineSetting', PROP, val);
   		}
   	});
 
   	var languageSupported = RootscopeStore.getCache('custommachinesettings.languageSupported');
   	if (languageSupported !== this.state.supportLanguages) {
-  		TsvService.setCustomMachineSetting("languageSupported", this.state.supportLanguages, () => {});
-  		RootscopeActions.setCache('custommachinesettings.languageSupported', this.state.supportLanguages);
+  		TsvActions.apiCall('setCustomMachineSetting', "languageSupported", this.state.supportLanguages);
   		RootscopeActions.setConfig('supportLanguages', this.state.supportLanguages);
   	}
+
+	var MS = RootscopeStore.getCache('machineSettings');
+	machineSettingsProps.forEach( PROP => {
+		MS[PROP] = this.state[PROP];
+	});
+
+	var CMS = RootscopeStore.getCache('custommachinesettings');
+	customMachineSettingsProps.forEach( PROP => {
+		CMS[PROP] = this.state[PROP];
+	});
+
+	RootscopeActions.setCache({
+		custommachinesettings: CMS,
+		machineSettings: MS
+	});
 
   }
 
@@ -78,6 +94,18 @@ class Admin_Settings extends Component {
 
   // Remove change listers from stores
   componentWillUnmount() {
+  }
+  
+  textChange(e) {
+  	let state = {};
+  	state[e.target.name] = e.target.value;
+  	this.setState(state);
+  }
+  
+  selectChange(what, e) {
+  	let state = {};
+  	state[what] = e;
+  	this.setState(state);
   }
 
   render() {
@@ -89,94 +117,100 @@ class Admin_Settings extends Component {
           <_E.Row id="machineSettings">
 
               <_E.Row>
-                  <_E.FormSelect label={Translate.translate('Admin_Settings','LabelCardProcessorMode')} name="cardProcessorMode" value={this.state.ccProcessorMode} options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
+                  <_E.FormSelect label={Translate.translate('Admin_Settings','LabelCardProcessorMode')}
+                  	onChange={this.selectChange.bind(this, 'CCProcessorMode')}
+                  	name="CCProcessorMode" value={this.state.CCProcessorMode}
+                  	options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
               </_E.Row>
 
               <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMerchantID')}  className="textArea" >
-                      <_E.FormInput value={this.state.merchantID} name='merchantID'/>
+                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMerchantID')} >
+                      <_E.FormInput value={this.state.CCMerchantID} name='CCMerchantID' onChange={this.textChange.bind(this)} />
                   </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMerchantKey')}  className="textArea" >
-                      <_E.FormInput value={this.state.merchantKey} name='merchantKey'/>
+                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMerchantKey')} >
+                      <_E.FormInput value={this.state.CCMerchantKey} name='CCMerchantKey' onChange={this.textChange.bind(this)} />
                   </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMachineSerialNumber')}  className="textArea" >
-                      <_E.FormInput value={this.state.machineSerialNumber} name='machineSerialNumber'/>
+                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMachineSerialNumber')} >
+                      <_E.FormInput value={this.state.MachineSerialNumber} name='MachineSerialNumber' onChange={this.textChange.bind(this)} />
                   </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                  <_E.FormSelect label={Translate.translate('Admin_Settings','LabelDefaultLanguage')} name="defaultLanguage" value={this.state.defaultLanguage} options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
+                  <_E.FormSelect label={Translate.translate('Admin_Settings','LabelDefaultLanguage')}
+                  	onChange={this.selectChange.bind(this, 'defaultLanguage')}
+                  	name="defaultLanguage" value={this.state.defaultLanguage}
+                  	options={[{ label: 'English', value: 'En' }, { label: 'French', value: 'Fr'}]} />
               </_E.Row>
 
               <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelSupportLanguages')}  className="textArea" >
-                      <_E.FormInput value={this.state.supportLanguages} name='supportLanguages'/>
+                  <_E.FormField label={Translate.translate('Admin_Settings','LabelSupportLanguages')} >
+                      <_E.FormInput value={this.state.supportLanguages} name='supportLanguages' onChange={this.textChange.bind(this)} />
                   </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelDropSensorAttached')}  className="textArea" >
-                      <_E.FormInput value={this.state.dropSensorAttached} name='dropSensorAttached'/>
+                  <_E.FormField label={Translate.translate('Admin_Settings','LabelDropSensorAttached')} >
+                      <_E.FormInput value={this.state.DropSensorAttached} name='DropSensorAttached' onChange={this.textChange.bind(this)} />
                   </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelCardReaderType')}  className="textArea" >
-                    <_E.FormInput value={this.state.ccReaderType} name='ccReaderType'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelCardReaderType')} >
+                    <_E.FormInput value={this.state.CCReaderType} name='CCReaderType' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelVMCPlatform')}  className="textArea" >
-                    <_E.FormInput value={this.state.vmcPlatform} name='vmcPlatform'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelVMCPlatform')} >
+                    <_E.FormInput value={this.state.VMCPlatform} name='VMCPlatform' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelMachineCount')}  className="textArea" >
-                    <_E.FormInput value={this.state.machineCount} name='machineCount'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelMachineCount')} >
+                    <_E.FormInput value={this.state.MachineCount} name='MachineCount' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelCOMPort')}  className="textArea" >
-                    <_E.FormInput value={this.state.comPort} name='comPort'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelCOMPort')} >
+                    <_E.FormInput value={this.state.VMCControlCOMPort} name='VMCControlCOMPort' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelSalesTaxRate')}  className="textArea" >
-                    <_E.FormInput value={this.state.salesTaxRate} name='salesTaxRate'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelSalesTaxRate')} >
+                    <_E.FormInput value={this.state.SalesTaxRate} name='SalesTaxRate' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelShoppingCartMaxItemCount')}  className="textArea" >
-                    <_E.FormInput value={this.state.shoppingCartMaxItemCount} name='shoppingCartMaxItemCount'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelShoppingCartMaxItemCount')} >
+                    <_E.FormInput value={this.state.ShoppingCartMaxItemCount} name='ShoppingCartMaxItemCount' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelHasShoppingCart')}  className="textArea" >
-                    <_E.FormInput value={this.state.bHasShoppingCart} name='bHasShoppingCart'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelHasShoppingCart')} >
+                    <_E.FormInput value={this.state.bHasShoppingCart} name='bHasShoppingCart' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelSingleProductDonation')}  className="textArea" >
-                    <_E.FormInput value={this.state.singleProductDonation} name='singleProductDonation'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelSingleProductDonation')} >
+                    <_E.FormInput value={this.state.singleProductDonation} name='singleProductDonation' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
               <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelMinimumDonationAmount')}  className="textArea" >
-                    <_E.FormInput value={this.state.minimumDonationAmount} name='minimumDonationAmount'/>
+                <_E.FormField label={Translate.translate('Admin_Settings','LabelMinimumDonationAmount')} >
+                    <_E.FormInput value={this.state.minimumDonationAmount} name='minimumDonationAmount' onChange={this.textChange.bind(this)} />
                 </_E.FormField>
               </_E.Row>
 
@@ -186,106 +220,7 @@ class Admin_Settings extends Component {
 
       </_E.Row>
 
-
     );
-    /*
-
-    <div class="Admin_Settings">
-
-        <h2>{{translate('MachineSettings')}}</h2>
-
-        <div id="machineSettings">
-
-            <div>
-                <label>{{translate('LabelCardProcessorMode')}}: </label><br>
-                <select class="droplist" id="cardProcessorMode" value="{{ccProcessorMode}}"></select>
-            </div>
-
-            <div>
-                <label>{{translate('LabelMerchantID')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting3" value={{merchantID}} ng-model="merchantID" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}">
-                    <FormInput/>
-                </FormField>
-            </div>
-
-            <div>
-                <label>{{translate('LabelMerchantKey')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting2" value={{merchantKey}} ng-model="merchantKey" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelMachineSerialNumber')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting1" value={{machineSerialNumber}} ng-model="machineSerialNumber" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelDefaultLanguage')}}: </label><br>
-                <select class="droplist" id="defaultLanguage" value="{{defaultLanguage}}"></select>
-            </div>
-
-            <div>
-                <label>{{translate('LabelSupportLanguages')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting0" value={{supportLanguages}} ng-model="supportLanguages" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelDropSensorAttached')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting4" value={{dropSensorAttached}} ng-model="dropSensorAttached" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelCardReaderType')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting5" value={{ccReaderType}} ng-model="ccReaderType" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelVMCPlatform')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting6" value={{vmcPlatform}} ng-model="vmcPlatform" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelMachineCount')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting7" value={{machineCount}} ng-model="machineCount" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelCOMPort')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting8" value={{comPort}} ng-model="comPort" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelSalesTaxRate')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting9" value={{salesTaxRate}} ng-model="salesTaxRate" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelShoppingCartMaxItemCount')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting10" value={{shoppingCartMaxItemCount}} ng-model="shoppingCartMaxItemCount" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelHasShoppingCart')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting11" value={{bHasShoppingCart}} ng-model="bHasShoppingCart" avt-virtual-keyboard="{deadkeysOn: false, enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelSingleProductDonation')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting12" value={{singleProductDonation}} ng-model="singleProductDonation" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-            <div>
-                <label>{{translate('LabelMinimumDonationAmount')}}: </label><br>
-                <input type='text' class="textArea" id="machineSetting13" value={{minimumDonationAmount}} ng-model="minimumDonationAmount" avt-virtual-keyboard="{kt: 'Numeric', enterSubmit:save, showInMobile:true}"/>
-            </div>
-
-        </div>
-
-        <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
-
-    </div>
-
-
-    */
   }
 
 }

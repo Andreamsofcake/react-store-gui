@@ -55,6 +55,10 @@ var appConstants = keyMirror({
 	TEST_MATCH_PRINT: null,
 	CLEAR_API_RESPONSES: null,
 
+// TSV:
+	FLASH_API_MULTIEVENT: null,
+	FLASH_API: null,
+
 // Foo Section Describer (optional)
 	EXAMPLE_ACTION_CONSTANT: null,
 

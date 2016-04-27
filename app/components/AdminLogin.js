@@ -1,11 +1,17 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
+
+import TsvActions from '../actions/TsvActions'
+import {
+	emptyCart,
+	gotoDefaultIdlePage,
+} from '../utils/TsvUtils'
 
 class Admin_Login extends Component {
 
@@ -14,8 +20,8 @@ class Admin_Login extends Component {
     super(props, context);
 
     //RootscopeActions.setSession('currentView', 'Admin_Login');
-    TsvService.disableLoginDevices(null, () => { });
-    TsvService.emptyCart(null, () => { });
+    TsvActions.apiCall('disableLoginDevices');
+    emptyCart();
     this.state = {
       num: "",
       maxChars: 6,
@@ -24,21 +30,34 @@ class Admin_Login extends Component {
   }
 
   enter() {
-    TsvService.validateAdminPassword(this.state.num, res => {
-      switch(res.result){
-          case "VALID":
-              browserHistory.path("/Admin_Home");
-              break;
-          default:
-              this.setState({
-                instructionMessage : Translate.translate('Admin_Login', 'InvalidPassword'),
-                num: ""
-              }) //"Invalid Password";
-              break;
-      }
+  	var localPass = RootscopeStore.getCache('machineSettings.AdminPassword')
+  		, result = 'VALID'
+  		;
+  	
+  	function handlePass(result) {
+		switch(result){
+			case "VALID":
+				browserHistory.push("/Admin_Home");
+				break;
 
-    } );
-
+			default:
+				this.setState({
+				  instructionMessage : Translate.translate('Admin_Login', 'InvalidPassword'),
+				  num: ""
+				}) //"Invalid Password";
+				break;
+		}
+  	}
+  	
+  	if (localPass) {
+  		result = !!(localPass == this.state.num);
+  		handlePass(result);
+  	
+  	} else {
+		TsvActions.apiCall('validateAdminPassword', this.state.num, (err, res) => {
+			handlePass(res.result);
+		});
+	}
   }
 
   clear() {
@@ -57,7 +76,7 @@ class Admin_Login extends Component {
   }
 
   back() {
-    TsvService.gotoDefaultIdlePage();
+    gotoDefaultIdlePage();
   }
     // Add change listeners to stores
   componentDidMount() {
@@ -118,42 +137,11 @@ class Admin_Login extends Component {
 				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="primary" onClick={this.enter.bind(this)}>Enter</_E.Button></_E.Col>
 			  </_E.Row>
 
-			  
-
           </div>
 
           </_E.Col>
       </_E.Row>
 
-
-      /*<div className="Admin_Login" >
-
-          <h2 id="instruction">{{ instructionMessage }}</h2>
-
-          <img class="regularBtn" id="back" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="back()">
-
-          <div id="keypad">
-
-              <img src="../Images/Button_1.png" ng-click="press(1)">
-              <img src="../Images/Button_2.png" ng-click="press(2)">
-              <img src="../Images/Button_3.png" ng-click="press(3)">
-              <img src="../Images/Button_4.png" ng-click="press(4)">
-              <img src="../Images/Button_5.png" ng-click="press(5)">
-              <img src="../Images/Button_6.png" ng-click="press(6)">
-              <img src="../Images/Button_7.png" ng-click="press(7)">
-              <img src="../Images/Button_8.png" ng-click="press(8)">
-              <img src="../Images/Button_9.png" ng-click="press(9)">
-              <img src="../Images/Button_10.png" ng-click="press(0)">
-
-              <img ng-src="{{localizedImage('Button_Clear.png')}}" err-src="../Images/Button_Clear.png" ng-click="clear()">
-              <img ng-src="{{localizedImage('Button_Enter.png')}}" err-src="../Images/Button_Enter.png" ng-click="enter()">
-
-          </div>
-
-          <input id="coilInput" type="password" value={{prompt()}}>
-
-
-      </div>*/
     );
   }
 }

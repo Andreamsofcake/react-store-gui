@@ -1,11 +1,26 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	updateCredit,
+	resetPaymentTimer,
+	killTimers,
+	stopPaymentTimer,
+	setVendingInProcessFlag,
+	emptyCart,
+	gotoDefaultIdlePage,
+	vendResponse,
+} from '../utils/TsvUtils'
+
+import { currencyFilter } from '../utils/TsvUtils'
 
 class Card_Vending extends Component {
 
@@ -14,10 +29,11 @@ class Card_Vending extends Component {
     super(props, context);
 
     //RootscopeActions.setSession('currentView', 'Card_Vending');
-    RootscopeActions.setCache('currentLocation', '/Card_Vending');
+    //RootscopeActions.setCache('currentLocation', '/Card_Vending');
+
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    RootscopeActions.updateCredit();
-    TsvService.enablePaymentDevice('PAYMENT_TYPE_CREDIT_CARD', () => {})
+    updateCredit();
+    TsvActions.apiCall('enablePaymentDevice', 'PAYMENT_TYPE_CREDIT_CARD');
 
     this.state = {
 		cart: RootscopeStore.getCache('shoppingCart.detail'),
@@ -51,12 +67,16 @@ class Card_Vending extends Component {
 		console.warn("this.summary.TotalPrice less than 0.01 should start vend");
 		this.startVend();
 	}
+	
+	this._onTsvChange = this._onTsvChange.bind(this);
 
-    TsvService.resetPaymentTimer();
+    resetPaymentTimer();
 
   }
 
   /****
+
+	>> dev note: below notes are way way stale, since Tsv has been blown into Flux. <<
 
     KENT NOTE: TsvService.startVend() is called in other numerous places,
     and is usually ONLY wrapped in a function,
@@ -68,18 +88,18 @@ class Card_Vending extends Component {
 
     seems weird that the TotalPrice can sneak up on the app and suddenly be completed,
 
-    probably bad logic surrounding the Credit Card processing etc,
-      and assume it will be solved with better state management that we're doing.
+    maybe bad logic surrounding the Credit Card processing etc?
+      assume it will be solved with better state management that we're doing.
 
   ****/
 
 	startVend() {
-		TsvService.disablePaymentDevice(null, () => {});
-		TsvService.killTimers();
+		TsvActions.apiCall('disablePaymentDevice');
+		TsvActions.apiCall('startVend');
+		killTimers();
+		setVendingInProcessFlag();
 		RootscopeActions.setSession('cardMsg', Translate.translate("Card_Vending", "Vending", "Vending"));
-		//TsvService.debug("Card Approved should vend...");
-		TsvService.startVend(null, () => {});
-		TsvService.setVendingInProcessFlag();
+		//TsvActions.apiCall("Card Approved should vend...");
 
 		this.setState({
 			cardTransactionRespose: Translate.translate("Card_Vending", "Vending", "Vending"),
@@ -89,16 +109,16 @@ class Card_Vending extends Component {
 	}
 
 	cancel(){
-		TsvService.stopPaymentTimer();
-		TsvService.emptyCart();
-		TsvService.gotoDefaultIdlePage();
+		TsvActions.apiCall('stopPaymentTimer');
+		emptyCart();
+		gotoDefaultIdlePage();
 	}
 
   // Add change listeners to stores
 	cardTransactionHandler(level) {
 
-		TsvService.killTimers('cardErrorTimer');
-		TsvService.resetPaymentTimer();
+		killTimers('cardErrorTimer');
+		resetPaymentTimer();
 		var msg, showSpinner = false;
 
 		if (!RootscopeStore.getSession('bVendingInProcess')) {
@@ -121,28 +141,28 @@ class Card_Vending extends Component {
 
 				case "CARD_INVALID_READ":
 					msg = Translate.translate("Card_Vending", "CardInvalidMessage");
-					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
+					resetPaymentTimer();
 					break;
 
 				case "CARD_DECLINED":
 					msg =  Translate.translate("Card_Vending", "CardDeclinedMessage");
-					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
+					resetPaymentTimer();
 					break;
 
 				case "CARD_CONNECTION_FAILURE":
 					msg = Translate.translate("Card_Vending", "CardConnectionErrorMessage");
-					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
+					resetPaymentTimer();
 					break;
 
 				case "CARD_UNKNOWN_ERROR":
 					msg = Translate.translate("Card_Vending", "CardUnknownErrorMessage");
-					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
+					resetPaymentTimer();
 					break;
 
 				default:
 					console.log("Card_Vending Got event cardTransactionResponse()default: "+level);
 					msg = Translate.translate("Card_Vending", "ErrorMessage");
-					TsvService.resetPaymentTimer(); // TsvService.startCardErrorTimer();
+					resetPaymentTimer();
 					break;
 			}
 
@@ -154,21 +174,26 @@ class Card_Vending extends Component {
   }
 
 	componentDidMount() {
-
-		// this function has no ties to "this", so can be anonymous:
-		var vendResponseHandler = function(processStatus){
-			TsvService.vendResponse(processStatus);
-			TsvService.stopPaymentTimer();
-		};
-
-    	TsvService.subscribe("vendResponse", vendResponseHandler, "app.cardVending");
-	    TsvService.subscribe("cardTransactionResponse", this.cardTransactionHandler.bind(this), "app.cardVending");
+		TsvStore.addChangeListener(this._onTsvChange);
 	}
 
 	// Remove change listers from stores
 	componentWillUnmount() {
-		TsvService.unsubscribe("vendResponse", "app.cardVending");
-		TsvService.unsubscribe("cardTransactionResponse", "app.cardVending");
+		TsvStore.removeChangeListener(this._onTsvChange);
+	}
+	
+	_onTsvChange(event) {
+		if (event && event.method) {
+			switch (event.method) {
+				case 'vendResponse':
+					vendResponse(processStatus);
+					stopPaymentTimer();
+					break;
+				case 'cardTransactionResponse':
+					this.cardTransactionHandler(event.data);
+					break;
+			}
+		}
 	}
 
   render() {
@@ -263,7 +288,7 @@ class Card_Vending extends Component {
 
   renderTotalPriceLabel() {
     return(
-      <p> { Translate.translate('Card_Vending', 'TotalPriceLabel')}{TsvService.currencyFilter(this.summary.TotalPrice) }</p>
+      <p> { Translate.translate('Card_Vending', 'TotalPriceLabel')}{ currencyFilter(this.summary.TotalPrice) }</p>
     )
   }
 

@@ -11,7 +11,7 @@ import PageIdle from './components/PageIdle'
 import AdminLogin from './components/AdminLogin'
 import AdminHome from './components/AdminHome'
 import AdminSettings from './components/AdminSettings'
-import AdminExerciser from './components/AdminExerciser'
+import AdminJofemarExerciser from './components/AdminJofemarExerciser'
 import AdminPrintReaderTester from './components/AdminPrintReaderTester'
 
 import CustomerSignup from './components/CustomerSignup'
@@ -43,7 +43,7 @@ export default (
 		<Route path='Admin_Login' component={AdminLogin} />
 		<Route path='Admin_Home' component={AdminHome} />
 		<Route path='Admin_Settings' component={AdminSettings} />
-		<Route path='Admin_Exerciser' component={AdminExerciser} />
+		<Route path='Admin_Jofemar_Exerciser' component={AdminJofemarExerciser} />
 		<Route path='Admin_PrintTester' component={AdminPrintReaderTester} />
 
 		<Route path='Customer_Signup' component={CustomerSignup} />
@@ -61,7 +61,7 @@ export default (
 		<Route path='Cash_Card' component={CashCard} />
 
 		<Route path='Shopping_Cart' component={ShoppingCart} />
-		<Route path='THANKYOU_MSG' component={ThankYouMsg} />
+		<Route path='ThankYou_Msg' component={ThankYouMsg} />
 
 		<Route path='Vend_Error' component={VendError} />
 

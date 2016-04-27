@@ -1,11 +1,16 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import appConstants from '../constants/appConstants'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import RootscopeActions from '../actions/RootscopeActions'
 
-// import SocketAPI from '../utils/SocketAPI'
-// import axios from 'axios'
-// import { browserHistory } from 'react-router'
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	init,
+	registerKF,
+	gotoDefaultIdlePage
+} from '../utils/TsvUtils'
+
 
 var StorefrontActions = {
 
@@ -15,13 +20,11 @@ var StorefrontActions = {
   	console.log('removeAllQty ///////');
   	console.log(product, coil);
 
-  	TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
+  	TsvActions.apiCall('removeFromCartByCoilNo', coil, (err, ok) => {
   		if (err) throw err;
-  		TsvService.fetchShoppingCart2(null, (err, data) => {
-
+  		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
   			if (err) throw err;
   			RootscopeActions.setCache('shoppingCart', data);
-
   		});
   	});
   },
@@ -35,24 +38,23 @@ var StorefrontActions = {
   	console.log('removeAllQty ///////');
   	console.log(product, coil, qty);
 
-    TsvService.fetchShoppingCart2(null, (err, data) => {
-
+    TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
       if (err) throw err;
       RootscopeActions.setCache('shoppingCart', data);
 
       let removeQty = (qty) => {
         if (qty > 0) {
           qty -= 1;
-          TsvService.removeFromCartByCoilNo(coil, (err, ok) => {
+          TsvActions.apiCall('removeFromCartByCoilNo', coil, (err, ok) => {
             if (err) throw err;
-            TsvService.fetchShoppingCart2(null, (err, data) => {
+            TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
               if (err) throw err;
               RootscopeActions.setCache('shoppingCart', data);
               removeQty(qty);
             });
           });
         } else {
-          TsvService.fetchShoppingCart2(null, (err, data) => {
+          TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
             if (err) throw err;
             RootscopeActions.setCache('shoppingCart', data);
           });
@@ -70,13 +72,11 @@ var StorefrontActions = {
   	console.log('removeAllQty ///////');
   	console.log(product, coil);
 
-  	TsvService.addToCartByCoil(coil, (err, ok) => {
+  	TsvActions.apiCall('addToCartByCoil', coil, (err, ok) => {
   		if (err) throw err;
-  		TsvService.fetchShoppingCart2(null, (err, data) => {
-
+  		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
   			if (err) throw err;
   			RootscopeActions.setCache('shoppingCart', data);
-
   		});
   	});
   },
@@ -97,15 +97,12 @@ var StorefrontActions = {
 
   addToCart(product, e) {
     if(product.stockCount > 0){
-      TsvService.addToCartByProductID(product.productID, (err, response) => {
+      TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
         if (err) throw err;
         RootscopeActions.setConfig('pvr', response);
-
-        TsvService.fetchShoppingCart2(null, (err, data) => {
+        TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
           if (err) throw err;
           RootscopeActions.setCache('shoppingCart', data);
-          console.log('shopping cart')
-          console.log(data);
         });
       });
     }

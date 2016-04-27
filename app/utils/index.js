@@ -91,3 +91,25 @@ export function uniq() {
 	uniq = uniq.substr(0, 5);
 	return uniq;
 }
+
+/**
+ * takes inbound string or whatever and returns a boolean. true/TRUE is true, everything else is false
+ * @function forceBoolean
+ * @returns {boolean}
+ */
+export function forceBoolean(bool) {
+	if (typeof bool === 'string') {
+		switch (bool) {
+			case 'true':
+			case 'TRUE':
+			case 1:
+			case '1':
+				bool = true;
+				break;
+			default:
+				bool = false;
+				break;
+		}
+	}
+	return bool;
+}

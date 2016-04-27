@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
-import TsvService from '../../lib/TsvService'
 import StorefrontActions from '../actions/StorefrontActions'
+
+import { currencyFilter } from '../utils/TsvUtils'
 
 class ShoppingCartItem extends Component {
 
@@ -38,7 +39,7 @@ class ShoppingCartItem extends Component {
 
 			<_E.Col className="cart shopping-cart-table" xs="42%" sm="37%" md="39%" lg="42%" onClick={this.productDetail.bind(this)}>{ prd.productName }</_E.Col>
 
-			<_E.Col className="cart shopping-cart-table" xs="8%" sm="13%" md="13%" lg="13%" style={{textAlign: 'right'}}>${ TsvService.currencyFilter(prd.price * prd.qtyInCart) }</_E.Col>
+			<_E.Col className="cart shopping-cart-table" xs="8%" sm="13%" md="13%" lg="13%" style={{textAlign: 'right'}}>${ currencyFilter(prd.price * prd.qtyInCart) }</_E.Col>
 
 			<_E.Col xs="20%" sm="25%" md="23%" lg="20%" className="productQuantity" style={{textAlign: 'right'}}>
 

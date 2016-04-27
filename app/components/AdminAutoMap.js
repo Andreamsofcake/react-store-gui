@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
 
 class Admin_Auto_Map extends Component {
 
@@ -25,6 +28,7 @@ class Admin_Auto_Map extends Component {
     if(RootscopeStore.getCache('machineList').length > 1){
         this.state.bShowMachine2 = true;
     }
+	this._onTsvChange = this._onTsvChange.bind(this);
   }
 
 
@@ -36,7 +40,7 @@ class Admin_Auto_Map extends Component {
 
     if(!RootscopeStore.getSession('bRunningAutoMap'){
         RootscopeActions.setSession('bRunningAutoMap', true);
-        TsvService.runAutoMap(machineID, -1, () => {});
+        TsvActions.apiCall('runAutoMap', machineID, -1);
         this.setState({
           coilMap: []
         })
@@ -45,37 +49,40 @@ class Admin_Auto_Map extends Component {
 
 
   // Add change listeners to stores
-  componentDidMount() {
-    TSVService.subscribe("notifyMapStatusChange", (status, info) => {
+	componentDidMount() {
+		TsvStore.addChangeListener(this._onTsvChange);
+        //TsvService.subscribe("notifyTSVReady", function, "app");
+	}
+	
+	componentWillUnmount() {
+		TsvStore.removeChangeListener(this._onTsvChange);
+	}
+	
+	_onTsvChange(event) {
+		if (event && event.method === 'notifyMapStatusChange') {
 
-        if (RootscopeStore.getCache('currentLocation') != "/Admin_Auto_Map") return;
+			let status = event.data[0];
+			let info = event.data[1];
+			let state = {
+				status: status
+			}
 
-        this.setState({
-          status: status
-        })
-
-        switch(status){
-            case "Map":
-                if(this.state.coilMap.indexOf(info.coilNumber) == -1){
-                  this.setState({
-                    coilMap: this.state.coilMap.push(info.coilNumber)
-                  })
-                }
-                break;
-            case "End":
-                RootscopeActions.setSession('bRunningAutoMap', false);
-                break;
-            default:
-                break;
-        }
-    }, "app.automap");
-
-  }
-
-  // Remove change listers from stores
-  componentWillUnmount() {
-    TsvService.unsubscribe("notifyMapStatusChange", "app.automap")
-  }
+			switch(status){
+				case "Map":
+					let coilMap = this.state.coilMap;
+					if (this.state.coilMap.indexOf(info.coilNumber) == -1) {
+						state.coilMap = coilMap.push(info.coilNumber);
+					}
+					break;
+				case "End":
+					RootscopeActions.setSession('bRunningAutoMap', false);
+					break;
+				default:
+					break;
+			}
+			this.setState(state);
+		}
+	}
 
   render() {
     return (
@@ -104,41 +111,6 @@ class Admin_Auto_Map extends Component {
 
     );
 
-    /*
-      <div class="automap">
-
-          <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
-
-          <h2>{{ status }}</h2>
-
-          <table class="maps">
-
-              <tr>
-                  <td><button id="machine0" src="" data-ng-click="mapMachine(0)">{{translate("Map1")}}</button></td>
-
-                  <td ng-show="bShowMachine2"><button id="machine1" src="" data-ng-click="mapMachine(1)">{{translate("Map2")}}</button></td>
-              </tr>
-
-          </table>
-
-          <div id="wrapper">
-              <table id="mapTable"></table>
-
-              <!--<table id="mapTable">
-                  <tr class="trayCoils"><td class='coilNumber'>11</td><td class='coilNumber'>12</td><td class='coilNumber'>13</td><td class='coilNumber'>14</td></tr>
-                  <tr class="trayCoils"><td class='coilNumber'>21</td><td class='coilNumber'>22</td><td class='coilNumber'>23</td><td class='coilNumber'>24</td></tr>
-                  <tr class="trayCoils"><td class='coilNumber'>31</td><td class='coilNumber'>32</td><td class='coilNumber'>33</td><td class='coilNumber'>34</td></tr>
-                  <tr class="trayCoils"><td class='coilNumber'>41</td><td class='coilNumber'>42</td><td class='coilNumber'>43</td><td class='coilNumber'>44</td></tr>
-                  <tr class="trayCoils"><td class='coilNumber'>51</td><td class='coilNumber'>52</td><td class='coilNumber'>53</td><td class='coilNumber'>54</td><td class='coilNumber'>55</td></tr>
-                  <tr class="trayCoils"><td class='coilNumber'>61</td><td class='coilNumber'>62</td><td class='coilNumber'>63</td><td class='coilNumber'>64</td><td class='coilNumber'>65</td><td class='coilNumber'>66</td><td class='coilNumber'>67</td><td class='coilNumber'>65</td><td class='coilNumber'>66</td><td class='coilNumber'>67</td></tr>
-                  <tr class="trayCoils"><td class='coilNumber'>71</td><td class='coilNumber'>72</td><td class='coilNumber'>73</td><td class='coilNumber'>74</td><td class='coilNumber'>75</td></tr>
-              </table>-->
-
-          </div>
-
-      </div>
-
-    */
   }
 
   renderShowMachine2() {

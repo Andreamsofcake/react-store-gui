@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import Slider from 'react-slick';
 import RootscopeActions from '../actions/RootscopeActions'
@@ -10,6 +10,9 @@ import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
 import ShoppingCartMini from './ShoppingCartMini'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
 
 class Storefront extends Component {
 
@@ -26,24 +29,29 @@ class Storefront extends Component {
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
     this._onStoreFrontChange = this._onStoreFrontChange.bind(this);
+
   }
 
   // Add change listeners to stores
   componentDidMount() {
+
     RootscopeStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
 
-    TsvService.fetchProduct(null, (err, data) => {
+    TsvActions.apiCall('fetchProduct', (err, data) => {
       if (err) throw err;
       RootscopeActions.setSession('products', data)
     });
 
-    TsvService.fetchProductCategoriesByParentCategoryID(0, (err, data) => {
+    TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
     	if (err) throw err;
+    	console.log('fetchProductCategoriesByParentCategoryID');
+    	console.log(err);
+    	console.log(data);
     	RootscopeActions.setConfig('categories', data);
     });
 
-	TsvService.fetchShoppingCart2(null, (err, data) => {
+	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 		if (err) throw err;
 		RootscopeActions.setCache('shoppingCart', data);
 	});
@@ -112,7 +120,7 @@ class Storefront extends Component {
   }
 
 	renderCategories() {
-		if (this.state.categories) {
+		if (this.state.categories && this.state.categories.length) {
 			return (
 				<_E.ButtonGroup>
 				{this.state.categories.map((category, $index) => {

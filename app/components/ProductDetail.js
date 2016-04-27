@@ -9,7 +9,9 @@ import { browserHistory, Link } from 'react-router'
 import ShoppingCartMini from './ShoppingCartMini'
 import * as _E from 'elemental'
 
- class Product_Detail extends Component {
+import { currencyFilter } from '../utils/TsvUtils'
+
+class Product_Detail extends Component {
 
    constructor(props, context) {
      // MUST call super() before any this.*
@@ -102,7 +104,7 @@ import * as _E from 'elemental'
                    <img src={prod.imagePath} title={prod.description} className="boxShadowed" onClick={this.toggleModal.bind(this)} />
                  </_E.Col>
                  <_E.Col basis="50%">
-                   <p className="prdPrice">Price ${TsvService.currencyFilter(prod.price)} </p>
+                   <p className="prdPrice">Price ${currencyFilter(prod.price)} </p>
                    <_E.Button className="product-button" onClick={this.setPrdSelected.bind(this)}>Add to cart</_E.Button>
                    <hr style={{margin: '20px auto', height: '2px'}} />
                    <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />

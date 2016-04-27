@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	gotoDefaultIdlePage
+} from '../utils/TsvUtils'
+
 
 class Activate extends Component {
 
@@ -22,8 +29,8 @@ class Activate extends Component {
   }
 
   activate() {
-    if (TsvService.activate('this.activationKey', 'resultCode') === 'SUCCESS') {
-        kb.reveal();
+    if (TsvActions.apiCall('activate', this.state.activationKey, 'resultCode') === 'SUCCESS') {
+        gotoDefaultIdlePage();
     }
 
   }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
@@ -7,20 +7,20 @@ import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
 
+import TsvActions from '../actions/TsvActions'
+
 class System_Info extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'System_Info');
-    TsvService.enumerateComponents((err, data) => {
-       this.setState({ versionInfos: data })
-    })
-
   }
 
   // Add change listeners to stores
   componentDidMount() {
+    TsvActions.apiCall('enumerateComponents', (err, data) => {
+       this.setState({ versionInfos: data })
+    })
   }
 
   // Remove change listers from stores
@@ -28,6 +28,11 @@ class System_Info extends Component {
   }
 
   render() {
+  	if (!this.state.versionInfos) {
+  		return (
+  			<h2>Loading, one moment please...</h2>
+  		);
+  	}
     return (
       <_E.Row className="systemInfo">
         <_E.Col>

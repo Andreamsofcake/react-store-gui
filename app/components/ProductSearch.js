@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import RootscopeActions from '../actions/RootscopeActions'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import RootscopeStore from '../stores/RootscopeStore'
 import ProductListItem from './ProductListItem'
@@ -8,6 +8,8 @@ import ProductListItem from './ProductListItem'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import { Link } from 'react-router'
+
+import TsvActions from '../actions/TsvActions'
 
 class Product_Search extends Component {
 
@@ -22,7 +24,7 @@ class Product_Search extends Component {
     }
 
     RootscopeActions.setConfig('bDisplayCgry', false);
-    RootscopeActions.updateCredit();
+    updateCredit();
     RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance'))
     //RootscopeActions.setSession('currentView', 'Product_Search');
     //RootscopeActions.setCache('currentLocation', '/Product_Search');
@@ -34,7 +36,7 @@ class Product_Search extends Component {
   }
 
   componentDidMount() {
-	TsvService.fetchShoppingCart2(null, (err, data) => {
+	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 		if (err) throw err;
 		RootscopeActions.setCache('shoppingCart', data);
 	});
@@ -49,7 +51,7 @@ class Product_Search extends Component {
     if (!state.products) {
 		console.warn('have to go fetch all products! (fix in refactor, but Product_Search is not long-term used anyway ... just old code for testing');
 		//console.log(RootscopeStore.getConfig('products'));
-		TsvService.fetchProduct(null, (err, data) => {
+		TsvActions.apiCall('fetchProduct', (err, data) => {
 			if (err) throw err;
 			RootscopeActions.setConfig('products', data);
 			this.setState({
@@ -82,11 +84,11 @@ class Product_Search extends Component {
 
   setPrdSelected(product, e) {
     if(product.stockCount > 0){
-    	TsvService.addToCartByProductID(product.productID, (err, response) => {
+    	TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
     		if (err) throw err;
 	      RootscopeActions.setConfig('pvr', response);
 
-	      TsvService.fetchShoppingCart2(null, (err, data) => {
+	      TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 			if (err) throw err;
 			RootscopeActions.setCache('shoppingCart', data);
 	      });
@@ -102,7 +104,7 @@ class Product_Search extends Component {
   }
 
   updateCategory(categoryID) {
-  	TsvService.fetchProductByCategory(categoryID, (err, data) => {
+  	TsvActions.apiCall('fetchProductByCategory', categoryID, (err, data) => {
 		if (err) throw err;
 		RootscopeActions.setConfig('products', data);
 		this.setState({
@@ -175,54 +177,8 @@ class Product_Search extends Component {
       </_E.Row>
     );
 
-    /*
-    <div className="Product_Search" >
-    { if (this.state.bDisplayCgry) { this.renderCategoryTable() } }
-
-    <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
-
-      {slider container}
-      <div className="container_slider">
-
-           enumerate all photos
-          { this.renderImageSlider(products)}
-          prev / next controls
-          <div className="arrow prev" href="#" onClick=(this.showPrev()}></div>
-          <div className="arrow next" href="#" onClick=(this.showNext()}></div>
-          extra navigation controls
-
-          <ul className="flex-container">
-              {products.map((product, $index) => {
-                return (
-                  <li key={$index} className={'flex-item' + this.isActive($index) ? ' active'} style={{ opacity: this.setOpacity(stockCount) }}>
-
-                      <figure id={"prdImg" + $index} onClick={this.setPrdSelected.bind(this, product)}>
-
-                          <figcaption>{product.productName}</figcaption>
-
-                          <img src={product.imagePath} alt={product.description} title={product.description} />
-
-                          <p className="prdPrice"> {TsvService.currencyFilter(product.price) }</p>
-
-                      </figure>
-
-                  </li>
-                )
-              })}
-          </ul>
-        </div>
-
-    */
 
   }
-
-  /* renderImageSlider(products) {
-    {Object.keys(products).map(function(product){
-      return (
-         <img className="slide" ng-swipe-right={showPrev()} ng-swipe-left={showNext()} ng-show="isActive($index)" src="{{product.imagePath}}" />
-      )
-    })}
-  } */
 
   renderBackBtn() {
     if (this.state.bShowBackButton) {
@@ -247,27 +203,6 @@ class Product_Search extends Component {
 
         </_E.Row>
     )
-
-    /*
-      <table  id="displayCategories">
-
-          <tr className="nav">
-
-             {categories.map( (category, $index) => {
-              return (
-                <td key={$index} className={'gallery'+ this.isActive($index) ? ' active'}>
-
-                    <img src={category.imagePath} alt={category.description} title={category.description} onClick={this.updateCategory.bind(this, category.categoryID)} />
-
-                </td>
-              )
-            })}
-
-          </tr>
-
-      </table>
-    */
-
   }
 }
 

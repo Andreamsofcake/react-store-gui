@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
 import browserHistory from 'react-router'
 import * as _E from 'elemental'
+
+import TsvActions from '../actions/TsvActions'
 
 class Admin_Inventory extends Component {
 
@@ -14,9 +16,10 @@ class Admin_Inventory extends Component {
     super(props, context);
 
     //RootscopeActions.setSession('currentView', 'Admin_Inventory');
-    TsvService.fetchMachineIds((err, ids) => {
+    TsvActions.apiCall('fetchMachineIds', (err, ids) => {
         RootscopeActions.setCache('machineList', ids);
       });
+
     this.state = {
       instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
       machineID: 0,
@@ -27,58 +30,53 @@ class Admin_Inventory extends Component {
     }
 
     if(RootscopeStore.getCache('machineList').length > 1){
-        this.setState({
-          bShowDropDownForMachines: true,
-        })
+        this.state.bShowDropDownForMachines = true;
     }
   }
 
   fillMachine(){
-      TsvService.fillMachine(this.state.machineID.toString());
+      TsvActions.apiCall('fillMachine', this.state.machineID.toString());
   }
 
   fillCoil(){
-    if(this.state.num != ""){
-      TsvService.adminValidateProductByCoil(this.state.num,( err, data) => {
-           this.setState({   vpbc: data })
-         });
-        }
+    if(this.state.num != "") {
+		TsvActions.apiCall('adminValidateProductByCoil', this.state.num, ( err, data) => {
+			let state = { vpbc: data };
 
-        switch (this.state.vpbc.result) {
-            case "UNKNOWN":
-                this.setState({
-                  instructionMessage: Translate.translate('Admin_Inventory', 'UnknownProduct')
-                });
-                setTimeout( () => {
-                    this.setState({
-                      instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
-                      bEnterCoil: true,
-                      num: ""
-                    });
-                }, 3000);
-                break;
-            case "INVALID_PRODUCT":
-              this.setState({
-                instructionMessage: Translate.translate('Admin_Inventory', 'InvalidProduct')
-              });
-              setTimeout( () => {
-                  this.setState({
-                    instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
-                    bEnterCoil: true,
-                    num: ""
-                  });
-              }, 3000);
-              break;
-            default:
-              this.setState({
-                instructionMessage: Translate.translate('Admin_Inventory', 'EnterStockAmount'),
-                coilNumber: this.state.num,
-                num: "",
-                bEnterCoil: false,
-              });
-              TsvService.fillCoil(this.state.coilNumber);
-              break;
-        }
+			switch (state.vpbc.result) {
+				case "UNKNOWN":
+					state.instructionMessage = Translate.translate('Admin_Inventory', 'UnknownProduct')
+					setTimeout( () => {
+						this.setState({
+						  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+						  bEnterCoil: true,
+						  num: ""
+						});
+					}, 3000);
+					break;
+
+				case "INVALID_PRODUCT":
+					state.instructionMessage = Translate.translate('Admin_Inventory', 'InvalidProduct')
+					setTimeout( () => {
+						this.setState({
+						  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+						  bEnterCoil: true,
+						  num: ""
+						});
+					}, 3000);
+					break;
+
+				default:
+					state.instructionMessage = Translate.translate('Admin_Inventory', 'EnterStockAmount');
+					state.coilNumber = this.state.num;
+					state.num = '';
+					state.bEnterCoil = false;
+					TsvActions.apiCall('fillCoil', state.coilNumber);
+					break;
+			}
+			this.setState(state);
+
+		});
     }
   }
 
@@ -97,38 +95,44 @@ class Admin_Inventory extends Component {
 
   addStock(){
       if(this.state.num != ""){
-          TsvService.addStock(this.state.coilNumber, this.state.num);
-          this.setState({
-            vpbc: TsvService.adminValidateProductByCoil(this.state.coilNumber),
-            num: "";
-          });
+          TsvActions.apiCall('addStock', this.state.coilNumber, this.state.num, (err, data) => {
+			  TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
+				  this.setState({
+					vpbc: data,
+					num: "";
+				  });
 
-          setTimeout( () => {
-              this.setState({
-                instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
-                bEnterCoil: true,
-                num: ""
-              });
-          }, 2000);
+				  setTimeout( () => {
+					  this.setState({
+						instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+						bEnterCoil: true,
+						num: ""
+					  });
+				  }, 2000);
+			  });
+          });
       }
   }
 
   removeStock(){
       if(this.state.num != ""){
-          TsvService.removeStock(this.state.coilNumber, this.state.num);
-          this.setState({
-            vpbc: TsvService.adminValidateProductByCoil(this.state.coilNumber),
-            stockCount: "Stock Count: " + this.state.vpbc.inventoryCount,
-            num: "";
-          });
+          TsvActions.apiCall('removeStock', this.state.coilNumber, this.state.num, (err, data) => {
+	          TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
+				  this.setState({
+					vpbc: data,
+					stockCount: "Stock Count: " + data.inventoryCount,
+					num: "";
+				  });
 
-          setTimeout( () => {
-              this.setState({
-                instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
-                bEnterCoil: true,
-                num: ""
-              });
-          }, 2000);
+				  setTimeout( () => {
+					  this.setState({
+						instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+						bEnterCoil: true,
+						num: ""
+					  });
+				  }, 2000);
+				});
+			});
       }
   }
 
@@ -139,62 +143,52 @@ class Admin_Inventory extends Component {
   }
 
   enter() {
-    this.setState({
-      vpbc: TsvService.adminValidateProductByCoil(this.state.num);
-    })
+  	TsvActions.apiCall('adminValidateProductByCoil', this.state.num, (err, data) => {
+		let state = { vpbc: data };
 
-    switch (this.state.vpbc.result) {
-        case "UNKNOWN":
-            this.setState({
-              instructionMessage: Translate.translate('Admin_Inventory', 'UnknownProduct')
-            });
-            setTimeout( () => {
-                this.setState({
-                  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
-                  bEnterCoil: true,
-                  num: ""
-                });
-            }, 3000);
-            break;
-        case "INVALID_PRODUCT":
-          this.setState({
-            instructionMessage: Translate.translate('Admin_Inventory', 'InvalidProduct')
-          });
-          setTimeout( () => {
-              this.setState({
-                instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
-                bEnterCoil: true,
-                num: ""
-              });
-          }, 3000);
-          break;
-        default:
-          this.setState({
-            instructionMessage: Translate.translate('Admin_Inventory', 'EnterStockAmount'),
-            coilNumber: this.state.num,
-            num: "",
-            bEnterCoil: false,
-          });
-          break;
-    }
+		switch (data.result) {
+			case "UNKNOWN":
+				state.instructionMessage = Translate.translate('Admin_Inventory', 'UnknownProduct');
+				setTimeout( () => {
+					this.setState({
+					  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+					  bEnterCoil: true,
+					  num: ""
+					});
+				}, 3000);
+				break;
+
+			case "INVALID_PRODUCT":
+				state.instructionMessage = Translate.translate('Admin_Inventory', 'InvalidProduct');
+				setTimeout( () => {
+					this.setState({
+					  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+					  bEnterCoil: true,
+					  num: ""
+					});
+				}, 3000);
+				break;
+
+			default:
+				state.instructionMessage = Translate.translate('Admin_Inventory', 'EnterStockAmount');
+				state.coilNumber = this.state.num;
+				state.num = '';
+				state.bEnterCoil = false;
+				break;
+		}
+		this.setState(state);
+	});
 
   }
+  
   press(digit) {
-    if(this.state.num.length < this.state.maxChars){
-        this.setState({
-          num: this.state.num + digit
-        });
+  	let num = this.state.num;
+    if(num.length < this.state.maxChars){
+    	num += digit;
     }
     this.setState({
-      num: parseInt(this.state.num).toString()
+      num: parseInt(num).toString()
     });
-  }
-
-  prompt(){
-    if(this.state.num.length != 0) {
-      return this.state.num
-    }
-    return ""
   }
 
   getMachineSelectOptions() {
@@ -244,7 +238,7 @@ class Admin_Inventory extends Component {
                 { !this.state.bEnterCoil ? this.renderEnterCoilAmount() : null }
                 { this.state.bEnterCoil ? this.renderEnterButton() : null }
             <_E.Row>
-              <_E.Col><_E.Demobox>{this.prompt}</_E.Demobox></_E.Col>
+              <_E.Col><_E.Demobox>{this.state.num}</_E.Demobox></_E.Col>
             </_E.Row>
 
 
@@ -262,76 +256,6 @@ class Admin_Inventory extends Component {
       </_E.Row>
 
     );
-
-    /*
-
-    <div class="inventory">
-
-        <h2 id="instruction">{{ instructionMessage }}</h2>
-
-        <div id="keypadStock">
-
-            <img src="../Images/Button_1.png" ng-click="press(1)">
-
-            <img src="../Images/Button_2.png" ng-click="press(2)">
-
-            <img src="../Images/Button_3.png" ng-click="press(3)">
-
-            <img src="../Images/Button_4.png" ng-click="press(4)">
-
-            <img src="../Images/Button_5.png" ng-click="press(5)">
-
-            <img src="../Images/Button_6.png" ng-click="press(6)">
-
-            <img src="../Images/Button_7.png" ng-click="press(7)">
-
-            <img src="../Images/Button_8.png" ng-click="press(8)">
-
-            <img src="../Images/Button_9.png" ng-click="press(9)">
-
-            <img src="../Images/Button_10.png" ng-click="press(0)">
-
-            <img ng-src="{{localizedImage('Button_Clear.png')}}" err-src="../Images/Button_Clear.png" ng-click="clear()">
-
-            <img src="../Images/minus.png" ng-click="removeStock()" ng-show="!bEnterCoil">
-
-            <div id="coilInput2"><p>{{prompt()}}</p></div>
-
-            <img src="../Images/add.png" ng-click="addStock()" ng-show="!bEnterCoil">
-
-            <img ng-src="{{localizedImage('Button_Enter.png')}}" err-src="../Images/Button_Enter.png" ng-show="bEnterCoil" ng-click="enter()">
-
-        </div>
-
-
-        <div ng-show="bEnterCoil">
-
-            <select id="selectMachine" data-ng-show="bShowDropDownForMachines"></select>
-
-            <button id="fillMachine" data-ng-click="fillMachine()">{{translate('FillMachine')}}</button>
-
-            <p id="displayMachine">{{translate('FillAllCoilsForMachine')}} {{ machineID + 1 }}</p>
-
-        </div>
-
-        <div id="prdInfo" ng-show="!bEnterCoil">
-
-            <img ng-src={{vpbc.imagePath}} err-src="../Images/ProductImageNotFound.png">
-
-            <p>{{ vpbc.productName }}</p>
-
-            <p>Coil: {{ coilNumber }}   Stock Count: {{ vpbc.inventoryCount }}</p>
-
-        </div>
-
-        <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
-
-        <img class="regularBtn" id="fillImg" ng-src="{{localizedImage('Button_Fill.png')}}" err-src="../Images/Button_Fill.png" ng-show="bEnterCoil " ng-click="fillCoil()">
-
-    </div>
-
-
-    */
   }
 
   renderEnterCoilAmount(){

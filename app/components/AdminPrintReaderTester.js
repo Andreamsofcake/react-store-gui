@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import AdminActions from '../actions/AdminActions'
@@ -15,15 +15,6 @@ class Admin_Print_Reader_Tester extends Component {
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-
-    //RootscopeActions.setSession('currentView', 'Admin_Print_Reader_Tester');
-    /*
-    TsvService.disableLoginDevices(null, () => {});
-    TsvService.emptyCart(null, () => {});
-    TsvService.fetchMachineIds(null, (err, ids) => {
-      	RootscopeActions.setCache('machineList', ids);
-      });
-      */
 
     this.state = {
 		user_id: 'u123',
