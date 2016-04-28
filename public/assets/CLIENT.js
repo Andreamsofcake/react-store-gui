@@ -52671,6 +52671,8 @@
 	        });
 	      } else {
 	        _TsvActions2.default.apiCall('lastHeartbeatTime', function (err, lastBeat) {
+	          console.log('[lastHeartbeatTime] ok, what does this look like?');
+	          console.log(lastBeat);
 	          if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
 	            lastBeat = lastBeat.heartbeatTime;
 	          }

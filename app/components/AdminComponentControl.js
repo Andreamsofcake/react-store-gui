@@ -52,6 +52,8 @@ class AdminComponentControl extends Component {
       })
   	} else {
 		TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+			console.log('[lastHeartbeatTime] ok, what does this look like?');
+			console.log(lastBeat);
 			if (lastBeat && typeof lastBeat === 'object') {
 				lastBeat = lastBeat.heartbeatTime;
 			}
