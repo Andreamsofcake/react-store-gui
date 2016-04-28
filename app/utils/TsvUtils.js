@@ -472,6 +472,28 @@ stuff below here are old "rootscope" actions mostly.
 
 *******/
 
+// this is never called anywhere:
+export function getCreditMessage() {
+	if (RootscopeStore.getConfig('bCashless')) {
+		return Translate.translate("BalanceLabel") + ":" + '\n' + currencyFilter( RootscopeStore.getConfig('fundsAvailable') );
+	} else {
+		return Translate.translate("CreditLabel") + ":"  + '\n'+  currencyFilter( RootscopeStore.getConfig('credit') );
+	}
+}
+
+// this is never called anywhere:
+export function getShowCredit() {
+	if (RootscopeStore.getConfig('bCashless')) {
+		var fundsA = RootscopeStore.getConfig('fundsAvailable');
+		return typeof fundsA !== 'undefined' && fundsA !== 0 && RootscopeStore.getConfig('bShowCredit');
+	} else {
+		var credit = RootscopeStore.getConfig('credit');
+		return typeof credit !== 'undefined' && credit !== 0 && RootscopeStore.getConfig('bShowCredit');
+	}
+}
+
+
+
 /*
 // this function was never called in the old code.... looks suspect as well.
 // if you try to use, test heavily and study the logic
@@ -514,7 +536,7 @@ export function gotoPayment(){
 	if (TotalPrice != 0
 		&& RootscopeStore.getCache('custommachinesettings.HasCreditCard', true)
 		&& RootscopeStore.getCache('custommachinesettings.HasBillCoin', false)) {
-		browserHistory.push("/Cash_Card");
+		browserHistory.push("/ChooseCashCard");
 
 	} else {
 

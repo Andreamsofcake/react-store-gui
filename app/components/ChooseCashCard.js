@@ -66,9 +66,9 @@ class ChooseCashCard extends Component {
 
   render() {
     return (
-      <_E.Row className="Cash_Card">
+      <_E.Row className="CashCard">
       <_E.Col>
-		  <h2>{Translate.translate('Cash_Card', 'InstructionMessage')}</h2>
+		  <h2>{Translate.translate('CashCard', 'InstructionMessage')}</h2>
 		  <_E.Row>
 			  <_E.Col sm="1/2">
 				  <img className="paymentMethod" onClick={this.cash} src={Translate.localizedImage('cash.png')} alt="cash" style={{maxWidth:'90%'}} />
@@ -88,8 +88,8 @@ class ChooseCashCard extends Component {
     );
     /*
     return (
-      <div className="Cash_Card">
-      <h2>{Translate.translate('Cash_Card', 'InstructionMessage')}</h2>
+      <div className="CashCard">
+      <h2>{Translate.translate('CashCard', 'InstructionMessage')}</h2>
 
       <div className="cashAndCards">
 

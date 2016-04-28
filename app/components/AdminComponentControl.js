@@ -52,9 +52,9 @@ class AdminComponentControl extends Component {
 		if (lastBeat && typeof lastBeat === 'object') {
 			lastBeat = lastBeat.heartbeatTime;
 		}
-	  this.setState({
-		lastHeartbeatTime: lastBeat
-	  })
+		this.setState({
+		  lastHeartbeatTime: lastBeat
+		})
 	});
   }
 

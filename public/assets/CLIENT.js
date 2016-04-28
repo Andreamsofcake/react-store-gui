@@ -5818,7 +5818,7 @@
 	        return _react2.default.createElement(
 	          _E.Button,
 	          { type: 'success', size: 'lg', onClick: function onClick() {
-	              _reactRouter.browserHistory.push('/Cash_Card');
+	              _reactRouter.browserHistory.push('/ChooseCashCard');
 	            } },
 	          Translate.translate('ShoppingCart', 'Checkout')
 	        );
@@ -8495,6 +8495,8 @@
 	exports.resetPaymentTimer = resetPaymentTimer;
 	exports.killTimers = killTimers;
 	exports.startPaymentTimer = startPaymentTimer;
+	exports.getCreditMessage = getCreditMessage;
+	exports.getShowCredit = getShowCredit;
 	exports.gotoPayment = gotoPayment;
 	exports.updateCredit = updateCredit;
 	exports.coupon = coupon;
@@ -8982,6 +8984,26 @@
 
 	*******/
 
+	// this is never called anywhere:
+	function getCreditMessage() {
+		if (_RootscopeStore2.default.getConfig('bCashless')) {
+			return Translate.translate("BalanceLabel") + ":" + '\n' + currencyFilter(_RootscopeStore2.default.getConfig('fundsAvailable'));
+		} else {
+			return Translate.translate("CreditLabel") + ":" + '\n' + currencyFilter(_RootscopeStore2.default.getConfig('credit'));
+		}
+	}
+
+	// this is never called anywhere:
+	function getShowCredit() {
+		if (_RootscopeStore2.default.getConfig('bCashless')) {
+			var fundsA = _RootscopeStore2.default.getConfig('fundsAvailable');
+			return typeof fundsA !== 'undefined' && fundsA !== 0 && _RootscopeStore2.default.getConfig('bShowCredit');
+		} else {
+			var credit = _RootscopeStore2.default.getConfig('credit');
+			return typeof credit !== 'undefined' && credit !== 0 && _RootscopeStore2.default.getConfig('bShowCredit');
+		}
+	}
+
 	/*
 	// this function was never called in the old code.... looks suspect as well.
 	// if you try to use, test heavily and study the logic
@@ -9022,7 +9044,7 @@
 		var TotalPrice = _RootscopeStore2.default.getCache('shoppingCart.summary.TotalPrice', 0);
 
 		if (TotalPrice != 0 && _RootscopeStore2.default.getCache('custommachinesettings.HasCreditCard', true) && _RootscopeStore2.default.getCache('custommachinesettings.HasBillCoin', false)) {
-			_reactRouter.browserHistory.push("/Cash_Card");
+			_reactRouter.browserHistory.push("/ChooseCashCard");
 		} else {
 
 			if (_RootscopeStore2.default.getCache('custommachinesettings.HasBillCoin', false)) {
@@ -16642,7 +16664,7 @@
 	        "InsufficientFunds": "Insufficient Funds"
 	    },
 
-	    "Cash_Card": {
+	    "CashCard": {
 	        "InstructionMessage": "Select A Payment Method"
 	    },
 
@@ -53761,14 +53783,14 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'Cash_Card' },
+	        { className: 'CashCard' },
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
 	            'h2',
 	            null,
-	            Translate.translate('Cash_Card', 'InstructionMessage')
+	            Translate.translate('CashCard', 'InstructionMessage')
 	          ),
 	          _react2.default.createElement(
 	            _E.Row,
@@ -53797,8 +53819,8 @@
 	      );
 	      /*
 	      return (
-	        <div className="Cash_Card">
-	        <h2>{Translate.translate('Cash_Card', 'InstructionMessage')}</h2>
+	        <div className="CashCard">
+	        <h2>{Translate.translate('CashCard', 'InstructionMessage')}</h2>
 	         <div className="cashAndCards">
 	             <img className="paymentMethod" onClick={this.cash()} src={Translate.localizedImage('cash.png')} alt="cash">
 	             <img className="paymentMethod" onClick={this.card()} src={Translate.localizedImage('card.png')} alt="card">

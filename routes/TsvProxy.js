@@ -7,6 +7,7 @@ var isPingingMultievent = false
 	, multieventErrors = 0
 	, maxMultieventErrors = 10
 	, USE_HARDWARE_API = process.env.USE_HARDWARE_API || false
+	, SKIP_TEST_METHODS = process.env.SKIP_TEST_METHODS || false
 	;
 
 // inbound process.env is string, not bool settings
