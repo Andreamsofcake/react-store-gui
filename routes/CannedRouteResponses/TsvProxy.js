@@ -289,7 +289,7 @@ var Candyland = CandyLand({
 
 });
 
-function getPayload(request, reply) {
+export function getPayload(request, reply) {
 
 	// payload is ALWAYS an array, first node is the action call
 	var payload = request.payload;
