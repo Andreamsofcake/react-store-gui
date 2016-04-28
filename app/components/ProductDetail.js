@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import TsvService from '../../lib/TsvService'
+//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import StorefrontActions from '../actions/StorefrontActions'
 import RootscopeActions from '../actions/RootscopeActions'
@@ -11,7 +11,7 @@ import * as _E from 'elemental'
 
 import { currencyFilter } from '../utils/TsvUtils'
 
-class Product_Detail extends Component {
+class ProductDetail extends Component {
 
    constructor(props, context) {
      // MUST call super() before any this.*
@@ -64,9 +64,9 @@ class Product_Detail extends Component {
 				 <_E.Col>
 				 <ShoppingCartMini className="scart-mini" />
 				 <h2>Sorry, that product was not found.</h2>
-				 <_E.Button size="lg" type="default-success" component={(<Link to="/Help">{Translate.translate('Shopping_Cart','Get_Some_Help')}</Link>)} />
+				 <_E.Button size="lg" type="default-success" component={(<Link to="/Help">{Translate.translate('ShoppingCart','Get_Some_Help')}</Link>)} />
 				 {' '}
-				 <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
+				 <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('ShoppingCart','Shop_More')}</Link>)} />
 
 				 </_E.Col>
 			   </_E.Row>
@@ -107,7 +107,7 @@ class Product_Detail extends Component {
                    <p className="prdPrice">Price ${currencyFilter(prod.price)} </p>
                    <_E.Button className="product-button" onClick={this.setPrdSelected.bind(this)}>Add to cart</_E.Button>
                    <hr style={{margin: '20px auto', height: '2px'}} />
-                   <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
+                   <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('ShoppingCart','Shop_More')}</Link>)} />
                  </_E.Col>
                </_E.Row>
            </div>
@@ -135,7 +135,7 @@ class Product_Detail extends Component {
      return (
        <_E.Row>
         <_E.Col>
-          <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
+          <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('ShoppingCart','Shop_More')}</Link>)} />
         </_E.Col>
        </_E.Row>
      );
@@ -143,4 +143,4 @@ class Product_Detail extends Component {
 
  }
 
-export default Product_Detail
+export default ProductDetail

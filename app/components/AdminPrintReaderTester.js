@@ -108,10 +108,10 @@ class Admin_Print_Reader_Tester extends Component {
 				<h4>what are we doing?</h4>
 			</_E.Col>
 			<_E.Col sm="50%" md="50%" lg="50%">
-				<_E.Button type="primary" onClick={this.startRegisterPrint.bind(this)}> Register Print </_E.Button>
+				<_E.Button size="lg" type="primary" onClick={this.startRegisterPrint.bind(this)}> Register Print </_E.Button>
 			</_E.Col>
 			<_E.Col sm="50%" md="50%" lg="50%">
-				<_E.Button type="primary" onClick={this.startMatchPrint.bind(this)}> Match Print </_E.Button>
+				<_E.Button size="lg" type="primary" onClick={this.startMatchPrint.bind(this)}> Match Print </_E.Button>
 			</_E.Col>
   		</_E.Row>
   	);
@@ -129,7 +129,7 @@ class Admin_Print_Reader_Tester extends Component {
   
   registerInterface() {
   	return (
-  		<_E.Row>
+  		<_E.Row style={{maxWidth:'65%',margin: '0 auto'}}>
 			<_E.Col sm="100%" md="100%" lg="100%">
 	  			<h4>Register a print</h4>
 	  		</_E.Col>
@@ -148,9 +148,9 @@ class Admin_Print_Reader_Tester extends Component {
 						<_E.FormInput type="text" placeholder="Set machine ID" name="machine_id" value={this.state.machine_id} _vkenabled="true" onKeyUp={this.updateState.bind(this, 'machine_id')} />
 					</_E.FormField>	  			
 					<_E.FormField offsetAbsentLabel>
-						<_E.Button onClick={this.registerPrint.bind(this)}>Register print</_E.Button>
+						<_E.Button size="lg" onClick={this.registerPrint.bind(this)}>Register print</_E.Button>
 						{' '}
-						<_E.Button onClick={this.reset.bind(this)}>Reset</_E.Button>
+						<_E.Button size="lg" onClick={this.reset.bind(this)}>Reset</_E.Button>
 					</_E.FormField>
 	  			</_E.Form>
   			</_E.Col>
@@ -183,9 +183,9 @@ class Admin_Print_Reader_Tester extends Component {
 						<_E.FormInput type="text" placeholder="Set user ID" name="user_id" value={this.state.user_id} _vkenabled="true" onKeyUp={this.updateState.bind(this, 'user_id')} />
 					</_E.FormField>	  			
 					<_E.FormField offsetAbsentLabel>
-						<_E.Button onClick={this.matchPrint.bind(this)}>Start matching...</_E.Button>
+						<_E.Button size="lg" onClick={this.matchPrint.bind(this)}>Start matching...</_E.Button>
 						{' '}
-						<_E.Button onClick={this.reset.bind(this)}>Reset</_E.Button>
+						<_E.Button size="lg" onClick={this.reset.bind(this)}>Reset</_E.Button>
 					</_E.FormField>
 	  			</_E.Form>
   			</_E.Col>

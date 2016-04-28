@@ -96,19 +96,22 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 
 				if (isFullSuccessVendResult()){
 					console.log("Full Vend Success!");
-					browserHistory.push("/ThankYou_Msg");
+					browserHistory.push("/ThankYouMsg");
 
 				} else {
 					console.log("Partial Vend Error");
 					//pay out
-					if (RootscopeStore.getCache('currentLocation') == "/Cash_Vending"){
+					/*
+					// Kent is not sure about this? if we are "done" and vend error happens, why turn the payment device back on?
+					if (RootscopeStore.getCache('currentLocation') == "/CashVending"){
 						TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
 					}
+					*/
 					RootscopeActions.setSession({
 						vendErrorMsg1: Translate.translate("Vending", "PartialVendFailure"),
 						vendErrorMsg2: Translate.translate("Vending", "YouHaveBeenCharged") + currencyFilter( RootscopeStore.getSession('vendSettleTotal') )
 					});
-					browserHistory.push("/Vend_Error");
+					browserHistory.push("/VendError");
 				}
 				break;
 
@@ -118,7 +121,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 					vendErrorMsg1: Translate.translate("Vending", "TotalVendFailure"),
 					vendErrorMsg2: Translate.translate("Vending", "YouWereNotCharged")
 				});
-				browserHistory.push("/Vend_Error");
+				browserHistory.push("/VendError");
 				break;
 
 			case "EXCEPTION":
@@ -127,7 +130,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 					vendErrorMsg1: Translate.translate("Vending", "TotalVendFailure"),
 					vendErrorMsg2: Translate.translate("Vending", "YouWereNotCharged")
 				});
-				browserHistory.push("/Vend_Error");
+				browserHistory.push("/VendError");
 				break;
 
 			default:
@@ -204,28 +207,28 @@ export function cardTransaction(level) {
 	var msg = '';
 	switch(level){
 		case "CARD_INSERTED":
-			msg = Translate.translate("Card_Vending", "ProcessingMessage");
+			msg = Translate.translate("CardVending", "ProcessingMessage");
 			break;
 		case "CARD_PROCESSING":
-			msg = Translate.translate("Card_Vending", "ProcessingMessage");
+			msg = Translate.translate("CardVending", "ProcessingMessage");
 			break;
 		case "CARD_APPROVED":
 			TsvActions.apiCall('disablePaymentDevice');
 			break;
 		case "CARD_INVALID_READ":
-			msg = Translate.translate("Card_Vending", "CardInvalidMessage");
+			msg = Translate.translate("CardVending", "CardInvalidMessage");
 			break;
 		case "CARD_DECLINED":
-			msg = Translate.translate("Card_Vending", "CardDeclinedMessage");
+			msg = Translate.translate("CardVending", "CardDeclinedMessage");
 			break;
 		case "CARD_CONNECTION_FAILURE":
-			msg = Translate.translate("Card_Vending", "CardConnectionErrorMessage");
+			msg = Translate.translate("CardVending", "CardConnectionErrorMessage");
 			break;
 		case "CARD_UNKNOWN_ERROR":
-			msg = Translate.translate("Card_Vending", "CardUnknownErrorMessage");
+			msg = Translate.translate("CardVending", "CardUnknownErrorMessage");
 			break;
 		default:
-			msg = Translate.translate("Card_Vending", "CardUnknownErrorMessage");
+			msg = Translate.translate("CardVending", "CardUnknownErrorMessage");
 			break;
 	}
 	RootscopeActions.setSession('cardMsg', msg);
@@ -247,53 +250,60 @@ export function onGeneralTimeout() {
 
 	console.log("RootscopeStore.getCache('currentLocation'): "+RootscopeStore.getCache('currentLocation'));
 
-	switch(RootscopeStore.getCache('currentLocation')){
+	switch (RootscopeStore.getCache('currentLocation')) {
 		case "/View0":
 			break;
 		case "/View1":
 			emptyCart();
 			gotoDefaultIdlePage(); //$location, $rootScope);
 			return;
-		case "/Category_Search":
+		case "/CategorySearch":
 			gotoDefaultIdlePage(); //$location, $rootScope);
 			return;
-		case "/Product_Search":
+		case "/ProductSearch":
 			gotoDefaultIdlePage(); //$location, $rootScope);
 			return;
-		case "/Make_Donation":
+		case "/MakeDonation":
 			//tsv.emptyCart();
 			break;
-		case "/ThankYou_Msg":
+		case "/ThankYouMsg":
 			break;
-		case "/Vend_Error":
+		case "/VendError":
 			break;
-		case "/Cash_Vending":
+		case "/CashVending":
 			console.log("On cash page idle timeout disabled...Running the paymentTimer...");
+			// but why are we emptying the cart here without going to DefaultIdlePage???
+			// probably should check to see if any cash has been paid yet,
+			// if none, then empty + idle, if some, ask "Are you still there????" with countdown, click "yes" resets main payment idle timer
 			emptyCart();
 			break;
-		case "/Card_Vending":
+		case "/CardVending":
 			console.log("On card page idle timeout disabled...Running the paymentTimer...");
+			// but why are we emptying the cart here without going to DefaultIdlePage???
+			// probably should check to see if any card action has run yet but no resolution (no success and no fail)
+			// if none, then empty + idle, if some, "Payment is still processing, one moment please", resets main payment idle timer
+			// will need to track this somehow through TsvStore?
 			emptyCart();
 			break;
-		case "/Admin_Check_Faults":
+		case "/AdminCheckFaults":
 			if(!RootscopeStore.getSession('bRunningClearFaults')){
 				gotoDefaultIdlePage(); //$location, $rootScope);
-				console.log("Idle Timeout from Admin_Check_Faults not running ClearFaults");
+				console.log("Idle Timeout from AdminCheckFaults not running ClearFaults");
 				return;
 			}
 			break;
-		case "/Admin_Auto_Map":
+		case "/AdminAutoMap":
 			if(!RootscopeStore.getSession('bRunningAutoMap')){
 				gotoDefaultIdlePage(); //$location, $rootScope);
-				console.log("Idle Timeout from Admin_Auto_Map not running AutoMap");
+				console.log("Idle Timeout from AdminAutoMap not running AutoMap");
 				return;
 			}
 			break;
-		case "/Page_Idle":
+		case "/PageIdle":
 			return;
 
 		default:
-			console.log("Idle Timeout from "+RootscopeStore.getCache('currentLocation'));
+			//console.log("Idle Timeout from "+RootscopeStore.getCache('currentLocation'));
 			emptyCart();
 			gotoDefaultIdlePage(); //$location, $rootScope);
 			return;
@@ -364,7 +374,7 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 		resetSelectedItem();
 
 		if (RootscopeStore.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
-			browserHistory.push("/Page_Idle");
+			browserHistory.push("/PageIdle");
 			return;
 
 		} else {
@@ -385,7 +395,7 @@ export function resetSelectedItem() {
 	RootscopeActions.setSession({
 		bRunningClearFaults: false,
 		bRunningAutoMap: false,
-		cashMsg: Translate.translate("Cash_Vending", "HintMessageInsertCash"),
+		cashMsg: Translate.translate("CashVending", "HintMessageInsertCash"),
 		vendErrorMsg1: '',
 		vendErrorMsg2: '',
 		vendSettleTotal: 0,
@@ -476,13 +486,13 @@ export function checkout() {
 
 	} else {
 		//console.log("bHasShoppingCart:" + TsvService .bCustomSetting('bHasShoppingCart', "true"));
-		if (bHasShoppingCart && RootscopeStore.getCache('currentLocation') != "/Shopping_Cart"){
-			browserHistory.push("/Shopping_Cart");
+		if (bHasShoppingCart && RootscopeStore.getCache('currentLocation') != "/ShoppingCart"){
+			browserHistory.push("/ShoppingCart");
 
 		} else {
 
 			if (bHasShoppingCart) {
-				return browserHistory.push("/Shopping_Cart");
+				return browserHistory.push("/ShoppingCart");
 			}
 
 			if (RootscopeStore.getCache('custommachinesettings.bAskForReceipt', false)) {
@@ -509,13 +519,13 @@ export function gotoPayment(){
 	} else {
 
 		if (RootscopeStore.getCache('custommachinesettings.HasBillCoin', false)){
-			browserHistory.push("/Cash_Vending");
+			browserHistory.push("/CashVending");
 
 		} else if (RootscopeStore.getCache('custommachinesettings.HasCreditCard', true)) {
-			browserHistory.push("/Card_Vending");
+			browserHistory.push("/CardVending");
 
 		} else if (TotalPrice == 0) {
-			browserHistory.push("/Card_Vending");
+			browserHistory.push("/CardVending");
 		}
 	}
 }

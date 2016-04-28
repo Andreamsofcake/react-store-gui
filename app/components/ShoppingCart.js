@@ -17,7 +17,7 @@ import {
 } from '../utils/TsvUtils'
 
 
-class Shopping_Cart extends Component {
+class ShoppingCart extends Component {
 
   constructor(props, context) {
     {/* MUST call super() before any this.*/}
@@ -25,8 +25,8 @@ class Shopping_Cart extends Component {
 
     //RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
     updateCredit();
-    //RootscopeActions.setSession('currentView', 'Shopping_Cart');
-    //RootscopeActions.setCache('currentLocation', '/Shopping_Cart');
+    //RootscopeActions.setSession('currentView', 'ShoppingCart');
+    //RootscopeActions.setCache('currentLocation', '/ShoppingCart');
 
     this.state = {
       totalPrice: RootscopeStore.getCache('shoppingCart.summary.totalPrice'),
@@ -80,7 +80,7 @@ class Shopping_Cart extends Component {
 		if (event && event.method === 'cardTransactionResponse') {
 			if (!RootscopeStore.getSession('bVendingInProcess')) {
 				cardTransaction(event.data[0]);
-				browserHistory.push( "/Card_Vending" );
+				browserHistory.push( "/CardVending" );
 			}
 		}
 	}
@@ -106,8 +106,8 @@ class Shopping_Cart extends Component {
 
     return (
 
-      <_E.Row className="Shopping_Cart" >
-        <h2>{Translate.translate('Shopping_Cart', 'ShoppingCart')}</h2>
+      <_E.Row className="ShoppingCart" >
+        <h2>{Translate.translate('ShoppingCart', 'ShoppingCart')}</h2>
         <_E.Col className="wrapper">
 
                 {this.renderShoppingCart()}
@@ -118,15 +118,15 @@ class Shopping_Cart extends Component {
 
                 { this.state.bShowTax ? this.renderShowTax() : null }
 
-                <p>{Translate.translate('Shopping_Cart','TotalPrice')}: { this.state.totalPrice ? currencyFilter(this.state.totalPrice) : 0.00 }</p>
+                <p>{Translate.translate('ShoppingCart','TotalPrice')}: { this.state.totalPrice ? currencyFilter(this.state.totalPrice) : 0.00 }</p>
 
             </_E.Row>
                 ) : (<p style={{margin: '40px auto'}}>&nbsp;</p>)}
             <_E.Row>
 
-                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('Shopping_Cart','Shop_More')}</_E.Button></_E.Col>
+                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">{this.renderCheckoutButton()}</_E.Col>
-                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="danger" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />{Translate.translate('Shopping_Cart','Cancel')}</_E.Button></_E.Col>
+                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="danger" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />{Translate.translate('ShoppingCart','Cancel')}</_E.Button></_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3" style={{marginTop:'4em'}}>{ this.state.bShowCouponBtn ? this.renderCouponButton() : null }</_E.Col>
 
             </_E.Row>
@@ -160,7 +160,7 @@ class Shopping_Cart extends Component {
   renderCheckoutButton() {
   	if (this.state.cart && this.state.cart.length) {
   		return (
-			<_E.Button type="success" size="lg" onClick={() => { browserHistory.push('/Cash_Card') }}>{Translate.translate('Shopping_Cart','Checkout')}</_E.Button>
+			<_E.Button type="success" size="lg" onClick={() => { browserHistory.push('/Cash_Card') }}>{Translate.translate('ShoppingCart','Checkout')}</_E.Button>
   		);
   	}
   	return null;
@@ -169,15 +169,15 @@ class Shopping_Cart extends Component {
   renderCouponButton() {
     // <img className="regularBtn" id="couponImg" src={Translate.localizedImage('coupon.png')} onClick={this.coupon()} alt="Coupon"/>
     return (
-        <_E.Button type="primary" onClick={this.coupon}>{Translate.translate('Shopping_Cart','Coupon')}</_E.Button>
+        <_E.Button type="primary" onClick={this.coupon}>{Translate.translate('ShoppingCart','Coupon')}</_E.Button>
     )
   }
 
   renderShowTax() {
     return (
-     <p>{Translate.translate('Shopping_Cart', 'Tax')}: { currencyFilter(this.state.salesTaxAmount) }</p>
+     <p>{Translate.translate('ShoppingCart', 'Tax')}: { currencyFilter(this.state.salesTaxAmount) }</p>
     )
   }
 }
 
-export default Shopping_Cart
+export default ShoppingCart

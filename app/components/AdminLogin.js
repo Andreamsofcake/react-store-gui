@@ -13,19 +13,19 @@ import {
 	gotoDefaultIdlePage,
 } from '../utils/TsvUtils'
 
-class Admin_Login extends Component {
+class AdminLogin extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'Admin_Login');
+    //RootscopeActions.setSession('currentView', 'AdminLogin');
     TsvActions.apiCall('disableLoginDevices');
     emptyCart();
     this.state = {
       num: "",
       maxChars: 6,
-      instructionMessage: Translate.translate('Admin_Login','LoginMsg')
+      instructionMessage: Translate.translate('AdminLogin','LoginMsg')
     };
   }
 
@@ -33,27 +33,32 @@ class Admin_Login extends Component {
   	var localPass = RootscopeStore.getCache('machineSettings.AdminPassword')
   		, result = 'VALID'
   		;
-  	
+  	  	
   	function handlePass(result) {
 		switch(result){
 			case "VALID":
-				browserHistory.push("/Admin_Home");
+				browserHistory.push("/Admin/Home");
 				break;
 
 			default:
 				this.setState({
-				  instructionMessage : Translate.translate('Admin_Login', 'InvalidPassword'),
+				  instructionMessage : Translate.translate('AdminLogin', 'InvalidPassword'),
 				  num: ""
 				}) //"Invalid Password";
 				break;
 		}
   	}
   	
+  	handlePass = handlePass.bind(this)
+  	
   	if (localPass) {
+  		console.log('using localPass for login check: '+localPass+', '+(typeof localPass) +', ' + (typeof this.state.num));
   		result = !!(localPass == this.state.num);
+  		if (result) { result = 'VALID' }
   		handlePass(result);
   	
   	} else {
+  		console.log('using TsvApi for login check');
 		TsvActions.apiCall('validateAdminPassword', this.state.num, (err, res) => {
 			handlePass(res.result);
 		});
@@ -62,7 +67,7 @@ class Admin_Login extends Component {
 
   clear() {
     this.setState({
-      instructionMessage : Translate.translate('Admin_Login', 'LoginMsg'),
+      instructionMessage : Translate.translate('AdminLogin', 'LoginMsg'),
       num: ""
     })
   }
@@ -88,7 +93,7 @@ class Admin_Login extends Component {
 
   render() {
     return (
-      <_E.Row className="Admin_Login" >
+      <_E.Row className="AdminLogin" >
         <_E.Col>
 
           <div style={{width:'60%',margin: '0 auto'}}>
@@ -132,7 +137,7 @@ class Admin_Login extends Component {
 				  	</div>
 				  	<p>{' '}&nbsp;</p>
 				  	<p>{' '}&nbsp;</p>
-				  	<_E.Button type="primary" component={(<Link to="/Storefront">{Translate.translate('Admin_Login','BackToStore')}</Link>)} />
+				  	<_E.Button type="primary" component={(<Link to="/Storefront">{Translate.translate('AdminLogin','BackToStore')}</Link>)} />
 				  </_E.Col>
 				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="primary" onClick={this.enter.bind(this)}>Enter</_E.Button></_E.Col>
 			  </_E.Row>
@@ -146,4 +151,4 @@ class Admin_Login extends Component {
   }
 }
 
-export default Admin_Login
+export default AdminLogin

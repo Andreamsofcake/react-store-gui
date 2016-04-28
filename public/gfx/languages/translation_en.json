@@ -26,14 +26,14 @@
         "InstructionMessage":"Select A Payment Method"
     },
 
-    "Cash_Vending": {
+    "CashVending": {
         "TotalAmountLabel":"Total: ",
         "InsertedAmountLabel":"Inserted: ",
         "HintMessageInsertCash":"Insert Cash Now....",
         "HintMessageVending":"Vending..."
     },
 
-    "Card_Vending": {
+    "CardVending": {
         "InstructionMessage":"Please Swipe Card...",
         "ProcessingMessage":"Processing...",
         "CardInvalidMessage":"Failed To Read Card",
@@ -57,12 +57,12 @@
         "TotalPriceLabel":"Total Price: "
     },
 
-    "Admin_Login": {
+    "AdminLogin": {
         "Password":"Password",
         "InvalidPassword":"Invalid Password"
     },
 
-    "Admin_Home": {
+    "AdminHome": {
         "Home":"HOME",
         "Inventory":"INVENTORY",
         "SystemInfo": "SYSTEM INFO",
@@ -99,13 +99,13 @@
         "Map2":"Map #2"
     },
 
-    "Admin_Vms": {
+    "AdminVms": {
         "HeartBeatNow":"Heart Beat Now",
         "LastHeartBeatTime":"Last Heart Beat Time",
         "HeartBeatTime": "HeartBeatTime"
     },
 
-    "Admin_Inventory": {
+    "AdminInventory": {
         "EnterCoil": "Enter Coil",
         "EnterStockAmount": "Enter Stock Amount",
         "InvalidProduct": "Invalid Product",
@@ -119,7 +119,7 @@
         "Machine": "Machine"
     },
 
-    "Admin_Jofemar_Exerciser": {
+    "AdminJofemarExerciser": {
         "LightOn": "Light On",
         "LightOff": "Light Off",
         "Machine1": "Machine 1",
@@ -127,7 +127,7 @@
         "Machine": "Machine"
     },
 
-    "Admin_Settings": {
+    "AdminSettings": {
         "MachineSettings": "MACHINE SETTINGS",
         "LabelDefaultLanguage": "Default Language",
         "LabelSupportLanguages":"Supported Languages",
@@ -147,7 +147,7 @@
         "LabelMinimumDonationAmount": "Minimum Donation Amount"
     },
 
-    "Shopping_Cart": {
+    "ShoppingCart": {
         "ShoppingCart": "Your Cart",
         "Price": "Price",
         "Qty": "Qty",
@@ -172,12 +172,12 @@
         "EnterEmail": "Enter Your Email Address"
     },
 
-	"Category_Search": {
+	"CategorySearch": {
 		"WelcomeMsg":"",
 		"SelectCategory":"Select A Category"
     },
 
-	"Product_Search": {
+	"ProductSearch": {
 		"WelcomeMsg":"",
 		"SelectProduct":"Select A Product"
     }

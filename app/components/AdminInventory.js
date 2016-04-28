@@ -4,24 +4,24 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
 
-class Admin_Inventory extends Component {
+class AdminInventory extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'Admin_Inventory');
+    //RootscopeActions.setSession('currentView', 'AdminInventory');
     TsvActions.apiCall('fetchMachineIds', (err, ids) => {
         RootscopeActions.setCache('machineList', ids);
       });
 
     this.state = {
-      instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+      instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
       machineID: 0,
       num: "",
       maxChars: RootscopeStore.getConfig('bDualMachine') ? 3 : 2,
@@ -45,10 +45,10 @@ class Admin_Inventory extends Component {
 
 			switch (state.vpbc.result) {
 				case "UNKNOWN":
-					state.instructionMessage = Translate.translate('Admin_Inventory', 'UnknownProduct')
+					state.instructionMessage = Translate.translate('AdminInventory', 'UnknownProduct')
 					setTimeout( () => {
 						this.setState({
-						  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+						  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
 						  bEnterCoil: true,
 						  num: ""
 						});
@@ -56,10 +56,10 @@ class Admin_Inventory extends Component {
 					break;
 
 				case "INVALID_PRODUCT":
-					state.instructionMessage = Translate.translate('Admin_Inventory', 'InvalidProduct')
+					state.instructionMessage = Translate.translate('AdminInventory', 'InvalidProduct')
 					setTimeout( () => {
 						this.setState({
-						  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+						  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
 						  bEnterCoil: true,
 						  num: ""
 						});
@@ -67,7 +67,7 @@ class Admin_Inventory extends Component {
 					break;
 
 				default:
-					state.instructionMessage = Translate.translate('Admin_Inventory', 'EnterStockAmount');
+					state.instructionMessage = Translate.translate('AdminInventory', 'EnterStockAmount');
 					state.coilNumber = this.state.num;
 					state.num = '';
 					state.bEnterCoil = false;
@@ -85,7 +85,7 @@ class Admin_Inventory extends Component {
       num: ""
     });
       if(this.state.bEnterCoil){
-          browserHistory.push("/Admin_Home");
+          browserHistory.push("/Admin/Home");
       }else{
         this.setState({
           bEnterCoil: true
@@ -99,12 +99,12 @@ class Admin_Inventory extends Component {
 			  TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
 				  this.setState({
 					vpbc: data,
-					num: "";
+					num: ""
 				  });
 
 				  setTimeout( () => {
 					  this.setState({
-						instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+						instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
 						bEnterCoil: true,
 						num: ""
 					  });
@@ -121,12 +121,12 @@ class Admin_Inventory extends Component {
 				  this.setState({
 					vpbc: data,
 					stockCount: "Stock Count: " + data.inventoryCount,
-					num: "";
+					num: ""
 				  });
 
 				  setTimeout( () => {
 					  this.setState({
-						instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+						instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
 						bEnterCoil: true,
 						num: ""
 					  });
@@ -148,10 +148,10 @@ class Admin_Inventory extends Component {
 
 		switch (data.result) {
 			case "UNKNOWN":
-				state.instructionMessage = Translate.translate('Admin_Inventory', 'UnknownProduct');
+				state.instructionMessage = Translate.translate('AdminInventory', 'UnknownProduct');
 				setTimeout( () => {
 					this.setState({
-					  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+					  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
 					  bEnterCoil: true,
 					  num: ""
 					});
@@ -159,10 +159,10 @@ class Admin_Inventory extends Component {
 				break;
 
 			case "INVALID_PRODUCT":
-				state.instructionMessage = Translate.translate('Admin_Inventory', 'InvalidProduct');
+				state.instructionMessage = Translate.translate('AdminInventory', 'InvalidProduct');
 				setTimeout( () => {
 					this.setState({
-					  instructionMessage: Translate.translate('Admin_Inventory', 'EnterCoil'),
+					  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
 					  bEnterCoil: true,
 					  num: ""
 					});
@@ -170,7 +170,7 @@ class Admin_Inventory extends Component {
 				break;
 
 			default:
-				state.instructionMessage = Translate.translate('Admin_Inventory', 'EnterStockAmount');
+				state.instructionMessage = Translate.translate('AdminInventory', 'EnterStockAmount');
 				state.coilNumber = this.state.num;
 				state.num = '';
 				state.bEnterCoil = false;
@@ -210,8 +210,9 @@ class Admin_Inventory extends Component {
   render() {
     return (
 
-      <_E.Row className="inventory">
+      <_E.Row className="inventory" style={{maxWidth:'50%',margin: '1em auto'}}>
 
+        	<h1 style={{fontWeight:300}}>Inventory</h1>
           <_E.Col>
 
             <h2 id="instruction">{ this.instructionMessage }</h2>
@@ -249,7 +250,7 @@ class Admin_Inventory extends Component {
             { !this.state.bEnterCoil ? this.renderProductInfo() : null }
 
 
-         <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
+         <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
 
           { this.state.bEnterCoil ? this.renderFillCoilButton() : null }
 
@@ -280,8 +281,8 @@ class Admin_Inventory extends Component {
       <_E.Col>
         <_E.Row>
             { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
-            <_E.Button id="fillMachine" onClick={this.fillMachine}>{Translate.translate('Admin_Inventory', 'FillMachine')}</_E.Button>
-            <p id="displayMachine">{Translate.translate('Admin_Inventory','FillAllCoilsForMachine')} { this.state.machineID + 1 }</p>
+            <_E.Button id="fillMachine" onClick={this.fillMachine}>{Translate.translate('AdminInventory', 'FillMachine')}</_E.Button>
+            <p id="displayMachine">{Translate.translate('AdminInventory','FillAllCoilsForMachine')} { this.state.machineID + 1 }</p>
         </_E.Row>
       </_E.Col>
     )
@@ -299,10 +300,10 @@ class Admin_Inventory extends Component {
 
   renderFillCoilButton() {
     return(
-        <img class="regularBtn" id="fillImg" src={Translate.localizedImage('Button_Fill.png')} onClick={this.fillCoil} />
+        <img className="regularBtn" id="fillImg" src={Translate.localizedImage('Button_Fill.png')} onClick={this.fillCoil} />
     )
   }
 
 }
 
-export default Admin_Inventory
+export default AdminInventory

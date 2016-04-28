@@ -12,14 +12,14 @@ import {
 	gotoDefaultIdlePage
 } from '../utils/TsvUtils'
 
-class Vend_Error extends Component {
+class VendError extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'Vend_Error');
-    //RootscopeActions.setCache('currentLocation', '/Vend_Error');
+    //RootscopeActions.setSession('currentView', 'VendError');
+    //RootscopeActions.setCache('currentLocation', '/VendError');
     updateCredit();
     this.state = {
       errorMsg1: RootscopeStore.getSession('vendErrorMsg1'),
@@ -50,4 +50,4 @@ class Vend_Error extends Component {
 
 }
 
-export default Vend_Error
+export default VendError

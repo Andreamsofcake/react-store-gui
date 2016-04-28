@@ -9,7 +9,7 @@ import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
 
-class Page_Idle extends Component {
+class PageIdle extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
@@ -41,7 +41,7 @@ class Page_Idle extends Component {
 
   render() {
     return (
-      <_E.Row className="Page_Idle" onClick={this.idleClicked}>
+      <_E.Row className="PageIdle" onClick={this.idleClicked}>
         <_E.Col>
       	<img id="idleImg" src={Translate.localizedImage('idle.png')} alt="IdlePage" />
         </_E.Col>
@@ -57,4 +57,4 @@ class Page_Idle extends Component {
 
 }
 
-export default Page_Idle
+export default PageIdle

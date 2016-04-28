@@ -4,12 +4,12 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
 
-class Admin_Component_Control extends Component {
+class AdminComponentControl extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
@@ -29,18 +29,17 @@ class Admin_Component_Control extends Component {
   }
 
   back(){
-    browserHistory.push("/Admin_Home")
+    browserHistory.push("/Admin/Home")
   }
 
   // Add change listeners to stores
   componentDidMount() {
-
 	TsvActions.apiCall('enumerateComponents', (err, data) => {
       if (err) throw err;
       this.setState({
       	versionInfos: data
       });
-	}
+	});
   }
 
   // Remove change listers from stores
@@ -48,37 +47,31 @@ class Admin_Component_Control extends Component {
   }
 
   render() {
+  	if (!this.state.versionInfos) {
+  		return (
+  			<h2>Loading, one moment please...</h2>
+  		);
+  	}
     return (
-      <_E.Row class="vms">
+      <_E.Row className="vms" style={{maxWidth:'50%',margin: '1em auto'}}>
+        	<h1 style={{fontWeight:300}}>Component Control</h1>
         <_E.Col>
-          <_E.Button onClick={this.heartBeatNow}>{Tranlate.translate('Admin_Component_Control''HeartBeatNow')}</_E.Button>
-          <_E.Button onClick={this.lastHeartbeatTime()}>{Translate.translate('Admin_Component_Control','LastHeartBeatTime')}</_E.Button>
+          <_E.Button onClick={this.heartBeatNow}>{Tranlate.translate('AdminComponentControl','HeartBeatNow')}</_E.Button>
+          <_E.Button onClick={this.lastHeartbeatTime()}>{Translate.translate('AdminComponentControl','LastHeartBeatTime')}</_E.Button>
             {this.state.lastHeartBeatTime.map((beat, $index) => {
                 return (
                   <p key={$index} > {beat.key} : {beat}</p>
                 )}
               )}
-          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
+          <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
         </_E.Col>
       </_E.Row>
 
 
     );
-    /*
-      <div class="vms">
 
-          <button ng-click="heartBeatNow()">{{translate('HeartBeatNow')}}</button>
-
-          <button ng-click="lastHeartbeatTime()">{{translate('LastHeartBeatTime')}}</button>
-
-          <p ng-repeat='(key, value) in lastHeartBeatTime'>{{key}} : {{value}}</p>
-
-          <img class="regularBtn" id="backImg" ng-src="{{localizedImage('back.png')}}" err-src="../Images/back.png" ng-click="backToAdminHome()">
-
-      </div>
-    */
   }
 
 }
 
-export default Admin_Component_Control
+export default AdminComponentControl

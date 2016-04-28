@@ -19,7 +19,7 @@ class ShoppingCartItem extends Component {
   }
   
   productDetail() {
-  	browserHistory.push('/Product_Detail/' + this.props.data.productID);
+  	browserHistory.push('/ProductDetail/' + this.props.data.productID);
   }
 
   render() {

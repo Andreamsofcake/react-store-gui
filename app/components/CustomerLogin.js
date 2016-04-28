@@ -18,12 +18,12 @@ import * as _E from 'elemental'
 
 import { uniq } from '../utils'
 
-class Customer_Login extends Component {
+class CustomerLogin extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'Customer_Login');
+    //RootscopeActions.setSession('currentView', 'CustomerLogin');
     this.state = {
     	params: this.props.params,
     	loginToken: null
@@ -62,14 +62,14 @@ class Customer_Login extends Component {
   		case appConstants.LICENSE_SCANNED_LOGIN:
 			if (event.status === 'ok') {
 				// go to next login step:
-				browserHistory.push('/Customer_Login/Step2');
+				browserHistory.push('/CustomerLogin/Step2');
 			}
   			break;
 
   		case appConstants.PRINT_SCANNED_LOGIN:
 			if (event.status === 'ok') {
 				// go to next login step:
-				browserHistory.push('/Customer_Login/Matching');
+				browserHistory.push('/CustomerLogin/Matching');
 			}
   			break;
 
@@ -85,14 +85,14 @@ class Customer_Login extends Component {
 					return browserHistory.push('/Storefront');
 				}
 			}
-			browserHistory.push('/Customer_Login/FAIL');
+			browserHistory.push('/CustomerLogin/FAIL');
   			break;
   	}
   }
   
   tryAgain() {
   	CL_Actions.customerLogout();
-  	browserHistory.push('/Customer_Login/Step1');
+  	browserHistory.push('/CustomerLogin/Step1');
   }
   
   render() {
@@ -120,9 +120,9 @@ class Customer_Login extends Component {
 		  <_E.Row >
 			<_E.Col>
 				<h3>First time here? Let's register your account!</h3>
-				<_E.Button type="primary" component={(<Link to="/Customer_Signup">{Translate.translate('Customer','SignupButtonText')}</Link>)} />
+				<_E.Button type="primary" component={(<Link to="/CustomerSignup">{Translate.translate('Customer','SignupButtonText')}</Link>)} />
 				{' '}
-				<_E.Button type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
+				<_E.Button type="success" component={(<Link to="/Storefront">{Translate.translate('ShoppingCart','Shop_More')}</Link>)} />
 			</_E.Col>
 		  </_E.Row>
   		);
@@ -190,4 +190,4 @@ class Customer_Login extends Component {
 
 }
 
-export default Customer_Login
+export default CustomerLogin

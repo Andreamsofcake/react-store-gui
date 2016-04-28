@@ -4,18 +4,17 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
+import TsvStore from '../stores/TsvStore'
 
-class Admin_Check_Faults extends Component {
+class AdminCheckFaults extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'Admin_Check_Faults');
-    RootscopeActions.setCache('currentLocation', '/Admin_Check_Faults');
     this.state = {
       bRunningClearFaults: false,
       machineID: 0,
@@ -29,7 +28,7 @@ class Admin_Check_Faults extends Component {
   }
 
   back(){
-    browserHistory.push("/Admin_Home")
+    browserHistory.push("/Admin/Home")
   }
   
   getFaultCodes(machine_id) {
@@ -43,19 +42,22 @@ class Admin_Check_Faults extends Component {
   clearFaults(){
       if(!this.state.bRunningClearFaults){
         this.setState({
-          bRunningClearFaults: true
-        })
+			bRunningClearFaults: true
+        });
+        RootscopeActions.setSession('bRunningClearFaults', true);
         getFaultCodes(this.state.machineID);
       }
   }
 
   // Add change listeners to stores
 	componentDidMount() {
-		getFaultCodes(this.state.machineID);
+		RootscopeActions.setSession('bRunningClearFaults', false);
+		this.getFaultCodes(this.state.machineID);
 		TsvStore.addChangeListener(this._onTsvChange);
 	}
 	
 	componentWillUnmount() {
+		RootscopeActions.setSession('bRunningClearFaults', false);
 		TsvStore.removeChangeListener(this._onTsvChange);
 	}
 	
@@ -65,7 +67,9 @@ class Admin_Check_Faults extends Component {
 
         this.setState({
           bRunningClearFaults: false
-        })
+        });
+        
+        RootscopeActions.setSession('bRunningClearFaults', false);
         
         getFaultCodes(machineID);
 	}
@@ -81,31 +85,33 @@ class Admin_Check_Faults extends Component {
 
   render() {
     return (
-      <_E.Row className="check_faults">
+      <_E.Row className="check_faults" style={{maxWidth:'50%',margin: '1em auto'}}>
+
+        	<h1 style={{fontWeight:300}}>Check Faults</h1>
 
           { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
 
-          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
+          <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
 
           <_E.Row id="wrapper">
 
               <_E.Col>
 
                   <_E.Row className="faults">
-                      <_E.Col basis="1/3" className="faults">{Translate.translate('Admin_Check_Faults', 'FaultCode')}</_E.Col>
-                      <_E.Col basis="1/3" className="faults">{Translate.translate('Admin_Check_Faults','EventID')}</_E.Col>
-                      <_E.Col basis="1/3" className="faults">{Translate.translate('Admin_Check_Faults','Description')}</_E.Col>
+                      <_E.Col basis="1/3" className="faults">{Translate.translate('AdminCheckFaults', 'FaultCode')}</_E.Col>
+                      <_E.Col basis="1/3" className="faults">{Translate.translate('AdminCheckFaults','EventID')}</_E.Col>
+                      <_E.Col basis="1/3" className="faults">{Translate.translate('AdminCheckFaults','Description')}</_E.Col>
                   </_E.Row>
                   
-                  {this.state.renderFaults()}
+                  {this.renderFaults()}
 
               </_E.Col>
 
           </_E.Row>
 
-          <_E.Button type="warning" onClick={this.clearFaults}>{Translate.translate('Admin_Check_Faults','Clear')}</_E.Button>
+          <_E.Button type="warning" onClick={this.clearFaults.bind(this)}>{Translate.translate('AdminCheckFaults','Clear')}</_E.Button>
 
-      </div>
+      </_E.Row>
 
     );
   }
@@ -126,4 +132,4 @@ class Admin_Check_Faults extends Component {
 
 }
 
-export default Admin_Check_Faults
+export default AdminCheckFaults

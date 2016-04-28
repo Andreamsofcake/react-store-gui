@@ -23,14 +23,14 @@ import {
 	updateCredit,
 } from '../utils/TsvUtils'
 
-class Cash_Vending extends Component {
+class CashVending extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'Cash_Vending');
-    //RootscopeActions.setCache('currentLocation', '/Cash_Vending');
+    //RootscopeActions.setSession('currentView', 'CashVending');
+    //RootscopeActions.setCache('currentLocation', '/CashVending');
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     updateCredit();
     TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
@@ -38,7 +38,7 @@ class Cash_Vending extends Component {
     this.state = {
       insertedAmount: RootscopeStore.getSession('creditBalance'),
       summary: RootscopeStore.getCache('shoppingCart.summary'),
-      hintMsg: Translate.translate('Cash_Vending', 'HintMessageInsertCash'),
+      hintMsg: Translate.translate('CashVending', 'HintMessageInsertCash'),
       // only in cash.js:
       //salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
       showCancelBtnCash: true,
@@ -57,7 +57,7 @@ class Cash_Vending extends Component {
         stopPaymentTimer();
 
         this.state.showSpinner = true;
-        this.state.hintMsg = Translate.translate('Cash_Vending','HintMessageVending');
+        this.state.hintMsg = Translate.translate('CashVending','HintMessageVending');
         this.state.showCancelBtnCash = false;
 
       } else {
@@ -96,7 +96,7 @@ class Cash_Vending extends Component {
 			  RootscopeActions.setSession('bVendingInProcess', true);
 			  TsvActions.apiCall('startVend');
 			  this.setState({
-				  hintMsg: Translate.translate('Cash_Vending','HintMessageVending'),
+				  hintMsg: Translate.translate('CashVending','HintMessageVending'),
 				  showCancelBtnCash: false,
 				  showSpinner: true
 			  });
@@ -168,7 +168,7 @@ class Cash_Vending extends Component {
 					};
 
 					if (!RootscopeStore.getSession('bVendingInProcess')) {
-						state.hintMsg = Translate.translate('Cash_Vending','HintMessageVending');
+						state.hintMsg = Translate.translate('CashVending','HintMessageVending');
 						state.showSpinner = true;
 						state.showCancelBtnCash = false;
 					}
@@ -189,7 +189,7 @@ class Cash_Vending extends Component {
 				case 'cardTransactionRespose':
 					if(!RootscopeStore.getSession('bVendingInProcess')) {
 						cardTransaction(event.data[0]);
-						browserHistory.push("/Card_Vending");
+						browserHistory.push("/CardVending");
 					}
 					break;
 
@@ -235,10 +235,10 @@ class Cash_Vending extends Component {
         { this.hintMsg ? (<p id="hint">{this.hintMsg}</p>) : null }
 
 		<_E.Col sm="1/2">
-			<p style={{fontSize:'1.5em'}}>{Translate.translate('Cash_Vending', 'TotalAmountLabel')} Total: <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
+			<p style={{fontSize:'1.5em'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} Total: <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
 		</_E.Col>
 		<_E.Col sm="1/2">
-			<p style={{fontSize:'1.5em'}}>{Translate.translate('Cash_Vending', 'InsertedAmountLabel')} <strong>${ this.state.insertedAmount ? currencyFilter(this.state.insertedAmount) : '0.00' }</strong></p>
+			<p style={{fontSize:'1.5em'}}>{Translate.translate('CashVending', 'InsertedAmountLabel')} <strong>${ this.state.insertedAmount ? currencyFilter(this.state.insertedAmount) : '0.00' }</strong></p>
 		</_E.Col>
 
 		<_E.Col sm="1/2">
@@ -268,4 +268,4 @@ class Cash_Vending extends Component {
 
 }
 
-export default Cash_Vending
+export default CashVending

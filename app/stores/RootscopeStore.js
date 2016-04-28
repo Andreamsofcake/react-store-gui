@@ -23,8 +23,8 @@ var CHANGE_EVENT = 'change'
 		},
 
 		session: {
-			cashMsg: Translate.translate("Cash_Vending", "HintMessageInsertCash"),
-			cardMsg: Translate.translate("Card_Vending", "InstructionMessage"),
+			cashMsg: Translate.translate("CashVending", "HintMessageInsertCash"),
+			cardMsg: Translate.translate("CardVending", "InstructionMessage"),
 			bVendedOldCredit: false,
 			bVendingInProcess: false,
 			vendErrorMsg1: "vendErrorMsg1",
@@ -35,7 +35,7 @@ var CHANGE_EVENT = 'change'
 			bRunningAutoMap: false,
 			machineID: 0,
 			bVendedOldCredit: false,
-			categories: null,
+			//categories: null, // legacy, not used (config.categories instead)
 			products: null
 		},
 
@@ -135,26 +135,12 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 		return dflt;
 	},
 	
-	getCreditMessage: function() {
-		if (_storeDB.get('config.bCashless')) {
-			return Translate.translate("BalanceLabel") + ":" + '\n' + currencyFilter( _storeDB.get('config.fundsAvailable') );
-		}else {
-			return Translate.translate("CreditLabel") + ":"  + '\n'+  currencyFilter( _storeDB.get('config.credit') );
-		}
-	},
-	
-	getShowCredit: function() {
-		if (_storeDB.get('config.bCashless')) {
-			var fundsA = _storeDB.get('config.fundsAvailable');
-			return typeof fundsA !== 'undefined' && fundsA !== 0 && _storeDB.get('config.bShowCredit');
-		} else {
-			var credit = _storeDB.get('config.credit');
-			return typeof credit !== 'undefined' && credit !== 0 && _storeDB.get('config.bShowCredit');
-		}
-	},
-	
 	getAppConfig: function() {
 		return _storeDB.get('appConfig');
+	},
+
+	getDB: function() {
+		return _storeDB.getDB();
 	}
 
 });
@@ -201,23 +187,30 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 			RootscopeStore.emitChange({ type: 'session', path: action.data.path });
 			break;
 			
-		case appConstants.EXAMPLE_ACTION_CONSTANT:
-			if (action.data) {
-				setFoo(action.data);
-			}
-			RootscopeStore.emitChange();
-			break;
-
 		default:
 			return true;
 			break;
 	}
 });
 
+//*
 //console.warn("\n\n -------------------------------------------------------\n\n RootscopeStore loaded!\n\n -------------------------------------------------------\n\n");
-
 if (isClient) {
 	window.RSS = RootscopeStore;
 }
+//*/
 
 module.exports = RootscopeStore;
+
+/*
+function intersect(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+	return a
+		.filter(function(e) { return (b.indexOf(e) !== -1) }) // same as before
+		.filter(function (e, i, c) { // extra step to remove duplicates
+			return c.indexOf(e) === i;
+		});
+}
+*/
+function intersect(a, b) { var t; if (b.length > a.length) t = b, b = a, a = t; return a .filter(function(e) { return (b.indexOf(e) !== -1) }) .filter(function (e, i, c) { return c.indexOf(e) === i; }); }

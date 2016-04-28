@@ -22,14 +22,11 @@ import {
 
 import { currencyFilter } from '../utils/TsvUtils'
 
-class Card_Vending extends Component {
+class CardVending extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-
-    //RootscopeActions.setSession('currentView', 'Card_Vending');
-    //RootscopeActions.setCache('currentLocation', '/Card_Vending');
 
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
     updateCredit();
@@ -41,7 +38,7 @@ class Card_Vending extends Component {
 		//item: RootscopeStore.getCache('shoppingCart.detail')[0],
 		summary: RootscopeStore.getCache('shoppingCart.summary'),
 		showCancelBtn: true,
-		cardTransactionResponse: Translate.translate('Card_Vending', 'InstructionMessage')
+		cardTransactionResponse: Translate.translate('CardVending', 'InstructionMessage')
     };
 
 	this.state.item = this.state.cart && this.state.cart.length ? this.state.cart[0] : false;
@@ -57,7 +54,7 @@ class Card_Vending extends Component {
 
     if (RootscopeStore.getSession('bVendingInProcess')){
 		this.state.showSpinner = true;
-		this.state.cardTransactionResponse = Translate.translate('Card_Vending', "VendingMessage");
+		this.state.cardTransactionResponse = Translate.translate('CardVending', "VendingMessage");
 		this.state.showCancelBtnCash = false;
     }
 
@@ -98,11 +95,11 @@ class Card_Vending extends Component {
 		TsvActions.apiCall('startVend');
 		killTimers();
 		setVendingInProcessFlag();
-		RootscopeActions.setSession('cardMsg', Translate.translate("Card_Vending", "Vending", "Vending"));
+		RootscopeActions.setSession('cardMsg', Translate.translate("CardVending", "Vending", "Vending"));
 		//TsvActions.apiCall("Card Approved should vend...");
 
 		this.setState({
-			cardTransactionRespose: Translate.translate("Card_Vending", "Vending", "Vending"),
+			cardTransactionRespose: Translate.translate("CardVending", "Vending", "Vending"),
 			showSpinner: true,
 			showCancelBtn: false
 		});
@@ -125,43 +122,43 @@ class Card_Vending extends Component {
 
 			switch(level){
 				case "CARD_INSERTED":
-					msg = Translate.translate("Card_Vending", "ProcessingMessage");
+					msg = Translate.translate("CardVending", "ProcessingMessage");
 					showSpinner = true;
 					break;
 
 				case "CARD_PROCESSING":
-					msg = Translate.translate("Card_Vending", "ProcessingMessage");
+					msg = Translate.translate("CardVending", "ProcessingMessage");
 					showSpinner = true;
 					break;
 
 				case "CARD_APPROVED":
-					msg = Translate.translate("Card_Vending", "CardAccepted");
+					msg = Translate.translate("CardVending", "CardAccepted");
 					this.startVend();
 					break;
 
 				case "CARD_INVALID_READ":
-					msg = Translate.translate("Card_Vending", "CardInvalidMessage");
+					msg = Translate.translate("CardVending", "CardInvalidMessage");
 					resetPaymentTimer();
 					break;
 
 				case "CARD_DECLINED":
-					msg =  Translate.translate("Card_Vending", "CardDeclinedMessage");
+					msg =  Translate.translate("CardVending", "CardDeclinedMessage");
 					resetPaymentTimer();
 					break;
 
 				case "CARD_CONNECTION_FAILURE":
-					msg = Translate.translate("Card_Vending", "CardConnectionErrorMessage");
+					msg = Translate.translate("CardVending", "CardConnectionErrorMessage");
 					resetPaymentTimer();
 					break;
 
 				case "CARD_UNKNOWN_ERROR":
-					msg = Translate.translate("Card_Vending", "CardUnknownErrorMessage");
+					msg = Translate.translate("CardVending", "CardUnknownErrorMessage");
 					resetPaymentTimer();
 					break;
 
 				default:
-					console.log("Card_Vending Got event cardTransactionResponse()default: "+level);
-					msg = Translate.translate("Card_Vending", "ErrorMessage");
+					console.log("CardVending Got event cardTransactionResponse()default: "+level);
+					msg = Translate.translate("CardVending", "ErrorMessage");
 					resetPaymentTimer();
 					break;
 			}
@@ -198,9 +195,9 @@ class Card_Vending extends Component {
 
   render() {
     return (
-      <_E.Row className="Card_Vending" >
+      <_E.Row className="CardVending" >
         <_E.Col>
-          <h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
+          <h2>{Translate.translate('CardVending', 'CardVending')}</h2>
               <_E.Row>
                 {this.state.cart ? this.state.cart.map((prd, $index) => {
                   return(
@@ -245,39 +242,6 @@ class Card_Vending extends Component {
         </_E.Col>
       </_E.Row>
     );
-	{/*
-    <div className="Card_Vending" >
-        <h2>{Translate.translate('Card_Vending', 'CardVending')}</h2>
-        <table className="cart">
-
-            <tr>
-              {cart.map((prd, $index) => {
-                return(
-                  <td key={$index}>
-
-                      <img id="prdImg" src={ prd.imagePath } alt="productImage"/>
-
-                  </td>
-                )}
-              )}
-
-            </tr>
-
-        </table>
-
-        { if (this.state.summary.TotalPrice >= 1) { this.renderTotalPriceLabel()} }
-
-        <p id = "cardResponse">{ this.state.cardTransactionResponse }</p>
-
-        <img id="creditCards" src="../Images/creditcards.png" alt="creditcards" />
-
-        { if (this.state.showCancelBtnCash) { this.renderCancelBtnCash()} }
-
-        { if (this.state.showSpinner) { this.renderSpinner()} }
-      </div>
-
-
-    */}
   }
 
   renderCancelBtnCash(){
@@ -288,7 +252,7 @@ class Card_Vending extends Component {
 
   renderTotalPriceLabel() {
     return(
-      <p> { Translate.translate('Card_Vending', 'TotalPriceLabel')}{ currencyFilter(this.summary.TotalPrice) }</p>
+      <p> { Translate.translate('CardVending', 'TotalPriceLabel')}{ currencyFilter(this.summary.TotalPrice) }</p>
     )
   }
 
@@ -303,4 +267,4 @@ class Card_Vending extends Component {
 
 }
 
-export default Card_Vending
+export default CardVending

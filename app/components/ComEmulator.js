@@ -60,59 +60,59 @@ class ComEmulator extends Component {
 			{
 				label: 'Insert $5',
 				cmd: ['insertCash', 5],
-				showFor: ['Cash_Card','Cash_Vending']
+				showFor: ['ChooseCashCard','CashVending']
 			},
 			{
 				label: 'Insert $10',
 				cmd: ['insertCash', 10],
-				showFor: ['Cash_Card','Cash_Vending']
+				showFor: ['ChooseCashCard','CashVending']
 			},
 			{
 				label: 'Insert $20',
 				cmd: ['insertCash', 20],
-				showFor: ['Cash_Card','Cash_Vending']
+				showFor: ['ChooseCashCard','CashVending']
 			},
 			{
 				label: 'Insert $50',
 				cmd: ['insertCash', 50],
-				showFor: ['Cash_Card','Cash_Vending']
+				showFor: ['ChooseCashCard','CashVending']
 			},
 			{
 				label: 'Insert $100',
 				cmd: ['insertCash', 100],
-				showFor: ['Cash_Card','Cash_Vending']
+				showFor: ['ChooseCashCard','CashVending']
 			},
 
 			// credit cards:
 			{
 				label: 'CC Insert',
 				cmd: ['cardTransactionResponse', 'CARD_INSERTED'],
-				showFor: ['Cash_Card','Card_Vending']
+				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Processing',
 				cmd: ['cardTransactionResponse', 'CARD_PROCESSING'],
-				showFor: ['Cash_Card','Card_Vending']
+				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Approve',
 				cmd: ['cardTransactionResponse', 'CARD_APPROVED'],
-				showFor: ['Cash_Card','Card_Vending']
+				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Connect Fail',
 				cmd: ['cardTransactionResponse', 'CARD_CONNECTION_FAILURE'],
-				showFor: ['Cash_Card','Card_Vending']
+				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Decline',
 				cmd: ['cardTransactionResponse', 'CARD_DECLINED'],
-				showFor: ['Cash_Card','Card_Vending']
+				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Unknown Error',
 				cmd: ['cardTransactionResponse', 'CARD_UNKNOWN_ERROR'],
-				showFor: ['Cash_Card','Card_Vending']
+				showFor: ['ChooseCashCard','CardVending']
 			},
 		];
 		
@@ -122,7 +122,7 @@ class ComEmulator extends Component {
 		}
 		
 		let showButtons = buttons.filter( B => {
-			return pathname !== 'Cash_Card' && B.showFor.indexOf( pathname ) > -1;
+			return pathname !== 'ChooseCashCard' && B.showFor.indexOf( pathname ) > -1;
 		});
 		
 		if (!showButtons.length) {

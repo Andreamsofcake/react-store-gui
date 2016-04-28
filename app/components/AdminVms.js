@@ -4,17 +4,17 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
 
-class Admin_Vms extends Component {
+class AdminVms extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'Admin_Vms');
+    //RootscopeActions.setSession('currentView', 'AdminVms');
   }
 
 /*
@@ -46,10 +46,10 @@ class Admin_Vms extends Component {
 
   render() {
     return (
-      <_E.Row className = "component">
+      <_E.Row className="component" style={{maxWidth:'50%',margin: '0 auto'}}>
         <_E.Col>
-          <_E.Button onClick={ () => { window.location.reload() } }>Restart GUI</_E.Button>
-          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
+          <_E.Button size="lg" onClick={ () => { window.location.reload() } }>Restart GUI</_E.Button>
+          <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
       	</_E.Col>
       </_E.Row>
 
@@ -59,4 +59,4 @@ class Admin_Vms extends Component {
 
 }
 
-export default Admin_Vms
+export default AdminVms

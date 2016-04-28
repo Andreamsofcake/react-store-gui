@@ -37,7 +37,8 @@ module.exports = {
 			}
 		}
 
-		var data = { status: 'ok', msg: 'Multievent test response', tryReconnects: false, payload: request.payload };
+		//var data = { status: 'ok', msg: 'Multievent test response', tryReconnects: false, payload: request.payload };
+		var data = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success", tryReconnects: false, payload: request.payload };
 		return reply( data ).code(200);
 	},
 
@@ -71,7 +72,8 @@ module.exports = {
 			}
 		}
 		
-		var data = { status: 'ok', msg: 'Flashapi test response', payload: request.payload };
+		//var data = { status: 'ok', msg: 'Flashapi test response', payload: request.payload };
+		var data = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success", payload: request.payload };
 		return reply( data ).code(200);
 	}
 

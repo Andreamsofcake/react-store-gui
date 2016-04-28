@@ -93,8 +93,8 @@ class Keyboard extends Component {
   	RootscopeActions.gotoPayment();
 
 	if (RootscopeStore.getCache('custommachinesettings.bHasShoppingCart') === true
-		&& RootscopeStore.getCache('currentLocation') != "/Shopping_Cart") {
-		browserHistory.push('/Shopping_Cart');
+		&& RootscopeStore.getCache('currentLocation') != "/ShoppingCart") {
+		browserHistory.push('/ShoppingCart');
 
 	} else {
 		browserHistory.push('/View2');

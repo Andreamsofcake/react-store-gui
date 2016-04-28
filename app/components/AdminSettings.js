@@ -4,18 +4,18 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
 import * as _E from 'elemental'
+import { Link, browserHistory } from 'react-router'
 
 import TsvActions from '../actions/TsvActions'
 
-class Admin_Settings extends Component {
+class AdminSettings extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'Admin_Settings');
+    //RootscopeActions.setSession('currentView', 'AdminSettings');
     this.state = {
       supportLanguages: RootscopeStore.getConfig('supportLanguages'),
 
@@ -37,6 +37,7 @@ class Admin_Settings extends Component {
       minimumDonationAmount: RootscopeStore.getCache('custommachinesettings.minimumDonationAmount'),
     };
     
+    this._onRootscopeChange = this._onRootscopeChange.bind(this);
   }
 
   save(e) {
@@ -90,10 +91,35 @@ class Admin_Settings extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+  	RootscopeStore.addChangeListener(this._onRootscopeChange);
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
+  	RootscopeStore.removeChangeListener(this._onRootscopeChange);
+  }
+  
+  _onRootscopeChange() {
+    this.setState({
+      supportLanguages: RootscopeStore.getConfig('supportLanguages'),
+
+      defaultLanguage: RootscopeStore.getCache('machineSettings.defaultLanguage'),
+      CCProcessorMode: RootscopeStore.getCache('machineSettings.CCProcessorMode'),
+      MachineSerialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber'),
+      CCMerchantKey: RootscopeStore.getCache('machineSettings.CCMerchantKey'),
+      CCMerchantID: RootscopeStore.getCache('machineSettings.CCMerchantID'),
+      DropSensorAttached: RootscopeStore.getCache('machineSettings.DropSensorAttached'),
+      CCReaderType: RootscopeStore.getCache('machineSettings.CCReaderType'),
+      VMCPlatform: RootscopeStore.getCache('machineSettings.VMCPlatform'),
+      MachineCount: RootscopeStore.getCache('machineSettings.MachineCount'),
+      VMCControlCOMPort: RootscopeStore.getCache('machineSettings.VMCControlCOMPort'),
+      SalesTaxRate: RootscopeStore.getCache('machineSettings.SalesTaxRate'),
+      ShoppingCartMaxItemCount: RootscopeStore.getCache('machineSettings.ShoppingCartMaxItemCount'),
+
+      bHasShoppingCart: RootscopeStore.getCache('custommachinesettings.bHasShoppingCart'),
+      singleProductDonation: RootscopeStore.getCache('custommachinesettings.singleProductDonation'),
+      minimumDonationAmount: RootscopeStore.getCache('custommachinesettings.minimumDonationAmount'),
+    });
   }
   
   textChange(e) {
@@ -110,114 +136,90 @@ class Admin_Settings extends Component {
 
   render() {
     return (
-      <_E.Row className="Admin_Settings">
+      <_E.Row className="AdminSettings" style={{maxWidth:'50%',margin: '0 auto'}}>
         <_E.Col>
-          <h2>{Translate.translate('MachineSettings')}}</h2>
+        	<h1 style={{fontWeight:300}}>Machine Settings</h1>
         </_E.Col>
           <_E.Row id="machineSettings">
+			<_E.Form type="horizontal">
+				<_E.FormSelect label={Translate.translate('AdminSettings','LabelCardProcessorMode')}
+				  onChange={this.selectChange.bind(this, 'CCProcessorMode')}
+				  name="CCProcessorMode" value={this.state.CCProcessorMode}
+				  options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
 
-              <_E.Row>
-                  <_E.FormSelect label={Translate.translate('Admin_Settings','LabelCardProcessorMode')}
-                  	onChange={this.selectChange.bind(this, 'CCProcessorMode')}
-                  	name="CCProcessorMode" value={this.state.CCProcessorMode}
-                  	options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelMerchantID')} >
+					<_E.FormInput value={this.state.CCMerchantID} name='CCMerchantID' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMerchantID')} >
-                      <_E.FormInput value={this.state.CCMerchantID} name='CCMerchantID' onChange={this.textChange.bind(this)} />
-                  </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelMerchantKey')} >
+					<_E.FormInput value={this.state.CCMerchantKey} name='CCMerchantKey' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMerchantKey')} >
-                      <_E.FormInput value={this.state.CCMerchantKey} name='CCMerchantKey' onChange={this.textChange.bind(this)} />
-                  </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelMachineSerialNumber')} >
+					<_E.FormInput value={this.state.MachineSerialNumber} name='MachineSerialNumber' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelMachineSerialNumber')} >
-                      <_E.FormInput value={this.state.MachineSerialNumber} name='MachineSerialNumber' onChange={this.textChange.bind(this)} />
-                  </_E.FormField>
-              </_E.Row>
+				<_E.FormSelect label={Translate.translate('AdminSettings','LabelDefaultLanguage')}
+				  onChange={this.selectChange.bind(this, 'defaultLanguage')}
+				  name="defaultLanguage" value={this.state.defaultLanguage}
+				  options={[{ label: 'English', value: 'En' }, { label: 'French', value: 'Fr'}]} />
 
-              <_E.Row>
-                  <_E.FormSelect label={Translate.translate('Admin_Settings','LabelDefaultLanguage')}
-                  	onChange={this.selectChange.bind(this, 'defaultLanguage')}
-                  	name="defaultLanguage" value={this.state.defaultLanguage}
-                  	options={[{ label: 'English', value: 'En' }, { label: 'French', value: 'Fr'}]} />
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelSupportLanguages')} >
+					<_E.FormInput value={this.state.supportLanguages} name='supportLanguages' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelSupportLanguages')} >
-                      <_E.FormInput value={this.state.supportLanguages} name='supportLanguages' onChange={this.textChange.bind(this)} />
-                  </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelDropSensorAttached')} >
+					<_E.FormInput value={this.state.DropSensorAttached} name='DropSensorAttached' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                  <_E.FormField label={Translate.translate('Admin_Settings','LabelDropSensorAttached')} >
-                      <_E.FormInput value={this.state.DropSensorAttached} name='DropSensorAttached' onChange={this.textChange.bind(this)} />
-                  </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelCardReaderType')} >
+					<_E.FormInput value={this.state.CCReaderType} name='CCReaderType' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelCardReaderType')} >
-                    <_E.FormInput value={this.state.CCReaderType} name='CCReaderType' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelVMCPlatform')} >
+					<_E.FormInput value={this.state.VMCPlatform} name='VMCPlatform' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelVMCPlatform')} >
-                    <_E.FormInput value={this.state.VMCPlatform} name='VMCPlatform' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelMachineCount')} >
+					<_E.FormInput value={this.state.MachineCount} name='MachineCount' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelMachineCount')} >
-                    <_E.FormInput value={this.state.MachineCount} name='MachineCount' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelCOMPort')} >
+					<_E.FormInput value={this.state.VMCControlCOMPort} name='VMCControlCOMPort' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelCOMPort')} >
-                    <_E.FormInput value={this.state.VMCControlCOMPort} name='VMCControlCOMPort' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelSalesTaxRate')} >
+					<_E.FormInput value={this.state.SalesTaxRate} name='SalesTaxRate' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelSalesTaxRate')} >
-                    <_E.FormInput value={this.state.SalesTaxRate} name='SalesTaxRate' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelShoppingCartMaxItemCount')} >
+					<_E.FormInput value={this.state.ShoppingCartMaxItemCount} name='ShoppingCartMaxItemCount' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelShoppingCartMaxItemCount')} >
-                    <_E.FormInput value={this.state.ShoppingCartMaxItemCount} name='ShoppingCartMaxItemCount' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelHasShoppingCart')} >
+					<_E.FormInput value={this.state.bHasShoppingCart} name='bHasShoppingCart' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelHasShoppingCart')} >
-                    <_E.FormInput value={this.state.bHasShoppingCart} name='bHasShoppingCart' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
+				<_E.FormField label={Translate.translate('AdminSettings','LabelSingleProductDonation')} >
+					<_E.FormInput value={this.state.singleProductDonation} name='singleProductDonation' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
 
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelSingleProductDonation')} >
-                    <_E.FormInput value={this.state.singleProductDonation} name='singleProductDonation' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
-
-              <_E.Row>
-                <_E.FormField label={Translate.translate('Admin_Settings','LabelMinimumDonationAmount')} >
-                    <_E.FormInput value={this.state.minimumDonationAmount} name='minimumDonationAmount' onChange={this.textChange.bind(this)} />
-                </_E.FormField>
-              </_E.Row>
-
+				<_E.FormField label={Translate.translate('AdminSettings','LabelMinimumDonationAmount')} >
+					<_E.FormInput value={this.state.minimumDonationAmount} name='minimumDonationAmount' onChange={this.textChange.bind(this)} />
+				</_E.FormField>
+			</_E.Form>
           </_E.Row>
 
-            <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
+          <_E.Row>
+          	<_E.Col sm="50%" md="50%" lg="50%" style={{textAlign:'center'}}>
+    	        <_E.Button size="lg" type="primary" onClick={this.save.bind(this)} >Save Changes</_E.Button>
+    	    </_E.Col>
 
+          	<_E.Col sm="50%" md="50%" lg="50%" style={{textAlign:'center'}}>
+	            <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
+    	    </_E.Col>
+
+          </_E.Row>
       </_E.Row>
 
     );
@@ -225,4 +227,4 @@ class Admin_Settings extends Component {
 
 }
 
-export default Admin_Settings
+export default AdminSettings

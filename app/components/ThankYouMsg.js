@@ -11,7 +11,7 @@ import {
 	gotoDefaultIdlePage
 } from '../utils/TsvUtils'
 
-class ThankYou_Msg extends Component {
+class ThankYouMsg extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
@@ -47,4 +47,4 @@ class ThankYou_Msg extends Component {
 
 }
 
-export default ThankYou_Msg
+export default ThankYouMsg

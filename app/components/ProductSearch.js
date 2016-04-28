@@ -11,7 +11,7 @@ import { Link } from 'react-router'
 
 import TsvActions from '../actions/TsvActions'
 
-class Product_Search extends Component {
+class ProductSearch extends Component {
 
   constructor(props, context) {
     {/* MUST call super() before any this.*/}
@@ -26,8 +26,8 @@ class Product_Search extends Component {
     RootscopeActions.setConfig('bDisplayCgry', false);
     updateCredit();
     RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance'))
-    //RootscopeActions.setSession('currentView', 'Product_Search');
-    //RootscopeActions.setCache('currentLocation', '/Product_Search');
+    //RootscopeActions.setSession('currentView', 'ProductSearch');
+    //RootscopeActions.setCache('currentLocation', '/ProductSearch');
 
     if (typeof window !== 'undefined') {
     	window.RootscopeStore = RootscopeStore;
@@ -49,7 +49,7 @@ class Product_Search extends Component {
     this.setState(state);
 
     if (!state.products) {
-		console.warn('have to go fetch all products! (fix in refactor, but Product_Search is not long-term used anyway ... just old code for testing');
+		console.warn('have to go fetch all products! (fix in refactor, but ProductSearch is not long-term used anyway ... just old code for testing');
 		//console.log(RootscopeStore.getConfig('products'));
 		TsvActions.apiCall('fetchProduct', (err, data) => {
 			if (err) throw err;
@@ -114,18 +114,18 @@ class Product_Search extends Component {
   }
 
   back() {
-      browserHistory.push("/Category_Search");
+      browserHistory.push("/CategorySearch");
   }
 
   render() {
     var products = this.state.products;
     if (!products || !products.length) {
     	return (
-		  <_E.Row className="Product_Search" >
+		  <_E.Row className="ProductSearch" >
 
 			<_E.Col>
 
-			<h2>{Translate.translate('Product_Search','OneMomentPlease')}</h2>
+			<h2>{Translate.translate('ProductSearch','OneMomentPlease')}</h2>
 
 			</_E.Col>
     		</_E.Row>
@@ -134,12 +134,12 @@ class Product_Search extends Component {
 
     return (
 
-      <_E.Row className="Product_Search" >
+      <_E.Row className="ProductSearch" >
 
         <_E.Col>
-        	<_E.Button style={{float:'right'}} type="primary" component={(<Link to="/Shopping_Cart">TEST: go to shopping cart page</Link>)} />
+        	<_E.Button style={{float:'right'}} type="primary" component={(<Link to="/ShoppingCart">TEST: go to shopping cart page</Link>)} />
           { this.state.bDisplayCgry ? this.renderCategoryTable() : null }
-	        <h2>{Translate.translate('Product_Search','SelectProduct')}</h2>
+	        <h2>{Translate.translate('ProductSearch','SelectProduct')}</h2>
         </_E.Col>
 
         {/* slider container*/}
@@ -207,4 +207,4 @@ class Product_Search extends Component {
 }
 
 
-export default Product_Search
+export default ProductSearch

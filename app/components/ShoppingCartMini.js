@@ -62,7 +62,7 @@ class ShoppingCartMini extends Component {
 		return (
 			<div className={this.props.className || ''}>
 				<p>
-					<a><img onClick={() => {browserHistory.push("/Shopping_Cart")}} src="/gfx/shop.png" /></a>
+					<a><img onClick={() => {browserHistory.push("/ShoppingCart")}} src="/gfx/shop.png" /></a>
 					{' '}
 					{ITEMS}
 				</p>

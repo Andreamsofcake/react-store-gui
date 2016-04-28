@@ -4,7 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import { browserHistory } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 
 class Activate extends Component {
 
@@ -20,7 +20,7 @@ class Activate extends Component {
   	num += 1;
   	if (num >= this.state.loginOK) {
 
-	  	browserHistory.push('/Admin_Login');
+	  	browserHistory.push('/Admin/Login');
 	  	this.setState({
   			numClicks: 0
 	  	});

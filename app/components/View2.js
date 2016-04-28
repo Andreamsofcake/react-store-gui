@@ -121,9 +121,12 @@ class View2 extends Component {
                   //Do nothing, don't go to card_vending page
                   break;
               default:
-                  if(RootscopeStore.getCache('currentLocation') != "/Card_Vending"){
-                      browserHistory.push("/Card_Vending");
+				  /*
+				  // no longer using "currentLocation" global...
+                  if(RootscopeStore.getCache('currentLocation') != "/CardVending"){
+                      browserHistory.push("/CardVending");
                   }
+                  */
                   break;
           }
       } else {
@@ -154,9 +157,12 @@ class View2 extends Component {
 					  break;
 
 				  default:
-					  if(RootscopeStore.getCache('currentLocation') != "/Card_Vending"){
-						  browserHistory.push("/Card_Vending");
+					  /*
+					  // no longer using "currentLocation" global...
+					  if(RootscopeStore.getCache('currentLocation') != "/CardVending"){
+						  browserHistory.push("/CardVending");
 					  }
+					  */
 					  break;
 			  }
 			} else {

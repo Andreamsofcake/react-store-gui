@@ -56,8 +56,8 @@ class CustomerStatusDisplay extends Component {
 	renderLoggedOut() {
 		return (
 			<p style={{marginBottom: 0}}>Logged Out 
-				{' '}<_E.Button size="xs" type="success" onClick={() => {browserHistory.push('/Customer_Login')}}>Login</_E.Button>
-				{' '}<_E.Button size="xs" type="success" onClick={() => {browserHistory.push('/Customer_Signup')}}>Register</_E.Button>
+				{' '}<_E.Button size="xs" type="success" onClick={() => {browserHistory.push('/CustomerLogin')}}>Login</_E.Button>
+				{' '}<_E.Button size="xs" type="success" onClick={() => {browserHistory.push('/CustomerSignup')}}>Register</_E.Button>
 			</p>
 		);
 	}

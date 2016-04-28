@@ -22,12 +22,12 @@ import * as _E from 'elemental'
 
 import { uniq } from '../utils'
 
-class Customer_Signup extends Component {
+class CustomerSignup extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'Customer_Signup');
+    //RootscopeActions.setSession('currentView', 'CustomerSignup');
     this.state = {
     	params: this.props.params,
     	signupToken: null
@@ -68,35 +68,35 @@ class Customer_Signup extends Component {
   		case appConstants.PRINT_2SCANNED_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
-				browserHistory.push('/Customer_Signup/Step2');
+				browserHistory.push('/CustomerSignup/Step2');
 			}
   			break;
 /*
   		case appConstants.PRINT_SCANNED_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
-				browserHistory.push('/Customer_Signup/Step3');
+				browserHistory.push('/CustomerSignup/Step3');
 			}
   			break;
 */
   		case appConstants.PRINT_3SCANNED_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
-				browserHistory.push('/Customer_Signup/Step3');
+				browserHistory.push('/CustomerSignup/Step3');
 			}
   			break;
 
   		case appConstants.PHOTO_TAKEN_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
-				browserHistory.push('/Customer_Signup/Step4');
+				browserHistory.push('/CustomerSignup/Step4');
 			}
   			break;
 
   		case appConstants.MOBILE_NUMBER_CAPTURED_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
-				browserHistory.push('/Customer_Signup/Step5');
+				browserHistory.push('/CustomerSignup/Step5');
 			}
   			break;
 
@@ -105,17 +105,17 @@ class Customer_Signup extends Component {
 				// go to next signup step:
 				/*
 				if (unattendedAdminMode) {
-					return browserHistory.push('/Customer_Signup/Registering');
+					return browserHistory.push('/CustomerSignup/Registering');
 				}
 				*/
-				browserHistory.push('/Customer_Signup/AdminVerify');
+				browserHistory.push('/CustomerSignup/AdminVerify');
 			}
   			break;
 
   		case appConstants.ADMIN_VERIFIED_SIGNUP:
 			if (event.status === 'ok') {
 				// go to next signup step:
-				browserHistory.push('/Customer_Signup/Registering');
+				browserHistory.push('/CustomerSignup/Registering');
 			}
   			break;
 
@@ -131,7 +131,7 @@ class Customer_Signup extends Component {
 					return browserHistory.push('/Storefront');
 				}
 			}
-			browserHistory.push('/Customer_Signup/FAIL');
+			browserHistory.push('/CustomerSignup/FAIL');
   			break;
   	}
   }
@@ -139,7 +139,7 @@ class Customer_Signup extends Component {
   tryAgain() {
   	//CS_Actions.customerLogout();
   	CS_Actions.clearSteps();
-  	browserHistory.push('/Customer_Signup/Step1');
+  	browserHistory.push('/CustomerSignup/Step1');
   }
   
   render() {
@@ -167,9 +167,9 @@ class Customer_Signup extends Component {
 		  <_E.Row >
 			<_E.Col>
 				<h3>Already signed up? Go back to the signup page</h3>
-				<_E.Button type="primary" component={(<Link to="/Customer_Login">{Translate.translate('Customer','LoginButtonText')}</Link>)} />
+				<_E.Button type="primary" component={(<Link to="/CustomerLogin">{Translate.translate('Customer','LoginButtonText')}</Link>)} />
 				{' '}
-				<_E.Button type="success" component={(<Link to="/Storefront">{Translate.translate('Shopping_Cart','Shop_More')}</Link>)} />
+				<_E.Button type="success" component={(<Link to="/Storefront">{Translate.translate('ShoppingCart','Shop_More')}</Link>)} />
 			</_E.Col>
 		  </_E.Row>
   		);
@@ -253,4 +253,4 @@ class Customer_Signup extends Component {
 
 }
 
-export default Customer_Signup
+export default CustomerSignup

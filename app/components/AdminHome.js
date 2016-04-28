@@ -1,16 +1,15 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import RootscopeActions from '../actions/RootscopeActions'
 import RootscopeStore from '../stores/RootscopeStore'
-import browserHistory from 'react-router'
+import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
 
-class Admin_Home extends Component {
+class AdminHome extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
@@ -38,26 +37,54 @@ class Admin_Home extends Component {
 
   render() {
     return (
-      <_E.Row class="admin_home">
+      <_E.Row className="admin_home" style={{maxWidth:'85%',margin: '1em auto'}}>
         <_E.Col>
-              <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
-              <_E.Button type="primary" component={(<Link to="/Admin_Inventory">{Translate.translate('Admin_Home','Inventory')}</Link>)} />
-              <_E.Button type="primary" component={(<Link to="/Admin_System_Info">{Translate.translate('Admin_Home','SystemInfo')}</Link>)} />
-              <_E.Button type="primary" component={(<Link to="/Admin_Jofemar_Exerciser">{Translate.translate('Admin_Home','JofemarExerciser')}</Link>)} />
-              <_E.Button type="primary" component={(<Link to="/Admin_Settings">{Translate.translate('Admin_Home','MachineSettings')}</Link>)} />
-              <_E.Button type="primary" component={(<Link to="/Admin_Vms">{Translate.translate('Admin_Home','Vms')}</Link>)} />
-              <_E.Button type="primary" component={(<Link to="/Admin_Auto_Map">{Translate.translate('Admin_Home','AutoMap')}</Link>)} />
-              <_E.Button type="primary" component={(<Link to="/Admin_Check_Faults">{Translate.translate('Admin_Home','CheckFaults')}</Link>)} />
-              <_E.Button onClick={this.restart}>
-                  {Translate.translate('Admin_Home','Restart')}
-              </_E.Button>
-              <_E.Button onClick={this.shutdown()}>
-                  {Translate.translate('Admin_Home','ShutDown')}
-              </_E.Button>
+        	
+        	<h1 style={{fontWeight:300}}>Admin Home</h1>
+
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/AutoMap">{Translate.translate('AdminHome','AutoMap')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/CheckFaults">{Translate.translate('AdminHome','CheckFaults')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/ComponentControl">{Translate.translate('AdminHome','ComponentControl')}</Link>)} /></_E.Col>
+          </_E.Row>
+
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Vms">{Translate.translate('AdminHome','Vms')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Inventory">{Translate.translate('AdminHome','Inventory')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/JofemarExerciser">{Translate.translate('AdminHome','JofemarExerciser')}</Link>)} /></_E.Col>
+          </_E.Row>
+
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/PrintReaderTest">{Translate.translate('AdminHome','SystemInfo')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/SystemInfo">{Translate.translate('AdminHome','SystemInfo')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Settings">{Translate.translate('AdminHome','MachineSettings')}</Link>)} /></_E.Col>
+          </_E.Row>
+
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button size="lg" onClick={this.restart}>{Translate.translate('AdminHome','Restart')}</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>{/*<_E.Button type="primary" size="lg" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />*/}</_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}><_E.Button size="lg" onClick={this.shutdown()}>{Translate.translate('AdminHome','ShutDown')}</_E.Button></_E.Col>
+          </_E.Row>
+
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Storefront">Back to Storefront</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}></_E.Col>
+          </_E.Row>
+
         </_E.Col>
       </_E.Row>
     )
   }
 }
 
-export default Admin_Home
+export default AdminHome

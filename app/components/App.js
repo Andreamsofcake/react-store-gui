@@ -34,8 +34,6 @@ class App extends Component {
 		this.appTesting = true;
 		
 		console.log('App Top');
-		foo();
-		//console.log( RootscopeStore.getShowCredit() );
 		
 		init();
 		registerKF();
@@ -95,7 +93,7 @@ class App extends Component {
 			RootscopeActions.setCache('machineList', data);
 		});
 		
-		//RootscopeActions.setConfig('cgryNavTitle', Translate.translate('Category_Search', 'NavTitle'));
+		//RootscopeActions.setConfig('cgryNavTitle', Translate.translate('CategorySearch', 'NavTitle'));
 
         updateCredit();
         
@@ -136,10 +134,12 @@ class App extends Component {
 	}
 	
 	render() {
-
+		let adminInPath = /^\/Admin/.test(this.props.location.pathname);
 		return (
 			<div>{/* style={{maxWidth: '48em', margin: '0 auto'}}*/}
-			<AdminLoginButton testing={this.appTesting} />
+			{!adminInPath ? (
+				<AdminLoginButton testing={this.appTesting} />
+				) : null}
 			<CustomerStatusDisplay />
 			<ComEmulator />
 			<_E.Row gutter={-20}>
@@ -149,6 +149,7 @@ class App extends Component {
 						</div>)}
 				</_E.Col>
 			</_E.Row>
+			<pre>{JSON.stringify(this.props.location, null, 4)}</pre>
 			</div>
 		)
 	}

@@ -13,7 +13,7 @@ import {
 	isCartEmpty,
 } from '../utils/TsvUtils'
 
-class Category_Search extends Component {
+class CategorySearch extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
@@ -29,15 +29,15 @@ class Category_Search extends Component {
     }
 
     RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    //RootscopeActions.setSession('currentView', 'Category_Search');
-    //RootscopeActions.setCache('currentLocation', '/Category_Search');
+    //RootscopeActions.setSession('currentView', 'CategorySearch');
+    //RootscopeActions.setCache('currentLocation', '/CategorySearch');
     updateCredit();
 
 	this._onRootstoreChange = this._onRootstoreChange.bind(this);
   }
 
   back(){
-    browserHistory.push("/Product_Search");
+    browserHistory.push("/ProductSearch");
   }
 
   isActive(index) {
@@ -55,7 +55,7 @@ class Category_Search extends Component {
 		    	console.log('setting products data................................................................................' +"\n................................................................................\n");
 		    	console.log(data);
 		    	RootscopeActions.setConfig('products', data);
-		    	browserHistory.push("/Product_Search");
+		    	browserHistory.push("/ProductSearch");
 		    });
     	}
     });
@@ -95,10 +95,10 @@ class Category_Search extends Component {
 
   render() {
     return (
-      <_E.Row className="Category_Search">
+      <_E.Row className="CategorySearch">
         <_E.Col>
 
-          <h2>{Translate.translate('Category_Search', 'SelectCategory')}</h2>
+          <h2>{Translate.translate('CategorySearch', 'SelectCategory')}</h2>
         </_E.Col>
 
           {/*slider container*/}
@@ -126,11 +126,11 @@ class Category_Search extends Component {
   renderSubCgry() {
   	//<img className="regularBtn" id="backImg" src={Translate.localizedImage('back.png')} onClick={this.back} />
     return (
-      <_E.Button component={(<Link to="/Category_Search">{Translate.translate('Category_Search', 'Back')}</Link>)} />
+      <_E.Button component={(<Link to="/CategorySearch">{Translate.translate('CategorySearch', 'Back')}</Link>)} />
     )
   }
 
 }
 
 
-export default Category_Search
+export default CategorySearch

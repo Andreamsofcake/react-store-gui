@@ -13,13 +13,13 @@ import {
 	emptyCart
 } from '../utils/TsvUtils'
 
-class Admin_Jofemar_Exerciser extends Component {
+class AdminJofemarExerciser extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'Admin_Jofemar_Exerciser');
+    //RootscopeActions.setSession('currentView', 'AdminJofemarExerciser');
     TsvActions.apiCall('disableLoginDevices');
     emptyCart();
     TsvActions.apiCall('fetchMachineIds', (err, ids) => {
@@ -94,47 +94,47 @@ class Admin_Jofemar_Exerciser extends Component {
   render() {
 //curl -X POST -d '["DOOR_OPENED"]' http://localhost:8085/tsv/flashapi
     return (
-      <_E.Row className="Admin_Jofemar_Exerciser" >
+      <_E.Row className="AdminJofemarExerciser" style={{width: '50%', margin: '1em auto'}}>
         <_E.Col>
 
-          <h2 id="instruction">Exerciser Jofemar</h2>
+        	<h1 style={{fontWeight:300}}>Jofemar Exerciser</h1>
 
           <p>{this.state.vmsStatus}</p>
 
-          <div style={{width: '50%', margin: '0 auto'}}>
+          <div>
 
           { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
           <_E.Row>
-			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button   onClick={this.lightOn}>{Translate.translate('Admin_Jofemar_Exerciser', 'LightOn')}</_E.Button></_E.Col>
-			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button   onClick={this.lightOff}>{Translate.translate('Admin_Jofemar_Exerciser','LightOff')}</_E.Button></_E.Col>
+			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOn}>{Translate.translate('AdminJofemarExerciser', 'LightOn')}</_E.Button></_E.Col>
+			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOff}>{Translate.translate('AdminJofemarExerciser','LightOff')}</_E.Button></_E.Col>
           </_E.Row>
 
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
           </_E.Row>
 
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
           </_E.Row>
 
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
           </_E.Row>
 
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="warning" onClick={this.clear.bind(this)}>Clear</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" onClick={this.vend.bind(this)}>Vend</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="warning" onClick={this.clear.bind(this)}>Clear</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="primary" onClick={this.vend.bind(this)}>Vend</_E.Button></_E.Col>
           </_E.Row>
 
           <_E.Row><p>{' '}</p></_E.Row>
@@ -143,7 +143,7 @@ class Admin_Jofemar_Exerciser extends Component {
           </_E.Row>
           </div>
 
-          <_E.Button type="primary" component={(<Link to="/Admin_Home">{Translate.translate('Admin_Home','Home')}</Link>)} />
+          <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
           </_E.Col>
 
       </_E.Row>
@@ -151,4 +151,4 @@ class Admin_Jofemar_Exerciser extends Component {
   }
 }
 
-export default Admin_Jofemar_Exerciser
+export default AdminJofemarExerciser

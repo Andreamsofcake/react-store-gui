@@ -8,11 +8,17 @@ import View0 from './components/View0'
 import View2 from './components/View2'
 import PageIdle from './components/PageIdle'
 
-import AdminLogin from './components/AdminLogin'
+import AdminAutoMap from './components/AdminAutoMap'
+import AdminCheckFaults from './components/AdminCheckFaults'
+import AdminComponentControl from './components/AdminComponentControl'
 import AdminHome from './components/AdminHome'
-import AdminSettings from './components/AdminSettings'
+import AdminInventory from './components/AdminInventory'
 import AdminJofemarExerciser from './components/AdminJofemarExerciser'
+import AdminLogin from './components/AdminLogin'
 import AdminPrintReaderTester from './components/AdminPrintReaderTester'
+import AdminSettings from './components/AdminSettings'
+import AdminSystemInfo from './components/AdminSystemInfo'
+import AdminVms from './components/AdminVms'
 
 import CustomerSignup from './components/CustomerSignup'
 import CustomerLogin from './components/CustomerLogin'
@@ -20,9 +26,9 @@ import StorefrontStatic from './components/StorefrontStatic'
 import Storefront from './components/Storefront'
 import ProductDetail from './components/ProductDetail'
 import TransactionRefund from './components/TransactionRefund'
+import ChooseCashCard from './components/ChooseCashCard'
 import CardVending from './components/CardVending'
 import CashVending from './components/CashVending'
-import CashCard from './components/CashCard'
 import ShoppingCart from './components/ShoppingCart'
 import ThankYouMsg from './components/ThankYouMsg'
 import VendError from './components/VendError'
@@ -39,36 +45,46 @@ export default (
 
 		<Route path='View0' component={View0} />
 		<Route path='View2' component={View2} />
+		
+		<Route path='Admin'>
+			<IndexRoute component={AdminLogin} />
+			<Route path='AutoMap' component={AdminAutoMap} />
+			<Route path='CheckFaults' component={AdminCheckFaults} />
+			<Route path='ComponentControl' component={AdminComponentControl} />
+			<Route path='Home' component={AdminHome} />
+			<Route path='Inventory' component={AdminInventory} />
+			<Route path='JofemarExerciser' component={AdminJofemarExerciser} />
+			<Route path='Login' component={AdminLogin} />
+			<Route path='PrintReaderTest' component={AdminPrintReaderTester} />
+			<Route path='Settings' component={AdminSettings} />
+			<Route path='SystemInfo' component={AdminSystemInfo} />
+			<Route path='Vms' component={AdminVms} />
 
-		<Route path='Admin_Login' component={AdminLogin} />
-		<Route path='Admin_Home' component={AdminHome} />
-		<Route path='Admin_Settings' component={AdminSettings} />
-		<Route path='Admin_Jofemar_Exerciser' component={AdminJofemarExerciser} />
-		<Route path='Admin_PrintTester' component={AdminPrintReaderTester} />
+		</Route>
 
-		<Route path='Customer_Signup' component={CustomerSignup} />
-		<Route path='Customer_Signup/:step' component={CustomerSignup} />
+		<Route path='CustomerSignup' component={CustomerSignup} />
+		<Route path='CustomerSignup/:step' component={CustomerSignup} />
 
-		<Route path='Customer_Login' component={CustomerLogin} />
-		<Route path='Customer_Login/:step' component={CustomerLogin} />
+		<Route path='CustomerLogin' component={CustomerLogin} />
+		<Route path='CustomerLogin/:step' component={CustomerLogin} />
 
-		<Route path='Storefront_Static' component={StorefrontStatic} />
+		{/*<Route path='Storefront_Static' component={StorefrontStatic} />*/}
 		<Route path='Storefront' component={Storefront} />
-		<Route path='Product_Detail/:productID' component={ProductDetail} />
+		<Route path='ProductDetail/:productID' component={ProductDetail} />
 		<Route path='Transaction_Refund' component={TransactionRefund} />
-		<Route path='Card_Vending' component={CardVending} />
-		<Route path='Cash_Vending' component={CashVending} />
-		<Route path='Cash_Card' component={CashCard} />
+		<Route path='CardVending' component={CardVending} />
+		<Route path='CashVending' component={CashVending} />
+		<Route path='ChooseCashCard' component={ChooseCashCard} />
 
-		<Route path='Shopping_Cart' component={ShoppingCart} />
-		<Route path='ThankYou_Msg' component={ThankYouMsg} />
+		<Route path='ShoppingCart' component={ShoppingCart} />
+		<Route path='ThankYouMsg' component={ThankYouMsg} />
 
-		<Route path='Vend_Error' component={VendError} />
+		<Route path='VendError' component={VendError} />
 
-		<Route path='Page_Idle' component={PageIdle} />
+		<Route path='PageIdle' component={PageIdle} />
 
-		<Route path='Category_Search' component={CategorySearch} />
-		<Route path='Product_Search' component={ProductSearch} />
+		<Route path='CategorySearch' component={CategorySearch} />
+		<Route path='ProductSearch' component={ProductSearch} />
 		<Route path="*" component={NoMatch} />
 	</Route>
 );
