@@ -9,54 +9,100 @@ import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
 
-class AdminVms extends Component {
+class AdminComponentControl extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'AdminVms');
+    this.state = {
+      versionInfos: null
+    }
+
   }
 
-/*
-  lastHeartbeatTime() {
-    TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
-      this.setState({
-        lastHeartbeatTime: lastBeat
-      })
-    });
+  restartGUI() {
+    if (typeof window !== 'undefined') {
+	    window.location.reload();
+	} else {
+		console.error('cannot reset GUI, I have no window???');
+	}
   }
 
-  heartBeatNow() {
-    TsvActions.apiCall('heartBeatNow', () => {
-      this.lastHeartbeatTime();
-    });
+  back(){
+    browserHistory.push("/Admin/Home")
   }
 
   // Add change listeners to stores
   componentDidMount() {
-    TsvActions.apiCall('enumerateComponents', (err, data) => {
-       this.setState({ versionInfos: data })
-    })
+	TsvActions.apiCall('enumerateComponents', (err, data) => {
+      if (err) throw err;
+      console.log('enumerateComponents called back.... data:');
+      console.log(data);
+      this.setState({
+      	versionInfos: data
+      });
+	});
+  }
+
+  lastHeartbeatTime(e, lastBeat) {
+  	if (e) { e.preventDefault(); }
+  	if (lastBeat) {
+      this.setState({
+        lastHeartbeatTime: lastBeat
+      })
+  	} else {
+		TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+			if (lastBeat && typeof lastBeat === 'object') {
+				lastBeat = lastBeat.heartbeatTime;
+			}
+		  this.setState({
+			lastHeartbeatTime: lastBeat
+		  })
+		});
+	}
+  }
+
+  heartBeatNow(e) {
+  	e.preventDefault();
+    TsvActions.apiCall('heartBeatNow', (err, lastBeat) => {
+    	if (lastBeat && typeof lastBeat === 'object') {
+    		lastBeat = lastBeat.heartbeatTime;
+    	}
+      this.lastHeartbeatTime(null, lastBeat);
+    });
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
   }
-*/
 
   render() {
+  	if (!this.state.versionInfos || !this.state.versionInfos.length) {
+  		return (
+  			<h2>Loading, one moment please...</h2>
+  		);
+  	}
     return (
-      <_E.Row className="component" style={{maxWidth:'50%',margin: '0 auto'}}>
+      <_E.Row className="vms" style={{maxWidth:'50%',margin: '1em auto'}}>
+        	<h1 style={{fontWeight:300}}>Component Control</h1>
         <_E.Col>
-          <_E.Button size="lg" onClick={ () => { window.location.reload() } }>Restart GUI</_E.Button>
-          <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
-      	</_E.Col>
+          <_E.Button onClick={this.heartBeatNow.bind(this)}>{/*Translate.translate('AdminComponentControl','HeartBeatNow')*/}Send Heartbeat</_E.Button>
+          <_E.Button onClick={this.lastHeartbeatTime.bind(this)}>{/*Translate.translate('AdminComponentControl','LastHeartBeatTime')*/}Get Last Heartbeat</_E.Button>
+            {this.state.versionInfos.map((foo, $index) => {
+                return (
+                  <p key={$index}>{foo.name}: {foo.versionString} (built on: {foo.buildDate})</p>
+                )}
+              )}
+              <p>Last heartbeat: {this.state.lastHeartbeatTime || 'not retrieved yet'}</p>
+          <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
+        </_E.Col>
       </_E.Row>
 
 
     );
+
   }
 
 }
 
-export default AdminVms
+export default AdminComponentControl

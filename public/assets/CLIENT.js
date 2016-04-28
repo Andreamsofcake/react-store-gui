@@ -52567,6 +52567,8 @@
 	  value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(7);
@@ -52607,61 +52609,146 @@
 	//import TsvService from '../../lib/TsvService'
 
 
-	var AdminVms = function (_Component) {
-	  _inherits(AdminVms, _Component);
+	var AdminComponentControl = function (_Component) {
+	  _inherits(AdminComponentControl, _Component);
 
-	  function AdminVms(props, context) {
-	    _classCallCheck(this, AdminVms);
+	  function AdminComponentControl(props, context) {
+	    _classCallCheck(this, AdminComponentControl);
 
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AdminComponentControl).call(this, props, context));
 	    // MUST call super() before any this.*
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AdminVms).call(this, props, context));
-	    //RootscopeActions.setSession('currentView', 'AdminVms');
+
+
+	    _this.state = {
+	      versionInfos: null
+	    };
+
+	    return _this;
 	  }
 
-	  /*
-	    lastHeartbeatTime() {
-	      TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+	  _createClass(AdminComponentControl, [{
+	    key: 'restartGUI',
+	    value: function restartGUI() {
+	      if (typeof window !== 'undefined') {
+	        window.location.reload();
+	      } else {
+	        console.error('cannot reset GUI, I have no window???');
+	      }
+	    }
+	  }, {
+	    key: 'back',
+	    value: function back() {
+	      _reactRouter.browserHistory.push("/Admin/Home");
+	    }
+
+	    // Add change listeners to stores
+
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      _TsvActions2.default.apiCall('enumerateComponents', function (err, data) {
+	        if (err) throw err;
+	        console.log('enumerateComponents called back.... data:');
+	        console.log(data);
+	        _this2.setState({
+	          versionInfos: data
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'lastHeartbeatTime',
+	    value: function lastHeartbeatTime(e, lastBeat) {
+	      var _this3 = this;
+
+	      if (e) {
+	        e.preventDefault();
+	      }
+	      if (lastBeat) {
 	        this.setState({
 	          lastHeartbeatTime: lastBeat
-	        })
-	      });
+	        });
+	      } else {
+	        _TsvActions2.default.apiCall('lastHeartbeatTime', function (err, lastBeat) {
+	          if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
+	            lastBeat = lastBeat.heartbeatTime;
+	          }
+	          _this3.setState({
+	            lastHeartbeatTime: lastBeat
+	          });
+	        });
+	      }
 	    }
-	  
-	    heartBeatNow() {
-	      TsvActions.apiCall('heartBeatNow', () => {
-	        this.lastHeartbeatTime();
-	      });
-	    }
-	  
-	    // Add change listeners to stores
-	    componentDidMount() {
-	      TsvActions.apiCall('enumerateComponents', (err, data) => {
-	         this.setState({ versionInfos: data })
-	      })
-	    }
-	  
-	    // Remove change listers from stores
-	    componentWillUnmount() {
-	    }
-	  */
+	  }, {
+	    key: 'heartBeatNow',
+	    value: function heartBeatNow(e) {
+	      var _this4 = this;
 
-	  _createClass(AdminVms, [{
+	      e.preventDefault();
+	      _TsvActions2.default.apiCall('heartBeatNow', function (err, lastBeat) {
+	        if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
+	          lastBeat = lastBeat.heartbeatTime;
+	        }
+	        _this4.lastHeartbeatTime(null, lastBeat);
+	      });
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      if (!this.state.versionInfos || !this.state.versionInfos.length) {
+	        return _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Loading, one moment please...'
+	        );
+	      }
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'component', style: { maxWidth: '50%', margin: '0 auto' } },
+	        { className: 'vms', style: { maxWidth: '50%', margin: '1em auto' } },
+	        _react2.default.createElement(
+	          'h1',
+	          { style: { fontWeight: 300 } },
+	          'Component Control'
+	        ),
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
 	            _E.Button,
-	            { size: 'lg', onClick: function onClick() {
-	                window.location.reload();
-	              } },
-	            'Restart GUI'
+	            { onClick: this.heartBeatNow.bind(this) },
+	            'Send Heartbeat'
 	          ),
-	          _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
+	          _react2.default.createElement(
+	            _E.Button,
+	            { onClick: this.lastHeartbeatTime.bind(this) },
+	            'Get Last Heartbeat'
+	          ),
+	          this.state.versionInfos.map(function (foo, $index) {
+	            return _react2.default.createElement(
+	              'p',
+	              { key: $index },
+	              foo.name,
+	              ': ',
+	              foo.versionString,
+	              ' (built on: ',
+	              foo.buildDate,
+	              ')'
+	            );
+	          }),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Last heartbeat: ',
+	            this.state.lastHeartbeatTime || 'not retrieved yet'
+	          ),
+	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
 	              _reactRouter.Link,
 	              { to: '/Admin/Home' },
 	              Translate.translate('AdminHome', 'Home')
@@ -52671,10 +52758,10 @@
 	    }
 	  }]);
 
-	  return AdminVms;
+	  return AdminComponentControl;
 	}(_react.Component);
 
-	exports.default = AdminVms;
+	exports.default = AdminComponentControl;
 
 /***/ },
 /* 430 */
@@ -53430,8 +53517,6 @@
 	  value: true
 	});
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(7);
@@ -53472,142 +53557,61 @@
 	//import TsvService from '../../lib/TsvService'
 
 
-	var AdminComponentControl = function (_Component) {
-	  _inherits(AdminComponentControl, _Component);
+	var AdminVms = function (_Component) {
+	  _inherits(AdminVms, _Component);
 
-	  function AdminComponentControl(props, context) {
-	    _classCallCheck(this, AdminComponentControl);
+	  function AdminVms(props, context) {
+	    _classCallCheck(this, AdminVms);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AdminComponentControl).call(this, props, context));
 	    // MUST call super() before any this.*
-
-
-	    _this.state = {
-	      versionInfos: null
-	    };
-
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AdminVms).call(this, props, context));
+	    //RootscopeActions.setSession('currentView', 'AdminVms');
 	  }
 
-	  _createClass(AdminComponentControl, [{
-	    key: 'restartGUI',
-	    value: function restartGUI() {
-	      if (typeof window !== 'undefined') {
-	        window.location.reload();
-	      } else {
-	        console.error('cannot reset GUI, I have no window???');
-	      }
-	    }
-	  }, {
-	    key: 'back',
-	    value: function back() {
-	      _reactRouter.browserHistory.push("/Admin/Home");
-	    }
-
-	    // Add change listeners to stores
-
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      _TsvActions2.default.apiCall('enumerateComponents', function (err, data) {
-	        if (err) throw err;
-	        console.log('enumerateComponents called back.... data:');
-	        console.log(data);
-	        _this2.setState({
-	          versionInfos: data
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'lastHeartbeatTime',
-	    value: function lastHeartbeatTime(lastBeat) {
-	      var _this3 = this;
-
-	      if (lastBeat) {
+	  /*
+	    lastHeartbeatTime() {
+	      TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
 	        this.setState({
 	          lastHeartbeatTime: lastBeat
-	        });
-	      } else {
-	        _TsvActions2.default.apiCall('lastHeartbeatTime', function (err, lastBeat) {
-	          if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
-	            lastBeat = lastBeat.heartbeatTime;
-	          }
-	          _this3.setState({
-	            lastHeartbeatTime: lastBeat
-	          });
-	        });
-	      }
-	    }
-	  }, {
-	    key: 'heartBeatNow',
-	    value: function heartBeatNow() {
-	      var _this4 = this;
-
-	      _TsvActions2.default.apiCall('heartBeatNow', function (err, lastBeat) {
-	        if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
-	          lastBeat = lastBeat.heartbeatTime;
-	        }
-	        _this4.lastHeartbeatTime(lastBeat);
+	        })
 	      });
 	    }
-
+	  
+	    heartBeatNow() {
+	      TsvActions.apiCall('heartBeatNow', () => {
+	        this.lastHeartbeatTime();
+	      });
+	    }
+	  
+	    // Add change listeners to stores
+	    componentDidMount() {
+	      TsvActions.apiCall('enumerateComponents', (err, data) => {
+	         this.setState({ versionInfos: data })
+	      })
+	    }
+	  
 	    // Remove change listers from stores
+	    componentWillUnmount() {
+	    }
+	  */
 
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }, {
+	  _createClass(AdminVms, [{
 	    key: 'render',
 	    value: function render() {
-	      if (!this.state.versionInfos) {
-	        return _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Loading, one moment please...'
-	        );
-	      }
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'vms', style: { maxWidth: '50%', margin: '1em auto' } },
-	        _react2.default.createElement(
-	          'h1',
-	          { style: { fontWeight: 300 } },
-	          'Component Control'
-	        ),
+	        { className: 'component', style: { maxWidth: '50%', margin: '0 auto' } },
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
 	            _E.Button,
-	            { onClick: this.heartBeatNow.bind(this) },
-	            'Send Heartbeat'
+	            { size: 'lg', onClick: function onClick() {
+	                window.location.reload();
+	              } },
+	            'Restart GUI'
 	          ),
-	          _react2.default.createElement(
-	            _E.Button,
-	            { onClick: this.lastHeartbeatTime.bind(this) },
-	            'Get Last Heartbeat'
-	          ),
-	          this.state.versionInfos.map(function (foo, $index) {
-	            return _react2.default.createElement(
-	              'p',
-	              { key: $index },
-	              foo.name,
-	              ': ',
-	              foo.versionString,
-	              ' (built on: ',
-	              foo.buildDate,
-	              ')'
-	            );
-	          }),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            'Last heartbeat: ',
-	            this.state.lastHeartbeatTime || 'not retrieved yet'
-	          ),
-	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
+	          _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
 	              _reactRouter.Link,
 	              { to: '/Admin/Home' },
 	              Translate.translate('AdminHome', 'Home')
@@ -53617,10 +53621,10 @@
 	    }
 	  }]);
 
-	  return AdminComponentControl;
+	  return AdminVms;
 	}(_react.Component);
 
-	exports.default = AdminComponentControl;
+	exports.default = AdminVms;
 
 /***/ },
 /* 433 */
