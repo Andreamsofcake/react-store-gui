@@ -2402,7 +2402,7 @@
 	                            { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'left' } },
 	                            _react2.default.createElement(
 	                                _E.Button,
-	                                { size: 'lg', onClick: this.shutdown() },
+	                                { size: 'lg', onClick: this.shutdown },
 	                                Translate.translate('AdminHome', 'ShutDown')
 	                            )
 	                        )
