@@ -52607,124 +52607,61 @@
 	//import TsvService from '../../lib/TsvService'
 
 
-	var AdminComponentControl = function (_Component) {
-	  _inherits(AdminComponentControl, _Component);
+	var AdminVms = function (_Component) {
+	  _inherits(AdminVms, _Component);
 
-	  function AdminComponentControl(props, context) {
-	    _classCallCheck(this, AdminComponentControl);
+	  function AdminVms(props, context) {
+	    _classCallCheck(this, AdminVms);
 
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AdminComponentControl).call(this, props, context));
 	    // MUST call super() before any this.*
-
-
-	    _this.state = {
-	      versionInfos: null
-	    };
-
-	    return _this;
+	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AdminVms).call(this, props, context));
+	    //RootscopeActions.setSession('currentView', 'AdminVms');
 	  }
 
-	  _createClass(AdminComponentControl, [{
-	    key: 'restartGUI',
-	    value: function restartGUI() {
-	      if (typeof window !== 'undefined') {
-	        window.location.reload();
-	      } else {
-	        console.error('cannot reset GUI, I have no window???');
-	      }
-	    }
-	  }, {
-	    key: 'back',
-	    value: function back() {
-	      _reactRouter.browserHistory.push("/Admin/Home");
-	    }
-
-	    // Add change listeners to stores
-
-	  }, {
-	    key: 'componentDidMount',
-	    value: function componentDidMount() {
-	      var _this2 = this;
-
-	      _TsvActions2.default.apiCall('enumerateComponents', function (err, data) {
-	        if (err) throw err;
-	        console.log('enumerateComponents called back.... data:');
-	        console.log(data);
-	        _this2.setState({
-	          versionInfos: data
-	        });
-	      });
-	    }
-	  }, {
-	    key: 'lastHeartbeatTime',
-	    value: function lastHeartbeatTime() {
-	      var _this3 = this;
-
-	      _TsvActions2.default.apiCall('lastHeartbeatTime', function (err, lastBeat) {
-	        _this3.setState({
+	  /*
+	    lastHeartbeatTime() {
+	      TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+	        this.setState({
 	          lastHeartbeatTime: lastBeat
-	        });
+	        })
 	      });
 	    }
-	  }, {
-	    key: 'heartBeatNow',
-	    value: function heartBeatNow() {
-	      var _this4 = this;
-
-	      _TsvActions2.default.apiCall('heartBeatNow', function () {
-	        _this4.lastHeartbeatTime();
+	  
+	    heartBeatNow() {
+	      TsvActions.apiCall('heartBeatNow', () => {
+	        this.lastHeartbeatTime();
 	      });
 	    }
-
+	  
+	    // Add change listeners to stores
+	    componentDidMount() {
+	      TsvActions.apiCall('enumerateComponents', (err, data) => {
+	         this.setState({ versionInfos: data })
+	      })
+	    }
+	  
 	    // Remove change listers from stores
+	    componentWillUnmount() {
+	    }
+	  */
 
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }, {
+	  _createClass(AdminVms, [{
 	    key: 'render',
 	    value: function render() {
-	      if (!this.state.versionInfos) {
-	        return _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Loading, one moment please...'
-	        );
-	      }
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'vms', style: { maxWidth: '50%', margin: '1em auto' } },
-	        _react2.default.createElement(
-	          'h1',
-	          { style: { fontWeight: 300 } },
-	          'Component Control'
-	        ),
+	        { className: 'component', style: { maxWidth: '50%', margin: '0 auto' } },
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
 	            _E.Button,
-	            { onClick: this.heartBeatNow.bind(this) },
-	            Translate.translate('AdminComponentControl', 'HeartBeatNow')
+	            { size: 'lg', onClick: function onClick() {
+	                window.location.reload();
+	              } },
+	            'Restart GUI'
 	          ),
-	          _react2.default.createElement(
-	            _E.Button,
-	            { onClick: this.lastHeartbeatTime.bind(this) },
-	            Translate.translate('AdminComponentControl', 'LastHeartBeatTime')
-	          ),
-	          this.state.versionInfos.map(function (foo, $index) {
-	            return _react2.default.createElement(
-	              'p',
-	              { key: $index },
-	              foo.name,
-	              ': ',
-	              foo.versionString,
-	              ' (built on: ',
-	              foo.buildDate,
-	              ')'
-	            );
-	          }),
-	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
+	          _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
 	              _reactRouter.Link,
 	              { to: '/Admin/Home' },
 	              Translate.translate('AdminHome', 'Home')
@@ -52734,10 +52671,10 @@
 	    }
 	  }]);
 
-	  return AdminComponentControl;
+	  return AdminVms;
 	}(_react.Component);
 
-	exports.default = AdminComponentControl;
+	exports.default = AdminVms;
 
 /***/ },
 /* 430 */
@@ -53035,8 +52972,17 @@
 	            _E.Row,
 	            null,
 	            _react2.default.createElement(
+	              'p',
+	              null,
+	              ' '
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 1) },
@@ -53045,7 +52991,7 @@
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 2) },
@@ -53054,7 +53000,7 @@
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 3) },
@@ -53066,8 +53012,17 @@
 	            _E.Row,
 	            null,
 	            _react2.default.createElement(
+	              'p',
+	              null,
+	              ' '
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 4) },
@@ -53076,7 +53031,7 @@
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 5) },
@@ -53085,7 +53040,7 @@
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 6) },
@@ -53097,8 +53052,17 @@
 	            _E.Row,
 	            null,
 	            _react2.default.createElement(
+	              'p',
+	              null,
+	              ' '
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 7) },
@@ -53107,7 +53071,7 @@
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 8) },
@@ -53116,7 +53080,7 @@
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 9) },
@@ -53128,8 +53092,26 @@
 	            _E.Row,
 	            null,
 	            _react2.default.createElement(
+	              'p',
+	              null,
+	              ' '
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	              _react2.default.createElement(
+	                _E.Button,
+	                { type: 'warning', onClick: this.clear.bind(this) },
+	                'Clear'
+	              )
+	            ),
+	            _react2.default.createElement(
+	              _E.Col,
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	              _react2.default.createElement(
 	                _E.Button,
 	                { onClick: this.press.bind(this, 0) },
@@ -53138,16 +53120,19 @@
 	            ),
 	            _react2.default.createElement(
 	              _E.Col,
-	              { basis: '1/3' },
-	              _react2.default.createElement(
-	                _E.Button,
-	                { type: 'warning', onClick: this.clear },
-	                'Clear'
-	              )
+	              { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	              ' '
 	            )
 	          ),
-	          !this.state.bEnterCoil ? this.renderEnterCoilAmount() : null,
-	          this.state.bEnterCoil ? this.renderEnterButton() : null,
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              'p',
+	              null,
+	              ' '
+	            )
+	          ),
 	          _react2.default.createElement(
 	            _E.Row,
 	            null,
@@ -53155,12 +53140,19 @@
 	              _E.Col,
 	              null,
 	              _react2.default.createElement(
-	                _E.Demobox,
-	                null,
-	                this.state.num
+	                'div',
+	                { style: { textAlign: 'center', border: '1px solid #dfdfdf', borderRadius: '4px', margin: '20px auto' } },
+	                _react2.default.createElement(
+	                  'h2',
+	                  null,
+	                  'selection: ',
+	                  this.state.num
+	                )
 	              )
 	            )
 	          ),
+	          !this.state.bEnterCoil ? this.renderEnterCoilAmount() : null,
+	          this.state.bEnterCoil ? this.renderEnterButton() : null,
 	          this.state.bEnterCoil ? this.renderFillMachine() : null
 	        ),
 	        !this.state.bEnterCoil ? this.renderProductInfo() : null,
@@ -53183,8 +53175,8 @@
 	          { basis: '1/4' },
 	          _react2.default.createElement(
 	            _E.Button,
-	            { type: 'success', onClick: this.addStock },
-	            _react2.default.createElement(Glyph, { icon: 'plus' })
+	            { type: 'success', onClick: this.addStock.bind(this) },
+	            _react2.default.createElement(_E.Glyph, { icon: 'plus' })
 	          )
 	        ),
 	        _react2.default.createElement(
@@ -53192,8 +53184,8 @@
 	          { basis: '1/4' },
 	          _react2.default.createElement(
 	            _E.Button,
-	            { type: 'danger', onClick: this.removeStock },
-	            _react2.default.createElement(Glyph, { icon: 'dash' })
+	            { type: 'danger', onClick: this.removeStock.bind(this) },
+	            _react2.default.createElement(_E.Glyph, { icon: 'dash' })
 	          )
 	        )
 	      );
@@ -53206,10 +53198,10 @@
 	        null,
 	        _react2.default.createElement(
 	          _E.Col,
-	          { basis: '1/3' },
+	          { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	          _react2.default.createElement(
 	            _E.Button,
-	            { type: 'primary', onClick: this.enter },
+	            { type: 'primary', onClick: this.enter.bind(this) },
 	            'Enter'
 	          )
 	        )
@@ -53227,7 +53219,7 @@
 	          _RootscopeStore2.default.getCache('machineList').length > 1 ? _react2.default.createElement(_E.FormSelect, { name: 'selectMachine', value: this.state.machineID, options: this.getMachineSelectOptions() }) : null,
 	          _react2.default.createElement(
 	            _E.Button,
-	            { id: 'fillMachine', onClick: this.fillMachine },
+	            { id: 'fillMachine', onClick: this.fillMachine.bind(this) },
 	            Translate.translate('AdminInventory', 'FillMachine')
 	          ),
 	          _react2.default.createElement(
@@ -53265,7 +53257,7 @@
 	  }, {
 	    key: 'renderFillCoilButton',
 	    value: function renderFillCoilButton() {
-	      return _react2.default.createElement('img', { className: 'regularBtn', id: 'fillImg', src: Translate.localizedImage('Button_Fill.png'), onClick: this.fillCoil });
+	      return _react2.default.createElement('img', { className: 'regularBtn', id: 'fillImg', src: Translate.localizedImage('Button_Fill.png'), onClick: this.fillCoil.bind(this) });
 	    }
 	  }]);
 
@@ -53438,6 +53430,8 @@
 	  value: true
 	});
 
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _react = __webpack_require__(7);
@@ -53478,61 +53472,142 @@
 	//import TsvService from '../../lib/TsvService'
 
 
-	var AdminVms = function (_Component) {
-	  _inherits(AdminVms, _Component);
+	var AdminComponentControl = function (_Component) {
+	  _inherits(AdminComponentControl, _Component);
 
-	  function AdminVms(props, context) {
-	    _classCallCheck(this, AdminVms);
+	  function AdminComponentControl(props, context) {
+	    _classCallCheck(this, AdminComponentControl);
 
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AdminComponentControl).call(this, props, context));
 	    // MUST call super() before any this.*
-	    return _possibleConstructorReturn(this, Object.getPrototypeOf(AdminVms).call(this, props, context));
-	    //RootscopeActions.setSession('currentView', 'AdminVms');
+
+
+	    _this.state = {
+	      versionInfos: null
+	    };
+
+	    return _this;
 	  }
 
-	  /*
-	    lastHeartbeatTime() {
-	      TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+	  _createClass(AdminComponentControl, [{
+	    key: 'restartGUI',
+	    value: function restartGUI() {
+	      if (typeof window !== 'undefined') {
+	        window.location.reload();
+	      } else {
+	        console.error('cannot reset GUI, I have no window???');
+	      }
+	    }
+	  }, {
+	    key: 'back',
+	    value: function back() {
+	      _reactRouter.browserHistory.push("/Admin/Home");
+	    }
+
+	    // Add change listeners to stores
+
+	  }, {
+	    key: 'componentDidMount',
+	    value: function componentDidMount() {
+	      var _this2 = this;
+
+	      _TsvActions2.default.apiCall('enumerateComponents', function (err, data) {
+	        if (err) throw err;
+	        console.log('enumerateComponents called back.... data:');
+	        console.log(data);
+	        _this2.setState({
+	          versionInfos: data
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'lastHeartbeatTime',
+	    value: function lastHeartbeatTime(lastBeat) {
+	      var _this3 = this;
+
+	      if (lastBeat) {
 	        this.setState({
 	          lastHeartbeatTime: lastBeat
-	        })
-	      });
+	        });
+	      } else {
+	        _TsvActions2.default.apiCall('lastHeartbeatTime', function (err, lastBeat) {
+	          if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
+	            lastBeat = lastBeat.heartbeatTime;
+	          }
+	          _this3.setState({
+	            lastHeartbeatTime: lastBeat
+	          });
+	        });
+	      }
 	    }
-	  
-	    heartBeatNow() {
-	      TsvActions.apiCall('heartBeatNow', () => {
-	        this.lastHeartbeatTime();
-	      });
-	    }
-	  
-	    // Add change listeners to stores
-	    componentDidMount() {
-	      TsvActions.apiCall('enumerateComponents', (err, data) => {
-	         this.setState({ versionInfos: data })
-	      })
-	    }
-	  
-	    // Remove change listers from stores
-	    componentWillUnmount() {
-	    }
-	  */
+	  }, {
+	    key: 'heartBeatNow',
+	    value: function heartBeatNow() {
+	      var _this4 = this;
 
-	  _createClass(AdminVms, [{
+	      _TsvActions2.default.apiCall('heartBeatNow', function (err, lastBeat) {
+	        if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
+	          lastBeat = lastBeat.heartbeatTime;
+	        }
+	        _this4.lastHeartbeatTime(lastBeat);
+	      });
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
 	    key: 'render',
 	    value: function render() {
+	      if (!this.state.versionInfos) {
+	        return _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Loading, one moment please...'
+	        );
+	      }
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'component', style: { maxWidth: '50%', margin: '0 auto' } },
+	        { className: 'vms', style: { maxWidth: '50%', margin: '1em auto' } },
+	        _react2.default.createElement(
+	          'h1',
+	          { style: { fontWeight: 300 } },
+	          'Component Control'
+	        ),
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
 	            _E.Button,
-	            { size: 'lg', onClick: function onClick() {
-	                window.location.reload();
-	              } },
-	            'Restart GUI'
+	            { onClick: this.heartBeatNow.bind(this) },
+	            'Send Heartbeat'
 	          ),
-	          _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
+	          _react2.default.createElement(
+	            _E.Button,
+	            { onClick: this.lastHeartbeatTime.bind(this) },
+	            'Get Last Heartbeat'
+	          ),
+	          this.state.versionInfos.map(function (foo, $index) {
+	            return _react2.default.createElement(
+	              'p',
+	              { key: $index },
+	              foo.name,
+	              ': ',
+	              foo.versionString,
+	              ' (built on: ',
+	              foo.buildDate,
+	              ')'
+	            );
+	          }),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            'Last heartbeat: ',
+	            this.state.lastHeartbeatTime || 'not retrieved yet'
+	          ),
+	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
 	              _reactRouter.Link,
 	              { to: '/Admin/Home' },
 	              Translate.translate('AdminHome', 'Home')
@@ -53542,10 +53617,10 @@
 	    }
 	  }]);
 
-	  return AdminVms;
+	  return AdminComponentControl;
 	}(_react.Component);
 
-	exports.default = AdminVms;
+	exports.default = AdminComponentControl;
 
 /***/ },
 /* 433 */

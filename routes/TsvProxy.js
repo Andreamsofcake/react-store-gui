@@ -117,7 +117,7 @@ function multieventProxyPing(io) {
 		} else {
 
 			if (body && body.length && body[0] !== 'noEvent') {
-				debug('multievent response! body');
+				debug('FLASHAPI Proxy multievent response! body');
 				debug(body);
 
 				io.to('flash-api-multi-event').emit('flash-api-multi-event', [ body ]);

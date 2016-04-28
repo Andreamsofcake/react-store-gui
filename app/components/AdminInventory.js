@@ -86,7 +86,7 @@ class AdminInventory extends Component {
     });
       if(this.state.bEnterCoil){
           browserHistory.push("/Admin/Home");
-      }else{
+      } else {
         this.setState({
           bEnterCoil: true
         })
@@ -217,31 +217,41 @@ class AdminInventory extends Component {
 
             <h2 id="instruction">{ this.instructionMessage }</h2>
 
-            <_E.Row>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
-            </_E.Row>
-            <_E.Row>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
-            </_E.Row>
-            <_E.Row>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
-            </_E.Row>
-            <_E.Row>
-                <_E.Col basis="1/3"><_E.Button  onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
-                <_E.Col basis="1/3"><_E.Button type="warning" onClick={this.clear}>Clear</_E.Button></_E.Col>
-            </_E.Row>
-                { !this.state.bEnterCoil ? this.renderEnterCoilAmount() : null }
-                { this.state.bEnterCoil ? this.renderEnterButton() : null }
-            <_E.Row>
-              <_E.Col><_E.Demobox>{this.state.num}</_E.Demobox></_E.Col>
+			<_E.Row><p>{' '}</p></_E.Row>
+			<_E.Row>
+				<_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
             </_E.Row>
 
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
+            </_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
+            </_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="warning" onClick={this.clear.bind(this)}>Clear</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>&nbsp;</_E.Col>
+            </_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+              <_E.Col><div style={{textAlign:'center', border:'1px solid #dfdfdf',borderRadius:'4px',margin: '20px auto'}}><h2>selection: {this.state.num}</h2></div></_E.Col>
+            </_E.Row>
+
+			{ !this.state.bEnterCoil ? this.renderEnterCoilAmount() : null }
+			{ this.state.bEnterCoil ? this.renderEnterButton() : null }
 
             { this.state.bEnterCoil ? this.renderFillMachine() : null }
 
@@ -262,8 +272,8 @@ class AdminInventory extends Component {
   renderEnterCoilAmount(){
     return(
       <_E.Row>
-          <_E.Col basis="1/4"><_E.Button type="success" onClick={this.addStock}><Glyph icon="plus" /></_E.Button></_E.Col>
-          <_E.Col basis="1/4"><_E.Button type="danger" onClick={this.removeStock}><Glyph icon="dash" /></_E.Button></_E.Col>
+          <_E.Col basis="1/4"><_E.Button type="success" onClick={this.addStock.bind(this)}><_E.Glyph icon="plus" /></_E.Button></_E.Col>
+          <_E.Col basis="1/4"><_E.Button type="danger" onClick={this.removeStock.bind(this)}><_E.Glyph icon="dash" /></_E.Button></_E.Col>
       </_E.Row>
     )
   }
@@ -271,7 +281,7 @@ class AdminInventory extends Component {
   renderEnterButton() {
     return(
       <_E.Row>
-        <_E.Col basis="1/3"><_E.Button type="primary" onClick={this.enter}>Enter</_E.Button></_E.Col>
+        <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" onClick={this.enter.bind(this)}>Enter</_E.Button></_E.Col>
       </_E.Row>
     )
   }
@@ -281,7 +291,7 @@ class AdminInventory extends Component {
       <_E.Col>
         <_E.Row>
             { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
-            <_E.Button id="fillMachine" onClick={this.fillMachine}>{Translate.translate('AdminInventory', 'FillMachine')}</_E.Button>
+            <_E.Button id="fillMachine" onClick={this.fillMachine.bind(this)}>{Translate.translate('AdminInventory', 'FillMachine')}</_E.Button>
             <p id="displayMachine">{Translate.translate('AdminInventory','FillAllCoilsForMachine')} { this.state.machineID + 1 }</p>
         </_E.Row>
       </_E.Col>
@@ -300,7 +310,7 @@ class AdminInventory extends Component {
 
   renderFillCoilButton() {
     return(
-        <img className="regularBtn" id="fillImg" src={Translate.localizedImage('Button_Fill.png')} onClick={this.fillCoil} />
+        <img className="regularBtn" id="fillImg" src={Translate.localizedImage('Button_Fill.png')} onClick={this.fillCoil.bind(this)} />
     )
   }
 

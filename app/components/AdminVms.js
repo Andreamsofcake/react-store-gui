@@ -44,17 +44,29 @@ class AdminComponentControl extends Component {
 	});
   }
 
-  lastHeartbeatTime() {
-    TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+  lastHeartbeatTime(lastBeat) {
+  	if (lastBeat) {
       this.setState({
         lastHeartbeatTime: lastBeat
       })
-    });
+  	} else {
+		TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+			if (lastBeat && typeof lastBeat === 'object') {
+				lastBeat = lastBeat.heartbeatTime;
+			}
+		  this.setState({
+			lastHeartbeatTime: lastBeat
+		  })
+		});
+	}
   }
 
   heartBeatNow() {
-    TsvActions.apiCall('heartBeatNow', () => {
-      this.lastHeartbeatTime();
+    TsvActions.apiCall('heartBeatNow', (err, lastBeat) => {
+    	if (lastBeat && typeof lastBeat === 'object') {
+    		lastBeat = lastBeat.heartbeatTime;
+    	}
+      this.lastHeartbeatTime(lastBeat);
     });
   }
 
@@ -72,13 +84,14 @@ class AdminComponentControl extends Component {
       <_E.Row className="vms" style={{maxWidth:'50%',margin: '1em auto'}}>
         	<h1 style={{fontWeight:300}}>Component Control</h1>
         <_E.Col>
-          <_E.Button onClick={this.heartBeatNow.bind(this)}>{Translate.translate('AdminComponentControl','HeartBeatNow')}</_E.Button>
-          <_E.Button onClick={this.lastHeartbeatTime.bind(this)}>{Translate.translate('AdminComponentControl','LastHeartBeatTime')}</_E.Button>
+          <_E.Button onClick={this.heartBeatNow.bind(this)}>{/*Translate.translate('AdminComponentControl','HeartBeatNow')*/}Send Heartbeat</_E.Button>
+          <_E.Button onClick={this.lastHeartbeatTime.bind(this)}>{/*Translate.translate('AdminComponentControl','LastHeartBeatTime')*/}Get Last Heartbeat</_E.Button>
             {this.state.versionInfos.map((foo, $index) => {
                 return (
                   <p key={$index}>{foo.name}: {foo.versionString} (built on: {foo.buildDate})</p>
                 )}
               )}
+              <p>Last heartbeat: {this.state.lastHeartbeatTime || 'not retrieved yet'}</p>
           <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
         </_E.Col>
       </_E.Row>
