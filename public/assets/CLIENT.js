@@ -5310,7 +5310,7 @@
 			value: function cancel() {
 				// only in cash.js:
 				//RootscopeActions.setSession('insertedAmount', 0);
-				emptyCart();
+				(0, _TsvUtils.emptyCart)();
 				(0, _TsvUtils.stopPaymentTimer)();
 				// only in cash.js:
 				//browserHistory.push("/View1");

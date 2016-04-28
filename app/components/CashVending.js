@@ -21,6 +21,7 @@ import {
 	gotoDefaultIdlePage,
 	cardTransaction,
 	updateCredit,
+	emptyCart,
 } from '../utils/TsvUtils'
 
 class CashVending extends Component {
