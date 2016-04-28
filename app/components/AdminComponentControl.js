@@ -46,22 +46,16 @@ class AdminComponentControl extends Component {
 
   lastHeartbeatTime(e, lastBeat) {
   	if (e) { e.preventDefault(); }
-  	if (lastBeat) {
-      this.setState({
-        lastHeartbeatTime: lastBeat
-      })
-  	} else {
-		TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
-			console.log('[lastHeartbeatTime] ok, what does this look like?');
-			console.log(lastBeat);
-			if (lastBeat && typeof lastBeat === 'object') {
-				lastBeat = lastBeat.heartbeatTime;
-			}
-		  this.setState({
-			lastHeartbeatTime: lastBeat
-		  })
-		});
-	}
+	TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+		console.log('[lastHeartbeatTime] ok, what does this look like?');
+		console.log(lastBeat);
+		if (lastBeat && typeof lastBeat === 'object') {
+			lastBeat = lastBeat.heartbeatTime;
+		}
+	  this.setState({
+		lastHeartbeatTime: lastBeat
+	  })
+	});
   }
 
   heartBeatNow(e) {
@@ -70,7 +64,7 @@ class AdminComponentControl extends Component {
     	if (lastBeat && typeof lastBeat === 'object') {
     		lastBeat = lastBeat.heartbeatTime;
     	}
-      this.lastHeartbeatTime(null, lastBeat);
+		this.lastHeartbeatTime(null);
     });
   }
 
@@ -79,23 +73,21 @@ class AdminComponentControl extends Component {
   }
 
   render() {
-  	if (!this.state.versionInfos || !this.state.versionInfos.length) {
-  		return (
-  			<h2>Loading, one moment please...</h2>
-  		);
-  	}
     return (
       <_E.Row className="vms" style={{maxWidth:'50%',margin: '1em auto'}}>
         	<h1 style={{fontWeight:300}}>Component Control</h1>
         <_E.Col>
+          <p>
           <_E.Button onClick={this.heartBeatNow.bind(this)}>{/*Translate.translate('AdminComponentControl','HeartBeatNow')*/}Send Heartbeat</_E.Button>
+          {' '}
           <_E.Button onClick={this.lastHeartbeatTime.bind(this)}>{/*Translate.translate('AdminComponentControl','LastHeartBeatTime')*/}Get Last Heartbeat</_E.Button>
-            {this.state.versionInfos.map((foo, $index) => {
-                return (
-                  <p key={$index}>{foo.name}: {foo.versionString} (built on: {foo.buildDate})</p>
-                )}
-              )}
-              <p>Last heartbeat: {this.state.lastHeartbeatTime || 'not retrieved yet'}</p>
+          </p>
+          
+              <p>{' '}</p>
+              <p style={{fontSize:'1.3em'}}>Last heartbeat: {this.state.lastHeartbeatTime || 'not retrieved yet'}</p>
+
+	          {this.renderVersionInfos()}
+
           <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
         </_E.Col>
       </_E.Row>
@@ -103,6 +95,22 @@ class AdminComponentControl extends Component {
 
     );
 
+  }
+  
+  renderVersionInfos() {
+  	if (!this.state.versionInfos || !this.state.versionInfos.length) {
+  		return (
+  			<h2>Loading version info, one moment please...</h2>
+  		);
+  	}
+	var stuff = this.state.versionInfos.map((foo, $index) => {
+			return (
+			  <p key={$index}>{foo.name}: {foo.versionString} (built on: {foo.buildDate})</p>
+			)
+		}
+	  );
+	return stuff;
+  	
   }
 
 }

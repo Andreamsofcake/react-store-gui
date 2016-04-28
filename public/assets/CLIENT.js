@@ -52665,22 +52665,16 @@
 	      if (e) {
 	        e.preventDefault();
 	      }
-	      if (lastBeat) {
-	        this.setState({
+	      _TsvActions2.default.apiCall('lastHeartbeatTime', function (err, lastBeat) {
+	        console.log('[lastHeartbeatTime] ok, what does this look like?');
+	        console.log(lastBeat);
+	        if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
+	          lastBeat = lastBeat.heartbeatTime;
+	        }
+	        _this3.setState({
 	          lastHeartbeatTime: lastBeat
 	        });
-	      } else {
-	        _TsvActions2.default.apiCall('lastHeartbeatTime', function (err, lastBeat) {
-	          console.log('[lastHeartbeatTime] ok, what does this look like?');
-	          console.log(lastBeat);
-	          if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
-	            lastBeat = lastBeat.heartbeatTime;
-	          }
-	          _this3.setState({
-	            lastHeartbeatTime: lastBeat
-	          });
-	        });
-	      }
+	      });
 	    }
 	  }, {
 	    key: 'heartBeatNow',
@@ -52692,7 +52686,7 @@
 	        if (lastBeat && (typeof lastBeat === 'undefined' ? 'undefined' : _typeof(lastBeat)) === 'object') {
 	          lastBeat = lastBeat.heartbeatTime;
 	        }
-	        _this4.lastHeartbeatTime(null, lastBeat);
+	        _this4.lastHeartbeatTime(null);
 	      });
 	    }
 
@@ -52704,13 +52698,6 @@
 	  }, {
 	    key: 'render',
 	    value: function render() {
-	      if (!this.state.versionInfos || !this.state.versionInfos.length) {
-	        return _react2.default.createElement(
-	          'h2',
-	          null,
-	          'Loading, one moment please...'
-	        );
-	      }
 	      return _react2.default.createElement(
 	        _E.Row,
 	        { className: 'vms', style: { maxWidth: '50%', margin: '1em auto' } },
@@ -52723,33 +52710,32 @@
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
-	            _E.Button,
-	            { onClick: this.heartBeatNow.bind(this) },
-	            'Send Heartbeat'
+	            'p',
+	            null,
+	            _react2.default.createElement(
+	              _E.Button,
+	              { onClick: this.heartBeatNow.bind(this) },
+	              'Send Heartbeat'
+	            ),
+	            ' ',
+	            _react2.default.createElement(
+	              _E.Button,
+	              { onClick: this.lastHeartbeatTime.bind(this) },
+	              'Get Last Heartbeat'
+	            )
 	          ),
-	          _react2.default.createElement(
-	            _E.Button,
-	            { onClick: this.lastHeartbeatTime.bind(this) },
-	            'Get Last Heartbeat'
-	          ),
-	          this.state.versionInfos.map(function (foo, $index) {
-	            return _react2.default.createElement(
-	              'p',
-	              { key: $index },
-	              foo.name,
-	              ': ',
-	              foo.versionString,
-	              ' (built on: ',
-	              foo.buildDate,
-	              ')'
-	            );
-	          }),
 	          _react2.default.createElement(
 	            'p',
 	            null,
+	            ' '
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { style: { fontSize: '1.3em' } },
 	            'Last heartbeat: ',
 	            this.state.lastHeartbeatTime || 'not retrieved yet'
 	          ),
+	          this.renderVersionInfos(),
 	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
 	              _reactRouter.Link,
 	              { to: '/Admin/Home' },
@@ -52757,6 +52743,30 @@
 	            ) })
 	        )
 	      );
+	    }
+	  }, {
+	    key: 'renderVersionInfos',
+	    value: function renderVersionInfos() {
+	      if (!this.state.versionInfos || !this.state.versionInfos.length) {
+	        return _react2.default.createElement(
+	          'h2',
+	          null,
+	          'Loading version info, one moment please...'
+	        );
+	      }
+	      var stuff = this.state.versionInfos.map(function (foo, $index) {
+	        return _react2.default.createElement(
+	          'p',
+	          { key: $index },
+	          foo.name,
+	          ': ',
+	          foo.versionString,
+	          ' (built on: ',
+	          foo.buildDate,
+	          ')'
+	        );
+	      });
+	      return stuff;
 	    }
 	  }]);
 
