@@ -105,8 +105,8 @@ class AdminJofemarExerciser extends Component {
 
           { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
           <_E.Row>
-			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOn}>{Translate.translate('AdminJofemarExerciser', 'LightOn')}</_E.Button></_E.Col>
-			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOff}>{Translate.translate('AdminJofemarExerciser','LightOff')}</_E.Button></_E.Col>
+			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOn.bind(this)}>{Translate.translate('AdminJofemarExerciser', 'LightOn')}</_E.Button></_E.Col>
+			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOff.bind(this)}>{Translate.translate('AdminJofemarExerciser','LightOff')}</_E.Button></_E.Col>
           </_E.Row>
 
           <_E.Row><p>{' '}</p></_E.Row>

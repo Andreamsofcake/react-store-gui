@@ -51883,7 +51883,7 @@
 	                { sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
 	                _react2.default.createElement(
 	                  _E.Button,
-	                  { size: 'lg', onClick: this.lightOn },
+	                  { size: 'lg', onClick: this.lightOn.bind(this) },
 	                  Translate.translate('AdminJofemarExerciser', 'LightOn')
 	                )
 	              ),
@@ -51892,7 +51892,7 @@
 	                { sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
 	                _react2.default.createElement(
 	                  _E.Button,
-	                  { size: 'lg', onClick: this.lightOff },
+	                  { size: 'lg', onClick: this.lightOff.bind(this) },
 	                  Translate.translate('AdminJofemarExerciser', 'LightOff')
 	                )
 	              )
