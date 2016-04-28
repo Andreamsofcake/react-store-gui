@@ -9,41 +9,15 @@ import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
 
-class AdminComponentControl extends Component {
+class AdminVms extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    this.state = {
-      versionInfos: null
-    }
-
+    //RootscopeActions.setSession('currentView', 'AdminVms');
   }
 
-  restartGUI() {
-    if (typeof window !== 'undefined') {
-	    window.location.reload();
-	} else {
-		console.error('cannot reset GUI, I have no window???');
-	}
-  }
-
-  back(){
-    browserHistory.push("/Admin/Home")
-  }
-
-  // Add change listeners to stores
-  componentDidMount() {
-	TsvActions.apiCall('enumerateComponents', (err, data) => {
-      if (err) throw err;
-      console.log('enumerateComponents called back.... data:');
-      console.log(data);
-      this.setState({
-      	versionInfos: data
-      });
-	});
-  }
-
+/*
   lastHeartbeatTime() {
     TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
       this.setState({
@@ -58,36 +32,31 @@ class AdminComponentControl extends Component {
     });
   }
 
+  // Add change listeners to stores
+  componentDidMount() {
+    TsvActions.apiCall('enumerateComponents', (err, data) => {
+       this.setState({ versionInfos: data })
+    })
+  }
+
   // Remove change listers from stores
   componentWillUnmount() {
   }
+*/
 
   render() {
-  	if (!this.state.versionInfos) {
-  		return (
-  			<h2>Loading, one moment please...</h2>
-  		);
-  	}
     return (
-      <_E.Row className="vms" style={{maxWidth:'50%',margin: '1em auto'}}>
-        	<h1 style={{fontWeight:300}}>Component Control</h1>
+      <_E.Row className="component" style={{maxWidth:'50%',margin: '0 auto'}}>
         <_E.Col>
-          <_E.Button onClick={this.heartBeatNow.bind(this)}>{Translate.translate('AdminComponentControl','HeartBeatNow')}</_E.Button>
-          <_E.Button onClick={this.lastHeartbeatTime.bind(this)}>{Translate.translate('AdminComponentControl','LastHeartBeatTime')}</_E.Button>
-            {this.state.lastHeartBeatTime.map((beat, $index) => {
-                return (
-                  <p key={$index} > {beat.key} : {beat}</p>
-                )}
-              )}
-          <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
-        </_E.Col>
+          <_E.Button size="lg" onClick={ () => { window.location.reload() } }>Restart GUI</_E.Button>
+          <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
+      	</_E.Col>
       </_E.Row>
 
 
     );
-
   }
 
 }
 
-export default AdminComponentControl
+export default AdminVms

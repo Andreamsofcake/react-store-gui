@@ -52712,14 +52712,16 @@
 	            { onClick: this.lastHeartbeatTime.bind(this) },
 	            Translate.translate('AdminComponentControl', 'LastHeartBeatTime')
 	          ),
-	          this.state.lastHeartBeatTime.map(function (beat, $index) {
+	          this.state.versionInfos.map(function (foo, $index) {
 	            return _react2.default.createElement(
 	              'p',
 	              { key: $index },
-	              ' ',
-	              beat.key,
-	              ' : ',
-	              beat
+	              foo.name,
+	              ': ',
+	              foo.versionString,
+	              ' (built on: ',
+	              foo.buildDate,
+	              ')'
 	            );
 	          }),
 	          _react2.default.createElement(_E.Button, { type: 'primary', component: _react2.default.createElement(
