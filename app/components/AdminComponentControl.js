@@ -36,6 +36,8 @@ class AdminComponentControl extends Component {
   componentDidMount() {
 	TsvActions.apiCall('enumerateComponents', (err, data) => {
       if (err) throw err;
+      console.log('enumerateComponents called back.... data:');
+      console.log(data);
       this.setState({
       	versionInfos: data
       });
@@ -56,7 +58,7 @@ class AdminComponentControl extends Component {
       <_E.Row className="vms" style={{maxWidth:'50%',margin: '1em auto'}}>
         	<h1 style={{fontWeight:300}}>Component Control</h1>
         <_E.Col>
-          <_E.Button onClick={this.heartBeatNow}>{Tranlate.translate('AdminComponentControl','HeartBeatNow')}</_E.Button>
+          <_E.Button onClick={this.heartBeatNow}>{Translate.translate('AdminComponentControl','HeartBeatNow')}</_E.Button>
           <_E.Button onClick={this.lastHeartbeatTime()}>{Translate.translate('AdminComponentControl','LastHeartBeatTime')}</_E.Button>
             {this.state.lastHeartBeatTime.map((beat, $index) => {
                 return (

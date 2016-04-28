@@ -85,7 +85,8 @@ function runTsvFlashApi(request, reply) {
 	
 	RQ.post({
 		url: 'http://localhost:8085/tsv/flashapi',
-		body: JSON.stringify(payload)
+		body: payload,
+		json: true
 	}, function(err, response, body) {
 		if (err) {
 			debug('FLASHAPI Proxy error:');
@@ -102,7 +103,7 @@ function runTsvFlashApi(request, reply) {
 function multieventProxyPing(io) {
 	RQ.post({
 		url: 'http://localhost:8085/tsv/flashapi/multievent',
-		
+		json: true
 	}, function(err, response, body) {
 		
 		if (err || !body) {
@@ -116,8 +117,7 @@ function multieventProxyPing(io) {
 		} else {
 
 			if (body && body.length && body[0] !== 'noEvent') {
-				debug('multievent response! err then body');
-				debug(err);
+				debug('multievent response! body');
 				debug(body);
 
 				io.to('flash-api-multi-event').emit('flash-api-multi-event', [ body ]);

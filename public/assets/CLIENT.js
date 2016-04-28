@@ -52648,6 +52648,8 @@
 
 	      _TsvActions2.default.apiCall('enumerateComponents', function (err, data) {
 	        if (err) throw err;
+	        console.log('enumerateComponents called back.... data:');
+	        console.log(data);
 	        _this2.setState({
 	          versionInfos: data
 	        });
@@ -52683,7 +52685,7 @@
 	          _react2.default.createElement(
 	            _E.Button,
 	            { onClick: this.heartBeatNow },
-	            Tranlate.translate('AdminComponentControl', 'HeartBeatNow')
+	            Translate.translate('AdminComponentControl', 'HeartBeatNow')
 	          ),
 	          _react2.default.createElement(
 	            _E.Button,
