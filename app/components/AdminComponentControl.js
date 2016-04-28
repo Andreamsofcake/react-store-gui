@@ -44,6 +44,20 @@ class AdminComponentControl extends Component {
 	});
   }
 
+  lastHeartbeatTime() {
+    TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
+      this.setState({
+        lastHeartbeatTime: lastBeat
+      })
+    });
+  }
+
+  heartBeatNow() {
+    TsvActions.apiCall('heartBeatNow', () => {
+      this.lastHeartbeatTime();
+    });
+  }
+
   // Remove change listers from stores
   componentWillUnmount() {
   }
@@ -58,8 +72,8 @@ class AdminComponentControl extends Component {
       <_E.Row className="vms" style={{maxWidth:'50%',margin: '1em auto'}}>
         	<h1 style={{fontWeight:300}}>Component Control</h1>
         <_E.Col>
-          <_E.Button onClick={this.heartBeatNow}>{Translate.translate('AdminComponentControl','HeartBeatNow')}</_E.Button>
-          <_E.Button onClick={this.lastHeartbeatTime()}>{Translate.translate('AdminComponentControl','LastHeartBeatTime')}</_E.Button>
+          <_E.Button onClick={this.heartBeatNow.bind(this)}>{Translate.translate('AdminComponentControl','HeartBeatNow')}</_E.Button>
+          <_E.Button onClick={this.lastHeartbeatTime.bind(this)}>{Translate.translate('AdminComponentControl','LastHeartBeatTime')}</_E.Button>
             {this.state.lastHeartBeatTime.map((beat, $index) => {
                 return (
                   <p key={$index} > {beat.key} : {beat}</p>

@@ -52655,6 +52655,26 @@
 	        });
 	      });
 	    }
+	  }, {
+	    key: 'lastHeartbeatTime',
+	    value: function lastHeartbeatTime() {
+	      var _this3 = this;
+
+	      _TsvActions2.default.apiCall('lastHeartbeatTime', function (err, lastBeat) {
+	        _this3.setState({
+	          lastHeartbeatTime: lastBeat
+	        });
+	      });
+	    }
+	  }, {
+	    key: 'heartBeatNow',
+	    value: function heartBeatNow() {
+	      var _this4 = this;
+
+	      _TsvActions2.default.apiCall('heartBeatNow', function () {
+	        _this4.lastHeartbeatTime();
+	      });
+	    }
 
 	    // Remove change listers from stores
 
@@ -52684,12 +52704,12 @@
 	          null,
 	          _react2.default.createElement(
 	            _E.Button,
-	            { onClick: this.heartBeatNow },
+	            { onClick: this.heartBeatNow.bind(this) },
 	            Translate.translate('AdminComponentControl', 'HeartBeatNow')
 	          ),
 	          _react2.default.createElement(
 	            _E.Button,
-	            { onClick: this.lastHeartbeatTime() },
+	            { onClick: this.lastHeartbeatTime.bind(this) },
 	            Translate.translate('AdminComponentControl', 'LastHeartBeatTime')
 	          ),
 	          this.state.lastHeartBeatTime.map(function (beat, $index) {
