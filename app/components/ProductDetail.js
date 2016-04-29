@@ -9,7 +9,10 @@ import { browserHistory, Link } from 'react-router'
 import ShoppingCartMini from './ShoppingCartMini'
 import * as _E from 'elemental'
 
-import { currencyFilter } from '../utils/TsvUtils'
+import {
+	currencyFilter,
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class ProductDetail extends Component {
 
@@ -31,6 +34,7 @@ class ProductDetail extends Component {
      	loadedAtLeastOnce: true,
 		product: StorefrontStore.getProductById(this.props.params.productID)
      })
+     startGeneralIdleTimer(this.props.location.pathname);
    }
 
    // Remove change listers from stores
@@ -38,7 +42,8 @@ class ProductDetail extends Component {
      StorefrontStore.removeChangeListener(this._onStoreFrontChange);
    }
 
-   setPrdSelected(e) {
+   addToCart(e) {
+   		startGeneralIdleTimer(this.props.location.pathname);
 		if (this.state.product) {
 			StorefrontActions.addToCart(this.state.product);
 		}
@@ -49,6 +54,7 @@ class ProductDetail extends Component {
    }
    
    toggleModal() {
+   	startGeneralIdleTimer(this.props.location.pathname);
 	this.setState({
 		modalIsOpen: !(this.state.modalIsOpen)
 	});
@@ -105,7 +111,7 @@ class ProductDetail extends Component {
                  </_E.Col>
                  <_E.Col basis="50%">
                    <p className="prdPrice">Price ${currencyFilter(prod.price)} </p>
-                   <_E.Button className="product-button" onClick={this.setPrdSelected.bind(this)}>Add to cart</_E.Button>
+                   {this.renderAddToCart()}
                    <hr style={{margin: '20px auto', height: '2px'}} />
                    <_E.Button size="lg" type="success" component={(<Link to="/Storefront">{Translate.translate('ShoppingCart','Shop_More')}</Link>)} />
                  </_E.Col>
@@ -123,6 +129,17 @@ class ProductDetail extends Component {
        </_E.Row>
      );
    }
+
+	renderAddToCart() {
+		if (this.state.product.stockCount > 0) {
+			return (
+				<_E.Button className="product-button" onClick={this.addToCart.bind(this)}>Add to cart</_E.Button>
+			);
+		}
+		return (
+			<span style={{fontSize: '1.1em', textTransform: 'uppercase', textAlign: 'center', display: 'block', float: 'right'}}>out of stock</span>
+		);
+	}
 
    renderMiniCart() {
 	   /**** TODO: FIXME: this needs to be a css class, not embedded: ************/

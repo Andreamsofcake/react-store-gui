@@ -13,6 +13,9 @@ import ShoppingCartMini from './ShoppingCartMini'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class Storefront extends Component {
 
@@ -34,6 +37,8 @@ class Storefront extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+  	//console.log('STOREFRONT mounted... route: '+this.props.location.pathname);
+  	startGeneralIdleTimer(this.props.location.pathname);
 
     RootscopeStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
@@ -83,13 +88,15 @@ class Storefront extends Component {
   }
 
   categoryClick(categoryID) {
+  	startGeneralIdleTimer(this.props.location.pathname);
     if (categoryID) {
       return StorefrontActions.toggleIDtoCategoryFilter(categoryID)
     }
     StorefrontActions.clearCategoryFilter()
   }
 
-  setPrdSelected(product, e) {
+  addToCart(product, e) {
+  	startGeneralIdleTimer(this.props.location.pathname);
     StorefrontActions.addToCart(product, e)
   }
 
@@ -216,7 +223,7 @@ class Storefront extends Component {
       return (
         <ProductListItem
         	key={idx}
-			onClick={this.setPrdSelected.bind(this)}
+			onClick={this.addToCart.bind(this)}
 			data={prd}
 		/>
       );

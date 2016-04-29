@@ -8,6 +8,9 @@ import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class AdminVms extends Component {
 
@@ -15,6 +18,10 @@ class AdminVms extends Component {
     // MUST call super() before any this.*
     super(props, context);
     //RootscopeActions.setSession('currentView', 'AdminVms');
+  }
+  
+  componentDidMount() {
+	startGeneralIdleTimer(this.props.location.pathname);
   }
 
 /*

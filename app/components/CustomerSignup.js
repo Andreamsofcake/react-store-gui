@@ -22,6 +22,10 @@ import * as _E from 'elemental'
 
 import { uniq } from '../utils'
 
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
+
 class CustomerSignup extends Component {
 
   constructor(props, context) {
@@ -44,6 +48,7 @@ class CustomerSignup extends Component {
   	this.setState({
   		signupToken: uniq()
   	});
+	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores
@@ -62,6 +67,7 @@ class CustomerSignup extends Component {
   }
 
   _onCSStoreChange(event) {
+	startGeneralIdleTimer(this.props.location.pathname);
   	switch (event.type) {
   		case appConstants.LICENSE_SCANNED_SIGNUP:
   		case appConstants.PRINT_1SCANNED_SIGNUP:

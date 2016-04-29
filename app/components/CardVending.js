@@ -7,17 +7,19 @@ import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
+import VendCartItem from './VendCartItem'
+
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
 	updateCredit,
 	resetPaymentTimer,
 	killTimers,
-	stopPaymentTimer,
 	setVendingInProcessFlag,
 	emptyCart,
 	gotoDefaultIdlePage,
 	vendResponse,
+	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
 import { currencyFilter } from '../utils/TsvUtils'
@@ -106,7 +108,8 @@ class CardVending extends Component {
 	}
 
 	cancel(){
-		TsvActions.apiCall('stopPaymentTimer');
+		TsvActions.apiCall('disablePaymentDevice');
+		killTimers('paymentTimer');
 		emptyCart();
 		gotoDefaultIdlePage();
 	}
@@ -171,6 +174,7 @@ class CardVending extends Component {
   }
 
 	componentDidMount() {
+		startGeneralIdleTimer(this.props.location.pathname);
 		TsvStore.addChangeListener(this._onTsvChange);
 	}
 
@@ -210,24 +214,6 @@ class CardVending extends Component {
 
               </_E.Row>
 
-        {/*
-        <table className="cart">
-
-            <tr>
-              {cart.map((prd, $index) => {
-                return(
-                  <td key={$index}>
-
-                      <img id="prdImg" src={ prd.imagePath } alt="productImage"/> err-src="../Images/ProductImageNotFound.png"
-
-                  </td>
-                )}
-              )}
-
-            </tr>
-
-        </table>
-        */}
 
           { this.state.summary && this.state.summary.TotalPrice >= 1 ? this.renderTotalPriceLabel() : null }
 
@@ -246,7 +232,7 @@ class CardVending extends Component {
 
   renderCancelBtnCash(){
     return(
-      <_E.Button type="warning" onClick={this.cancel}>Cancel</_E.Button> /*<img src="../Images/cancel.png" onClick={this.cancel()} />*/
+      <_E.Button type="warning" onClick={this.cancel.bind(this)}>Cancel</_E.Button> /*<img src="../Images/cancel.png" onClick={this.cancel()} />*/
     )
   }
 

@@ -9,6 +9,9 @@ import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
 import TsvStore from '../stores/TsvStore'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class AdminCheckFaults extends Component {
 
@@ -51,6 +54,7 @@ class AdminCheckFaults extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
+		startGeneralIdleTimer(this.props.location.pathname);
 		RootscopeActions.setSession('bRunningClearFaults', false);
 		this.getFaultCodes(this.state.machineID);
 		TsvStore.addChangeListener(this._onTsvChange);

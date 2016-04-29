@@ -8,6 +8,9 @@ import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class System_Info extends Component {
 
@@ -26,6 +29,7 @@ class System_Info extends Component {
     	console.log(data);
        this.setState({ versionInfos: data })
     })
+	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores

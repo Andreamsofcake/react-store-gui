@@ -10,7 +10,8 @@ import * as _E from 'elemental'
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
-	emptyCart
+	emptyCart,
+	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
 class AdminJofemarExerciser extends Component {
@@ -74,6 +75,7 @@ class AdminJofemarExerciser extends Component {
 
     // Add change listeners to stores
   componentDidMount() {
+	startGeneralIdleTimer(this.props.location.pathname);
   	TsvStore.addChangeListener(this._onTsvChange);
   }
 

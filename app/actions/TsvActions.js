@@ -41,19 +41,29 @@ var TsvActions = {
 		SocketAPI.send('flash-api-multi-event', { _ws_args: { subscribe_to_externals: true } }, (response) => {
 			console.warn('SOCKET multi-event response');
 			console.log(JSON.stringify(response));
+			// we can get multiple responses at a time:
 			if (response && response instanceof Array && response[0] instanceof Array) {
-				response = response[0];
+				if (response.length > 1) {
+					response.forEach( R => {
+						//setTimeout(
+						_R_(R);
+					});
+				} else {
+					_R_(response[0]);
+				}
 			}
-			if (response) {
-				AppDispatcher.handleServerAction({
-					actionType: appConstants.FLASH_API_MULTIEVENT,
-					data: response
-				});
-			} else {
-				console.error('[flash-api-multi-event] pinged, but nothing there?');
-				console.log(response);
-				console.warn(' ((( you should look into the linkDown / failCount stuff from old TsvService ... ))) ');
-				// if above response is truly an error, track it a few times then if "link is really down", supposed to be in idle state
+			function _R_(response) {
+				if (response) {
+					AppDispatcher.handleServerAction({
+						actionType: appConstants.FLASH_API_MULTIEVENT,
+						data: response
+					});
+				} else {
+					console.error('[flash-api-multi-event] pinged, but nothing there?');
+					console.log(response);
+					console.warn(' ((( you should look into the linkDown / failCount stuff from old TsvService ... ))) ');
+					// if above response is truly an error, track it a few times then if "link is really down", supposed to be in idle state
+				}
 			}
 		});
 	},

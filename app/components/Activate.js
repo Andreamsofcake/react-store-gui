@@ -9,7 +9,8 @@ import { browserHistory } from 'react-router'
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
-	gotoDefaultIdlePage
+	gotoDefaultIdlePage,
+	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
 
@@ -51,6 +52,7 @@ class Activate extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores

@@ -5,7 +5,12 @@ import { forceBoolean, moneyformat } from './index'
 import * as Translate from '../../lib/Translate'
 import { browserHistory } from 'react-router'
 
-var serviceIsStarted = false;
+var serviceIsStarted = false
+
+	// currentPageView: replacement for rootscope.currentLocation or whatever....
+	// still need to track it somehow, and this script will never get access to router.location.path
+	, currentPageView
+	;
 
 export function init() {
 	if (!serviceIsStarted) {
@@ -104,6 +109,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 					/*
 					// Kent is not sure about this? if we are "done" and vend error happens, why turn the payment device back on?
 					if (RootscopeStore.getCache('currentLocation') == "/CashVending"){
+					if (currentPageView == 'CashVending') {
 						TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
 					}
 					*/
@@ -248,62 +254,59 @@ export function onGeneralTimeout() {
 		Translate.selectLanguage(dfltLang);
 	}
 
-	console.log("RootscopeStore.getCache('currentLocation'): "+RootscopeStore.getCache('currentLocation'));
+	//console.log("RootscopeStore.getCache('currentLocation'): "+RootscopeStore.getCache('currentLocation'));
+	console.log('currentPageView: '+currentPageView);
 
-	switch (RootscopeStore.getCache('currentLocation')) {
-		case "/View0":
+	//switch (RootscopeStore.getCache('currentLocation')) {
+	switch (currentPageView) {
+
+		case "/PageIdle": // this is the "idle" page... should be here instead of storefront eventually, but for now we have no idle graphics
+		case "/View0": // this is the "reset" page... should be here instead of storefront eventually, but for now we have no idle graphics
+// these two have their own timers:
+		case "/ThankYouMsg":
+		case "/VendError":
 			break;
+
 		case "/View1":
+		case "/CategorySearch":
+		case "/ProductSearch":
 			emptyCart();
 			gotoDefaultIdlePage(); //$location, $rootScope);
 			return;
-		case "/CategorySearch":
-			gotoDefaultIdlePage(); //$location, $rootScope);
-			return;
-		case "/ProductSearch":
-			gotoDefaultIdlePage(); //$location, $rootScope);
-			return;
+/*
 		case "/MakeDonation":
 			//tsv.emptyCart();
 			break;
-		case "/ThankYouMsg":
-			break;
-		case "/VendError":
-			break;
+*/
 		case "/CashVending":
-			console.log("On cash page idle timeout disabled...Running the paymentTimer...");
-			// but why are we emptying the cart here without going to DefaultIdlePage???
-			// probably should check to see if any cash has been paid yet,
-			// if none, then empty + idle, if some, ask "Are you still there????" with countdown, click "yes" resets main payment idle timer
-			emptyCart();
-			break;
 		case "/CardVending":
-			console.log("On card page idle timeout disabled...Running the paymentTimer...");
+			console.log("On "+currentPageView+" idle timeout disabled...Running the paymentTimer...");
 			// but why are we emptying the cart here without going to DefaultIdlePage???
 			// probably should check to see if any card action has run yet but no resolution (no success and no fail)
 			// if none, then empty + idle, if some, "Payment is still processing, one moment please", resets main payment idle timer
 			// will need to track this somehow through TsvStore?
 			emptyCart();
 			break;
-		case "/AdminCheckFaults":
+
+		case "/Admin/CheckFaults":
 			if(!RootscopeStore.getSession('bRunningClearFaults')){
 				gotoDefaultIdlePage(); //$location, $rootScope);
-				console.log("Idle Timeout from AdminCheckFaults not running ClearFaults");
+				console.log("Idle Timeout from /Admin/CheckFaults not running ClearFaults");
 				return;
 			}
 			break;
-		case "/AdminAutoMap":
+
+		case "/Admin/AutoMap":
 			if(!RootscopeStore.getSession('bRunningAutoMap')){
 				gotoDefaultIdlePage(); //$location, $rootScope);
-				console.log("Idle Timeout from AdminAutoMap not running AutoMap");
+				console.log("Idle Timeout from /Admin/AutoMap not running AutoMap");
 				return;
 			}
 			break;
-		case "/PageIdle":
-			return;
 
 		default:
 			//console.log("Idle Timeout from "+RootscopeStore.getCache('currentLocation'));
+			console.log("Idle Timeout from " + currentPageView);
 			emptyCart();
 			gotoDefaultIdlePage(); //$location, $rootScope);
 			return;
@@ -312,12 +315,24 @@ export function onGeneralTimeout() {
 	startGeneralIdleTimer(); //$location, $rootScope);//Ping added on 1016/2015
 }
 
-export function startGeneralIdleTimer() {
+export function thankYouTimer() {
+    var timer = setTimeout( gotoDefaultIdlePage, RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ) );
+    RootscopeActions.setSession('thankyouTimer', timer);
+}
+
+export function vendErrorTimer() {
+    var timer = setTimeout( gotoDefaultIdlePage, RootscopeActions.getCache('custommachinesettings.VendErrorTimeout', 10000) );
+    RootscopeActions.setSession('vendErrorTimer', timer);
+}
+
+export function startGeneralIdleTimer(fromPage) {
+	if (fromPage) {
+		currentPageView = fromPage;
+	}
 	killGeneralIdleTimer();
-	
 	var timer = setTimeout(() => {
 		//console.log("Hi Ping generalIdleTimer timeout...");
-		console.log("onGeneralIdleTimeout() @" + RootscopeStore.getCache('custommachinesettings.generalPageTimeout', "default"));
+		console.log("onGeneralIdleTimeout() @" + RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000));
 		onGeneralTimeout();
 	}, RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
 	
@@ -325,10 +340,13 @@ export function startGeneralIdleTimer() {
 }
 
 export function killGeneralIdleTimer() {
+	killTimers(['generalIdleTimer']);
+	/*
 	var timer = RootscopeStore.getSession('generalIdleTimer');
 	if (timer === null || timer === undefined || !timer) return;
 	RootscopeActions.setSession('generalIdleTimer', null);
 	clearTimeout(timer);
+	*/
 }
 
 export function isCartEmpty(cb) {

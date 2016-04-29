@@ -16,7 +16,7 @@ module.exports = function(request, reply) {
 	
 	debug('send flash command: ' + JSON.stringify(emulator_command) );
 	
-	if (emulator_command && emulator_command[0] === 'insertCash') {
+	if (emulator_command && emulator_command[0] && emulator_command[0][0] && emulator_command[0][0] === 'insertCash') {
 		var amt = emulator_command[1];
 		var totalInserted = request.yar.get('emulatorInsertedCash') || 0
 		totalInserted += emulator_command[1] * 100; // guess we're dealing in cents!
@@ -25,7 +25,9 @@ module.exports = function(request, reply) {
 	}
 	
 	// commands are sent through a "multi event" handler, which expects arrays of arrays
-	io.to('flash-api-multi-event').emit('flash-api-multi-event', [ emulator_command ]);
+	//io.to('flash-api-multi-event').emit('flash-api-multi-event', [ emulator_command ]);
+	// update: having ComEmulator send pre-wrapped commands
+	io.to('flash-api-multi-event').emit('flash-api-multi-event', emulator_command );
 	
 	reply({ status: 'ok', msg: 'flash api multi event sent', emulator_command }).code(200);
 

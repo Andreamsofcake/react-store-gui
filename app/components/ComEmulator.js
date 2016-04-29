@@ -59,66 +59,89 @@ class ComEmulator extends Component {
 			// cash:
 			{
 				label: 'Insert $5',
-				cmd: ['insertCash', 5],
+				cmd: [['insertCash', 5]],
 				showFor: ['ChooseCashCard','CashVending']
 			},
 			{
 				label: 'Insert $10',
-				cmd: ['insertCash', 10],
+				cmd: [['insertCash', 10]],
 				showFor: ['ChooseCashCard','CashVending']
 			},
 			{
 				label: 'Insert $20',
-				cmd: ['insertCash', 20],
+				cmd: [['insertCash', 20]],
 				showFor: ['ChooseCashCard','CashVending']
 			},
 			{
 				label: 'Insert $50',
-				cmd: ['insertCash', 50],
+				cmd: [['insertCash', 50]],
 				showFor: ['ChooseCashCard','CashVending']
 			},
 			{
 				label: 'Insert $100',
-				cmd: ['insertCash', 100],
+				cmd: [['insertCash', 100]],
 				showFor: ['ChooseCashCard','CashVending']
 			},
 
 			// credit cards:
 			{
 				label: 'CC Insert',
-				cmd: ['cardTransactionResponse', 'CARD_INSERTED'],
+				cmd: [['cardTransactionResponse', 'CARD_INSERTED']],
 				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Processing',
-				cmd: ['cardTransactionResponse', 'CARD_PROCESSING'],
+				cmd: [['cardTransactionResponse', 'CARD_PROCESSING']],
 				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Approve',
-				cmd: ['cardTransactionResponse', 'CARD_APPROVED'],
+				cmd: [['cardTransactionResponse', 'CARD_APPROVED']],
 				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Connect Fail',
-				cmd: ['cardTransactionResponse', 'CARD_CONNECTION_FAILURE'],
+				cmd: [['cardTransactionResponse', 'CARD_CONNECTION_FAILURE']],
 				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Decline',
-				cmd: ['cardTransactionResponse', 'CARD_DECLINED'],
+				cmd: [['cardTransactionResponse', 'CARD_DECLINED']],
 				showFor: ['ChooseCashCard','CardVending']
 			},
 			{
 				label: 'CC Unknown Error',
-				cmd: ['cardTransactionResponse', 'CARD_UNKNOWN_ERROR'],
+				cmd: [['cardTransactionResponse', 'CARD_UNKNOWN_ERROR']],
 				showFor: ['ChooseCashCard','CardVending']
+			},
+
+			// admin
+			{
+				label: 'Sample Automap',
+				cmd: [
+					['notifyMapStatusChange', 'Map', { machineID: 0, coilNumber: '10', channel: 1, tray: 1 } ],
+					['notifyMapStatusChange', 'Map', { machineID: 0, coilNumber: '11', channel: 1, tray: 1 } ],
+					['notifyMapStatusChange', 'Map', { machineID: 0, coilNumber: '12', channel: 1, tray: 1 } ],
+					['notifyMapStatusChange', 'Map', { machineID: 0, coilNumber: '13', channel: 1, tray: 1 } ],
+					['notifyMapStatusChange', 'InvalidChannel', { machineID: 0, coilNumber: '', channel: 1, tray: 1 } ],
+					['notifyMapStatusChange', 'InvalidChannel', { machineID: 0, coilNumber: '', channel: 2, tray: 1 } ],
+				],
+				showFor: ['AdminAutoMap']
+			},
+
+			{
+				label: 'END Automap',
+				cmd: [
+					['notifyMapStatusChange', 'End', { machineID: 0, coilNumber: null, channel: '0', tray: 0 } ],
+				],
+				showFor: ['AdminAutoMap']
 			},
 		];
 		
 		var pathname = '';
 		if (typeof window !== 'undefined') {
-			pathname = window.location.pathname.replace('/', '');
+			pathname = window.location.pathname.replace(/\//g, '');
+			console.log('[COM EMULATOR] pathname: '+pathname);
 		}
 		
 		let showButtons = buttons.filter( B => {

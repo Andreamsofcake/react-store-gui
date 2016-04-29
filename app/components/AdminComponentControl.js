@@ -8,6 +8,9 @@ import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class AdminComponentControl extends Component {
 
@@ -34,6 +37,7 @@ class AdminComponentControl extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+	startGeneralIdleTimer(this.props.location.pathname);
 	TsvActions.apiCall('enumerateComponents', (err, data) => {
       if (err) throw err;
       console.log('enumerateComponents called back.... data:');

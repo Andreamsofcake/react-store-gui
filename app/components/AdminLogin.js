@@ -11,6 +11,7 @@ import TsvActions from '../actions/TsvActions'
 import {
 	emptyCart,
 	gotoDefaultIdlePage,
+	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
 class AdminLogin extends Component {
@@ -85,6 +86,7 @@ class AdminLogin extends Component {
   }
     // Add change listeners to stores
   componentDidMount() {
+	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores

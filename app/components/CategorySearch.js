@@ -72,7 +72,7 @@ class CategorySearch extends Component {
 
 		isCartEmpty( (err, isEmpty) => {
 			if (RootscopeStore.getCache('custommachinesettings.txtIdleScene') === "category_search" || !isEmpty ) {
-				TsvService.startGeneralIdleTimer();
+				startGeneralIdleTimer(this.props.location.pathname);
 			}
 		})
   }

@@ -16,12 +16,13 @@ import TsvActions from '../actions/TsvActions'
 import {
 	resetPaymentTimer,
 	vendResponse,
-	stopPaymentTimer,
+	killTimers,
 	startPaymentTimer,
 	gotoDefaultIdlePage,
 	cardTransaction,
 	updateCredit,
 	emptyCart,
+	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
 class CashVending extends Component {
@@ -73,8 +74,9 @@ class CashVending extends Component {
   cancel(){
   	// only in cash.js:
     //RootscopeActions.setSession('insertedAmount', 0);
+    TsvActions.apiCall('disablePaymentDevice');
+    killTimers('paymentTimer');
     emptyCart();
-    stopPaymentTimer();
   	// only in cash.js:
     //browserHistory.push("/View1");
     gotoDefaultIdlePage();
@@ -112,6 +114,7 @@ class CashVending extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
+		startGeneralIdleTimer(this.props.location.pathname);
 		TsvStore.addChangeListener(this._onTsvChange);
 		RootscopeStore.addChangeListener(this._onRootstoreChange);
 		// let's check the balance at module load:

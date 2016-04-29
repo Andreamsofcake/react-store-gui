@@ -9,6 +9,9 @@ import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
 import { uniq } from '../utils'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class Admin_Print_Reader_Tester extends Component {
 
@@ -31,6 +34,7 @@ class Admin_Print_Reader_Tester extends Component {
 // Add change listeners to stores
   componentDidMount() {
     AdminStore.addChangeListener(this._onStoreChange);
+	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores

@@ -8,6 +8,9 @@ import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class AdminInventory extends Component {
 
@@ -201,6 +204,7 @@ class AdminInventory extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores

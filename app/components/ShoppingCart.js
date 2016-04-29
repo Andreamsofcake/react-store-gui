@@ -14,6 +14,7 @@ import {
 	gotoDefaultIdlePage,
 	cardTransaction,
 	updateCredit,
+	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
 
@@ -68,7 +69,7 @@ class ShoppingCart extends Component {
 			if (err) throw err;
 			RootscopeActions.setCache('shoppingCart', data);
 		});
-
+		startGeneralIdleTimer(this.props.location.pathname);
 	}
 	
 	componentWillUnmount() {
@@ -152,6 +153,7 @@ class ShoppingCart extends Component {
   		  <ShoppingCartItem
   			 key={$index}
   			 data={prd}
+  			 location={this.props.location}
   		  />
   		);
   	  })

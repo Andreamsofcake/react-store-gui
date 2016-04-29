@@ -8,7 +8,8 @@ import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import {
-	gotoDefaultIdlePage
+	gotoDefaultIdlePage,
+	thankYouTimer,
 } from '../utils/TsvUtils'
 
 class ThankYouMsg extends Component {
@@ -19,9 +20,8 @@ class ThankYouMsg extends Component {
 
     RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
     updateCredit();
-
-    var timer = setTimeout( () => { gotoDefaultIdlePage() }, RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ) );
-    RootscopeActions.setSession('thankyouTimer', timer);
+    
+    thankYouTimer();
 
   };
 

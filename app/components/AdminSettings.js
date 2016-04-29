@@ -8,6 +8,9 @@ import * as _E from 'elemental'
 import { Link, browserHistory } from 'react-router'
 
 import TsvActions from '../actions/TsvActions'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class AdminSettings extends Component {
 
@@ -92,6 +95,7 @@ class AdminSettings extends Component {
   // Add change listeners to stores
   componentDidMount() {
   	RootscopeStore.addChangeListener(this._onRootscopeChange);
+	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores

@@ -10,6 +10,9 @@ import { Link, browserHistory } from 'react-router'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
+import {
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class AdminAutoMap extends Component {
 
@@ -19,7 +22,7 @@ class AdminAutoMap extends Component {
 
     this.state = {
       bShowMachine2 : false,
-      status: "",
+      status: "Idle",
       coilMap:[]
     }
 
@@ -39,7 +42,10 @@ class AdminAutoMap extends Component {
         RootscopeActions.setSession('bRunningAutoMap', true);
         TsvActions.apiCall('runAutoMap', machineID, -1);
         this.setState({
-          coilMap: []
+        	status: 'Starting AutoMap',
+			coilMap: [],
+			slots: [],
+			lastSlot: null
         })
     }
   }
@@ -47,6 +53,7 @@ class AdminAutoMap extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
+		startGeneralIdleTimer(this.props.location.pathname);
 		TsvStore.addChangeListener(this._onTsvChange);
         RootscopeActions.setSession('bRunningAutoMap', false);
 	}
@@ -61,20 +68,33 @@ class AdminAutoMap extends Component {
 
 			let status = event.data[0];
 			let info = event.data[1];
+			
 			let state = {
 				status: status
 			}
 
 			switch (status) {
 				case "Map":
-					let coilMap = this.state.coilMap || [];
-					if (this.state.coilMap.indexOf(info.coilNumber) == -1) {
-						state.coilMap = coilMap.push(info.coilNumber);
+					if (info && info.coilNumber) {
+						let coilMap = this.state.coilMap || [];
+						let slots = this.state.slots || [];
+						console.warn('ok wtf is coilMap? '+typeof coilMap);
+						console.log(coilMap);
+						if (coilMap.indexOf(info.coilNumber) === -1) {
+							coilMap.push(info.coilNumber);
+							state.coilMap = coilMap;
+							slots.push(info);
+							state.slots = slots;
+							state.lastSlot = info;
+						}
 					}
 					break;
 
 				case "End":
-					RootscopeActions.setSession('bRunningAutoMap', false);
+					// invariant! dang it
+					setTimeout(() => {
+						RootscopeActions.setSession('bRunningAutoMap', false);
+					}, 150);
 					console.warn('ok, should be pushing this coil map back out to the API!');
 					console.log(this.state.coilMap);
 					break;
@@ -93,24 +113,17 @@ class AdminAutoMap extends Component {
         	<h1 style={{fontWeight:300}}>Auto Map</h1>
 
         <_E.Col>
-          <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
-
-          <h2>{this.state.status}</h2>
 
           <_E.Row>
-            <_E.Col>
-              <_E.Row>
-                  <_E.Col basis="1/2"><_E.Button size="lg" id="machine0"  onClick={this.mapMachine.bind(this, 0)}>{Translate.translate('AutoMap','Map1')}</_E.Button></_E.Col>
-
-                  { this.state.bShowMachine2 ? this.renderShowMachine2() : null }
-
-              </_E.Row>
-            </_E.Col>
+			  <_E.Col md="33%" lg="33%"><_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} /></_E.Col>
+			  <_E.Col md="33%" lg="33%"><_E.Button size="lg" id="machine0"  onClick={this.mapMachine.bind(this, 0)}>{Translate.translate('AutoMap','Map1')}</_E.Button></_E.Col>
+			  <_E.Col md="33%" lg="33%">{ this.state.bShowMachine2 ? this.renderShowMachine2() : null }</_E.Col>
           </_E.Row>
 
+          <h2>Map status: {this.state.status}</h2>
+
           <_E.Row id="wrapper">
-          	<p style={{marginTop:'3em',clear:'both'}}>Coil map:</p>
-            <pre>{JSON.stringify(this.state.coilMap, null, 4)}</pre>
+          	{this.renderMap()}
           </_E.Row>
         </_E.Col>
       </_E.Row>
@@ -119,6 +132,88 @@ class AdminAutoMap extends Component {
     );
 
   }
+
+  renderMap() {
+  	
+  	if (this.state.status == 'End') {
+  		return (
+			<div>
+			<_E.Row>
+				{this.renderMapRows()}
+			</_E.Row>
+
+          	<p style={{marginTop:'3em',clear:'both'}}>Slots:</p>
+            <pre>{JSON.stringify(this.state.slots, null, 4)}</pre>
+            </div>
+  		);
+  	} else if (this.state.status) {
+  		var rnd = parseInt(Math.random() * 10)
+  			, dots = ''
+  			;
+  		for (var i=1;i<rnd;i+=1) { dots += '.'; }
+  		return (
+  			<div>
+  				<h3>Mapping in progress{dots}</h3>
+  				<p>Last status: {this.state.status}</p>
+			<_E.Row>
+				{this.renderMapRows()}
+			</_E.Row>
+  			</div>
+  		);
+  	} else {
+  		return (
+  			<div>
+  				<h3>Mapping Process Idle</h3>
+  			</div>
+  		);
+  	}
+  }
+  
+  renderMapRows() {
+  	var mapRows = this.parseGrid(this.state.coilMap);
+  	if (!mapRows || !mapRows.length) {
+  		return (
+  			<p><em>No map rows found</em></p>
+  		);
+  	}
+  	 var rows = mapRows.map((row, $index) => {
+          var width = 100/row.length
+              var col = row.map((slot, $index) => {
+                return (
+                  <_E.Col key={$index} lg={width+"%"}>
+                  	<div style={{width: '100%', borderRadius: '4px', border: '2px solid black', margin: '1em', padding: '0.5em', textAlign: 'center'}}>
+	                    {slot}
+	                </div>
+                  </_E.Col>
+                )
+              })
+              return col
+            }
+        )
+    return rows;
+  }
+
+// borrowed from ClientPortal/PlanogramBuilder:
+   parseGrid(coilMap){
+        var slots = coilMap;
+        var rows = [];
+     slots.map( function(NODE) {
+       var thisRow = parseInt(NODE / 10)
+         , thisCol = NODE % 10 // not sure if we need this
+         ;
+       if (!rows[thisRow]) { rows[thisRow] = []; }
+       rows[thisRow].push( NODE );
+      });
+      return rows;
+      /*
+      var state = this.state;
+      state.slots = slots;
+      state.rows = rows;
+      state.pSlotConfig = data;
+      state.planogram.planogramSlotConfiguration = data._id;
+      this.setState(state);
+      */
+   }
 
   renderShowMachine2() {
     return(

@@ -2,19 +2,25 @@ import React, { Component } from 'react'
 import * as _E from 'elemental'
 import StorefrontActions from '../actions/StorefrontActions'
 
-import { currencyFilter } from '../utils/TsvUtils'
+import {
+	currencyFilter,
+	startGeneralIdleTimer,
+} from '../utils/TsvUtils'
 
 class ShoppingCartItem extends Component {
 
   minusQty() { // c
+  	startGeneralIdleTimer(this.props.location.pathname);
     StorefrontActions.minusQty( this.props.data ) // , prd.coilNumber
   }
 
   removeAllQty() { // c, q
+  	startGeneralIdleTimer(this.props.location.pathname);
     StorefrontActions.removeAllQty( this.props.data ) // , prd.coilNumber, prd.qtyInCart
   }
 
   addQty() { // c
+  	startGeneralIdleTimer(this.props.location.pathname);
     StorefrontActions.addQty( this.props.data ) // prd.coilNumber
   }
   

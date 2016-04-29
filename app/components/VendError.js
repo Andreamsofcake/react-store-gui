@@ -9,7 +9,8 @@ import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory } from 'react-router'
 
 import {
-	gotoDefaultIdlePage
+	gotoDefaultIdlePage,
+	vendErrorTimer,
 } from '../utils/TsvUtils'
 
 class VendError extends Component {
@@ -25,7 +26,7 @@ class VendError extends Component {
       errorMsg1: RootscopeStore.getSession('vendErrorMsg1'),
       errorMsg2: RootscopeStore.getSession('vendErrorMsg2')
     }
-    RootscopeActions.setSession('vendErrorTimer', () => { gotoDefaultIdlePage() }, 10000);
+    vendErrorTimer();
 
   };
 
