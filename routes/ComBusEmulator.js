@@ -27,7 +27,10 @@ module.exports = function(request, reply) {
 	// commands are sent through a "multi event" handler, which expects arrays of arrays
 	//io.to('flash-api-multi-event').emit('flash-api-multi-event', [ emulator_command ]);
 	// update: having ComEmulator send pre-wrapped commands
-	io.to('flash-api-multi-event').emit('flash-api-multi-event', emulator_command );
+	
+	// windoze no likey, must send to all sockets:
+	//io.to('flash-api-multi-event').emit('flash-api-multi-event', emulator_command );
+	io.sockets.emit('flash-api-multi-event', emulator_command );
 	
 	reply({ status: 'ok', msg: 'flash api multi event sent', emulator_command }).code(200);
 

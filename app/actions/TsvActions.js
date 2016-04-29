@@ -40,7 +40,8 @@ var TsvActions = {
 		// essentially, registers a handler for this event by sending to it once:
 		SocketAPI.send('flash-api-multi-event', { _ws_args: { subscribe_to_externals: true } }, (response) => {
 			console.warn('SOCKET multi-event response');
-			console.log(JSON.stringify(response));
+			//console.log(JSON.stringify(response));
+
 			// we can get multiple responses at a time:
 			if (response && response instanceof Array && response[0] instanceof Array) {
 				if (response.length > 1) {
@@ -51,9 +52,13 @@ var TsvActions = {
 				} else {
 					_R_(response[0]);
 				}
+			} else {
+				console.error('response did not pass the Array test!');
+				console.log(response);
 			}
 			function _R_(response) {
 				if (response) {
+					console.log('dispatching MULTIEVENT, name: ' + response[0]);
 					AppDispatcher.handleServerAction({
 						actionType: appConstants.FLASH_API_MULTIEVENT,
 						data: response

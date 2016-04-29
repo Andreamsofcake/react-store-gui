@@ -120,7 +120,9 @@ function multieventProxyPing(io) {
 				debug('FLASHAPI Proxy multievent response! body');
 				debug(body);
 
-				io.to('flash-api-multi-event').emit('flash-api-multi-event', [ body ]);
+				// windoze no likey, must send to all sockets:
+				//io.to('flash-api-multi-event').emit('flash-api-multi-event', [ body ]);
+				io.sockets.emit('flash-api-multi-event', [ body ]);
 			}
 			
 		}
