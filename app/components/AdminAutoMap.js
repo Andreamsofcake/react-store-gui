@@ -180,7 +180,7 @@ class AdminAutoMap extends Component {
           var width = 100/row.length
               var col = row.map((slot, $index) => {
                 return (
-                  <_E.Col key={$index} lg={width+"%"}>
+                  <_E.Col key={$index} md={width+"%"} lg={width+"%"}>
                   	<div style={{width: '100%', borderRadius: '4px', border: '2px solid black', margin: '1em', padding: '0.5em', textAlign: 'center'}}>
 	                    {slot}
 	                </div>

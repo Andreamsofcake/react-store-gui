@@ -2053,7 +2053,7 @@
 	        var col = row.map(function (slot, $index) {
 	          return _react2.default.createElement(
 	            _E.Col,
-	            { key: $index, lg: width + "%" },
+	            { key: $index, md: width + "%", lg: width + "%" },
 	            _react2.default.createElement(
 	              'div',
 	              { style: { width: '100%', borderRadius: '4px', border: '2px solid black', margin: '1em', padding: '0.5em', textAlign: 'center' } },
