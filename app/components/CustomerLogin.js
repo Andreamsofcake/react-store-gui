@@ -51,6 +51,7 @@ class CustomerLogin extends Component {
   // Remove change listers from stores
   componentWillUnmount() {
   	CL_Store.removeChangeListener( this._onCLStoreChange );
+  	CL_Actions.clearSteps();
   }
   
   componentWillReceiveProps(nextProps) {
@@ -86,9 +87,12 @@ class CustomerLogin extends Component {
 				let customer = CL_Store.getCustomer();
 				if (customer) {
 					// FIXME: calling this action in sequence results in Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.
+					// moved to componentWillUnmount:
+					/*
 					setTimeout(() => {
 						CL_Actions.clearSteps();
 					}, 100);
+					*/
 					return browserHistory.push('/Storefront');
 				}
 			}

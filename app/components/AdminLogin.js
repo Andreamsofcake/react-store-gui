@@ -31,6 +31,7 @@ class AdminLogin extends Component {
   }
 
   enter() {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	var localPass = RootscopeStore.getCache('machineSettings.AdminPassword')
   		, result = 'VALID'
   		;
@@ -67,6 +68,7 @@ class AdminLogin extends Component {
   }
 
   clear() {
+  	startGeneralIdleTimer(this.props.location.pathname);
     this.setState({
       instructionMessage : Translate.translate('AdminLogin', 'LoginMsg'),
       num: ""
@@ -74,6 +76,7 @@ class AdminLogin extends Component {
   }
 
   press(digit) {
+  	startGeneralIdleTimer(this.props.location.pathname);
     if(this.state.num.length < this.state.maxChars){
         this.setState({
           num: this.state.num + digit

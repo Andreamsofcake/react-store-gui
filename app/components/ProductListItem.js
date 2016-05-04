@@ -42,7 +42,7 @@ class ProductListItem extends Component {
   renderAddToCart() {
   	if (this.props.data.stockCount > 0) {
   		return (
-  			<_E.Button className="product-button" onClick={this.clickHandler.bind(this)}>Add</_E.Button>
+  			<_E.Button className="product-button" size="lg" type="success" onClick={this.clickHandler.bind(this)}>+ Add</_E.Button>
   		);
   	}
   	return (

@@ -4,7 +4,10 @@
   "description": "shopping interface for use on our vending machines",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "forever start --minUptime 1000 --spinSleepTime 1000 --uid vending-app-gui -a -l /var/www/forever_logs/vending-app-gui index.js",
+    "restart": "forever restart vending-app-gui",
+    "stop": "forever stop vending-app-gui"
   },
   "repository": {
     "type": "git",

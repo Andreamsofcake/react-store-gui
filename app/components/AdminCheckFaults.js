@@ -35,6 +35,7 @@ class AdminCheckFaults extends Component {
   }
   
   getFaultCodes(machine_id) {
+  	startGeneralIdleTimer(this.props.location.pathname);
     TsvActions.apiCall('getFaultCodes', machine_id.toString(), (err, data) => {
       this.setState({
         faults: data
@@ -66,6 +67,7 @@ class AdminCheckFaults extends Component {
 	}
 	
   _onTsvChange(event) {
+  	startGeneralIdleTimer(this.props.location.pathname);
 	if (event && event.method === 'notifyResetComplete') {
 		let machineID = event.data;
 

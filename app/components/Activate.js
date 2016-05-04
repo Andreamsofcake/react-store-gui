@@ -31,12 +31,14 @@ class Activate extends Component {
 
   activate() {
     if (TsvActions.apiCall('activate', this.state.activationKey, 'resultCode') === 'SUCCESS') {
-        gotoDefaultIdlePage();
+        //gotoDefaultIdlePage();
+        browserHistory.push('/Admin/Home');
     }
 
   }
   
   updateKey(e) {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	this.setState({
   		activationKey: e.target.value
   	});
@@ -64,7 +66,7 @@ class Activate extends Component {
       <div className="Activate" style={{height:'100%',width:'100%'}}>
       	<h1>NOT FINISHED!</h1>
         <h2><span>{this.state.promptMessage}</span></h2>
-        <input id="activationKey" type='text' onChange={this.updateKey.bind(this)} />
+        <input id="activationKey" _vkenabled="true" type='text' onChange={this.updateKey.bind(this)} />
         <p>state: {JSON.stringify(this.state)} </p>
         <p>foo: {JSON.stringify(RootscopeStore.getCache('machineSettings'))} </p>
       </div>

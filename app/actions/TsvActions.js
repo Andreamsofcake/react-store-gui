@@ -53,8 +53,12 @@ var TsvActions = {
 					_R_(response[0]);
 				}
 			} else {
-				console.error('response did not pass the Array test!');
-				console.log(response);
+				if (response && typeof response === 'object' && (response.result || response.resultCode)) {
+					_callback(null, response);
+				} else {
+					console.error('response did not pass the Array test!');
+					console.log(response);
+				}
 			}
 			function _R_(response) {
 				if (response) {
@@ -77,7 +81,7 @@ var TsvActions = {
 		ms = ms || 10000
 		setTimeout(TsvActions.serverHandshake, ms);
 	},
-
+	
 	apiCall() {
 		var args = Array.prototype.slice.call(arguments)
 			, callback = typeof args[args.length - 1] === 'function' ? args.pop() : null

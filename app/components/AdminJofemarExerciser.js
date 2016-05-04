@@ -31,7 +31,8 @@ class AdminJofemarExerciser extends Component {
       maxChars: RootscopeStore.getConfig('bDualMachine') ? 3 : 2,
       errs: 0,
       bShowDropDownForMachines: false,
-      machineNumber: 0
+      machineNumber: 0,
+      vmsStatus: []
     };
 
     if (RootscopeStore.getCache('machineList').length > 1) {
@@ -43,28 +44,33 @@ class AdminJofemarExerciser extends Component {
   }
 
   vend(){
+  	startGeneralIdleTimer(this.props.location.pathname);
     TsvActions.apiCall('vendProduct', this.state.machineNumber, parseInt(this.state.num) + this.state.machineNumber * 100);
     this.setState({
       num: "",
-      vmsStatus: ""
+      vmsStatus: []
     })
   }
 
   lightOn() {
+  	startGeneralIdleTimer(this.props.location.pathname);
     TsvActions.apiCall('setLights', this.state.machineNumber, true);
   }
 
   lightOff() {
+  	startGeneralIdleTimer(this.props.location.pathname);
     TsvActions.apiCall('setLights', this.state.machineNumber, false);
   }
 
   clear() {
+  	startGeneralIdleTimer(this.props.location.pathname);
     this.setState({
       num: ""
     })
   }
 
   press(digit) {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	var num = this.state.num + digit.toString();
     if (this.state.num.length < this.state.maxChars){
         this.setState({
@@ -85,9 +91,12 @@ class AdminJofemarExerciser extends Component {
   }
   
     _onTsvChange(event) {
+    	startGeneralIdleTimer(this.props.location.pathname);
     	if (event && event.method == 'notifyVmsEvent') {
+    		var status = this.state.vmsStatus;
+    		status.push(eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')');
 			this.setState({
-			  vmsStatus: this.state.vmsStatus + eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')'
+			  vmsStatus: status
 			})
 		}
     }
@@ -100,8 +109,6 @@ class AdminJofemarExerciser extends Component {
         <_E.Col>
 
         	<h1 style={{fontWeight:300}}>Jofemar Exerciser</h1>
-
-          <p>{this.state.vmsStatus}</p>
 
           <div>
 
@@ -144,6 +151,12 @@ class AdminJofemarExerciser extends Component {
             <_E.Col><div style={{textAlign:'center', border:'1px solid #dfdfdf',borderRadius:'4px',margin: '20px auto'}}><h2>selection: {this.state.num}</h2></div></_E.Col>
           </_E.Row>
           </div>
+          
+          <p>{this.state.vmsStatus.map( T => {
+          	return (
+          		<span>{T}<br /></span>
+          	);
+          })}</p>
 
           <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
           </_E.Col>

@@ -140,7 +140,8 @@ class App extends Component {
 			{!adminInPath ? (
 				<AdminLoginButton testing={this.appTesting} />
 				) : null}
-			<CustomerStatusDisplay />
+			<CustomerStatusDisplay adminInPath={adminInPath} location={this.props.location} />
+			
 			<ComEmulator />
 			<_E.Row gutter={-20}>
 				<_E.Col className="route-content">

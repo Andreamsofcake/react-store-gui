@@ -58,7 +58,10 @@ class ShoppingCart extends Component {
     emptyCart();
     //RootscopeActions.setConfig('itemsInCart', 0);
     //gotoDefaultIdlePage();
-    browserHistory.push('/Storefront');
+    // FIXME invariant!
+    setTimeout(() => {
+	    browserHistory.push('/Storefront');
+	}, 250);
 
   }
 
@@ -123,6 +126,7 @@ class ShoppingCart extends Component {
 
             </_E.Row>
                 ) : (<p style={{margin: '40px auto'}}>&nbsp;</p>)}
+
             <_E.Row>
 
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>

@@ -43,6 +43,7 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   _onStoreChange(event) {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	//if (event.type == appC.TEST_REGISTER_PRINT) {
   		this.setState({
   			apiResponse: AdminStore.getApiResponses()
@@ -51,6 +52,7 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   startMatchPrint() {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.clearApiResponses();
   	this.setState({
   		interfaceFocus: 'match',
@@ -60,6 +62,7 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   startRegisterPrint() {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.clearApiResponses();
   	this.setState({
   		interfaceFocus: 'register',
@@ -69,6 +72,7 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   reset() {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	this.setState({
   		interfaceFocus: false,
   		apiResponse: [], // reset API messages
@@ -122,12 +126,13 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   updateState(what, e) {
-  	console.warn('updateState(what, e)');
-  	console.log(what);
-  	console.log(e.target.value);
+  	startGeneralIdleTimer(this.props.location.pathname);
+  	//console.warn('updateState(what, e)');
+  	//console.log(what);
+  	//console.log(e.target.value);
   	let state = {};
   	state[what] = e.target.value;
-  	console.log(state);
+  	//console.log(state);
   	this.setState(state);
   }
   
@@ -211,10 +216,12 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   registerPrint() {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.registerPrint(this.state);
   }
 
   matchPrint() {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.matchPrint(this.state);
   }
 }

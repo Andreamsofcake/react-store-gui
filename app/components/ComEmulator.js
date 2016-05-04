@@ -149,15 +149,6 @@ class ComEmulator extends Component {
 		});
 		
 		if (!showButtons.length) {
-			/*
-			setTimeout(() => {
-				console.warn('ComEmulator ----- no showButtons??? (delayed...)');
-				console.log(this.state.currentView);
-				console.log(RootscopeStore.getSession('currentView'));
-				console.log(buttons);
-				console.log(showButtons);
-			}, 1000);
-			//*/
 			return null;
 		}
 

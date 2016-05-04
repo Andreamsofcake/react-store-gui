@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
 import StorefrontActions from '../actions/StorefrontActions'
+import { browserHistory } from 'react-router'
 
 import {
 	currencyFilter,

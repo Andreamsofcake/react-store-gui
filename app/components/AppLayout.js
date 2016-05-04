@@ -42,7 +42,7 @@ class AppLayout extends Component {
 		*/}
 	</head>
 	<body>
-
+	<div id="backgroundImage"></div>
 	<div id="body" className="row column clearfix">
 		<div id="root" className="clearfix" dangerouslySetInnerHTML={{__html: this.props.app_render}} />
 	</div>

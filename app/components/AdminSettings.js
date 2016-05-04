@@ -19,7 +19,12 @@ class AdminSettings extends Component {
     super(props, context);
 
     //RootscopeActions.setSession('currentView', 'AdminSettings');
-    this.state = {
+    this.state = this.getStateSettings();
+    this._onRootscopeChange = this._onRootscopeChange.bind(this);
+  }
+  
+  getStateSettings() {
+  	/*return*/var state = {
       supportLanguages: RootscopeStore.getConfig('supportLanguages'),
 
       defaultLanguage: RootscopeStore.getCache('machineSettings.defaultLanguage'),
@@ -38,53 +43,56 @@ class AdminSettings extends Component {
       bHasShoppingCart: RootscopeStore.getCache('custommachinesettings.bHasShoppingCart'),
       singleProductDonation: RootscopeStore.getCache('custommachinesettings.singleProductDonation'),
       minimumDonationAmount: RootscopeStore.getCache('custommachinesettings.minimumDonationAmount'),
-    };
-    
-    this._onRootscopeChange = this._onRootscopeChange.bind(this);
+    }
+    console.log('getStateSettings()');
+    console.log(state);
+    return state;
   }
 
   save(e) {
+  	
+  	startGeneralIdleTimer(this.props.location.pathname);
 
   	if (e) { e.preventDefault(); }
 
-  	var machineSettingsProps = [
+  	let machineSettingsProps = [
   		'defaultLanguage', 'CCProcessorMode', 'MachineSerialNumber', 'CCMerchantKey', 'CCMerchantID', 'DropSensorAttached', 'CCReaderType', 'VMCPlatform', 'MachineCount', 'VMCControlCOMPort', 'SalesTaxRate', 'ShoppingCartMaxItemCount'
   	];
 
-  	var customMachineSettingsProps = [
+  	let customMachineSettingsProps = [
   		'bHasShoppingCart', 'singleProductDonation', 'minimumDonationAmount',
   	];
 
   	machineSettingsProps.forEach( PROP => {
-  		var val = this.state[PROP];
+  		let val = this.state[PROP];
   		if (val !== RootscopeStore.getCache('machineSettings.'+PROP)) {
   			TsvActions.apiCall('setMachineSetting', PROP, val);
   		}
   	});
 
   	customMachineSettingsProps.forEach( PROP => {
-  		var val = this.state[PROP];
+  		let val = this.state[PROP];
   		if (val !== RootscopeStore.getCache('custommachinesettings.'+PROP)) {
   			TsvActions.apiCall('setCustomMachineSetting', PROP, val);
   		}
   	});
 
-  	var languageSupported = RootscopeStore.getCache('custommachinesettings.languageSupported');
+  	let languageSupported = RootscopeStore.getCache('custommachinesettings.languageSupported');
   	if (languageSupported !== this.state.supportLanguages) {
   		TsvActions.apiCall('setCustomMachineSetting', "languageSupported", this.state.supportLanguages);
   		RootscopeActions.setConfig('supportLanguages', this.state.supportLanguages);
   	}
 
-	var MS = RootscopeStore.getCache('machineSettings');
+	let MS = RootscopeStore.getCache('machineSettings');
 	machineSettingsProps.forEach( PROP => {
 		MS[PROP] = this.state[PROP];
 	});
 
-	var CMS = RootscopeStore.getCache('custommachinesettings');
+	let CMS = RootscopeStore.getCache('custommachinesettings');
 	customMachineSettingsProps.forEach( PROP => {
 		CMS[PROP] = this.state[PROP];
 	});
-
+	
 	RootscopeActions.setCache({
 		custommachinesettings: CMS,
 		machineSettings: MS
@@ -103,36 +111,27 @@ class AdminSettings extends Component {
   	RootscopeStore.removeChangeListener(this._onRootscopeChange);
   }
   
-  _onRootscopeChange() {
-    this.setState({
-      supportLanguages: RootscopeStore.getConfig('supportLanguages'),
-
-      defaultLanguage: RootscopeStore.getCache('machineSettings.defaultLanguage'),
-      CCProcessorMode: RootscopeStore.getCache('machineSettings.CCProcessorMode'),
-      MachineSerialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber'),
-      CCMerchantKey: RootscopeStore.getCache('machineSettings.CCMerchantKey'),
-      CCMerchantID: RootscopeStore.getCache('machineSettings.CCMerchantID'),
-      DropSensorAttached: RootscopeStore.getCache('machineSettings.DropSensorAttached'),
-      CCReaderType: RootscopeStore.getCache('machineSettings.CCReaderType'),
-      VMCPlatform: RootscopeStore.getCache('machineSettings.VMCPlatform'),
-      MachineCount: RootscopeStore.getCache('machineSettings.MachineCount'),
-      VMCControlCOMPort: RootscopeStore.getCache('machineSettings.VMCControlCOMPort'),
-      SalesTaxRate: RootscopeStore.getCache('machineSettings.SalesTaxRate'),
-      ShoppingCartMaxItemCount: RootscopeStore.getCache('machineSettings.ShoppingCartMaxItemCount'),
-
-      bHasShoppingCart: RootscopeStore.getCache('custommachinesettings.bHasShoppingCart'),
-      singleProductDonation: RootscopeStore.getCache('custommachinesettings.singleProductDonation'),
-      minimumDonationAmount: RootscopeStore.getCache('custommachinesettings.minimumDonationAmount'),
-    });
+  _onRootscopeChange(event) {
+    console.log('_onRootscopeChange(event)');
+    console.log(event);
+    if (
+    	(event.type === 'cache' && event.path === '__multiple__') ||
+    	(event.type === 'config' && event.path === 'supportLanguages')
+    	) {
+    	this.setState( this.getStateSettings() );
+    	
+    }
   }
   
   textChange(e) {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	let state = {};
   	state[e.target.name] = e.target.value;
   	this.setState(state);
   }
   
   selectChange(what, e) {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	let state = {};
   	state[what] = e;
   	this.setState(state);
