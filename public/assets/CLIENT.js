@@ -4573,6 +4573,8 @@
 	      token: (0, _utils.uniq)()
 	    };
 
+	    _this._onStoreChange = _this._onStoreChange.bind(_this);
+
 	    return _this;
 	  }
 
@@ -4904,13 +4906,13 @@
 	  }, {
 	    key: 'registerPrint',
 	    value: function registerPrint() {
-	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+	      //startGeneralIdleTimer(this.props.location.pathname);
 	      _AdminActions2.default.registerPrint(this.state);
 	    }
 	  }, {
 	    key: 'matchPrint',
 	    value: function matchPrint() {
-	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+	      //startGeneralIdleTimer(this.props.location.pathname);
 	      _AdminActions2.default.matchPrint(this.state);
 	    }
 	  }]);

@@ -28,6 +28,8 @@ class Admin_Print_Reader_Tester extends Component {
 		apiResponse: [],
 		token: uniq()
     }
+    
+    this._onStoreChange = this._onStoreChange.bind(this);
 
   }
 
@@ -232,12 +234,12 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   registerPrint() {
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	//startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.registerPrint(this.state);
   }
 
   matchPrint() {
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	//startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.matchPrint(this.state);
   }
 }
