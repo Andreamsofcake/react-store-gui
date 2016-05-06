@@ -4599,11 +4599,13 @@
 	    key: '_onStoreChange',
 	    value: function _onStoreChange(event) {
 	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-	      if (event.type == _appConstants2.default.TEST_REGISTER_PRINT) {
-	        this.setState({
-	          apiResponse: _AdminStore2.default.getApiResponses()
-	        });
-	      }
+	      console.log('PRINT READER event');
+	      console.log(event);
+	      //if (event.type == appC.TEST_REGISTER_PRINT) {
+	      this.setState({
+	        apiResponse: _AdminStore2.default.getApiResponses()
+	      });
+	      //}
 	    }
 	  }, {
 	    key: 'startMatchPrint',

@@ -46,11 +46,13 @@ class Admin_Print_Reader_Tester extends Component {
   
   _onStoreChange(event) {
   	startGeneralIdleTimer(this.props.location.pathname);
-  	if (event.type == appC.TEST_REGISTER_PRINT) {
+  	console.log('PRINT READER event');
+  	console.log(event);
+  	//if (event.type == appC.TEST_REGISTER_PRINT) {
   		this.setState({
   			apiResponse: AdminStore.getApiResponses()
   		});
-  	}
+  	//}
   }
   
   startMatchPrint() {
