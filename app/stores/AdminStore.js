@@ -32,6 +32,10 @@ var AdminStore = objectAssign({}, EventEmitter.prototype, {
 		var args = Array.prototype.slice.call(arguments);
 		args.unshift(CHANGE_EVENT);
 		this.emit.apply(this, args );
+	},
+	
+	getApiResponses: function() {
+		return _store.apiResponses;
 	}
 
 });
