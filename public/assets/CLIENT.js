@@ -4714,6 +4714,15 @@
 	      //console.log(state);
 	      this.setState(state);
 	    }
+
+	    /*********
+	    
+	    		BIG OL DEV NOTE: we are setting onChange as well as onKeyUp because:
+	    		- react screams loudly if there's no onChange or readOnly
+	    		- chrome virtual keyboard extension does not fire onChange, thus we need onKeyup
+	    
+	    *********/
+
 	  }, {
 	    key: 'registerInterface',
 	    value: function registerInterface() {
@@ -4738,22 +4747,22 @@
 	            _react2.default.createElement(
 	              _E.FormField,
 	              { label: 'User ID', htmlFor: 'user_id' },
-	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set user ID', name: 'user_id', value: this.state.user_id, _vkenabled: 'true', onKeyUp: this.updateState.bind(this, 'user_id') })
+	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set user ID', name: 'user_id', value: this.state.user_id, _vkenabled: 'true', onChange: this.updateState.bind(this, 'user_id'), onKeyUp: this.updateState.bind(this, 'user_id') })
 	            ),
 	            _react2.default.createElement(
 	              _E.FormField,
 	              { label: 'Client ID', htmlFor: 'client_id' },
-	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set client ID', name: 'client_id', value: this.state.client_id, _vkenabled: 'true', onKeyUp: this.updateState.bind(this, 'client_id') })
+	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set client ID', name: 'client_id', value: this.state.client_id, _vkenabled: 'true', onChange: this.updateState.bind(this, 'client_id'), onKeyUp: this.updateState.bind(this, 'client_id') })
 	            ),
 	            _react2.default.createElement(
 	              _E.FormField,
 	              { label: 'Location ID', htmlFor: 'location_id' },
-	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set location ID', name: 'location_id', value: this.state.location_id, _vkenabled: 'true', onKeyUp: this.updateState.bind(this, 'location_id') })
+	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set location ID', name: 'location_id', value: this.state.location_id, _vkenabled: 'true', onChange: this.updateState.bind(this, 'location_id'), onKeyUp: this.updateState.bind(this, 'location_id') })
 	            ),
 	            _react2.default.createElement(
 	              _E.FormField,
 	              { label: 'Machine ID', htmlFor: 'machine_id' },
-	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set machine ID', name: 'machine_id', value: this.state.machine_id, _vkenabled: 'true', onKeyUp: this.updateState.bind(this, 'machine_id') })
+	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set machine ID', name: 'machine_id', value: this.state.machine_id, _vkenabled: 'true', onChange: this.updateState.bind(this, 'machine_id'), onKeyUp: this.updateState.bind(this, 'machine_id') })
 	            ),
 	            _react2.default.createElement(
 	              _E.FormField,
@@ -4806,6 +4815,15 @@
 	        )
 	      );
 	    }
+
+	    /*********
+	    
+	    		BIG OL DEV NOTE: we are setting onChange as well as onKeyUp because:
+	    		- react screams loudly if there's no onChange or readOnly
+	    		- chrome virtual keyboard extension does not fire onChange, thus we need onKeyup
+	    
+	    *********/
+
 	  }, {
 	    key: 'matchInterface',
 	    value: function matchInterface() {
@@ -4830,7 +4848,7 @@
 	            _react2.default.createElement(
 	              _E.FormField,
 	              { label: 'User ID', htmlFor: 'user_id' },
-	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set user ID', name: 'user_id', value: this.state.user_id, _vkenabled: 'true', onKeyUp: this.updateState.bind(this, 'user_id') })
+	              _react2.default.createElement(_E.FormInput, { type: 'text', placeholder: 'Set user ID', name: 'user_id', value: this.state.user_id, _vkenabled: 'true', onChange: this.updateState.bind(this, 'user_id'), onKeyUp: this.updateState.bind(this, 'user_id') })
 	            ),
 	            _react2.default.createElement(
 	              _E.FormField,
@@ -13102,6 +13120,7 @@
 			}).catch(function (error) {
 				console.error('[AdminActions] failed to register print, call chain error probably check component tree');
 				console.log(error);
+				throw Error(error);
 			});
 		},
 		matchPrint: function matchPrint(config) {
@@ -13125,6 +13144,7 @@
 			}).catch(function (error) {
 				console.error('[AdminActions] failed to match print, call chain error probably check component tree');
 				console.log(error);
+				throw Error(error);
 			});
 		},
 		clearApiResponses: function clearApiResponses() {

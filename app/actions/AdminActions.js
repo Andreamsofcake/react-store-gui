@@ -33,6 +33,7 @@ var AdminActions = {
 		.catch(error => {
 			console.error('[AdminActions] failed to register print, call chain error probably check component tree');
 			console.log(error);
+			throw Error(error);
 		})
 	},
 
@@ -60,6 +61,7 @@ var AdminActions = {
 		.catch(error => {
 			console.error('[AdminActions] failed to match print, call chain error probably check component tree');
 			console.log(error);
+			throw Error(error);
 		})
 	},
 	

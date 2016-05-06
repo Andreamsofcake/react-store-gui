@@ -135,6 +135,14 @@ class Admin_Print_Reader_Tester extends Component {
   	//console.log(state);
   	this.setState(state);
   }
+
+/*********
+
+		BIG OL DEV NOTE: we are setting onChange as well as onKeyUp because:
+		- react screams loudly if there's no onChange or readOnly
+		- chrome virtual keyboard extension does not fire onChange, thus we need onKeyup
+
+*********/
   
   registerInterface() {
   	return (
@@ -145,16 +153,16 @@ class Admin_Print_Reader_Tester extends Component {
   			<_E.Col sm="50%" md="50%" lg="50%">
 	  			<_E.Form type="horizontal">
 					<_E.FormField label="User ID" htmlFor="user_id">
-						<_E.FormInput type="text" placeholder="Set user ID" name="user_id" value={this.state.user_id} _vkenabled="true" onKeyUp={this.updateState.bind(this, 'user_id')} />
+						<_E.FormInput type="text" placeholder="Set user ID" name="user_id" value={this.state.user_id} _vkenabled="true" onChange={this.updateState.bind(this, 'user_id')} onKeyUp={this.updateState.bind(this, 'user_id')} />
 					</_E.FormField>	  			
 					<_E.FormField label="Client ID" htmlFor="client_id">
-						<_E.FormInput type="text" placeholder="Set client ID" name="client_id" value={this.state.client_id} _vkenabled="true" onKeyUp={this.updateState.bind(this, 'client_id')} />
+						<_E.FormInput type="text" placeholder="Set client ID" name="client_id" value={this.state.client_id} _vkenabled="true" onChange={this.updateState.bind(this, 'client_id')} onKeyUp={this.updateState.bind(this, 'client_id')} />
 					</_E.FormField>	  			
 					<_E.FormField label="Location ID" htmlFor="location_id">
-						<_E.FormInput type="text" placeholder="Set location ID" name="location_id" value={this.state.location_id} _vkenabled="true" onKeyUp={this.updateState.bind(this, 'location_id')} />
+						<_E.FormInput type="text" placeholder="Set location ID" name="location_id" value={this.state.location_id} _vkenabled="true" onChange={this.updateState.bind(this, 'location_id')} onKeyUp={this.updateState.bind(this, 'location_id')} />
 					</_E.FormField>	  			
 					<_E.FormField label="Machine ID" htmlFor="machine_id">
-						<_E.FormInput type="text" placeholder="Set machine ID" name="machine_id" value={this.state.machine_id} _vkenabled="true" onKeyUp={this.updateState.bind(this, 'machine_id')} />
+						<_E.FormInput type="text" placeholder="Set machine ID" name="machine_id" value={this.state.machine_id} _vkenabled="true" onChange={this.updateState.bind(this, 'machine_id')} onKeyUp={this.updateState.bind(this, 'machine_id')} />
 					</_E.FormField>	  			
 					<_E.FormField offsetAbsentLabel>
 						<_E.Button size="lg" onClick={this.registerPrint.bind(this)}>Register print</_E.Button>
@@ -180,6 +188,14 @@ class Admin_Print_Reader_Tester extends Component {
   	);
   }
   
+/*********
+
+		BIG OL DEV NOTE: we are setting onChange as well as onKeyUp because:
+		- react screams loudly if there's no onChange or readOnly
+		- chrome virtual keyboard extension does not fire onChange, thus we need onKeyup
+
+*********/
+  
   matchInterface() {
   	return (
   		<_E.Row>
@@ -189,7 +205,7 @@ class Admin_Print_Reader_Tester extends Component {
   			<_E.Col sm="50%" md="50%" lg="50%">
 	  			<_E.Form type="horizontal">
 					<_E.FormField label="User ID" htmlFor="user_id">
-						<_E.FormInput type="text" placeholder="Set user ID" name="user_id" value={this.state.user_id} _vkenabled="true" onKeyUp={this.updateState.bind(this, 'user_id')} />
+						<_E.FormInput type="text" placeholder="Set user ID" name="user_id" value={this.state.user_id} _vkenabled="true" onChange={this.updateState.bind(this, 'user_id')} onKeyUp={this.updateState.bind(this, 'user_id')} />
 					</_E.FormField>	  			
 					<_E.FormField offsetAbsentLabel>
 						<_E.Button size="lg" onClick={this.matchPrint.bind(this)}>Start matching...</_E.Button>
