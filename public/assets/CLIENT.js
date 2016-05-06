@@ -4686,7 +4686,7 @@
 	        ),
 	        _react2.default.createElement(
 	          _E.Col,
-	          { sm: '50%', md: '50%', lg: '50%' },
+	          { sm: '33%', md: '33%', lg: '33%' },
 	          _react2.default.createElement(
 	            _E.Button,
 	            { size: 'lg', type: 'primary', onClick: this.startRegisterPrint.bind(this) },
@@ -4695,12 +4695,21 @@
 	        ),
 	        _react2.default.createElement(
 	          _E.Col,
-	          { sm: '50%', md: '50%', lg: '50%' },
+	          { sm: '33%', md: '33%', lg: '33%' },
 	          _react2.default.createElement(
 	            _E.Button,
 	            { size: 'lg', type: 'primary', onClick: this.startMatchPrint.bind(this) },
 	            ' Match Print '
 	          )
+	        ),
+	        _react2.default.createElement(
+	          _E.Col,
+	          { sm: '33%', md: '33%', lg: '33%' },
+	          _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: '/Admin/Home' },
+	              Translate.translate('AdminHome', 'Home')
+	            ) })
 	        )
 	      );
 	    }

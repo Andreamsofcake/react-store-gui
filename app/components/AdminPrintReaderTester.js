@@ -117,11 +117,14 @@ class Admin_Print_Reader_Tester extends Component {
 			<_E.Col sm="100%" md="100%" lg="100%">
 				<h4>what are we doing?</h4>
 			</_E.Col>
-			<_E.Col sm="50%" md="50%" lg="50%">
+			<_E.Col sm="33%" md="33%" lg="33%">
 				<_E.Button size="lg" type="primary" onClick={this.startRegisterPrint.bind(this)}> Register Print </_E.Button>
 			</_E.Col>
-			<_E.Col sm="50%" md="50%" lg="50%">
+			<_E.Col sm="33%" md="33%" lg="33%">
 				<_E.Button size="lg" type="primary" onClick={this.startMatchPrint.bind(this)}> Match Print </_E.Button>
+			</_E.Col>
+			<_E.Col sm="33%" md="33%" lg="33%">
+				<_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
 			</_E.Col>
   		</_E.Row>
   	);
