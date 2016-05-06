@@ -54704,7 +54704,7 @@
 	    key: 'billOff',
 	    value: function billOff() {
 	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-	      _TsvActions2.default.apiCall('disablePaymentDevice', "PAYMENT_TYPE_CASH");
+	      _TsvActions2.default.apiCall('disablePaymentDevice');
 	      this.setState({
 	        acceptorState: 'off'
 	      });

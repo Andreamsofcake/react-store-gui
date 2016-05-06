@@ -44,7 +44,7 @@ class AdminBillAcceptor extends Component {
 
   billOff() {
   	startGeneralIdleTimer(this.props.location.pathname);
-  	TsvActions.apiCall('disablePaymentDevice', "PAYMENT_TYPE_CASH");
+  	TsvActions.apiCall('disablePaymentDevice');
   	this.setState({
   		acceptorState: 'off'
   	});
