@@ -63,7 +63,7 @@ class AdminHome extends Component {
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/PrintReaderTest">{Translate.translate('AdminHome','SystemInfo')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/PrintReaderTest">{Translate.translate('AdminHome','PrintReaderTest')}</Link>)} /></_E.Col>
               <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/SystemInfo">{Translate.translate('AdminHome','SystemInfo')}</Link>)} /></_E.Col>
               <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Settings">{Translate.translate('AdminHome','MachineSettings')}</Link>)} /></_E.Col>
           </_E.Row>
@@ -71,8 +71,16 @@ class AdminHome extends Component {
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}>{/*<_E.Button type="primary" size="lg" component={(<Link to="/Admin/PrintReaderTest">{Translate.translate('AdminHome','PrintReaderTest')}</Link>)} />*/}</_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/BillAcceptor">{Translate.translate('AdminHome','BillAcceptor')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}>{/*<_E.Button type="primary" size="lg" component={(<Link to="/Admin/Settings">{Translate.translate('AdminHome','MachineSettings')}</Link>)} />*/}</_E.Col>
+          </_E.Row>
+
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row>
               <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button size="lg" onClick={this.restart}>{Translate.translate('AdminHome','Restart')}</_E.Button></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>{/*<_E.Button type="primary" size="lg" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />*/}</_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Activate">{Translate.translate('AdminHome','Activate')}</Link>)} /></_E.Col>
               <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}><_E.Button size="lg" onClick={this.shutdown}>{Translate.translate('AdminHome','ShutDown')}</_E.Button></_E.Col>
           </_E.Row>
 

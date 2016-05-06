@@ -17,9 +17,9 @@ module.exports = function(request, reply) {
 	debug('send flash command: ' + JSON.stringify(emulator_command) );
 	
 	if (emulator_command && emulator_command[0] && emulator_command[0][0] && emulator_command[0][0] === 'insertCash') {
-		var amt = emulator_command[1];
+		var amt = emulator_command[0][1];
 		var totalInserted = request.yar.get('emulatorInsertedCash') || 0
-		totalInserted += emulator_command[1] * 100; // guess we're dealing in cents!
+		totalInserted += emulator_command[0][1] * 100; // guess we're dealing in cents!
 		request.yar.set('emulatorInsertedCash', totalInserted);
 		emulator_command = ['creditBalanceChanged', amt, totalInserted];
 	}
@@ -30,7 +30,7 @@ module.exports = function(request, reply) {
 	
 	// windoze no likey, must send to all sockets:
 	//io.to('flash-api-multi-event').emit('flash-api-multi-event', emulator_command );
-	io.sockets.emit('flash-api-multi-event', emulator_command );
+	io.sockets.emit('flash-api-multi-event', [ emulator_command ] );
 	
 	reply({ status: 'ok', msg: 'flash api multi event sent', emulator_command }).code(200);
 

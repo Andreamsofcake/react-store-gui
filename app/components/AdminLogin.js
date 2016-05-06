@@ -137,7 +137,7 @@ class AdminLogin extends Component {
 			  <_E.Row>
 				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="warning" onClick={this.clear.bind(this)}>Clear</_E.Button></_E.Col>
 				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>
-					<div style={{width: '100%', fontSize: '1.5em', padding: '0.45em', border: '1px solid #ddd', borderRadius: '4px', margin: '0 auto'}}>
+					<div style={{backgroundColor: '#fff', width: '100%', fontSize: '1.5em', padding: '0.45em', border: '1px solid #ddd', borderRadius: '4px', margin: '0 auto'}}>
 						&nbsp;{this.state.num}&nbsp;
 				  	</div>
 				  	<p>{' '}&nbsp;</p>

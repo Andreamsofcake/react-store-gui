@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import { Route, IndexRoute } from 'react-router'
 import App from './components/App'
 
-import Activate from './components/Activate'
-
+// idle modules ?
 import View0 from './components/View0'
 import View2 from './components/View2'
 import PageIdle from './components/PageIdle'
 
+// admin modules
+import AdminActivate from './components/Activate'
 import AdminAutoMap from './components/AdminAutoMap'
+import AdminBillAcceptor from './components/AdminBillAcceptor'
 import AdminCheckFaults from './components/AdminCheckFaults'
 import AdminComponentControl from './components/AdminComponentControl'
 import AdminHome from './components/AdminHome'
@@ -20,35 +22,37 @@ import AdminSettings from './components/AdminSettings'
 import AdminSystemInfo from './components/AdminSystemInfo'
 import AdminVms from './components/AdminVms'
 
-import CustomerSignup from './components/CustomerSignup'
-import CustomerLogin from './components/CustomerLogin'
-import StorefrontStatic from './components/StorefrontStatic'
-import Storefront from './components/Storefront'
-import ProductDetail from './components/ProductDetail'
-import TransactionRefund from './components/TransactionRefund'
-import ChooseCashCard from './components/ChooseCashCard'
+// store modules
 import CardVending from './components/CardVending'
 import CashVending from './components/CashVending'
+import ChooseCashCard from './components/ChooseCashCard'
+import CustomerLogin from './components/CustomerLogin'
+import CustomerSignup from './components/CustomerSignup'
+import ProductDetail from './components/ProductDetail'
 import ShoppingCart from './components/ShoppingCart'
+import Storefront from './components/Storefront'
+import StorefrontStatic from './components/StorefrontStatic'
 import ThankYouMsg from './components/ThankYouMsg'
+import TransactionRefund from './components/TransactionRefund'
 import VendError from './components/VendError'
 
+// deprecated, but still here:
 import CategorySearch from './components/CategorySearch'
 import ProductSearch from './components/ProductSearch'
-
 
 import NoMatch from './components/NoMatch'
 
 export default (
 	<Route path='/' component={App}>
-		<Route path='Activate' component={Activate} />
 
 		<Route path='View0' component={View0} />
 		<Route path='View2' component={View2} />
 		
 		<Route path='Admin'>
 			<IndexRoute component={AdminLogin} />
+			<Route path='Activate' component={AdminActivate} />
 			<Route path='AutoMap' component={AdminAutoMap} />
+			<Route path='BillAcceptor' component={AdminBillAcceptor} />
 			<Route path='CheckFaults' component={AdminCheckFaults} />
 			<Route path='ComponentControl' component={AdminComponentControl} />
 			<Route path='Home' component={AdminHome} />

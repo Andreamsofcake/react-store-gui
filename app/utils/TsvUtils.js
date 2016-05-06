@@ -458,7 +458,7 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 		
 			if (!result || result.resultCode !== "SUCCESS") {
 				//throw new Error('WHY U NO ACTIVATE');
-				return browserHistory.push("/Activate");
+				return browserHistory.push("/Admin/Activate");
 			}
 		
 			activated(true);

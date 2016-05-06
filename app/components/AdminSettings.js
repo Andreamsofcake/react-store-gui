@@ -151,15 +151,15 @@ class AdminSettings extends Component {
 				  options={[{ label: 'Production', value: 'Production' }, { label: 'Certification', value: 'Certification'}]} />
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelMerchantID')} >
-					<_E.FormInput value={this.state.CCMerchantID} name='CCMerchantID' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.CCMerchantID} name='CCMerchantID' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelMerchantKey')} >
-					<_E.FormInput value={this.state.CCMerchantKey} name='CCMerchantKey' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.CCMerchantKey} name='CCMerchantKey' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelMachineSerialNumber')} >
-					<_E.FormInput value={this.state.MachineSerialNumber} name='MachineSerialNumber' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.MachineSerialNumber} name='MachineSerialNumber' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormSelect label={Translate.translate('AdminSettings','LabelDefaultLanguage')}
@@ -168,47 +168,47 @@ class AdminSettings extends Component {
 				  options={[{ label: 'English', value: 'En' }, { label: 'French', value: 'Fr'}]} />
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelSupportLanguages')} >
-					<_E.FormInput value={this.state.supportLanguages} name='supportLanguages' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.supportLanguages} name='supportLanguages' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelDropSensorAttached')} >
-					<_E.FormInput value={this.state.DropSensorAttached} name='DropSensorAttached' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.DropSensorAttached} name='DropSensorAttached' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelCardReaderType')} >
-					<_E.FormInput value={this.state.CCReaderType} name='CCReaderType' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.CCReaderType} name='CCReaderType' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelVMCPlatform')} >
-					<_E.FormInput value={this.state.VMCPlatform} name='VMCPlatform' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.VMCPlatform} name='VMCPlatform' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelMachineCount')} >
-					<_E.FormInput value={this.state.MachineCount} name='MachineCount' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.MachineCount} name='MachineCount' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelCOMPort')} >
-					<_E.FormInput value={this.state.VMCControlCOMPort} name='VMCControlCOMPort' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.VMCControlCOMPort} name='VMCControlCOMPort' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelSalesTaxRate')} >
-					<_E.FormInput value={this.state.SalesTaxRate} name='SalesTaxRate' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.SalesTaxRate} name='SalesTaxRate' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelShoppingCartMaxItemCount')} >
-					<_E.FormInput value={this.state.ShoppingCartMaxItemCount} name='ShoppingCartMaxItemCount' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.ShoppingCartMaxItemCount} name='ShoppingCartMaxItemCount' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelHasShoppingCart')} >
-					<_E.FormInput value={this.state.bHasShoppingCart} name='bHasShoppingCart' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.bHasShoppingCart} name='bHasShoppingCart' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelSingleProductDonation')} >
-					<_E.FormInput value={this.state.singleProductDonation} name='singleProductDonation' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.singleProductDonation} name='singleProductDonation' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 
 				<_E.FormField label={Translate.translate('AdminSettings','LabelMinimumDonationAmount')} >
-					<_E.FormInput value={this.state.minimumDonationAmount} name='minimumDonationAmount' onChange={this.textChange.bind(this)} />
+					<_E.FormInput _vkenabled="true" value={this.state.minimumDonationAmount} name='minimumDonationAmount' onChange={this.textChange.bind(this)} />
 				</_E.FormField>
 			</_E.Form>
           </_E.Row>
