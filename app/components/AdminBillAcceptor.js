@@ -27,7 +27,8 @@ class AdminBillAcceptor extends Component {
     this.state = {
 		acceptorState: 'off',
 		amtInserted: '0.00',
-		totalInsertedCents: '0.00'
+		totalInsertedCents: '0.00',
+		hasBillAcceptor: !!(RootscopeStore.getCache('custommachinesettings.HasBillCoin'))
     };
 
     this._onTsvChange = this._onTsvChange.bind(this);
@@ -47,6 +48,24 @@ class AdminBillAcceptor extends Component {
   	TsvActions.apiCall('disablePaymentDevice');
   	this.setState({
   		acceptorState: 'off'
+  	});
+  }
+  
+  billSettingOn() {
+  	TsvActions.apiCall('setCustomMachineSetting', "HasBillCoin", true, (err, ok) => {
+  		if (err) throw new (err);
+  		this.setState({
+  			hasBillAcceptor: true
+  		});
+  	});
+  }
+
+  billSettingOff() {
+  	TsvActions.apiCall('setCustomMachineSetting', "HasBillCoin", false, (err, ok) => {
+  		if (err) throw new (err);
+  		this.setState({
+  			hasBillAcceptor: false
+  		});
   	});
   }
 
@@ -79,6 +98,10 @@ class AdminBillAcceptor extends Component {
 //curl -X POST -d '["DOOR_OPENED"]' http://localhost:8085/tsv/flashapi
 	var onStyle = this.state.acceptorState == 'on' ? 'success' : 'danger';
 	var offStyle = this.state.acceptorState == 'off' ? 'success' : 'danger';
+
+	var onSettingStyle = this.state.hasBillAcceptor === true ? 'success' : 'danger';
+	var offSettingStyle = this.state.hasBillAcceptor === false ? 'success' : 'danger';
+
     return (
       <_E.Row className="AdminBillAcceptor" style={{width: '60%', margin: '1em auto', textAlign:'center'}}>
         <_E.Col>
@@ -98,13 +121,27 @@ class AdminBillAcceptor extends Component {
 			  <_E.Row><p>{' '}</p></_E.Row>
 
 			  <_E.Row>
+	        	<h2 style={{fontWeight:300, textAlign:'center'}}>Set Bill Acceptor Existence:</h2>
+			  </_E.Row>
+			  <_E.Row>
+				<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button type={onSettingStyle} size="lg" onClick={this.billSettingOn.bind(this)}>On</_E.Button></_E.Col>
+				<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button type={offSettingStyle} size="lg" onClick={this.billSettingOff.bind(this)}>Off</_E.Button></_E.Col>
+			  </_E.Row>
+
+			  <_E.Row><p>{' '}</p></_E.Row>
+
+			  <_E.Row>
 				<_E.Col><div style={{backgroundColor: '#fff', textAlign:'center', border:'1px solid #dfdfdf',borderRadius:'4px',margin: '20px auto'}}>
 					<h2>last event:
 						{/*<br />{JSON.stringify(this.state.tsvEvent)}*/}
 						<br />
 						<br />Inserted: <strong>${this.state.amtInserted}</strong>
 						<br />Total Inserted (cents): <strong>{this.state.totalInsertedCents}</strong>
-					</h2></div></_E.Col>
+					</h2></div>
+					
+					<p style={{textAlign:'center'}}><_E.Button size="lg" onClick={emptyCart}>Send "empty cart" command to API</_E.Button>
+						<br />(this in theory should clear any tracked "total inserted" amount)</p>
+				</_E.Col>
 			  </_E.Row>
           </div>
           
