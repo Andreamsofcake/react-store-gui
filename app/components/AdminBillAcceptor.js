@@ -28,11 +28,21 @@ class AdminBillAcceptor extends Component {
 		acceptorState: 'off',
 		amtInserted: '0.00',
 		totalInsertedCents: '0.00',
-		hasBillAcceptor: !!(RootscopeStore.getCache('custommachinesettings.HasBillCoin'))
+		hasBillAcceptor: this.billSetting(RootscopeStore.getCache('custommachinesettings.HasBillCoin'))
     };
 
     this._onTsvChange = this._onTsvChange.bind(this);
 
+  }
+  
+  billSetting(setting) {
+  	if (setting == 'true'
+  		|| setting == true
+  		|| setting == 1
+  		|| setting == "1") {
+  		return true;
+  	}
+  	return false;
   }
 
   billOn() {
@@ -52,7 +62,7 @@ class AdminBillAcceptor extends Component {
   }
   
   billSettingOn() {
-  	TsvActions.apiCall('setCustomMachineSetting', "HasBillCoin", true, (err, ok) => {
+  	TsvActions.apiCall('setCustomMachineSetting', "HasBillCoin", "true", (err, ok) => {
   		if (err) throw new (err);
   		this.setState({
   			hasBillAcceptor: true
@@ -61,7 +71,7 @@ class AdminBillAcceptor extends Component {
   }
 
   billSettingOff() {
-  	TsvActions.apiCall('setCustomMachineSetting', "HasBillCoin", false, (err, ok) => {
+  	TsvActions.apiCall('setCustomMachineSetting', "HasBillCoin", "false", (err, ok) => {
   		if (err) throw new (err);
   		this.setState({
   			hasBillAcceptor: false

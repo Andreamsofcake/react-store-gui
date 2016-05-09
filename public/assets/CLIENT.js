@@ -2347,7 +2347,7 @@
 	      acceptorState: 'off',
 	      amtInserted: '0.00',
 	      totalInsertedCents: '0.00',
-	      hasBillAcceptor: !!_RootscopeStore2.default.getCache('custommachinesettings.HasBillCoin')
+	      hasBillAcceptor: _this.billSetting(_RootscopeStore2.default.getCache('custommachinesettings.HasBillCoin'))
 	    };
 
 	    _this._onTsvChange = _this._onTsvChange.bind(_this);
@@ -2356,6 +2356,14 @@
 	  }
 
 	  _createClass(AdminBillAcceptor, [{
+	    key: 'billSetting',
+	    value: function billSetting(setting) {
+	      if (setting == 'true' || setting == true || setting == 1 || setting == "1") {
+	        return true;
+	      }
+	      return false;
+	    }
+	  }, {
 	    key: 'billOn',
 	    value: function billOn() {
 	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
@@ -2378,7 +2386,7 @@
 	    value: function billSettingOn() {
 	      var _this2 = this;
 
-	      _TsvActions2.default.apiCall('setCustomMachineSetting', "HasBillCoin", true, function (err, ok) {
+	      _TsvActions2.default.apiCall('setCustomMachineSetting', "HasBillCoin", "true", function (err, ok) {
 	        if (err) throw new err();
 	        _this2.setState({
 	          hasBillAcceptor: true
@@ -2390,7 +2398,7 @@
 	    value: function billSettingOff() {
 	      var _this3 = this;
 
-	      _TsvActions2.default.apiCall('setCustomMachineSetting', "HasBillCoin", false, function (err, ok) {
+	      _TsvActions2.default.apiCall('setCustomMachineSetting', "HasBillCoin", "false", function (err, ok) {
 	        if (err) throw new err();
 	        _this3.setState({
 	          hasBillAcceptor: false
