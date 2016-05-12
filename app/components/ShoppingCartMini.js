@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
 import { browserHistory } from 'react-router'
+import * as Translate from '../../lib/Translate'
 
 import RootscopeStore from '../stores/RootscopeStore'
 
@@ -65,11 +66,21 @@ class ShoppingCartMini extends Component {
 					<a><img onClick={() => {browserHistory.push("/ShoppingCart")}} src="/gfx/shop.png" /></a>
 					{' '}
 					{ITEMS}
+					{this.renderCheckoutButton()}
 				</p>
 			</div>
 		);
 	}
-
+	
+	renderCheckoutButton() {
+		if (this.state.qty > 0) {
+			return (
+				<_E.Button type="success" size="lg" style={{marginLeft:'0.5em'}} onClick={() => { browserHistory.push('/ChooseCashCard') }}>{Translate.translate('ShoppingCart','Checkout')}</_E.Button>
+			);
+		}
+		return null;
+	}
+	
 }
 
 

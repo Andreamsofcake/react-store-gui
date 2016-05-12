@@ -113,3 +113,83 @@ export function forceBoolean(bool) {
 	}
 	return bool;
 }
+
+/**
+ * wrapper for setTimeout to have a way to see how much time is left
+ * call: var myTimer = new Timer(cb, 1000);
+ * @function callback - callback function to run at end of timer
+ * @number delay - ms of delay
+ * @returns {boolean}
+ */
+export function timer(callback, delay) {
+    var id, started, remaining = delay, running, selfReference, done = false;
+    
+    if (typeof callback !== 'function') {
+    	throw new Error('timer needs a callback!');
+    }
+    
+    //console.log('someone made a new timer.... delay='+delay+', remaining='+remaining);
+
+    // wrap the callback and attempt to destroy self (memory leak worry):
+    function _callback() {
+    	// only callback once
+    	if (!done) {
+			running = false;
+			done = true;
+			clearTimeout(id);
+			id = null;
+			if (selfReference) {
+				selfReference = null;
+			}
+			//console.error("\n\ncalling back from new timer func... remaining: "+remaining+"\n\n");
+			callback();
+		}
+    }
+    
+    this.start = function() {
+        if (remaining > 0) {
+			//console.log('start timer.... delay='+delay+', remaining='+remaining + ', ('+!!(remaining)+'), '+(typeof remaining));
+			running = true;
+			started = new Date();
+			//id = setTimeout(callback, remaining);
+	        id = setTimeout(_callback, remaining);
+	    } else {
+	    	_callback();
+	    }
+    }
+    
+    // function to try and allow passing in of created reference for destruction (see _callback() above)
+    this.self = function( self ) {
+    	if (self) { selfReference = self; }
+    }
+
+    this.pause = function() {
+        running = false;
+        clearTimeout(id);
+        remaining -= new Date() - started;
+    }
+    
+    this.getDelay = function() {
+    	return delay;
+    }
+
+    this.getTimeLeft = function() {
+    	//console.warn("\n\ncalling back from new timer func > getTimeLeft...\n\n");
+        if (running) {
+            this.pause();
+            this.start();
+        }
+        return remaining;
+    }
+
+    this.getStateRunning = function() {
+        return running;
+    }
+
+    // semantic aliases:
+    this.stop = this.pause;
+    this.play = this.start;
+
+    this.start();
+
+}

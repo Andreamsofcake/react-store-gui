@@ -1,7 +1,7 @@
 import RootscopeStore from '../stores/RootscopeStore'
 import RootscopeActions from '../actions/RootscopeActions'
 import TsvActions from '../actions/TsvActions'
-import { forceBoolean, moneyformat } from './index'
+import { forceBoolean, moneyformat, timer } from './index'
 import * as Translate from '../../lib/Translate'
 import { browserHistory } from 'react-router'
 
@@ -10,6 +10,7 @@ var serviceIsStarted = false
 	// currentPageView: replacement for rootscope.currentLocation or whatever....
 	// still need to track it somehow, and this script will never get access to router.location.path
 	, currentPageView
+	, globalTimers = {}
 	;
 
 export function init() {
@@ -88,7 +89,8 @@ export function emptyCart() {
 }
 
 export function vendResponse(processStatus) { //, $location, $rootScope) {
-	//console.log("Hi Ping Debug vendResponse!!!!!!!!!!!!!");
+	console.log("Hi Ping Debug vendResponse!!!!!!!!!!!!!");
+	console.log('processStatus: '+processStatus);
 	resetSelectedItem();
 
 	TsvActions.apiCall('fetchShoppingCart2', (err, cart) => {
@@ -102,6 +104,8 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 				if (isFullSuccessVendResult()){
 					console.log("Full Vend Success!");
 					browserHistory.push("/ThankYouMsg");
+					// moved here from below, but this is questionable
+					emptyCart();
 
 				} else {
 					console.log("Partial Vend Error");
@@ -145,7 +149,8 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 		}
 
 		// not sure about this, is this "single product vending" mode here?
-		emptyCart();
+		// moved to success areas
+		//emptyCart();
 	});
 }
 
@@ -242,7 +247,11 @@ export function cardTransaction(level) {
 }
 
 export function onGeneralTimeout() {
-	console.log("onGeneralTimeout()");
+	console.log("onGeneralTimeout() called");
+	
+	killGeneralIdleTimer();
+	
+	let gotoDef = false;
 
 	if (RootscopeStore.getConfig('bDualLanguage')) {
 		var dfltLang = RootscopeStore.getCache('custommachinesettings.languageDefaulted', "En");
@@ -271,8 +280,9 @@ export function onGeneralTimeout() {
 		case "/CategorySearch":
 		case "/ProductSearch":
 			emptyCart();
-			gotoDefaultIdlePage(); //$location, $rootScope);
-			return;
+			//gotoDefaultIdlePage(); //$location, $rootScope);
+			gotoDef = true;
+			break;
 /*
 		case "/MakeDonation":
 			//tsv.emptyCart();
@@ -280,27 +290,32 @@ export function onGeneralTimeout() {
 */
 		case "/CashVending":
 		case "/CardVending":
-			console.log("On "+currentPageView+" idle timeout disabled...Running the paymentTimer...");
-			// but why are we emptying the cart here without going to DefaultIdlePage???
-			// probably should check to see if any card action has run yet but no resolution (no success and no fail)
-			// if none, then empty + idle, if some, "Payment is still processing, one moment please", resets main payment idle timer
-			// will need to track this somehow through TsvStore?
-			emptyCart();
+			var T = getTimer('paymentTimer')
+			if (!T || (T && T.getTimeLeft() <= 0)) {
+				// but why are we emptying the cart here without going to DefaultIdlePage???
+				// probably should check to see if any card action has run yet but no resolution (no success and no fail)
+				// if none, then empty + idle, if some, "Payment is still processing, one moment please", resets main payment idle timer
+				// will need to track this somehow through TsvStore?
+				emptyCart();
+				gotoDef = true;
+			} else {
+				console.log("On "+currentPageView+" idle timeout disabled...Running the paymentTimer...");
+			}
 			break;
 
 		case "/Admin/CheckFaults":
 			if(!RootscopeStore.getSession('bRunningClearFaults')){
-				gotoDefaultIdlePage(); //$location, $rootScope);
+				//gotoDefaultIdlePage(); //$location, $rootScope);
+				gotoDef = true;
 				console.log("Idle Timeout from /Admin/CheckFaults not running ClearFaults");
-				return;
 			}
 			break;
 
 		case "/Admin/AutoMap":
 			if(!RootscopeStore.getSession('bRunningAutoMap')){
-				gotoDefaultIdlePage(); //$location, $rootScope);
+				//gotoDefaultIdlePage(); //$location, $rootScope);
+				gotoDef = true;
 				console.log("Idle Timeout from /Admin/AutoMap not running AutoMap");
-				return;
 			}
 			break;
 
@@ -308,45 +323,76 @@ export function onGeneralTimeout() {
 			//console.log("Idle Timeout from "+RootscopeStore.getCache('currentLocation'));
 			console.log("Idle Timeout from " + currentPageView);
 			emptyCart();
-			gotoDefaultIdlePage(); //$location, $rootScope);
-			return;
+			//gotoDefaultIdlePage(); //$location, $rootScope);
+			gotoDef = true;
+			break;
 	}
 
-	startGeneralIdleTimer(); //$location, $rootScope);//Ping added on 1016/2015
+	startGeneralIdleTimer(currentPageView); //$location, $rootScope);//Ping added on 1016/2015
+	if (gotoDef) {
+		gotoDefaultIdlePage();
+	}
 }
 
 export function thankYouTimer() {
-    var timer = setTimeout( gotoDefaultIdlePage, RootscopeActions.getCache('custommachinesettings.thankyouPageTimeout' ) );
-    RootscopeActions.setSession('thankyouTimer', timer);
+    //var timer = setTimeout( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.thankyouPageTimeout' ) );
+    var T = new timer( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.thankyouPageTimeout' ) );
+    T.self(T);
+    setTimer('thankyouTimer', T);
 }
 
 export function vendErrorTimer() {
-    var timer = setTimeout( gotoDefaultIdlePage, RootscopeActions.getCache('custommachinesettings.VendErrorTimeout', 10000) );
-    RootscopeActions.setSession('vendErrorTimer', timer);
+    //var timer = setTimeout( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.VendErrorTimeout', 10000) );
+    var T = new timer( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.VendErrorTimeout', 10000) );
+    T.self(T);
+    setTimer('vendErrorTimer', T);
 }
 
 export function startGeneralIdleTimer(fromPage) {
+	var T = getTimer('generalIdleTimer')
+	if (!T && /Admin/.test(fromPage)) {
+		//console.warn('skipping startGeneralIdleTimer() because it looks like we are in admin land, and timer was cancelled');
+		return;
+	}
 	if (fromPage) {
 		currentPageView = fromPage;
 	}
 	killGeneralIdleTimer();
+	/*
 	var timer = setTimeout(() => {
 		//console.log("Hi Ping generalIdleTimer timeout...");
 		console.log("onGeneralIdleTimeout() @" + RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000));
 		onGeneralTimeout();
 	}, RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
-	
-	RootscopeActions.setSession('generalIdleTimer', timer);
+	*/
+    var T = new timer( onGeneralTimeout, RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
+    T.self(T);
+	setTimer('generalIdleTimer', T);
 }
 
 export function killGeneralIdleTimer() {
 	killTimers(['generalIdleTimer']);
-	/*
-	var timer = RootscopeStore.getSession('generalIdleTimer');
-	if (timer === null || timer === undefined || !timer) return;
-	RootscopeActions.setSession('generalIdleTimer', null);
-	clearTimeout(timer);
-	*/
+}
+
+function setTimer(label, timer) {
+	globalTimers[label] = timer;
+}
+
+export function getTimer(label) {
+	return globalTimers[label];
+}
+
+function getTimers() {
+	return globalTimers;
+}
+
+function dropTimer(label) {
+	if (globalTimers[label]) {
+		if (globalTimers[label].stop) {
+			globalTimers[label].stop();
+		}
+		delete globalTimers[label];
+	}
 }
 
 export function isCartEmpty(cb) {
@@ -371,6 +417,8 @@ export function isCartEmpty(cb) {
 	}
 }
 
+var timesIdleCalled = 0;
+
 export function gotoDefaultIdlePage() { //$location, $rootScope){
 
 	// can't go to idle page until we get settings!
@@ -379,14 +427,10 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 		return;
 	}
 	
-	TsvActions.apiCall('checkActivation', (err, result) => {
-		
-		console.warn('[checkActivation]');
-		console.log(result);
-		
-		if (!result || result.resultCode !== "SUCCESS") {
-			//throw new Error('WHY U NO ACTIVATE');
-			return browserHistory.push("/Activate");
+	function activated(setActivation) {
+		if (setActivation) {
+			// no need to constantly poke this thing:
+			RootscopeActions.setConfig('activated', true);
 		}
 
 		resetSelectedItem();
@@ -400,7 +444,26 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 			return browserHistory.push("/Storefront");
 			// there used to be more options here, look in old TsvService to see them
 		}
-	});
+	}
+	
+	if (RootscopeStore.getConfig('activated')) {
+		activated(false)
+	} else {
+	
+		TsvActions.apiCall('checkActivation', (err, result) => {
+		
+			console.warn('[checkActivation] timesIdleCalled:'+timesIdleCalled);
+			console.log(result);
+			timesIdleCalled += 1;
+		
+			if (!result || result.resultCode !== "SUCCESS") {
+				//throw new Error('WHY U NO ACTIVATE');
+				return browserHistory.push("/Admin/Activate");
+			}
+		
+			activated(true);
+		});
+	}
 }
 
 export function idleClicked() {
@@ -432,15 +495,23 @@ export function killTimers(timerList) {
 	if (timerList && typeof timerList === 'string') { timerList = [timerList]; }
 
 	if (timerList && timerList.length) {
-		var timerSet = {};
-		timerList.forEach( TIMER => {
-			var ref = RootscopeStore.getSession(TIMER);
-			if (ref) {
-				clearTimeout(ref);
-			}
-			timerSet[TIMER] = null;
-		});
-		RootscopeActions.setSession(timerSet);
+		var timerSet = getTimers()
+		if (timerSet) {
+			timerList.forEach( TIMER => {
+				if (timerSet[TIMER]) {
+					var ref = timerSet[TIMER];
+					if (ref) {
+						if (ref.stop) {
+							ref.stop();
+						} else {
+							clearTimeout(ref);
+						}
+					}
+					dropTimer(TIMER);
+				}
+			});
+			//RootscopeActions.setTimers(timerSet);
+		}
 	}
 
 }
@@ -460,6 +531,7 @@ export function startPaymentTimer( idlePage ){
 		throw new Error('[TsvUtils.startPaymentTimer] I need a timeoutLength to start a timeout! none found.');
 	}
 	
+	/*
 	var timeout = setTimeout( () => {
 		emptyCart();
 		//stopPaymentTimer();
@@ -477,8 +549,27 @@ export function startPaymentTimer( idlePage ){
 		}
 
 	}, timeoutLength );
+	*/
 	
-	RootscopeActions.setSession('paymentTimer', timeout);
+    var T = new timer( () => {
+		emptyCart();
+		//stopPaymentTimer();
+		killTimers('paymentTimer');
+
+		switch (idlePage) {
+			// "View1" is the keypad input interface for single product choose + purchase (no cart)
+			case 'View1':
+				browserHistory.push('/View1');
+				break;
+
+			default:
+				gotoDefaultIdlePage();
+				break;
+		}
+
+	}, timeoutLength );
+    T.self(T);
+	setTimer('paymentTimer', T);
 }
 
 

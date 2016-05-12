@@ -111,7 +111,7 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 	getConfig: function(path, dflt) {
 		path = path ? 'config.' + path : 'config';
 		var result = _storeDB.get(path);
-		if (typeof result !== 'undefined') {
+		if (typeof result !== 'undefined' && result !== null) {
 			return result;
 		}
 		return dflt;
@@ -120,7 +120,7 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 	getCache: function(path, dflt) {
 		path = path ? 'cache.' + path : 'cache';
 		var result = _storeDB.get(path);
-		if (typeof result !== 'undefined') {
+		if (typeof result !== 'undefined' && result !== null) {
 			return result;
 		}
 		return dflt;
@@ -129,7 +129,7 @@ var RootscopeStore = objectAssign({}, EventEmitter.prototype, {
 	getSession: function(path, dflt) {
 		path = path ? 'session.' + path : 'session';
 		var result = _storeDB.get(path);
-		if (typeof result !== 'undefined') {
+		if (typeof result !== 'undefined' && result !== null) {
 			return result;
 		}
 		return dflt;
@@ -153,8 +153,8 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 			if (!action.data.value && action.data.path && typeof action.data.path === 'object') {
 				Object.keys(action.data.path).forEach( KEY => {
 					_storeDB.set('config.' + KEY, action.data.path[KEY]);
-					action.data.path = '__multiple__';
 				});
+				action.data.path = '__multiple__';
 			} else {
 				_storeDB.set('config.' + action.data.path, action.data.value);
 			}
@@ -165,8 +165,8 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 			if (!action.data.value && action.data.path && typeof action.data.path === 'object') {
 				Object.keys(action.data.path).forEach( KEY => {
 					_storeDB.set('cache.' + KEY, action.data.path[KEY]);
-					action.data.path = '__multiple__';
 				});
+				action.data.path = '__multiple__';
 			} else {
 				_storeDB.set('cache.' + action.data.path, action.data.value);
 			}
@@ -179,8 +179,8 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 			if (!action.data.value && action.data.path && typeof action.data.path === 'object') {
 				Object.keys(action.data.path).forEach( KEY => {
 					_storeDB.set('session.' + KEY, action.data.path[KEY]);
-					action.data.path = '__multiple__';
 				});
+				action.data.path = '__multiple__';
 			} else {
 				_storeDB.set('session.' + action.data.path, action.data.value);
 			}

@@ -38,10 +38,12 @@ class AdminInventory extends Component {
   }
 
   fillMachine(){
+  	  startGeneralIdleTimer(this.props.location.pathname);
       TsvActions.apiCall('fillMachine', this.state.machineID.toString());
   }
 
   fillCoil(){
+  	startGeneralIdleTimer(this.props.location.pathname);
     if(this.state.num != "") {
 		TsvActions.apiCall('adminValidateProductByCoil', this.state.num, ( err, data) => {
 			let state = { vpbc: data };
@@ -84,19 +86,19 @@ class AdminInventory extends Component {
   }
 
   backToAdminHome() {
-    this.setState({
-      num: ""
-    });
       if(this.state.bEnterCoil){
           browserHistory.push("/Admin/Home");
       } else {
+      	startGeneralIdleTimer(this.props.location.pathname);
         this.setState({
-          bEnterCoil: true
+          bEnterCoil: true,
+          num: ""
         })
       }
   }
 
   addStock(){
+  	startGeneralIdleTimer(this.props.location.pathname);
       if(this.state.num != ""){
           TsvActions.apiCall('addStock', this.state.coilNumber, this.state.num, (err, data) => {
 			  TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
@@ -118,6 +120,7 @@ class AdminInventory extends Component {
   }
 
   removeStock(){
+  	startGeneralIdleTimer(this.props.location.pathname);
       if(this.state.num != ""){
           TsvActions.apiCall('removeStock', this.state.coilNumber, this.state.num, (err, data) => {
 	          TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
@@ -140,12 +143,14 @@ class AdminInventory extends Component {
   }
 
   clear() {
+  	startGeneralIdleTimer(this.props.location.pathname);
     this.setState({
       num: ""
     })
   }
 
   enter() {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	TsvActions.apiCall('adminValidateProductByCoil', this.state.num, (err, data) => {
 		let state = { vpbc: data };
 
@@ -185,6 +190,7 @@ class AdminInventory extends Component {
   }
   
   press(digit) {
+  	startGeneralIdleTimer(this.props.location.pathname);
   	let num = this.state.num;
     if(num.length < this.state.maxChars){
     	num += digit;
@@ -195,6 +201,7 @@ class AdminInventory extends Component {
   }
 
   getMachineSelectOptions() {
+  	startGeneralIdleTimer(this.props.location.pathname);
     var options = [];
     RootscopeStore.getCache('machineList').forEach( MACHINE => {
       options.push({ label: 'Machine ' + MACHINE, value: MACHINE });

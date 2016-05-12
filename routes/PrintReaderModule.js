@@ -139,7 +139,7 @@ msgs.push(foo);
 					return reply({ status: 'err', check2a: true, apiResponses: [body.data || body.msg] }).code(500);
 				}
 				let M = body.data;
-				if (body.msg) M += ': ' + body.msg;
+				if (body.msg) M += ': ' + (typeof body.msg == 'object' ? JSON.stringify(body.msg) : body.msg);
 				msgs.push(M);
 
 				RQ.post({
@@ -173,11 +173,11 @@ msgs.push(foo);
 					}
 					if (!body || body.status !== 'ok') { 
 						let M = body.data;
-						if (body.msg) M += ': ' + body.msg;
+						if (body.msg) M += ': ' + (typeof body.msg == 'object' ? JSON.stringify(body.msg) : body.msg);
 						return reply({ status: 'err', check2: true, apiResponses: msgs.concat(M) }).code(500);
 					}
 					let M = body.data;
-					if (body.msg) M += ': ' + body.msg;
+					if (body.msg) M += ': ' + (typeof body.msg == 'object' ? JSON.stringify(body.msg) : body.msg);
 					msgs.push(M);
 					return reply({ status: 'ok', apiResponses: msgs }).code(200);
 				});

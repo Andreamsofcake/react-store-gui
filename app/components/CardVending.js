@@ -118,7 +118,6 @@ class CardVending extends Component {
 	cardTransactionHandler(level) {
 
 		killTimers('cardErrorTimer');
-		resetPaymentTimer();
 		var msg, showSpinner = false;
 
 		if (!RootscopeStore.getSession('bVendingInProcess')) {
@@ -127,11 +126,13 @@ class CardVending extends Component {
 				case "CARD_INSERTED":
 					msg = Translate.translate("CardVending", "ProcessingMessage");
 					showSpinner = true;
+					resetPaymentTimer();
 					break;
 
 				case "CARD_PROCESSING":
 					msg = Translate.translate("CardVending", "ProcessingMessage");
 					showSpinner = true;
+					resetPaymentTimer();
 					break;
 
 				case "CARD_APPROVED":
@@ -187,7 +188,7 @@ class CardVending extends Component {
 		if (event && event.method) {
 			switch (event.method) {
 				case 'vendResponse':
-					vendResponse(processStatus);
+					vendResponse(event.data); //processStatus);
 					stopPaymentTimer();
 					break;
 				case 'cardTransactionResponse':

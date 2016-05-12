@@ -48,8 +48,9 @@ class AdminComponentControl extends Component {
 	});
   }
 
-  lastHeartbeatTime(e, lastBeat) {
+  lastHeartbeatTime(e) {
   	if (e) { e.preventDefault(); }
+  	startGeneralIdleTimer(this.props.location.pathname);
 	TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
 		console.log('[lastHeartbeatTime] ok, what does this look like?');
 		console.log(lastBeat);

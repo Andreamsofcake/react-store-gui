@@ -37,7 +37,7 @@ class Storefront extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-  	//console.log('STOREFRONT mounted... route: '+this.props.location.pathname);
+  	//console.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
   	startGeneralIdleTimer(this.props.location.pathname);
 
     RootscopeStore.addChangeListener(this._onRootstoreChange);
@@ -112,8 +112,8 @@ class Storefront extends Component {
           </_E.Row>
           <_E.Row>
             <_E.Col>
-            Categories:{' '}
-            <_E.Button type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>
+            <span style={{fontWeight:'bold', textTransform: 'uppercase', fontSize: '1.2em'}}>Show:</span>{' '}
+            <_E.Button style={{backgroundColor: '#fff'}} type={allType} onClick={this.categoryClick.bind(this, null)}>All</_E.Button>
             <span style={{width:'1em', display: 'inline-block'}}>{' '}</span>
             {this.renderCategories()}
             </_E.Col>
@@ -133,7 +133,7 @@ class Storefront extends Component {
 				{this.state.categories.map((category, $index) => {
 					let type=this.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary": "hollow-primary"
 					return (
-					  <_E.Button key={$index} type={type} onClick={this.categoryClick.bind(this, category.categoryID)} >{category.categoryName}</_E.Button>
+					  <_E.Button style={{backgroundColor: '#fff'}} key={$index} type={type} onClick={this.categoryClick.bind(this, category.categoryID)} >{category.categoryName}</_E.Button>
 					)
 				  }
 				)}

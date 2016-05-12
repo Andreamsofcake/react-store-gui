@@ -30,9 +30,14 @@ class ChooseCashCard extends Component {
   };
 
   cancel(){
-	emptyCart();
+    emptyCart();
+    //RootscopeActions.setConfig('itemsInCart', 0);
     //gotoDefaultIdlePage();
-    browserHistory.push("/Storefront");
+    // FIXME invariant!
+    setTimeout(() => {
+	    browserHistory.push('/Storefront');
+	}, 250);
+
   }
 
   cash() {
@@ -80,11 +85,23 @@ class ChooseCashCard extends Component {
 			  </_E.Col>
 		  </_E.Row>
 
-		  <_E.Row>
+            <_E.Row>
+            	<_E.Col><h1>&nbsp;</h1></_E.Col>
+            </_E.Row>
+            <_E.Row>
+
+                <_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+                <_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
+                <_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="danger" size="lg" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />{Translate.translate('ShoppingCart','Cancel')}</_E.Button></_E.Col>
+                <_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+
+            </_E.Row>
+
+		  {/*<_E.Row>
 			  <_E.Col>
 				  <img src={Translate.localizedImage('cancel.png')} onClick={this.cancel} />
 			  </_E.Col>
-		  </_E.Row>
+		  </_E.Row>*/}
       </_E.Col>
       </_E.Row>
     );

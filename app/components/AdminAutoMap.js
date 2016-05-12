@@ -38,6 +38,7 @@ class AdminAutoMap extends Component {
   }
 
   mapMachine(machineID){
+  	startGeneralIdleTimer(this.props.location.pathname);
     if (!RootscopeStore.getSession('bRunningAutoMap')) {
         RootscopeActions.setSession('bRunningAutoMap', true);
         TsvActions.apiCall('runAutoMap', machineID, -1);
@@ -64,6 +65,7 @@ class AdminAutoMap extends Component {
 	}
 	
 	_onTsvChange(event) {
+		startGeneralIdleTimer(this.props.location.pathname);
 		if (event && event.method === 'notifyMapStatusChange') {
 
 			let status = event.data[0];

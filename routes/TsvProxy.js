@@ -118,7 +118,14 @@ function multieventProxyPing(io) {
 
 			if (body && body.length && body[0] !== 'noEvent') {
 				debug('FLASHAPI Proxy multievent response!');
-				//debug(body);
+				try {
+					// allow logging of smaller responses, don't want a dirty log! (can't copy out of it so who cares)
+					if (JSON.stringify(body).length < 100) {
+						debug(body);
+					}
+				} catch (e) {
+					// nada
+				}
 
 				// windoze no likey, must send to all sockets:
 				//io.to('flash-api-multi-event').emit('flash-api-multi-event', [ body ]);

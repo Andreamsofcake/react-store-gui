@@ -60,27 +60,27 @@ class ComEmulator extends Component {
 			{
 				label: 'Insert $5',
 				cmd: [['insertCash', 5]],
-				showFor: ['ChooseCashCard','CashVending']
+				showFor: ['ChooseCashCard','CashVending','AdminBillAcceptor']
 			},
 			{
 				label: 'Insert $10',
 				cmd: [['insertCash', 10]],
-				showFor: ['ChooseCashCard','CashVending']
+				showFor: ['ChooseCashCard','CashVending','AdminBillAcceptor']
 			},
 			{
 				label: 'Insert $20',
 				cmd: [['insertCash', 20]],
-				showFor: ['ChooseCashCard','CashVending']
+				showFor: ['ChooseCashCard','CashVending','AdminBillAcceptor']
 			},
 			{
 				label: 'Insert $50',
 				cmd: [['insertCash', 50]],
-				showFor: ['ChooseCashCard','CashVending']
+				showFor: ['ChooseCashCard','CashVending','AdminBillAcceptor']
 			},
 			{
 				label: 'Insert $100',
 				cmd: [['insertCash', 100]],
-				showFor: ['ChooseCashCard','CashVending']
+				showFor: ['ChooseCashCard','CashVending','AdminBillAcceptor']
 			},
 
 			// credit cards:
@@ -149,15 +149,6 @@ class ComEmulator extends Component {
 		});
 		
 		if (!showButtons.length) {
-			/*
-			setTimeout(() => {
-				console.warn('ComEmulator ----- no showButtons??? (delayed...)');
-				console.log(this.state.currentView);
-				console.log(RootscopeStore.getSession('currentView'));
-				console.log(buttons);
-				console.log(showButtons);
-			}, 1000);
-			//*/
 			return null;
 		}
 
