@@ -39,6 +39,7 @@ var Hapi = require('hapi')
 ****/
 
 var socketdebug = require('debug')('vending-app-gui:websocket-comm');
+var serverdebug = require('debug')('vending-app-gui:server-comm');
 
 var server = new Hapi.Server();
 server.connection({
@@ -338,6 +339,26 @@ server.register([
 					}
 				}
 			}
+		}
+	});
+
+	server.route({
+		method: 'post',
+		path: '/api/big-log/{method}',
+		handler: (request, reply) => {
+			serverdebug('got big-log POST request, method: ' + request.params.method);
+			//serverdebug(request.payload);
+			reply({ status: 'ok' });
+		}
+	});
+
+	server.route({
+		method: 'get',
+		path: '/api/big-log/{method}',
+		handler: (request, reply) => {
+			serverdebug('got big-log GET request, method: ' + request.params.method);
+			//serverdebug(request.query);
+			reply({ status: 'ok' });
 		}
 	});
 

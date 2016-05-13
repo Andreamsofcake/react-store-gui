@@ -12,6 +12,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminComponentControl');
+
 class AdminComponentControl extends Component {
 
   constructor(props, context) {
@@ -27,7 +30,7 @@ class AdminComponentControl extends Component {
     if (typeof window !== 'undefined') {
 	    window.location.reload();
 	} else {
-		console.error('cannot reset GUI, I have no window???');
+		Big.error('cannot reset GUI, I have no window???');
 	}
   }
 
@@ -39,9 +42,9 @@ class AdminComponentControl extends Component {
   componentDidMount() {
 	startGeneralIdleTimer(this.props.location.pathname);
 	TsvActions.apiCall('enumerateComponents', (err, data) => {
-      if (err) throw err;
-      console.log('enumerateComponents called back.... data:');
-      console.log(data);
+      if (err) Big.throw(err);
+      Big.log('enumerateComponents called back.... data:');
+      Big.log(data);
       this.setState({
       	versionInfos: data
       });
@@ -52,8 +55,8 @@ class AdminComponentControl extends Component {
   	if (e) { e.preventDefault(); }
   	startGeneralIdleTimer(this.props.location.pathname);
 	TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
-		console.log('[lastHeartbeatTime] ok, what does this look like?');
-		console.log(lastBeat);
+		Big.log('lastHeartbeatTime ok, what does this look like?');
+		Big.log(lastBeat);
 		if (lastBeat && typeof lastBeat === 'object') {
 			lastBeat = lastBeat.heartbeatTime;
 		}

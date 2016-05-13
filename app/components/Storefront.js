@@ -11,6 +11,26 @@ import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
 import ShoppingCartMini from './ShoppingCartMini'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('Storefront');
+/*
+// example of how to capture client logging to the server
+Big.setOptions({
+	api: [{ type: 'axios', config: {
+		url: '/api/big-log',
+		method: 'post',
+		then: [(response) => {
+			console.log('[BigLog] posted log request to API');
+		}],
+		catch: (error) => {
+			console.error('[BigLog] error, did not log request post to api!');
+			console.error(error);
+		}
+	
+	}} ]
+});
+*/
+
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
@@ -37,27 +57,27 @@ class Storefront extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-  	//console.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
+  	//Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
   	startGeneralIdleTimer(this.props.location.pathname);
 
     RootscopeStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
 
     TsvActions.apiCall('fetchProduct', (err, data) => {
-      if (err) throw err;
+      if (err) Big.throw(err);
       RootscopeActions.setSession('products', data)
     });
 
     TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
-    	if (err) throw err;
-    	console.log('fetchProductCategoriesByParentCategoryID');
-    	console.log(err);
-    	console.log(data);
+    	if (err) Big.throw(err);
+    	Big.log('fetchProductCategoriesByParentCategoryID');
+    	Big.log(err);
+    	Big.log(data);
     	RootscopeActions.setConfig('categories', data);
     });
 
 	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-		if (err) throw err;
+		if (err) Big.throw(err);
 		RootscopeActions.setCache('shoppingCart', data);
 	});
   }
@@ -70,9 +90,9 @@ class Storefront extends Component {
 
   _onRootstoreChange(event) {
   	// if (event && event.type == 'config' && event.path == 'categories') {
-		// console.log('[_onRootstoreChange]');
-		// console.log(event);
-		// console.log(RootscopeStore.getConfig('categories'));
+		// Big.log('[_onRootstoreChange]');
+		// Big.log(event);
+		// Big.log(RootscopeStore.getConfig('categories'));
 		this.setState({
 			categories: RootscopeStore.getConfig('categories') || [],
 			products: RootscopeStore.getSession('products') || [],

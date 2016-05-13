@@ -26,6 +26,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('CustomerSignup');
+
 class CustomerSignup extends Component {
 
   constructor(props, context) {
@@ -58,8 +61,8 @@ class CustomerSignup extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
-  	console.log('Customer Signup componentWillReceiveProps(nextProps)');
-  	console.log(nextProps);
+  	Big.log('componentWillReceiveProps(nextProps)');
+  	Big.log(nextProps);
   	if (nextProps.params) {
   		this.setState({
   			params: nextProps.params
@@ -243,7 +246,7 @@ class CustomerSignup extends Component {
   		);
   	}
 
-  	console.warn('CustomerSignup renderStep() ... unknown step requested: ' + this.state.params.step);
+  	Big.warn('renderStep() ... unknown step requested: ' + this.state.params.step);
   	return null;
   }
 

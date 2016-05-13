@@ -7,6 +7,9 @@ import SocketAPI from '../utils/SocketAPI'
 import axios from 'axios'
 import { browserHistory } from 'react-router'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('CustomerSignupActions');
+
 var CustomerSignupActions = {
 
 	refreshCustomer() {
@@ -20,8 +23,8 @@ var CustomerSignupActions = {
 			}
 		})
 		.catch(error => {
-			console.error('[CustomerSignupActions] failed to refresh customer???');
-			console.log(error);
+			Big.error('failed to refresh customer???');
+			Big.log(error);
 		})
 	},
 
@@ -146,11 +149,11 @@ var CustomerSignupActions = {
 				if (data && data.customer) {
 					axios.post('/api/set-loggedin-customer', { customer: data.customer })
 					.then(response => {
-						console.log('temp action: updated the current customer after signup');
+						Big.log('temp action: updated the current customer after signup');
 					})
 					.catch(error => {
-						console.error('[CustomerSignupActions] failed to set current customer???');
-						console.log(error);
+						Big.error('failed to set current customer???');
+						Big.log(error);
 					})
 				}
 				/**** END temporary call ****/

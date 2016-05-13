@@ -18,6 +18,9 @@ import {
 	cardTransaction,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('View2');
+
 class View2 extends Component {
 
   constructor(props, context) {
@@ -29,7 +32,7 @@ class View2 extends Component {
     TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CREDIT_CARD");
     TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
     TsvActions.apiCall('fetchShoppingCart2', (err, cart) => {
-    	if (err) throw err;
+    	if (err) Big.throw(err);
     	RootscopeActions.setCache('shoppingCart', cart);
     })
 
@@ -106,7 +109,7 @@ class View2 extends Component {
       /*what? $.fancybox.close();*/
 
       if (RootscopeStore.getCache('currentLocation') != RootscopeStore.getCache('currentLocation')) {
-          console.log("Path doesn't match. Not for View2, ignoring")
+          Big.log("Path doesn't match. Not for View2, ignoring")
           return;
       }
 
@@ -130,7 +133,7 @@ class View2 extends Component {
                   break;
           }
       } else {
-          console.log("Ignoring credit card event, from View2, vend is in progress?");
+          Big.log("Ignoring credit card event, from View2, vend is in progress?");
       }
   }
 
@@ -166,7 +169,7 @@ class View2 extends Component {
 					  break;
 			  }
 			} else {
-			  console.log("Ignoring credit card event, from View2, vend is in progress?");
+			  Big.log("Ignoring credit card event, from View2, vend is in progress?");
 			}
 		}
 	}

@@ -11,6 +11,9 @@ import { Link } from 'react-router'
 
 import TsvActions from '../actions/TsvActions'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('ProductSearch');
+
 class ProductSearch extends Component {
 
   constructor(props, context) {
@@ -37,7 +40,7 @@ class ProductSearch extends Component {
 
   componentDidMount() {
 	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-		if (err) throw err;
+		if (err) Big.throw(err);
 		RootscopeActions.setCache('shoppingCart', data);
 	});
 
@@ -49,10 +52,10 @@ class ProductSearch extends Component {
     this.setState(state);
 
     if (!state.products) {
-		console.warn('have to go fetch all products! (fix in refactor, but ProductSearch is not long-term used anyway ... just old code for testing');
-		//console.log(RootscopeStore.getConfig('products'));
+		Big.warn('have to go fetch all products! (fix in refactor, but ProductSearch is not long-term used anyway ... just old code for testing');
+		//Big.log(RootscopeStore.getConfig('products'));
 		TsvActions.apiCall('fetchProduct', (err, data) => {
-			if (err) throw err;
+			if (err) Big.throw(err);
 			RootscopeActions.setConfig('products', data);
 			this.setState({
 				products: data
@@ -85,11 +88,11 @@ class ProductSearch extends Component {
   setPrdSelected(product, e) {
     if(product.stockCount > 0){
     	TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
-    		if (err) throw err;
+    		if (err) Big.throw(err);
 	      RootscopeActions.setConfig('pvr', response);
 
 	      TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-			if (err) throw err;
+			if (err) Big.throw(err);
 			RootscopeActions.setCache('shoppingCart', data);
 	      });
 
@@ -105,7 +108,7 @@ class ProductSearch extends Component {
 
   updateCategory(categoryID) {
   	TsvActions.apiCall('fetchProductByCategory', categoryID, (err, data) => {
-		if (err) throw err;
+		if (err) Big.throw(err);
 		RootscopeActions.setConfig('products', data);
 		this.setState({
 			products: data

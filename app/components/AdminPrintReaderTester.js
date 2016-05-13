@@ -13,6 +13,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('Admin_Print_Reader_Tester');
+
 class Admin_Print_Reader_Tester extends Component {
 
   constructor(props, context) {
@@ -46,8 +49,8 @@ class Admin_Print_Reader_Tester extends Component {
   
   _onStoreChange(event) {
   	startGeneralIdleTimer(this.props.location.pathname);
-  	console.log('PRINT READER event');
-  	console.log(event);
+  	Big.log('PRINT READER event');
+  	Big.log(event);
   	//if (event.type == appC.TEST_REGISTER_PRINT) {
   		this.setState({
   			apiResponse: AdminStore.getApiResponses()
@@ -134,12 +137,12 @@ class Admin_Print_Reader_Tester extends Component {
   
   updateState(what, e) {
   	startGeneralIdleTimer(this.props.location.pathname);
-  	//console.warn('updateState(what, e)');
-  	//console.log(what);
-  	//console.log(e.target.value);
+  	//Big.warn('updateState(what, e)');
+  	//Big.log(what);
+  	//Big.log(e.target.value);
   	let state = {};
   	state[what] = e.target.value;
-  	//console.log(state);
+  	//Big.log(state);
   	this.setState(state);
   }
 

@@ -1,3 +1,7 @@
+import Log from '../utils/BigLogger'
+var Big = new Log('ExampleActions');
+
+
 	exampleAjaxGetAction( params ) {
 		axios.get('/foo/bar/baz', {
 			params: {
@@ -20,17 +24,17 @@
 				}
 			} else {
 				if (response.data && response.data.error) {
-					console.error('[RootscopeActions] failed to get foo, error:');
-					console.log(response.data.error);
+					Big.error('failed to get foo, error:');
+					Big.log(response.data.error);
 				} else {
-					console.error('[RootscopeActions] failed to get foo, no data returned. full response:');
-					console.log(response);
+					Big.error('failed to get foo, no data returned. full response:');
+					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			console.error('[RootscopeActions] failed to get foo, call chain error probably check component tree');
-			console.log(error);
+			Big.error('failed to get foo, call chain error probably check component tree');
+			Big.log(error);
 		})
 	},
 
@@ -46,17 +50,17 @@
 				});
 			} else {
 				if (response.data && response.data.error) {
-					console.error('[RootscopeActions] failed to post foo, error:');
-					console.log(response.data.error);
+					Big.error('failed to post foo, error:');
+					Big.log(response.data.error);
 				} else {
-					console.error('[RootscopeActions] failed to post foo, no data returned. full response:');
-					console.log(response);
+					Big.error('failed to post foo, no data returned. full response:');
+					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			console.error('[RootscopeActions] failed to post foo, call chain error probably check component tree');
-			console.log(error);
+			Big.error('failed to post foo, call chain error probably check component tree');
+			Big.log(error);
 		})
 	},
 
@@ -72,8 +76,8 @@
 			});
 		} else {
 			alert('Sorry, failed to handle the fooSocketAction.');
-			console.log('foo item fail:');
-			console.log(data);
+			Big.log('foo item fail:');
+			Big.log(data);
 		}
 	},
 	

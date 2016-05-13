@@ -14,6 +14,9 @@ import ShoppingCartMini from './ShoppingCartMini'
 
 import TsvActions from '../actions/TsvActions'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('Storefront_Static');
+
 class Storefront_Static extends Component {
 
   constructor(props, context) {
@@ -37,17 +40,17 @@ class Storefront_Static extends Component {
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
 
     TsvActions.apiCall('fetchProduct', (err, data) => {
-      if (err) throw err;
+      if (err) Big.throw(err);
       RootscopeActions.setSession('products', data)
     });
 
     TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
-    	if (err) throw err;
+    	if (err) Big.throw(err);
     	RootscopeActions.setConfig('categories', data);
     });
 
 	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-		if (err) throw err;
+		if (err) Big.throw(err);
 		RootscopeActions.setCache('shoppingCart', data);
 	});
   }
@@ -60,9 +63,9 @@ class Storefront_Static extends Component {
 
   _onRootstoreChange(event) {
   	// if (event && event.type == 'config' && event.path == 'categories') {
-		// console.log('[_onRootstoreChange]');
-		// console.log(event);
-		// console.log(RootscopeStore.getConfig('categories'));
+		// Big.log('[_onRootstoreChange]');
+		// Big.log(event);
+		// Big.log(RootscopeStore.getConfig('categories'));
 		this.setState({
 			categories: RootscopeStore.getConfig('categories') || [],
 			products: RootscopeStore.getSession('products') || [],

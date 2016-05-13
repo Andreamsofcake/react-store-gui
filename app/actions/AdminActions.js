@@ -4,8 +4,8 @@ import appConstants from '../constants/appConstants'
 import axios from 'axios'
 //import { browserHistory } from 'react-router'
 
-//import TsvService from '../../lib/TsvService'
-//import * as Translate from '../../lib/Translate'
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminActions');
 
 var AdminActions = {
 	
@@ -22,18 +22,18 @@ var AdminActions = {
 				});
 			} else {
 				if (response.data && response.data.error) {
-					console.error('[AdminActions] failed to register print, error:');
-					console.log(response.data.error);
+					Big.error('failed to register print, error:');
+					Big.log(response.data.error);
 				} else {
-					console.error('[AdminActions] failed to register print, no data returned. full response:');
-					console.log(response);
+					Big.error('failed to register print, no data returned. full response:');
+					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			console.error('[AdminActions] failed to register print, call chain error probably check component tree');
-			console.log(error);
-			throw Error(error);
+			Big.error('failed to register print, call chain error probably check component tree');
+			Big.log(error);
+			Big.throw(error);
 		})
 	},
 
@@ -50,18 +50,18 @@ var AdminActions = {
 				});
 			} else {
 				if (response.data && response.data.error) {
-					console.error('[AdminActions] failed to match print, error:');
-					console.log(response.data.error);
+					Big.error('failed to match print, error:');
+					Big.log(response.data.error);
 				} else {
-					console.error('[AdminActions] failed to match print, no data returned. full response:');
-					console.log(response);
+					Big.error('failed to match print, no data returned. full response:');
+					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			console.error('[AdminActions] failed to match print, call chain error probably check component tree');
-			console.log(error);
-			throw Error(error);
+			Big.error('failed to match print, call chain error probably check component tree');
+			Big.log(error);
+			Big.throw(error);
 		})
 	},
 	

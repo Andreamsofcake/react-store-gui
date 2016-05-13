@@ -13,6 +13,9 @@ import {
 	isCartEmpty,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('CategorySearch');
+
 class CategorySearch extends Component {
 
   constructor(props, context) {
@@ -47,13 +50,13 @@ class CategorySearch extends Component {
   fetchCategory(cat) {
     //var categoryID = cat.categoryID;
   	TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', cat.categoryID, (err, data) => {
-    	if (err) throw err;
+    	if (err) Big.throw(err);
     	RootscopeActions.setConfig('categories', data);
     	if (data.length === 0) {
     		TsvActions.apiCall('fetchProductByCategory', cat.categoryID, (err, data) => {
-		    	if (err) throw err;
-		    	console.log('setting products data................................................................................' +"\n................................................................................\n");
-		    	console.log(data);
+		    	if (err) Big.throw(err);
+		    	Big.log('setting products data................................................................................' +"\n................................................................................\n");
+		    	Big.log(data);
 		    	RootscopeActions.setConfig('products', data);
 		    	browserHistory.push("/ProductSearch");
 		    });
@@ -66,7 +69,7 @@ class CategorySearch extends Component {
   componentDidMount() {
 		RootscopeStore.addChangeListener(this._onRootstoreChange);
 		TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
-			if (err) throw err;
+			if (err) Big.throw(err);
 			RootscopeActions.setConfig('categories', data);
 		});
 
@@ -84,9 +87,9 @@ class CategorySearch extends Component {
 
   _onRootstoreChange(event) {
   	if (event && event.type == 'config' && event.path == 'categories') {
-		//console.log('[_onRootstoreChange]');
-		//console.log(event);
-		//console.log(RootscopeStore.getConfig('categories'));
+		//Big.log('[_onRootstoreChange]');
+		//Big.log(event);
+		//Big.log(RootscopeStore.getConfig('categories'));
 		this.setState({
 			categories: RootscopeStore.getConfig('categories')
 		});

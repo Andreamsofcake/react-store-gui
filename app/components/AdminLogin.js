@@ -14,6 +14,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminLogin');
+
 class AdminLogin extends Component {
 
   constructor(props, context) {
@@ -54,13 +57,13 @@ class AdminLogin extends Component {
   	handlePass = handlePass.bind(this)
   	
   	if (localPass) {
-  		console.log('using localPass for login check: '+localPass+', '+(typeof localPass) +', ' + (typeof this.state.num));
+  		Big.log('using localPass for login check: '+localPass+', '+(typeof localPass) +', ' + (typeof this.state.num));
   		result = !!(localPass == this.state.num);
   		if (result) { result = 'VALID' }
   		handlePass(result);
   	
   	} else {
-  		console.log('using TsvApi for login check');
+  		Big.log('using TsvApi for login check');
 		TsvActions.apiCall('validateAdminPassword', this.state.num, (err, res) => {
 			handlePass(res.result);
 		});

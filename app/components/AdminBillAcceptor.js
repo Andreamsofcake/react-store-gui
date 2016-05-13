@@ -63,7 +63,7 @@ class AdminBillAcceptor extends Component {
   
   billSettingOn() {
   	TsvActions.apiCall('setCustomMachineSetting', "HasBillCoin", "true", (err, ok) => {
-  		if (err) throw new (err);
+  		if (err) Big.throw(err);
   		this.setState({
   			hasBillAcceptor: true
   		});
@@ -72,7 +72,7 @@ class AdminBillAcceptor extends Component {
 
   billSettingOff() {
   	TsvActions.apiCall('setCustomMachineSetting', "HasBillCoin", "false", (err, ok) => {
-  		if (err) throw new (err);
+  		if (err) Big.throw(err);
   		this.setState({
   			hasBillAcceptor: false
   		});

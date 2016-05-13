@@ -24,6 +24,9 @@ import {
 
 import { currencyFilter } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('CardVending');
+
 class CardVending extends Component {
 
   constructor(props, context) {
@@ -62,8 +65,8 @@ class CardVending extends Component {
 
     //if (!this.state.summary || (this.state.summary && this.state.summary.TotalPrice < 0.01)) {
     if (this.state.summary && this.state.summary.TotalPrice < 0.01) {
-		console.warn("this.summary.TotalPrice: "+ this.summary.TotalPrice);
-		console.warn("this.summary.TotalPrice less than 0.01 should start vend");
+		Big.warn("this.summary.TotalPrice: "+ this.summary.TotalPrice);
+		Big.warn("this.summary.TotalPrice less than 0.01 should start vend");
 		this.startVend();
 	}
 	
@@ -161,7 +164,7 @@ class CardVending extends Component {
 					break;
 
 				default:
-					console.log("CardVending Got event cardTransactionResponse()default: "+level);
+					Big.log("CardVending Got event cardTransactionResponse()default: "+level);
 					msg = Translate.translate("CardVending", "ErrorMessage");
 					resetPaymentTimer();
 					break;
@@ -244,7 +247,7 @@ class CardVending extends Component {
   }
 
   renderSpinner(){
-  	console.warn('render spinner!!!!');
+  	Big.warn('render spinner!!!!');
     return(
     	<div style={{margin:'0 auto 2em'}}>
       <_E.Spinner size="lg" type="primary" style={{margin:'0 auto 2em'}} />

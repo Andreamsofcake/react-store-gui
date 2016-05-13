@@ -1,8 +1,8 @@
 export function foo() {
-	console.log('foo?');
+	Big.log('foo?');
 	bar();
 }
 
 export function bar() {
-	console.error('BAR BAR BAR');
+	Big.error('BAR BAR BAR');
 }

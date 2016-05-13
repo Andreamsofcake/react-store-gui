@@ -1,3 +1,6 @@
+import Log from './BigLogger'
+var Big = new Log('UtilsIndex');
+
 export function getPropsFromRoute({ routes }, componentProps) {
 	let props = {};
 	const lastRoute = routes[routes.length - 1];
@@ -125,10 +128,10 @@ export function timer(callback, delay) {
     var id, started, remaining = delay, running, selfReference, done = false;
     
     if (typeof callback !== 'function') {
-    	throw new Error('timer needs a callback!');
+    	Big.throw('timer needs a callback!');
     }
     
-    //console.log('someone made a new timer.... delay='+delay+', remaining='+remaining);
+    //Big.log('someone made a new timer.... delay='+delay+', remaining='+remaining);
 
     // wrap the callback and attempt to destroy self (memory leak worry):
     function _callback() {
@@ -141,14 +144,14 @@ export function timer(callback, delay) {
 			if (selfReference) {
 				selfReference = null;
 			}
-			//console.error("\n\ncalling back from new timer func... remaining: "+remaining+"\n\n");
+			//Big.error("\n\ncalling back from new timer func... remaining: "+remaining+"\n\n");
 			callback();
 		}
     }
     
     this.start = function() {
         if (remaining > 0) {
-			//console.log('start timer.... delay='+delay+', remaining='+remaining + ', ('+!!(remaining)+'), '+(typeof remaining));
+			//Big.log('start timer.... delay='+delay+', remaining='+remaining + ', ('+!!(remaining)+'), '+(typeof remaining));
 			running = true;
 			started = new Date();
 			//id = setTimeout(callback, remaining);
@@ -174,7 +177,7 @@ export function timer(callback, delay) {
     }
 
     this.getTimeLeft = function() {
-    	//console.warn("\n\ncalling back from new timer func > getTimeLeft...\n\n");
+    	//Big.warn("\n\ncalling back from new timer func > getTimeLeft...\n\n");
         if (running) {
             this.pause();
             this.start();

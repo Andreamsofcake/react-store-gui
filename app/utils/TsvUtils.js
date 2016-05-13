@@ -5,6 +5,9 @@ import { forceBoolean, moneyformat, timer } from './index'
 import * as Translate from '../../lib/Translate'
 import { browserHistory } from 'react-router'
 
+import Log from './BigLogger'
+var Big = new Log('TsvUtils');
+
 var serviceIsStarted = false
 
 	// currentPageView: replacement for rootscope.currentLocation or whatever....
@@ -15,7 +18,7 @@ var serviceIsStarted = false
 
 export function init() {
 	if (!serviceIsStarted) {
-		console.warn(' --------- ...............       TsvService . init       ..................... --------------- ');
+		Big.warn(' --------- ...............       TsvService . init       ..................... --------------- ');
 		setVendingInProcessFlag(false);
 		TsvActions.serverHandshake();
 		serviceIsStarted = true;
@@ -73,7 +76,7 @@ export function registerKF() {
 }
 
 export function setVendingInProcessFlag(bool) {
-	console.log("setVendingInProcessFlag()");
+	Big.log("setVendingInProcessFlag()");
 	bool = typeof bool === 'undefined' ? true : bool;
 	bool = forceBoolean(bool);
 	RootscopeActions.setSession('bVendingInProcess', bool);
@@ -89,8 +92,8 @@ export function emptyCart() {
 }
 
 export function vendResponse(processStatus) { //, $location, $rootScope) {
-	console.log("Hi Ping Debug vendResponse!!!!!!!!!!!!!");
-	console.log('processStatus: '+processStatus);
+	Big.log("Hi Ping Debug vendResponse!!!!!!!!!!!!!");
+	Big.log('processStatus: '+processStatus);
 	resetSelectedItem();
 
 	TsvActions.apiCall('fetchShoppingCart2', (err, cart) => {
@@ -98,17 +101,17 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 
 		switch(processStatus){
 			case "VEND_SUCCESS":
-				console.log("Got event vendResponse(): "+processStatus);
+				Big.log("Got event vendResponse(): "+processStatus);
 				//tsv.cache.productList = tsv.fetchProduct(); //Not In Use Right Now
 
 				if (isFullSuccessVendResult()){
-					console.log("Full Vend Success!");
+					Big.log("Full Vend Success!");
 					browserHistory.push("/ThankYouMsg");
 					// moved here from below, but this is questionable
 					emptyCart();
 
 				} else {
-					console.log("Partial Vend Error");
+					Big.log("Partial Vend Error");
 					//pay out
 					/*
 					// Kent is not sure about this? if we are "done" and vend error happens, why turn the payment device back on?
@@ -126,7 +129,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 				break;
 
 			case "VEND_FAILURE":
-				console.log("Got event vendResponse(): "+processStatus);
+				Big.log("Got event vendResponse(): "+processStatus);
 				RootscopeActions.setSession({
 					vendErrorMsg1: Translate.translate("Vending", "TotalVendFailure"),
 					vendErrorMsg2: Translate.translate("Vending", "YouWereNotCharged")
@@ -135,7 +138,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 				break;
 
 			case "EXCEPTION":
-				console.log("Got event vendResponse(): "+processStatus);
+				Big.log("Got event vendResponse(): "+processStatus);
 				RootscopeActions.setSession({
 					vendErrorMsg1: Translate.translate("Vending", "TotalVendFailure"),
 					vendErrorMsg2: Translate.translate("Vending", "YouWereNotCharged")
@@ -144,7 +147,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 				break;
 
 			default:
-				console.log("Got event vendResponse, no idea what to do with it: "+processStatus);
+				Big.log("Got event vendResponse, no idea what to do with it: "+processStatus);
 				break;
 		}
 
@@ -161,15 +164,15 @@ export function isFullSuccessVendResult() {
 		;
 
 	if (itemsVendFail > 0) {
-		console.log("is it a fullVendSuccess?(false)!success:("+itemsVendSuccess+")fail:("+itemsVendFail+")");
+		Big.log("is it a fullVendSuccess?(false)!success:("+itemsVendSuccess+")fail:("+itemsVendFail+")");
 		return false;
 	}
-	console.log("is it a fullVendSuccess?(true)success:("+itemsVendSuccess+")fail:("+itemsVendFail+")");
+	Big.log("is it a fullVendSuccess?(true)success:("+itemsVendSuccess+")fail:("+itemsVendFail+")");
 	return true;
 }
 
 export function checkBalance() {
-	//console.log("checkBalance()!!!!!");
+	//Big.log("checkBalance()!!!!!");
 	var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice')
 		, creditBalance = RootscopeStore.getSession('creditBalance')
 		, sc_detail = RootscopeStore.getCache('shoppingCart.detail') || []
@@ -179,10 +182,10 @@ export function checkBalance() {
 		TsvActions.apiCall('disablePaymentDevice');
 		var v_i_p = RootscopeStore.getSession('bVendingInProcess');
 		if (!v_i_p) {
-			//console.log("Inserted Enough Cash should vend...!!!!!");
+			//Big.log("Inserted Enough Cash should vend...!!!!!");
 			//RootscopeActions.setSession('cashMsg', "Vending...");
 			setVendingInProcessFlag(true);
-			//console.log("tsv.session.bVendingInProcess: " + v_i_p);
+			//Big.log("tsv.session.bVendingInProcess: " + v_i_p);
 			TsvActions.apiCall('disablePaymentDevice');
 			TsvActions.apiCall('startVend');
 		}
@@ -195,22 +198,22 @@ export function autoCheckout() {
 		, cartItems = RootscopeStore.getCache('shoppingCart.detail') || []
 		, itemsInCart = cartItems.length;
 
-	console.log("autoCheckout() totalPrice = " + total + " credit = " + creditBalance + " items = " + itemsInCart);
+	Big.log("autoCheckout() totalPrice = " + total + " credit = " + creditBalance + " items = " + itemsInCart);
 
 	if (creditBalance >= total && itemsInCart > 0) {
-		//console.log("disabling payment device");
+		//Big.log("disabling payment device");
 		TsvActions.apiCall('disablePaymentDevice');
 
-		console.log("check vend in process?");
+		Big.log("check vend in process?");
 		if (!RootscopeStore.getSession('bVendingInProcess')) {
-			//console.log("Calling gotoPayment on rootScope");
+			//Big.log("Calling gotoPayment on rootScope");
 			//RootscopeActions.gotoPayment();
 			// it's in here now....
 			gotoPayment();
 		}
 
 	} else {
-		console.log("Insufficient funds to autoCheckout");
+		Big.log("Insufficient funds to autoCheckout");
 	}
 }
 
@@ -247,7 +250,7 @@ export function cardTransaction(level) {
 }
 
 export function onGeneralTimeout() {
-	console.log("onGeneralTimeout() called");
+	Big.log("onGeneralTimeout() called");
 	
 	killGeneralIdleTimer();
 	
@@ -256,15 +259,15 @@ export function onGeneralTimeout() {
 	if (RootscopeStore.getConfig('bDualLanguage')) {
 		var dfltLang = RootscopeStore.getCache('custommachinesettings.languageDefaulted', "En");
 
-		//console.warn('old code calling for DOM manipulation, no good.... who called this?');
+		//Big.warn('old code calling for DOM manipulation, no good.... who called this?');
 		//$('.showflag').removeClass('showflag').addClass('hideflag');
 		//document.getElementById(dfltLang).className = "showflag";
 		RootscopeActions.setConfig('selectedLanguage', dfltLang);
 		Translate.selectLanguage(dfltLang);
 	}
 
-	//console.log("RootscopeStore.getCache('currentLocation'): "+RootscopeStore.getCache('currentLocation'));
-	console.log('currentPageView: '+currentPageView);
+	//Big.log("RootscopeStore.getCache('currentLocation'): "+RootscopeStore.getCache('currentLocation'));
+	Big.log('currentPageView: '+currentPageView);
 
 	//switch (RootscopeStore.getCache('currentLocation')) {
 	switch (currentPageView) {
@@ -299,7 +302,7 @@ export function onGeneralTimeout() {
 				emptyCart();
 				gotoDef = true;
 			} else {
-				console.log("On "+currentPageView+" idle timeout disabled...Running the paymentTimer...");
+				Big.log("On "+currentPageView+" idle timeout disabled...Running the paymentTimer...");
 			}
 			break;
 
@@ -307,7 +310,7 @@ export function onGeneralTimeout() {
 			if(!RootscopeStore.getSession('bRunningClearFaults')){
 				//gotoDefaultIdlePage(); //$location, $rootScope);
 				gotoDef = true;
-				console.log("Idle Timeout from /Admin/CheckFaults not running ClearFaults");
+				Big.log("Idle Timeout from /Admin/CheckFaults not running ClearFaults");
 			}
 			break;
 
@@ -315,13 +318,13 @@ export function onGeneralTimeout() {
 			if(!RootscopeStore.getSession('bRunningAutoMap')){
 				//gotoDefaultIdlePage(); //$location, $rootScope);
 				gotoDef = true;
-				console.log("Idle Timeout from /Admin/AutoMap not running AutoMap");
+				Big.log("Idle Timeout from /Admin/AutoMap not running AutoMap");
 			}
 			break;
 
 		default:
-			//console.log("Idle Timeout from "+RootscopeStore.getCache('currentLocation'));
-			console.log("Idle Timeout from " + currentPageView);
+			//Big.log("Idle Timeout from "+RootscopeStore.getCache('currentLocation'));
+			Big.log("Idle Timeout from " + currentPageView);
 			emptyCart();
 			//gotoDefaultIdlePage(); //$location, $rootScope);
 			gotoDef = true;
@@ -351,7 +354,7 @@ export function vendErrorTimer() {
 export function startGeneralIdleTimer(fromPage) {
 	var T = getTimer('generalIdleTimer')
 	if (!T && /Admin/.test(fromPage)) {
-		//console.warn('skipping startGeneralIdleTimer() because it looks like we are in admin land, and timer was cancelled');
+		//Big.warn('skipping startGeneralIdleTimer() because it looks like we are in admin land, and timer was cancelled');
 		return;
 	}
 	if (fromPage) {
@@ -360,8 +363,8 @@ export function startGeneralIdleTimer(fromPage) {
 	killGeneralIdleTimer();
 	/*
 	var timer = setTimeout(() => {
-		//console.log("Hi Ping generalIdleTimer timeout...");
-		console.log("onGeneralIdleTimeout() @" + RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000));
+		//Big.log("Hi Ping generalIdleTimer timeout...");
+		Big.log("onGeneralIdleTimeout() @" + RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000));
 		onGeneralTimeout();
 	}, RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
 	*/
@@ -399,11 +402,11 @@ export function isCartEmpty(cb) {
 	var cart = RootscopeStore.getCache('shoppingCart');
 	if (!cart) {
 
-		console.warn('this may be out of sync, as we have to check with the TsvActions.apiCall(fetchShoppingCart2) thing for data');
+		Big.warn('this may be out of sync, as we have to check with the TsvActions.apiCall(fetchShoppingCart2) thing for data');
 		TsvActions.apiCall('fetchShoppingCart2', function(err, data) {
 			if (err) {
-				console.warn('error trying to fetchShoppingCart2!');
-				console.warn(err);
+				Big.warn('error trying to fetchShoppingCart2!');
+				Big.warn(err);
 				cb(null, false);
 			}
 			RootscopeActions.setCache('shoppingCart', data);
@@ -452,12 +455,12 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 	
 		TsvActions.apiCall('checkActivation', (err, result) => {
 		
-			console.warn('[checkActivation] timesIdleCalled:'+timesIdleCalled);
-			console.log(result);
+			Big.warn('checkActivation: timesIdleCalled:'+timesIdleCalled);
+			Big.log(result);
 			timesIdleCalled += 1;
 		
 			if (!result || result.resultCode !== "SUCCESS") {
-				//throw new Error('WHY U NO ACTIVATE');
+				//Big.throw('WHY U NO ACTIVATE');
 				return browserHistory.push("/Admin/Activate");
 			}
 		
@@ -472,7 +475,7 @@ export function idleClicked() {
 }
 
 export function resetSelectedItem() {
-	//console.log("resetSelectedItem()!");
+	//Big.log("resetSelectedItem()!");
 	RootscopeActions.setSession({
 		bRunningClearFaults: false,
 		bRunningAutoMap: false,
@@ -485,7 +488,7 @@ export function resetSelectedItem() {
 }
 
 export function resetPaymentTimer() {
-	//console.log("Hi Ping Debug reset the paymentTimer");
+	//Big.log("Hi Ping Debug reset the paymentTimer");
 	killTimers('paymentTimer'); //TsvActions.stopPaymentTimer();
 	startPaymentTimer();
 }
@@ -527,8 +530,8 @@ export function startPaymentTimer( idlePage ){
 	idlePage = 'idle';
 */
 	if (!timeoutLength) {
-		console.log( RootscopeStore.getCache('custommachinesettings') );
-		throw new Error('[TsvUtils.startPaymentTimer] I need a timeoutLength to start a timeout! none found.');
+		Big.log( RootscopeStore.getCache('custommachinesettings') );
+		Big.throw('startPaymentTimer: I need a timeoutLength to start a timeout! none found.');
 	}
 	
 	/*
@@ -616,7 +619,7 @@ export function checkout() {
 		browserHistory.push("/Cashless_Vending");
 
 	} else {
-		//console.log("bHasShoppingCart:" + TsvService .bCustomSetting('bHasShoppingCart', "true"));
+		//Big.log("bHasShoppingCart:" + TsvService .bCustomSetting('bHasShoppingCart', "true"));
 		if (bHasShoppingCart && RootscopeStore.getCache('currentLocation') != "/ShoppingCart"){
 			browserHistory.push("/ShoppingCart");
 

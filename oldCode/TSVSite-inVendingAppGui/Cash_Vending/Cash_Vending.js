@@ -35,7 +35,7 @@ angular.module('myApp.Cash_Vending', ['ngRoute'])
                 resetPaymentTimer();
 
 
-                RootscopeActions.setSession(‘bVendedOldCredit’, this.checkBalance())
+                RootscopeActions.setSession('bVendedOldCredit', this.checkBalance())
 
                 if(TsvService.session.bVendingInProcess){
                     TsvService.debug("TsvService.session.bVendingInProcess: "+TsvService.session.bVendingInProcess);

@@ -11,6 +11,9 @@ import { currencyFilter } from '../utils/TsvUtils'
 
 import { isClient } from '../utils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('RootscopeStore');
+
 var CHANGE_EVENT = 'change'
 
 // example state vars:
@@ -171,8 +174,8 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 				_storeDB.set('cache.' + action.data.path, action.data.value);
 			}
 			RootscopeStore.emitChange({ type: 'cache', path: action.data.path });
-			//console.warn(' someone updated CACHE, args:');
-			//console.log(action.data);
+			//Big.warn(' someone updated CACHE, args:');
+			//Big.log(action.data);
 			break;
 			
 		case appConstants.UPDATE_ROOT_SESSION:
@@ -194,7 +197,7 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 });
 
 //*
-//console.warn("\n\n -------------------------------------------------------\n\n RootscopeStore loaded!\n\n -------------------------------------------------------\n\n");
+//Big.warn("\n\n -------------------------------------------------------\n\n RootscopeStore loaded!\n\n -------------------------------------------------------\n\n");
 if (isClient) {
 	window.RSS = RootscopeStore;
 }

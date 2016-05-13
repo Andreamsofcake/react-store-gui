@@ -1,5 +1,8 @@
 'use strict';
 
+import Log from './utils/BigLogger'
+var Big = new Log('Router');
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { renderToStaticMarkup } from 'react-dom/server'
@@ -12,7 +15,7 @@ import { isClient, getPropsFromRoute } from './utils'
 //import OM from 'object-merge'
 
 if (isClient) {
-	console.log('[renderComponentWithRoot] HAYNOW rendering on the client ');
+	Big.log('[renderComponentWithRoot] HAYNOW rendering on the client ');
 	ReactDOM.render(
 		<Router history={browserHistory}>{Routes}</Router>,
 		document.getElementById('root')
@@ -20,7 +23,7 @@ if (isClient) {
 }
 
 function renderComponentWithRoot(Component, componentProps, initialData) {
-	console.log('[renderComponentWithRoot] HAYNOW rendering on the component ');
+	Big.log('renderComponentWithRoot: HAYNOW rendering on the component ');
 
 	const componentHtml = renderToStaticMarkup(
 		<Component {...componentProps} />
@@ -78,23 +81,23 @@ function ServerRouter(req, reply, next) {
 			}
 			
 			/*
-			console.log('[SERVER Router.js]');
-			console.log(req.url);
-			console.log(Object.keys(renderProps));
-			console.log( JSON.stringify(renderProps) );
+			Big.log('[SERVER Router.js]');
+			Big.log(req.url);
+			Big.log(Object.keys(renderProps));
+			Big.log( JSON.stringify(renderProps) );
 			*/
 
 			if (error) {
-				console.log(' >>>>> error');
+				Big.log(' >>>>> error');
 				handleError(error);
 			} else if (reply, redirectLocation) {
-				console.log(' >>>>> redirect');
+				Big.log(' >>>>> redirect');
 				handleRedirect(reply, redirectLocation)
 			} else if (renderProps) {
-				console.log(' >>>>> renderProps');
+				Big.log(' >>>>> renderProps');
 				handleRoute(reply, renderProps);
 			} else {
-				console.log(' >>>>> 404');
+				Big.log(' >>>>> 404');
 				handle404(reply);
 			}
 		}
