@@ -7044,6 +7044,19 @@
 
 					Big.log('customer has inserted enough money!');
 
+					var creditDue = balance - total;
+					if (creditDue) {
+						// 1. clear the credit in Paylink
+						// 2. push the credit to the customer
+						// (logically those should reverse, we should make sure the credit is pushed before we clear....)
+						// FIXME later
+						_TsvActions2.default.apiCall('resetCreditBalance', function () {
+							Big.log(' >>>>>>> customer should receive ' + creditDue + ' in credits to their account!');
+						});
+					} else {
+						Big.log(' >>>>>>> no credit due.');
+					}
+
 					_TsvActions2.default.apiCall('disablePaymentDevice', function () {
 						Big.log('... payment device disabled');
 						if (!_RootscopeStore2.default.getSession('bVendingInProcess')) {

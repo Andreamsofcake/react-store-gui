@@ -97,9 +97,22 @@ class CashVending extends Component {
 	  // cash.js logic:
 	  //if ((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail', []).length > 0){
 	  if (balance >= total && cart_detail.length > 0) {
-
+	  	
 		  Big.log('customer has inserted enough money!');
 		  
+	  	  var creditDue = balance - total;
+	  	  if (creditDue) {
+	  	  	// 1. clear the credit in Paylink
+	  	  	// 2. push the credit to the customer
+	  	  	// (logically those should reverse, we should make sure the credit is pushed before we clear....)
+	  	  	// FIXME later
+	  	  	TsvActions.apiCall('resetCreditBalance', () => {
+	  	  		Big.log(' >>>>>>> customer should receive '+creditDue+' in credits to their account!');
+	  	  	});
+	  	  } else {
+	  	  	Big.log(' >>>>>>> no credit due.');
+	  	  }
+
 		  TsvActions.apiCall('disablePaymentDevice', () => {
 			  Big.log('... payment device disabled');
 			  if(!RootscopeStore.getSession('bVendingInProcess')){
