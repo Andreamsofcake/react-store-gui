@@ -14,6 +14,9 @@ import {
 	gotoDefaultIdlePage,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('View0');
+
 class View0 extends Component {
 
   constructor(props, context) {
@@ -23,7 +26,7 @@ class View0 extends Component {
     //RootscopeActions.setSession('currentView', 'View0');
     //RootscopeActions.setCache('currentLocation', '/View0');
     startGeneralIdleTimer();
-    console.error('<<<<        FIXME: need to attach events to click and mouseover globally to start/resetGeneralIdleTimer()        >>>>');
+    Big.error('<<<<        FIXME: need to attach events to click and mouseover globally to start/resetGeneralIdleTimer()        >>>>');
   };
 
   admin( ){

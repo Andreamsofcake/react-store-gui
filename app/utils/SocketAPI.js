@@ -1,5 +1,8 @@
 import { isClient } from './index'
 
+import Log from './BigLogger'
+var Big = new Log('SocketAPI');
+
 if (isClient) {
 
 	// uncomment below to see verbose Socket.io logs
@@ -20,25 +23,25 @@ if (isClient) {
 	var websocket = io.connect();
 
 	websocket.on('connect', function() {
-		console.log(' +++++++++++++ WEBSOCKET connected ');
+		Big.log(' +++++++++++++ WEBSOCKET connected ');
 		socket_connected = true;
 		if (queue.length) {
 			queue.forEach( Q => {
-				console.log('[WS] emit Q command: '+Q.command);
-				console.log(Q.data);
+				Big.log('[WS] emit Q command: '+Q.command);
+				Big.log(Q.data);
 				websocket.emit(Q.command, Q.data);
 			});
 		}
 	});
 
 	websocket.on('message', function(response) {
-		console.log('general message from server:');
-		console.log(response);
+		Big.log('general message from server:');
+		Big.log(response);
 	});
 
 	websocket.on('set-webhook-token', function(token) {
-		console.log('webhook token from server:');
-		console.log(token);
+		Big.log('webhook token from server:');
+		Big.log(token);
 		webhook_token = token;
 	});
 
@@ -58,11 +61,11 @@ if (isClient) {
 
 	websocket.on("*", (event,data) => {
 		/*
-		console.log(' -----------------------------------------------------------------');
-		console.log('[ >>>>> SOCKET catch-all <<<<<< ] ... event, then data');
-		console.log(event);
-		console.log(data);
-		console.log(' -----------------------------------------------------------------');
+		Big.log(' -----------------------------------------------------------------');
+		Big.log('[ >>>>> SOCKET catch-all <<<<<< ] ... event, then data');
+		Big.log(event);
+		Big.log(data);
+		Big.log(' -----------------------------------------------------------------');
 		//*/
 		var handle = event;
 		//if (data && data.actionToken) { handle += ':' + actionToken }
@@ -70,11 +73,11 @@ if (isClient) {
 		if (ActionHandlers[handle] && typeof ActionHandlers[handle] == 'function') {
 			ActionHandlers[handle](data);
 		} else {
-			console.log(' -----------------------------------------------------------------');
-			console.log('[ >>>>> SOCKET catch-all, nobody was registered to handle this <<<<<< ] ... event, then data');
-			console.log(handle);
-			console.log(data);
-			console.log(' -----------------------------------------------------------------');
+			Big.log(' -----------------------------------------------------------------');
+			Big.log('[ >>>>> SOCKET catch-all, nobody was registered to handle this <<<<<< ] ... event, then data');
+			Big.log(handle);
+			Big.log(data);
+			Big.log(' -----------------------------------------------------------------');
 		}
 	});
 
@@ -87,12 +90,12 @@ if (isClient) {
 		registerActionHandler(action, handler, actionToken) {
 			var handle = action;
 			//if (actionToken) { handle += ':' + actionToken }
-			console.log('registering action handler for: '+handle);
+			Big.log('registering action handler for: '+handle);
 			ActionHandlers[handle] = handler;
 		},
 
 		unregisterActionHandler(action, handler, actionToken) {
-			throw new Error('unfinished function ... depends on PubSub / multiple listeners per action');
+			Big.throw('unfinished function ... depends on PubSub / multiple listeners per action');
 			var handle = action;
 			//if (actionToken) { handle += ':' + actionToken }
 			if (!handler) {

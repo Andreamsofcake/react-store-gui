@@ -1,3 +1,6 @@
+import Log from './BigLogger'
+var Big = new Log('PubSubNotDone');
+
 // not done yet at all, copied some functionality from old old jsFQ/AssetManager
 // finish refactor/update code to use this, or maybe 
 // https://github.com/mroderick/PubSubJS
@@ -16,7 +19,7 @@
 		},
 		
 		publish: function(call, params, type) {
-			//console.log('someone published... ['+call+'] ['+type+']');
+			//Big.log('someone published... ['+call+'] ['+type+']');
 			if (!call) { return false; }
 			var stack = this.get_cache('pubsub', call);
 			if (!stack || !stack.length) { return -1; }
@@ -40,7 +43,7 @@
 		},
 		
 		subscribe: function(call, func, type, once, priority, klass) {
-			//console.log('someone subscribed... ['+call+'] ['+type+'] ['+klass+']');
+			//Big.log('someone subscribed... ['+call+'] ['+type+'] ['+klass+']');
 			if (!call || !func || !klass || !typeof(func) == 'function') { return false; }
 			priority = priority || 3;
 			if (isNaN(priority)) { priority = 3; }
@@ -72,7 +75,7 @@
 						if (o.klass === klass) {
 							stack[_p][k] = null;
 							delete(stack[_p][k]);
-							//console.log('unsubscribed ('+call+', '+klass+', '+priority+')');
+							//Big.log('unsubscribed ('+call+', '+klass+', '+priority+')');
 							return true;
 						}
 					});

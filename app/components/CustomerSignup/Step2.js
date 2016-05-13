@@ -12,6 +12,9 @@ import appConstants from '../../constants/appConstants'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
+import Log from '../../utils/BigLogger'
+var Big = new Log('SignupStep2');
+
 class Step extends Component {
 
   constructor(props, context) {
@@ -58,8 +61,8 @@ class Step extends Component {
 		}
 		*/
 	} else {
-		console.error('HAY not a known event???');
-		console.log(event);
+		Big.error('HAY not a known event???');
+		Big.log(event);
 	}
   }
   

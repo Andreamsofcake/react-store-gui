@@ -24,7 +24,8 @@ import {
 	gotoDefaultIdlePage
 } from '../utils/TsvUtils'
 
-import { foo } from '../utils/Test'
+import Log from '../utils/BigLogger'
+var Big = new Log('App');
 
 class App extends Component {
 	
@@ -33,16 +34,16 @@ class App extends Component {
 		
 		this.appTesting = true;
 		
-		console.log('App Top');
+		Big.log('App Top');
 		
 		init();
 		registerKF();
 		
 		TsvActions.apiCall('fetchAllMachineSettings', (err, data) => {
-			if (err) throw err;
+			if (err) Big.throw(err);
 
 			if (!data) {
-				console.error('[fetchAllMachineSettings] no data returned');
+				Big.error('fetchAllMachineSettings: no data returned');
 				return;
 			}
 			
@@ -57,10 +58,10 @@ class App extends Component {
 		});
 
 		TsvActions.apiCall('fetchAllCustomSettings', (err, data) => {
-			if (err) throw err;
+			if (err) Big.throw(err);
 			
 			if (!data) {
-				console.error('[fetchAllCustomSettings] no data returned');
+				Big.error('fetchAllCustomSettings: no data returned');
 				return;
 			}
 
@@ -83,10 +84,10 @@ class App extends Component {
 		});
 
 		TsvActions.apiCall('fetchMachineIds', (err, data) => {
-			if (err) throw err;
+			if (err) Big.throw(err);
 
 			if (!data) {
-				console.error('[fetchMachineIds] no data returned');
+				Big.error('fetchMachineIds: no data returned');
 				return;
 			}
 			
@@ -112,9 +113,9 @@ class App extends Component {
 	
 	_onTsvChange(event) {
 		if (event && event.method === 'notifyTSVReady') {
-			console.log("Got event notifyTSVReady");
+			Big.log("Got event notifyTSVReady");
 			if (RootscopeStore.getCache('currentLocation') === '/View0') {
-				console.log("Redirect to default idle page or reload");
+				Big.log("Redirect to default idle page or reload");
 
 				if (!RootscopeStore.getCache('custommachinesettings')) {
 					//TsvService.reloadPage();
@@ -150,7 +151,7 @@ class App extends Component {
 						</div>)}
 				</_E.Col>
 			</_E.Row>
-			<pre>{JSON.stringify(this.props.location, null, 4)}</pre>
+			{/*<pre>{JSON.stringify(this.props.location, null, 4)}</pre>*/}
 			</div>
 		)
 	}

@@ -12,6 +12,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminSettings');
+
 class AdminSettings extends Component {
 
   constructor(props, context) {
@@ -44,8 +47,8 @@ class AdminSettings extends Component {
       singleProductDonation: RootscopeStore.getCache('custommachinesettings.singleProductDonation'),
       minimumDonationAmount: RootscopeStore.getCache('custommachinesettings.minimumDonationAmount'),
     }
-    console.log('getStateSettings()');
-    console.log(state);
+    Big.log('getStateSettings()');
+    Big.log(state);
     return state;
   }
 
@@ -112,8 +115,8 @@ class AdminSettings extends Component {
   }
   
   _onRootscopeChange(event) {
-    console.log('_onRootscopeChange(event)');
-    console.log(event);
+    Big.log('_onRootscopeChange(event)');
+    Big.log(event);
     if (
     	(event.type === 'cache' && event.path === '__multiple__') ||
     	(event.type === 'config' && event.path === 'supportLanguages')

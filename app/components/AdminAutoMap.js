@@ -14,6 +14,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminAutoMap');
+
 class AdminAutoMap extends Component {
 
   constructor(props, context) {
@@ -80,8 +83,8 @@ class AdminAutoMap extends Component {
 					if (info && info.coilNumber) {
 						let coilMap = this.state.coilMap || [];
 						let slots = this.state.slots || [];
-						console.warn('ok wtf is coilMap? '+typeof coilMap);
-						console.log(coilMap);
+						Big.warn('ok wtf is coilMap? '+typeof coilMap);
+						Big.log(coilMap);
 						if (coilMap.indexOf(info.coilNumber) === -1) {
 							coilMap.push(info.coilNumber);
 							state.coilMap = coilMap;
@@ -97,8 +100,8 @@ class AdminAutoMap extends Component {
 					setTimeout(() => {
 						RootscopeActions.setSession('bRunningAutoMap', false);
 					}, 150);
-					console.warn('ok, should be pushing this coil map back out to the API!');
-					console.log(this.state.coilMap);
+					Big.warn('ok, should be pushing this coil map back out to the API!');
+					Big.log(this.state.coilMap);
 					break;
 
 				default:

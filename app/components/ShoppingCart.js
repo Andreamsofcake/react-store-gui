@@ -17,6 +17,8 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('ShoppingCart');
 
 class ShoppingCart extends Component {
 
@@ -69,7 +71,7 @@ class ShoppingCart extends Component {
 		RootscopeStore.addChangeListener(this._onRootstoreChange);
 		TsvStore.addChangeListener(this._onTsvChange);
 		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-			if (err) throw err;
+			if (err) Big.throw(err);
 			RootscopeActions.setCache('shoppingCart', data);
 		});
 		startGeneralIdleTimer(this.props.location.pathname);

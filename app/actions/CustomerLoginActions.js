@@ -13,6 +13,8 @@ import {
 	emptyCart,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('CustomerLoginActions');
 
 var CustomerLoginActions = {
 
@@ -27,8 +29,8 @@ var CustomerLoginActions = {
 			}
 		})
 		.catch(error => {
-			console.error('[CustomerLoginActions] failed to refresh customer???');
-			console.log(error);
+			Big.error('failed to refresh customer???');
+			Big.log(error);
 		})
 	},
 
@@ -97,11 +99,11 @@ var CustomerLoginActions = {
 				if (data && data.customer) {
 					axios.post('/api/set-loggedin-customer', { customer: data.customer })
 					.then(response => {
-						console.log('temp action: updated the current customer after login');
+						Big.log('temp action: updated the current customer after login');
 					})
 					.catch(error => {
-						console.error('[CustomerLoginActions] failed to set current customer???');
-						console.log(error);
+						Big.error('failed to set current customer???');
+						Big.log(error);
 					})
 				}
 				/**** END temporary call ****/
@@ -131,8 +133,8 @@ var CustomerLoginActions = {
 			});
 		})
 		.catch(error => {
-			console.error('[CustomerLoginActions] failed to logout customer???');
-			console.log(error);
+			Big.error('failed to logout customer???');
+			Big.log(error);
 		})
 	}
 

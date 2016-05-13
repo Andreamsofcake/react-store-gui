@@ -12,6 +12,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminInventory');
+
 class AdminInventory extends Component {
 
   constructor(props, context) {
@@ -19,16 +22,12 @@ class AdminInventory extends Component {
     super(props, context);
 
     //RootscopeActions.setSession('currentView', 'AdminInventory');
-    TsvActions.apiCall('fetchMachineIds', (err, ids) => {
-        RootscopeActions.setCache('machineList', ids);
-      });
-
     this.state = {
       instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
       machineID: 0,
       num: "",
       maxChars: RootscopeStore.getConfig('bDualMachine') ? 3 : 2,
-      bEnterCoil: true,
+      inventoryGuiState: 'selectSlot',
       showKeypad: false
     }
 
@@ -37,24 +36,50 @@ class AdminInventory extends Component {
     }
   }
 
+  // Add change listeners to stores
+  componentDidMount() {
+    TsvActions.apiCall('fetchMachineIds', (err, ids) => {
+        RootscopeActions.setCache('machineList', ids);
+        if (ids && ids.length > 1) {
+        	this.setState({
+        		bShowDropDownForMachines: true
+        	});
+        }
+      });
+
+	startGeneralIdleTimer(this.props.location.pathname);
+  }
+
+  // Remove change listers from stores
+  componentWillUnmount() {
+  }
+
   fillMachine(){
-  	  startGeneralIdleTimer(this.props.location.pathname);
-      TsvActions.apiCall('fillMachine', this.state.machineID.toString());
+		if (this.state.machineID) {
+		  startGeneralIdleTimer(this.props.location.pathname);
+		  TsvActions.apiCall('fillMachine', this.state.machineID.toString());
+		} else {
+			alert('error, cannot fill the machine as there is no machineID');
+		}
   }
 
   fillCoil(){
   	startGeneralIdleTimer(this.props.location.pathname);
-    if(this.state.num != "") {
-		TsvActions.apiCall('adminValidateProductByCoil', this.state.num, ( err, data) => {
-			let state = { vpbc: data };
+    if (this.state.coilNumber != "") {
+		TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
+			if (err) {
+				Big.throw(err);
+				return;
+			}
+			let state = { verifiedProductData: data };
 
-			switch (state.vpbc.result) {
+			switch (state.verifiedProductData.result) {
 				case "UNKNOWN":
 					state.instructionMessage = Translate.translate('AdminInventory', 'UnknownProduct')
 					setTimeout( () => {
 						this.setState({
 						  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-						  bEnterCoil: true,
+						  inventoryGuiState: 'selectSlot',
 						  num: ""
 						});
 					}, 3000);
@@ -65,7 +90,67 @@ class AdminInventory extends Component {
 					setTimeout( () => {
 						this.setState({
 						  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-						  bEnterCoil: true,
+						  inventoryGuiState: 'selectSlot',
+						  num: ""
+						});
+					}, 3000);
+					break;
+
+				default:
+					state.instructionMessage = 'Filling slot for '+this.state.verifiedProductData.productName+', one moment please...'; //Translate.translate('AdminInventory', 'EnterStockAmount');
+					state.coilNumber = this.state.num;
+					state.num = '';
+					state.inventoryGuiState = 'processing';
+					TsvActions.apiCall('fillCoil', state.coilNumber, () => {
+						// artificial delay for GUI flow:
+						setTimeout( () => {
+							this.setState({
+							  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
+							  inventoryGuiState: 'selectSlot',
+							  num: "",
+							  coilNumber: null
+							});
+						}, 3000);
+					});
+					break;
+			}
+			this.setState(state);
+
+		});
+    }
+  }
+
+  selectSlot() {
+  	let num = parseInt(this.state.num);
+  	if (num) {
+		startGeneralIdleTimer(this.props.location.pathname);
+		TsvActions.apiCall('adminValidateProductByCoil', this.state.num, (err, data) => {
+			if (err) {
+				Big.throw(err);
+				return;
+			}
+			let state = { verifiedProductData: data };
+			Big.log('verifiedProductData');
+			Big.log(data);
+
+			switch (data.result) {
+				case "UNKNOWN":
+					state.instructionMessage = Translate.translate('AdminInventory', 'UnknownProduct');
+					setTimeout( () => {
+						this.setState({
+						  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
+						  inventoryGuiState: 'selectSlot',
+						  num: ""
+						});
+					}, 3000);
+					break;
+
+				case "INVALID_PRODUCT":
+					state.instructionMessage = Translate.translate('AdminInventory', 'InvalidProduct');
+					setTimeout( () => {
+						this.setState({
+						  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
+						  inventoryGuiState: 'selectSlot',
 						  num: ""
 						});
 					}, 3000);
@@ -75,70 +160,80 @@ class AdminInventory extends Component {
 					state.instructionMessage = Translate.translate('AdminInventory', 'EnterStockAmount');
 					state.coilNumber = this.state.num;
 					state.num = '';
-					state.bEnterCoil = false;
-					TsvActions.apiCall('fillCoil', state.coilNumber);
+					state.inventoryGuiState = 'stock';
 					break;
 			}
 			this.setState(state);
-
 		});
-    }
-  }
+	}
 
-  backToAdminHome() {
-      if(this.state.bEnterCoil){
-          browserHistory.push("/Admin/Home");
-      } else {
+  }
+  
+  cancelSlot() {
       	startGeneralIdleTimer(this.props.location.pathname);
         this.setState({
-          bEnterCoil: true,
-          num: ""
+          inventoryGuiState: 'selectSlot',
+          num: "",
+          verifiedProductData: null,
+          coilNumber: null
         })
-      }
   }
 
   addStock(){
   	startGeneralIdleTimer(this.props.location.pathname);
-      if(this.state.num != ""){
+      if (this.state.coilNumber != "" && this.state.num != ""){
+		  this.setState({
+		  	instructionMessage: 'Adding '+this.state.num+' '+this.state.verifiedProductData.productName+' from stock count, one moment please.',
+		  	inventoryGuiState: 'processing'
+		  });
           TsvActions.apiCall('addStock', this.state.coilNumber, this.state.num, (err, data) => {
 			  TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
 				  this.setState({
-					vpbc: data,
+					verifiedProductData: data,
 					num: ""
 				  });
 
 				  setTimeout( () => {
 					  this.setState({
 						instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-						bEnterCoil: true,
+						inventoryGuiState: 'selectSlot',
 						num: ""
 					  });
 				  }, 2000);
 			  });
           });
+      } else {
+		  Big.warn('tried to addStock, but did not have both "coilNumber" and "num" in state');
       }
   }
 
   removeStock(){
   	startGeneralIdleTimer(this.props.location.pathname);
-      if(this.state.num != ""){
+      if (this.state.coilNumber != "" && this.state.num != ""){
+		  this.setState({
+		  	instructionMessage: 'Removing '+this.state.num+' '+this.state.verifiedProductData.productName+' from stock count, one moment please.',
+		  	inventoryGuiState: 'processing'
+		  });
           TsvActions.apiCall('removeStock', this.state.coilNumber, this.state.num, (err, data) => {
 	          TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
 				  this.setState({
-					vpbc: data,
-					stockCount: "Stock Count: " + data.inventoryCount,
+					verifiedProductData: data,
+					// just reference it direct if you need... verifiedProductData.inventoryCount
+					//stockCount: "Stock Count: " + data.inventoryCount,
 					num: ""
 				  });
 
 				  setTimeout( () => {
 					  this.setState({
 						instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-						bEnterCoil: true,
+						inventoryGuiState: 'selectSlot',
 						num: ""
 					  });
 				  }, 2000);
 				});
 			});
+      } else {
+		  Big.warn('tried to removeStock, but did not have both "coilNumber" and "num" in state');
       }
   }
 
@@ -149,46 +244,6 @@ class AdminInventory extends Component {
     })
   }
 
-  enter() {
-  	startGeneralIdleTimer(this.props.location.pathname);
-  	TsvActions.apiCall('adminValidateProductByCoil', this.state.num, (err, data) => {
-		let state = { vpbc: data };
-
-		switch (data.result) {
-			case "UNKNOWN":
-				state.instructionMessage = Translate.translate('AdminInventory', 'UnknownProduct');
-				setTimeout( () => {
-					this.setState({
-					  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-					  bEnterCoil: true,
-					  num: ""
-					});
-				}, 3000);
-				break;
-
-			case "INVALID_PRODUCT":
-				state.instructionMessage = Translate.translate('AdminInventory', 'InvalidProduct');
-				setTimeout( () => {
-					this.setState({
-					  instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-					  bEnterCoil: true,
-					  num: ""
-					});
-				}, 3000);
-				break;
-
-			default:
-				state.instructionMessage = Translate.translate('AdminInventory', 'EnterStockAmount');
-				state.coilNumber = this.state.num;
-				state.num = '';
-				state.bEnterCoil = false;
-				break;
-		}
-		this.setState(state);
-	});
-
-  }
-  
   press(digit) {
   	startGeneralIdleTimer(this.props.location.pathname);
   	let num = this.state.num;
@@ -209,15 +264,6 @@ class AdminInventory extends Component {
     return options;
   }
 
-  // Add change listeners to stores
-  componentDidMount() {
-	startGeneralIdleTimer(this.props.location.pathname);
-  }
-
-  // Remove change listers from stores
-  componentWillUnmount() {
-  }
-
   render() {
     return (
 
@@ -226,103 +272,149 @@ class AdminInventory extends Component {
         	<h1 style={{fontWeight:300}}>Inventory</h1>
           <_E.Col>
 
-            <h2 id="instruction">{ this.instructionMessage }</h2>
-
-			<_E.Row><p>{' '}</p></_E.Row>
-			<_E.Row>
-				<_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
-            </_E.Row>
-
-			<_E.Row><p>{' '}</p></_E.Row>
-            <_E.Row>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
-            </_E.Row>
-
-			<_E.Row><p>{' '}</p></_E.Row>
-            <_E.Row>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
-            </_E.Row>
-
-			<_E.Row><p>{' '}</p></_E.Row>
-            <_E.Row>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="warning" onClick={this.clear.bind(this)}>Clear</_E.Button></_E.Col>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button  onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
-                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>&nbsp;</_E.Col>
-            </_E.Row>
-
-			<_E.Row><p>{' '}</p></_E.Row>
-            <_E.Row>
-              <_E.Col><div style={{textAlign:'center', border:'1px solid #dfdfdf',borderRadius:'4px',margin: '20px auto'}}><h2>selection: {this.state.num}</h2></div></_E.Col>
-            </_E.Row>
-
-			{ !this.state.bEnterCoil ? this.renderEnterCoilAmount() : null }
-			{ this.state.bEnterCoil ? this.renderEnterButton() : null }
-
-            { this.state.bEnterCoil ? this.renderFillMachine() : null }
+            <h2 id="instruction">{ this.state.instructionMessage }</h2>
+            
+			{this.renderSelectSlot()}
+			{this.renderManageStockForSlot()}
 
           </_E.Col>
 
-            { !this.state.bEnterCoil ? this.renderProductInfo() : null }
-
-
-         <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
-
-          { this.state.bEnterCoil ? this.renderFillCoilButton() : null }
 
       </_E.Row>
 
     );
   }
+  
+  renderSelectSlot() {
+  	if (this.state.inventoryGuiState === 'selectSlot') {
+		return (
+		  <div>
 
-  renderEnterCoilAmount(){
-    return(
-      <_E.Row>
-          <_E.Col basis="1/4"><_E.Button type="success" onClick={this.addStock.bind(this)}><_E.Glyph icon="plus" /></_E.Button></_E.Col>
-          <_E.Col basis="1/4"><_E.Button type="danger" onClick={this.removeStock.bind(this)}><_E.Glyph icon="dash" /></_E.Button></_E.Col>
-      </_E.Row>
-    )
+            {this.renderKeypad()}
+
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="warning" onClick={this.clear.bind(this)}>Clear</_E.Button></_E.Col>
+				<_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>&nbsp;</_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} /></_E.Col>
+            </_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
+				<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button style={{margin:'0 auto',display:'block'}} size="lg" type="primary" onClick={this.selectSlot.bind(this)}>Select Slot {this.state.num}</_E.Button></_E.Col>
+                <_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
+            </_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+              <_E.Col><div style={{textAlign:'center', border:'1px solid #dfdfdf',backgroundColor:'#fff',borderRadius:'4px',margin: '20px auto'}}><h2>Slot number: {this.state.num}</h2></div></_E.Col>
+            </_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+			<_E.Row>
+				<_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
+				<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}>
+					{ RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
+					<p><_E.Button size="lg" id="fillMachine" onClick={this.fillMachine.bind(this)}>{Translate.translate('AdminInventory', 'FillMachine')}</_E.Button></p>
+					<h4 id="displayMachine">{Translate.translate('AdminInventory','FillAllCoilsForMachine')} { this.state.machineID + 1 }</h4>
+				</_E.Col>
+				<_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
+			</_E.Row>
+
+		  </div>
+		);
+	}
+	return null;
   }
 
-  renderEnterButton() {
-    return(
-      <_E.Row>
-        <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" onClick={this.enter.bind(this)}>Enter</_E.Button></_E.Col>
-      </_E.Row>
-    )
+  renderManageStockForSlot() {
+  	if (this.state.inventoryGuiState === 'stock') {
+		return (
+		  <div>
+
+            {this.renderKeypad()}
+
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="warning" onClick={this.clear.bind(this)}>Clear</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>&nbsp;</_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="primary" onClick={this.cancelSlot.bind(this)}><_E.Glyph icon="circle-slash" />Cancel</_E.Button></_E.Col>
+            </_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+              <_E.Col><div style={{textAlign:'center', border:'1px solid #dfdfdf',backgroundColor:'#fff',borderRadius:'4px',margin: '20px auto'}}><h2>stock amount: {this.state.num}</h2></div></_E.Col>
+            </_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+			<_E.Row>
+				<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg" style={{float:'left'}} type="danger" onClick={this.removeStock.bind(this)}><_E.Glyph icon="dash" />Remove {this.state.num} Items</_E.Button></_E.Col>
+				<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg" style={{float:'right'}} type="success" onClick={this.addStock.bind(this)}><_E.Glyph icon="plus" />Add {this.state.num} Items</_E.Button></_E.Col>
+			</_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+			<_E.Row>
+				<_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
+				<_E.Col sm="1/2" md="1/2" lg="1/2"><_E.Button size="lg" type="primary" onClick={this.fillCoil.bind(this)} style={{margin:'0 auto',display:'block'}}>Fill Slot To Par</_E.Button></_E.Col>
+				<_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
+			</_E.Row>
+
+			{/*<_E.Row>
+				<_E.Col>
+				<p style={{textAlign:'center'}}><em>filling slot to par means adding enough stock to fill the row,<br />whatever amount that is.</em></p>
+				</_E.Col>
+			</_E.Row>*/}
+
+			<_E.Row><p>{' '}</p></_E.Row>
+			<_E.Row>
+			  <_E.Col sm="100%" md="100%" lg="100%">
+				  <p style={{textAlign:'center'}}>Coil: <strong>{this.state.coilNumber}</strong> Current Stock Count: <strong>{this.state.verifiedProductData.inventoryCount}</strong></p>
+				  <h3 style={{textAlign:'center'}}>{this.state.verifiedProductData.productName}</h3>
+				  {this.state.verifiedProductData.imagePath ? 
+					(<p style={{textAlign:'center'}}><img src={this.state.verifiedProductData.imagePath} className="boxShadowed" style={{maxHeight:'10em'}} /></p>)
+					: (<p style={{textTransform:'uppercase',textAlign:'center'}}>no<br />product<br />image<br />found</p>)
+					}
+			  </_E.Col>
+			</_E.Row>
+
+
+		  </div>
+		);
+	}
+	return null;
   }
 
-  renderFillMachine(){
-    return(
-      <_E.Col>
-        <_E.Row>
-            { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
-            <_E.Button id="fillMachine" onClick={this.fillMachine.bind(this)}>{Translate.translate('AdminInventory', 'FillMachine')}</_E.Button>
-            <p id="displayMachine">{Translate.translate('AdminInventory','FillAllCoilsForMachine')} { this.state.machineID + 1 }</p>
-        </_E.Row>
-      </_E.Col>
-    )
-  }
+  renderKeypad() {
+  	return (
+  		<div>
+			<_E.Row><p>{' '}</p></_E.Row>
+			<_E.Row>
+				<_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 1)}>1</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 2)}>2</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 3)}>3</_E.Button></_E.Col>
+            </_E.Row>
 
-  renderProductInfo() {
-    return(
-      <_E.Col>
-          <img src={this.state.vpbc.imagePath} />
-          <p>{this.state.vpbc.productName}</p>
-          <p>Coil: {this.state.coilNumber} Stock Count: {this.state.vpbc.inventoryCount}</p>
-      </_E.Col>
-    )
-  }
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 4)}>4</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 5)}>5</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 6)}>6</_E.Button></_E.Col>
+            </_E.Row>
 
-  renderFillCoilButton() {
-    return(
-        <img className="regularBtn" id="fillImg" src={Translate.localizedImage('Button_Fill.png')} onClick={this.fillCoil.bind(this)} />
-    )
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 7)}>7</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 8)}>8</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 9)}>9</_E.Button></_E.Col>
+            </_E.Row>
+
+			<_E.Row><p>{' '}</p></_E.Row>
+            <_E.Row>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>&nbsp;</_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg"  onClick={this.press.bind(this, 0)}>0</_E.Button></_E.Col>
+                <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}>&nbsp;</_E.Col>
+            </_E.Row>
+		</div>
+  	);
   }
 
 }

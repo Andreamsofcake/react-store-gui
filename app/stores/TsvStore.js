@@ -9,6 +9,9 @@ import objectAssign from 'react/lib/Object.assign'
 import { EventEmitter } from 'events'
 import muDB from '../../lib/muDB'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('TsvStore');
+
 var CHANGE_EVENT = 'change'
 
 // example state vars:
@@ -60,15 +63,15 @@ TsvStore.dispatch = AppDispatcher.register(function(payload){
 	switch(action.actionType) {
 
 		case appConstants.FLASH_API_MULTIEVENT:
-			console.log('FLASH_API_MULTIEVENT dispatched... action:');
-			console.log(action);
-			console.log(JSON.stringify(action));
+			Big.log('FLASH_API_MULTIEVENT dispatched... action:');
+			Big.log(action);
+			Big.log(JSON.stringify(action));
 			if (action.data && action.data.length) {
 				let method = action.data.shift();
 				if (method === 'linkdown') {
 					if (getReconnectFlag()) {
 						var ms = getReconnectProxyDelay(10000);
-						console.warn(' LINK DOWN DOWN DOWN received.... try a reconnect in '+ms+'ms');
+						Big.warn(' LINK DOWN DOWN DOWN received.... try a reconnect in '+ms+'ms');
 						TsvActions.reconnectHandshake(ms);
 					}
 				} else {
@@ -76,8 +79,8 @@ TsvStore.dispatch = AppDispatcher.register(function(payload){
 				}
 			} else {
 				if (!action.data) {
-					console.error('FLASH_API_MULTIEVENT but no data');
-					console.log(action.data);
+					Big.error('FLASH_API_MULTIEVENT but no data');
+					Big.log(action.data);
 				} else {
 					if (action.data.hasOwnProperty('tryProxyReconnects')) {
 						setReconnectFlag(action.data.tryProxyReconnects);

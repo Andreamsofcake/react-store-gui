@@ -12,6 +12,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminSystemInfo');
+
 class System_Info extends Component {
 
   constructor(props, context) {
@@ -25,8 +28,8 @@ class System_Info extends Component {
   // Add change listeners to stores
   componentDidMount() {
     TsvActions.apiCall('enumerateComponents', (err, data) => {
-    	console.log('enumerateComponents');
-    	console.log(data);
+    	Big.log('enumerateComponents');
+    	Big.log(data);
        this.setState({ versionInfos: data })
     })
 	startGeneralIdleTimer(this.props.location.pathname);

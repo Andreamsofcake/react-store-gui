@@ -5,6 +5,9 @@ import TestscopeActions from '../actions/TestscopeActions'
 import TestscopeStore from '../stores/TestscopeStore'
 import RootscopeStore from '../stores/RootscopeStore'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('ComEmulator');
+
 class ComEmulator extends Component {
 	
 	constructor(props, context) {
@@ -141,7 +144,7 @@ class ComEmulator extends Component {
 		var pathname = '';
 		if (typeof window !== 'undefined') {
 			pathname = window.location.pathname.replace(/\//g, '');
-			console.log('[COM EMULATOR] pathname: '+pathname);
+			Big.log('pathname: '+pathname);
 		}
 		
 		let showButtons = buttons.filter( B => {

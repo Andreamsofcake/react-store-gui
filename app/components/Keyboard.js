@@ -8,6 +8,9 @@ import { browserHistory } from 'react-router'
 
 import TsvActions from '../actions/TsvActions'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('Keyboard');
+
 class Keyboard extends Component {
 
   constructor(props, context) {
@@ -103,30 +106,30 @@ class Keyboard extends Component {
   }
 
   enter() {
-	console.log("entered! (enter key)");
+	Big.log("entered! (enter key)");
 
 	var VIEW = RootscopeStore.getConfig('keyboardView');
 	switch(VIEW) {
 
 		case "Enter_Email":
-			console.log("Validate Email");
+			Big.log("Validate Email");
 			browserHistory.push('/Thankyou_Msg');
 			break;
 
 		case "Enter_Coupon":
-			console.log("Validate Coupon");
+			Big.log("Validate Coupon");
 			//
 			break;
 
 		default:
-			console.error('unknown keyboardView: ' + VIEW);
+			Big.error('unknown keyboardView: ' + VIEW);
 			break;
 	}
   }
 
   clickKey(key) {
-	  //console.log("Hi Ping Debug Click Key: "+key);
-	  //console.log("email: " + email);
+	  //Big.log("Hi Ping Debug Click Key: "+key);
+	  //Big.log("email: " + email);
 	  //email += key;
 	  this.setState({
 	  	output: this.state.output + key
