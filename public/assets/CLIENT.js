@@ -7195,10 +7195,10 @@
 							break;
 
 						case 'notifyVendingItem':
-							Big.log('vendingItem');
-							Big.log(event.data);
+							//Big.log('vendingItem');
+							//Big.log(event.data[0]);
 							this.setState({
-								vendingItem: event.data
+								vendingItem: event.data[0]
 							});
 							break;
 
