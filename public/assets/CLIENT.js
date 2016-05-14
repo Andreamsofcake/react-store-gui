@@ -27830,7 +27830,7 @@
 
 	function thankYouTimer() {
 		//var timer = setTimeout( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.thankyouPageTimeout' ) );
-		var T = new _index.timer(gotoDefaultIdlePage, _RootscopeStore2.default.getCache('custommachinesettings.thankyouPageTimeout'));
+		var T = new _index.timer(gotoDefaultIdlePage, _RootscopeStore2.default.getCache('custommachinesettings.thankyouPageTimeout', 10000));
 		T.self(T);
 		setTimer('thankyouTimer', T);
 	}
@@ -42872,6 +42872,8 @@
 
 	var _TsvActions2 = _interopRequireDefault(_TsvActions);
 
+	var _TsvUtils = __webpack_require__(66);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -42900,7 +42902,7 @@
 	    });
 
 	    // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
-	    _TsvActions2.default.callApi('disableLoginDevices');
+	    _TsvActions2.default.apiCall('disableLoginDevices');
 
 	    var binders = ['idleClicked'];
 	    binders.forEach(function (B) {
@@ -42927,12 +42929,18 @@
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
-	        _E.Row,
+	        'div',
 	        { className: 'PageIdle', onClick: this.idleClicked },
 	        _react2.default.createElement(
-	          _E.Col,
-	          null,
-	          _react2.default.createElement('img', { id: 'idleImg', src: Translate.localizedImage('idle.png'), alt: 'IdlePage' })
+	          'h1',
+	          { style: { textAlign: 'center' } },
+	          'Touch',
+	          _react2.default.createElement('br', null),
+	          'anywhere',
+	          _react2.default.createElement('br', null),
+	          'to',
+	          _react2.default.createElement('br', null),
+	          'shop....'
 	        )
 	      );
 	    }
@@ -42940,8 +42948,7 @@
 	    key: 'idleClicked',
 	    value: function idleClicked(e) {
 	      e.preventDefault();
-	      // probably triggers a route change, according to the current TsvService func
-	      TsvService.idleClicked();
+	      (0, _TsvUtils.idleClicked)();
 	    }
 	  }]);
 
@@ -48088,6 +48095,7 @@
 
 			_this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
 			_this._onTsvChange = _this._onTsvChange.bind(_this);
+			_this.storefrontTimeout = null;
 
 			return _this;
 		}
@@ -48146,7 +48154,8 @@
 							_this2.setState({
 								hintMsg: Translate.translate('CashVending', 'HintMessageVending'),
 								showCancelBtnCash: false,
-								showSpinner: true
+								showSpinner: true,
+								vendingItem: null
 							});
 						} else {
 							Big.log('... vending WAS IN process, error maybe?');
@@ -48262,14 +48271,42 @@
 							(0, _TsvUtils.vendResponse)(event.data[0]);
 							stopPaymentTimer();
 							break;
+
+						case 'notifyVendingItem':
+							this.setState({
+								vendingItem: event.data
+							});
+							break;
+
+						case 'notifyVmsEvent':
+							Big.warn('notifyVmsEvent received, probably should start pushing these to the server!');
+							Big.log(event.data);
+							break;
 					}
 				}
 			}
 		}, {
 			key: 'render',
 			value: function render() {
+				if (this.storefrontTimeout) {
+					clearTimeout(this.storefrontTimeout);
+				}
+				if (this.state.vendingComplete) {
+					_reactRouter.browserHistory.push('/ThankYouMsg');
+					return _react2.default.createElement(
+						'div',
+						null,
+						_react2.default.createElement(
+							'h1',
+							null,
+							'Vending complete!'
+						)
+					);
+				}
 				if (!this.state.cart || !this.state.cart.length) {
-					//browserHistory.push('/Storefront');
+					this.storefrontTimeout = setTimeout(function () {
+						_reactRouter.browserHistory.push('/Storefront');
+					}, 5000);
 					return _react2.default.createElement(
 						'div',
 						null,
@@ -48277,11 +48314,6 @@
 							'h1',
 							null,
 							'Error: no cart items found to purchase!'
-						),
-						_react2.default.createElement(
-							'pre',
-							null,
-							JSON.stringify(this.state.cart, null, 4)
 						),
 						_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
 								_reactRouter.Link,
@@ -48348,17 +48380,62 @@
 							)
 						)
 					),
-					_react2.default.createElement(
-						_E.Col,
-						{ sm: '1/2' },
-						this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null
-					),
-					_react2.default.createElement(
-						_E.Col,
-						{ sm: '1/2' },
-						this.state.showSpinner ? this.renderSpinner() : null
-					)
+					this.state.showCancelBtnCash ? _react2.default.createElement(
+						'div',
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+							' '
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+							_react2.default.createElement(
+								_E.Button,
+								{ type: 'primary', size: 'lg', onClick: function onClick() {
+										_reactRouter.browserHistory.push('/Storefront');
+									} },
+								Translate.translate('ShoppingCart', 'Shop_More')
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+							this.renderCancelBtnCash()
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+							' '
+						)
+					) : null,
+					this.renderVendingItem()
 				);
+			}
+		}, {
+			key: 'renderVendingItem',
+			value: function renderVendingItem() {
+				if (this.state.vendingItem) {
+					return _react2.default.createElement(
+						_E.Col,
+						null,
+						_react2.default.createElement(
+							'h1',
+							{ style: { textAlign: 'center' } },
+							'Vending item:',
+							_react2.default.createElement('br', null),
+							_react2.default.createElement(
+								'strong',
+								null,
+								this.state.vendingItem.productName
+							)
+						),
+						this.state.vendingItem.imagePath ? _react2.default.createElement('img', { src: this.state.vendingItem.imagePath }) : null,
+						_react2.default.createElement(_E.Spinner, { size: 'md', type: 'inverted' })
+					);
+				}
+				return null;
 			}
 		}, {
 			key: 'renderCancelBtnCash',
@@ -55377,7 +55454,7 @@
 
 
 	    _RootscopeActions2.default.setConfig("bDisplayCgryNavigation2", _RootscopeStore2.default.getConfig('bDisplayCgryNavigation'));
-	    updateCredit();
+	    (0, _TsvUtils.updateCredit)();
 
 	    (0, _TsvUtils.thankYouTimer)();
 
@@ -55401,11 +55478,25 @@
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'thankyou' },
+	        { className: 'PageIdle' },
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
-	          _react2.default.createElement('img', { id: 'thankyouImg', src: Translate.localizedImage('thankyou.png'), alt: 'thankyou' })
+	          _react2.default.createElement(
+	            'h1',
+	            { style: { textAlign: 'center' } },
+	            'Thanks for your business!'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            ' '
+	          ),
+	          _react2.default.createElement(
+	            'h3',
+	            { style: { textAlign: 'center' } },
+	            'Looking forwawrd to seeing you again.....'
+	          )
 	        )
 	      );
 	    }

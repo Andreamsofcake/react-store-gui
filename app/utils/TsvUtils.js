@@ -339,7 +339,7 @@ export function onGeneralTimeout() {
 
 export function thankYouTimer() {
     //var timer = setTimeout( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.thankyouPageTimeout' ) );
-    var T = new timer( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.thankyouPageTimeout' ) );
+    var T = new timer( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.thankyouPageTimeout', 10000) );
     T.self(T);
     setTimer('thankyouTimer', T);
 }

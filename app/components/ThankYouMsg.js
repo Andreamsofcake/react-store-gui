@@ -10,6 +10,7 @@ import * as _E from 'elemental'
 import {
 	gotoDefaultIdlePage,
 	thankYouTimer,
+	updateCredit,
 } from '../utils/TsvUtils'
 
 class ThankYouMsg extends Component {
@@ -35,10 +36,11 @@ class ThankYouMsg extends Component {
 
   render() {
     return (
-      <_E.Row className="thankyou">
+      <_E.Row className="PageIdle">
         <_E.Col>
-
-          <img id="thankyouImg" src={Translate.localizedImage('thankyou.png')} alt="thankyou" />
+          <h1 style={{textAlign:'center'}}>Thanks for your business!</h1>
+          <p>{' '}</p>
+          <h3 style={{textAlign:'center'}}>Looking forwawrd to seeing you again.....</h3>
         </_E.Col>
       </_E.Row>
 
