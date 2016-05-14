@@ -235,6 +235,8 @@ class CashVending extends Component {
 					break;
 				
 				case 'notifyVendingItem':
+					Big.log('vendingItem');
+					Big.log(event.data);
 					this.setState({
 						vendingItem: event.data
 					});
