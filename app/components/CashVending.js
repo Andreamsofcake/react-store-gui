@@ -71,6 +71,7 @@ class CashVending extends Component {
       
       this._onRootstoreChange = this._onRootstoreChange.bind(this);
       this._onTsvChange = this._onTsvChange.bind(this);
+      this.storefrontTimeout = null;
 
   }
 
@@ -124,7 +125,8 @@ class CashVending extends Component {
 				  this.setState({
 					  hintMsg: Translate.translate('CashVending','HintMessageVending'),
 					  showCancelBtnCash: false,
-					  showSpinner: true
+					  showSpinner: true,
+					  vendingItem: null
 				  });
 			  } else {
 				  Big.log('... vending WAS IN process, error maybe?');
@@ -231,17 +233,41 @@ class CashVending extends Component {
 				  	vendResponse(event.data[0]);
 				  	stopPaymentTimer();
 					break;
+				
+				case 'notifyVendingItem':
+					//Big.log('vendingItem');
+					//Big.log(event.data[0]);
+					this.setState({
+						vendingItem: event.data[0]
+					});
+					break;
+				
+				case 'notifyVmsEvent':
+					Big.warn('notifyVmsEvent received, probably should start pushing these to the server!');
+					Big.log(event.data);
+					break;
 			}
 		}
 	}
 
   render() {
+  	if (this.storefrontTimeout) {
+  		clearTimeout(this.storefrontTimeout);
+  	}
+  	if (this.state.vendingComplete) {
+  		browserHistory.push('/ThankYouMsg');
+  		return (
+  			<div><h1>Vending complete!</h1></div>
+  		);
+  	}
   	if (!this.state.cart || !this.state.cart.length) {
-  		//browserHistory.push('/Storefront');
+  		this.storefrontTimeout = setTimeout(() => {
+	  		browserHistory.push('/Storefront');
+	  	}, 5000);
   		return (
   			<div>
 				<h1>Error: no cart items found to purchase!</h1>
-				<pre>{ JSON.stringify(this.state.cart, null, 4) }</pre>
+				{/*<pre>{ JSON.stringify(this.state.cart, null, 4) }</pre>*/}
 				<_E.Button component={(<Link to="/Storefront">Storefront</Link>)} />
   			</div>
   		);
@@ -275,16 +301,39 @@ class CashVending extends Component {
 			<p style={{fontSize:'1.5em'}}>{Translate.translate('CashVending', 'InsertedAmountLabel')} <strong>${ this.state.insertedAmount ? currencyFilter(this.state.insertedAmount) : '0.00' }</strong></p>
 		</_E.Col>
 
-		<_E.Col sm="1/2">
-			{ this.state.showCancelBtnCash ? this.renderCancelBtnCash() : null }
-		</_E.Col>
-		<_E.Col sm="1/2">
+		{ this.state.showCancelBtnCash ? (
+		<div>
+			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
+			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">{this.renderCancelBtnCash()}</_E.Col>
+			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+		</div>
+		) : null }
+		
+		{this.renderVendingItem()}
+
+		{/*<_E.Col sm="1/2">
 			{ this.state.showSpinner ? this.renderSpinner() : null }
-		</_E.Col>
+		</_E.Col>*/}
 
       </_E.Row>
     );
 
+  }
+  
+  renderVendingItem() {
+  	if (this.state.vendingItem) {
+  		return (
+			<_E.Col>
+				<h1 style={{textAlign: 'center'}}>Vending item:<br /><strong>{this.state.vendingItem.productName}</strong></h1>
+				{this.state.vendingItem.imagePath ? (
+					<img src={this.state.vendingItem.imagePath} />
+				) : null }
+				<_E.Spinner size="md" type="inverted" />
+			</_E.Col>
+  		);
+  	}
+  	return null;
   }
 
   renderCancelBtnCash(){

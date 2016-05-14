@@ -8,6 +8,9 @@ import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
+import {
+	idleClicked,
+} from '../utils/TsvUtils'
 
 class PageIdle extends Component {
 
@@ -21,7 +24,7 @@ class PageIdle extends Component {
     });
 
     // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
-    TsvActions.callApi('disableLoginDevices');
+    TsvActions.apiCall('disableLoginDevices');
 
 	var binders = [
 		'idleClicked',
@@ -41,18 +44,15 @@ class PageIdle extends Component {
 
   render() {
     return (
-      <_E.Row className="PageIdle" onClick={this.idleClicked}>
-        <_E.Col>
-      	<img id="idleImg" src={Translate.localizedImage('idle.png')} alt="IdlePage" />
-        </_E.Col>
-      </_E.Row>
+      <div className="PageIdle" onClick={this.active}>
+      	<h1 style={{textAlign:'center'}}>Touch<br />anywhere<br />to<br />shop....</h1>
+      </div>
     );
   }
 
-  idleClicked(e) {
+  active(e) {
   	e.preventDefault();
-  	// probably triggers a route change, according to the current TsvService func
-  	TsvService.idleClicked();
+  	idleClicked();
   }
 
 }
