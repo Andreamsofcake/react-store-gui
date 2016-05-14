@@ -8,7 +8,9 @@ import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
 import TsvActions from '../actions/TsvActions'
-import { idleClicked } from '../utils/TsvUtils'
+import {
+	idleClicked,
+} from '../utils/TsvUtils'
 
 class PageIdle extends Component {
 
@@ -42,13 +44,13 @@ class PageIdle extends Component {
 
   render() {
     return (
-      <div className="PageIdle" onClick={this.idleClicked}>
+      <div className="PageIdle" onClick={this.active}>
       	<h1 style={{textAlign:'center'}}>Touch<br />anywhere<br />to<br />shop....</h1>
       </div>
     );
   }
 
-  idleClicked(e) {
+  active(e) {
   	e.preventDefault();
   	idleClicked();
   }
