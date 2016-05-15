@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
@@ -23,8 +22,8 @@ class Activate extends Component {
 
     this.state = {
       activationKey: '',
-      //serialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber'),
-      machineSettings: RootscopeStore.getCache('machineSettings')
+      //serialNumber: TsvSettingsStore.getCache('machineSettings.MachineSerialNumber'),
+      machineSettings: TsvSettingsStore.getCache('machineSettings')
     };
     
   }
@@ -109,7 +108,7 @@ class Activate extends Component {
 
           	{/*<_E.Col sm="100%" md="100%" lg="100%" style={{textAlign:'center'}}>
 				<p>state: {JSON.stringify(this.state)} </p>
-				<p>foo: {JSON.stringify(RootscopeStore.getCache('machineSettings'))} </p>
+				<p>foo: {JSON.stringify(TsvSettingsStore.getCache('machineSettings'))} </p>
     	    </_E.Col>*/}
       </_E.Row>
     );

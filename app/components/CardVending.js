@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
@@ -33,15 +32,15 @@ class CardVending extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
+    TsvSettingsStore.setConfig('bDisplayCgryNavigation', false);
     updateCredit();
     TsvActions.apiCall('enablePaymentDevice', 'PAYMENT_TYPE_CREDIT_CARD');
 
     this.state = {
-		cart: RootscopeStore.getCache('shoppingCart.detail'),
+		cart: TsvSettingsStore.getCache('shoppingCart.detail'),
 		// testing, this fails: (so setting differently below)
-		//item: RootscopeStore.getCache('shoppingCart.detail')[0],
-		summary: RootscopeStore.getCache('shoppingCart.summary'),
+		//item: TsvSettingsStore.getCache('shoppingCart.detail')[0],
+		summary: TsvSettingsStore.getCache('shoppingCart.summary'),
 		showCancelBtn: true,
 		cardTransactionResponse: Translate.translate('CardVending', 'InstructionMessage')
     };
@@ -49,15 +48,15 @@ class CardVending extends Component {
 	this.state.item = this.state.cart && this.state.cart.length ? this.state.cart[0] : false;
 
 /*
-    if (RootscopeStore.getSession('cardMsg')!= Translate.translate('ProcessingMessage')
-		&& RootscopeStore.getSession('cardMsg')!= Translate.translate('VendingMessage')
-		&& RootscopeStore.getSession('cardMsg')!= Translate.translate('InstructionMessage')
+    if (TsvSettingsStore.getSession('cardMsg')!= Translate.translate('ProcessingMessage')
+		&& TsvSettingsStore.getSession('cardMsg')!= Translate.translate('VendingMessage')
+		&& TsvSettingsStore.getSession('cardMsg')!= Translate.translate('InstructionMessage')
 		) {
 		TsvService.startCardErrorTimer();
 	}
 */
 
-    if (RootscopeStore.getSession('bVendingInProcess')){
+    if (TsvSettingsStore.getSession('bVendingInProcess')){
 		this.state.showSpinner = true;
 		this.state.cardTransactionResponse = Translate.translate('CardVending', "VendingMessage");
 		this.state.showCancelBtnCash = false;
@@ -100,7 +99,7 @@ class CardVending extends Component {
 		TsvActions.apiCall('startVend');
 		killTimers();
 		setVendingInProcessFlag();
-		RootscopeActions.setSession('cardMsg', Translate.translate("CardVending", "Vending", "Vending"));
+		TsvSettingsStore.setSession('cardMsg', Translate.translate("CardVending", "Vending", "Vending"));
 		//TsvActions.apiCall("Card Approved should vend...");
 
 		this.setState({
@@ -123,7 +122,7 @@ class CardVending extends Component {
 		killTimers('cardErrorTimer');
 		var msg, showSpinner = false;
 
-		if (!RootscopeStore.getSession('bVendingInProcess')) {
+		if (!TsvSettingsStore.getSession('bVendingInProcess')) {
 
 			switch(level){
 				case "CARD_INSERTED":

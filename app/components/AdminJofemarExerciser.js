@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
@@ -20,22 +19,22 @@ class AdminJofemarExerciser extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'AdminJofemarExerciser');
+    //TsvSettingsStore.setSession('currentView', 'AdminJofemarExerciser');
     TsvActions.apiCall('disableLoginDevices');
     emptyCart();
     TsvActions.apiCall('fetchMachineIds', (err, ids) => {
-      	RootscopeActions.setCache('machineList', ids);
+      	TsvSettingsStore.setCache('machineList', ids);
       });
     this.state = {
       num: "",
-      maxChars: RootscopeStore.getConfig('bDualMachine') ? 3 : 2,
+      maxChars: TsvSettingsStore.getConfig('bDualMachine') ? 3 : 2,
       errs: 0,
       bShowDropDownForMachines: false,
       machineNumber: 0,
       vmsStatus: []
     };
 
-    if (RootscopeStore.getCache('machineList').length > 1) {
+    if (TsvSettingsStore.getCache('machineList').length > 1) {
         this.state.bShowDropDownForMachines = true;
     }
     
@@ -112,7 +111,7 @@ class AdminJofemarExerciser extends Component {
 
           <div>
 
-          { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
+          { TsvSettingsStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
           <_E.Row>
 			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOn.bind(this)}>{Translate.translate('AdminJofemarExerciser', 'LightOn')}</_E.Button></_E.Col>
 			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOff.bind(this)}>{Translate.translate('AdminJofemarExerciser','LightOff')}</_E.Button></_E.Col>

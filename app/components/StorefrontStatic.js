@@ -3,8 +3,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import StorefrontActions from '../actions/StorefrontActions'
 import StorefrontStore from '../stores/StorefrontStore'
 import { browserHistory } from 'react-router'
@@ -22,7 +21,7 @@ class Storefront_Static extends Component {
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'Storefront');
+    //TsvSettingsStore.setSession('currentView', 'Storefront');
     this.state = {
       categoryIdFilter:[],
       products: [],
@@ -36,28 +35,28 @@ class Storefront_Static extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-    RootscopeStore.addChangeListener(this._onRootstoreChange);
+    TsvSettingsStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
 
     TsvActions.apiCall('fetchProduct', (err, data) => {
       if (err) Big.throw(err);
-      RootscopeActions.setSession('products', data)
+      TsvSettingsStore.setSession('products', data)
     });
 
     TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
     	if (err) Big.throw(err);
-    	RootscopeActions.setConfig('categories', data);
+    	TsvSettingsStore.setConfig('categories', data);
     });
 
 	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 		if (err) Big.throw(err);
-		RootscopeActions.setCache('shoppingCart', data);
+		TsvSettingsStore.setCache('shoppingCart', data);
 	});
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-    RootscopeStore.removeChangeListener(this._onRootstoreChange);
+    TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
     StorefrontStore.removeChangeListener(this._onStoreFrontChange);
   }
 
@@ -65,10 +64,10 @@ class Storefront_Static extends Component {
   	// if (event && event.type == 'config' && event.path == 'categories') {
 		// Big.log('[_onRootstoreChange]');
 		// Big.log(event);
-		// Big.log(RootscopeStore.getConfig('categories'));
+		// Big.log(TsvSettingsStore.getConfig('categories'));
 		this.setState({
-			categories: RootscopeStore.getConfig('categories') || [],
-			products: RootscopeStore.getSession('products') || [],
+			categories: TsvSettingsStore.getConfig('categories') || [],
+			products: TsvSettingsStore.getSession('products') || [],
 		});
 
   	// }

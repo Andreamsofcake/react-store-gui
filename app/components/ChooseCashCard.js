@@ -4,8 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import * as _E from 'elemental'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 
 import TsvStore from '../stores/TsvStore'
@@ -24,19 +23,14 @@ class ChooseCashCard extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
+    TsvSettingsStore.setConfig('bDisplayCgryNavigation', false);
     updateCredit();
 
   };
 
   cancel(){
     emptyCart();
-    //RootscopeActions.setConfig('itemsInCart', 0);
-    //gotoDefaultIdlePage();
-    // FIXME invariant!
-    setTimeout(() => {
-	    browserHistory.push('/Storefront');
-	}, 250);
+    browserHistory.push('/Storefront');
 
   }
 
@@ -63,7 +57,7 @@ class ChooseCashCard extends Component {
 	
 	_onTsvChange(event) {
 		if (event && event.method == 'cardTransactionResponse') {
-			if (!RootscopeStore.getSession('bVendingInProcess')) {
+			if (!TsvSettingsStore.getSession('bVendingInProcess')) {
 				let level = event.data;
 				cardTransaction(level);
 				browserHistory.push("/CardVending");

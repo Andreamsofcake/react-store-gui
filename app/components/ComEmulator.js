@@ -3,7 +3,7 @@ import * as _E from 'elemental'
 
 import TestscopeActions from '../actions/TestscopeActions'
 import TestscopeStore from '../stores/TestscopeStore'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 
 import Log from '../utils/BigLogger'
 var Big = new Log('ComEmulator');
@@ -13,10 +13,10 @@ class ComEmulator extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this._onTestscopeChange = this._onTestscopeChange.bind(this);
-		this._onRootscopeChange = this._onRootscopeChange.bind(this);
+		this._onTsvSettingsChange = this._onTsvSettingsChange.bind(this);
 		this.state = {
 			lastResult: '',
-			currentView: RootscopeStore.getSession('currentView')
+			currentView: TsvSettingsStore.getSession('currentView')
 		}
 	}
 	
@@ -26,12 +26,12 @@ class ComEmulator extends Component {
 	
 	componentDidMount() {
 		TestscopeStore.addChangeListener(this._onTestscopeChange);
-		RootscopeStore.addChangeListener(this._onRootscopeChange);
+		TsvSettingsStore.addChangeListener(this._onTsvSettingsChange);
 	}
 	
 	compomentWillUnmount() {
 		TestscopeStore.removeChangeListener(this._onTestscopeChange);
-		RootscopeStore.removeChangeListener(this._onRootscopeChange);
+		TsvSettingsStore.removeChangeListener(this._onTsvSettingsChange);
 	}
 	
 	_onTestscopeChange(result) {
@@ -40,10 +40,10 @@ class ComEmulator extends Component {
 		});
 	}
 
-	_onRootscopeChange(event) {
+	_onTsvSettingsChange(event) {
 		if (event.type === 'session' && event.path === 'currentView') {
 			this.setState({
-				currentView: RootscopeStore.getSession('currentView')
+				currentView: TsvSettingsStore.getSession('currentView')
 			});
 		}
 	}

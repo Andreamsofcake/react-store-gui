@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
@@ -20,7 +19,7 @@ class AdminBillAcceptor extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'AdminBillAcceptor');
+    //TsvSettingsStore.setSession('currentView', 'AdminBillAcceptor');
     TsvActions.apiCall('disableLoginDevices');
     emptyCart();
 
@@ -28,7 +27,7 @@ class AdminBillAcceptor extends Component {
 		acceptorState: 'off',
 		amtInserted: '0.00',
 		totalInsertedCents: '0.00',
-		hasBillAcceptor: this.billSetting(RootscopeStore.getCache('custommachinesettings.HasBillCoin'))
+		hasBillAcceptor: this.billSetting(TsvSettingsStore.getCache('custommachinesettings.HasBillCoin'))
     };
 
     this._onTsvChange = this._onTsvChange.bind(this);

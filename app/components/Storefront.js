@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import Slider from 'react-slick';
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import StorefrontActions from '../actions/StorefrontActions'
 import StorefrontStore from '../stores/StorefrontStore'
 import { browserHistory } from 'react-router'
@@ -60,12 +59,12 @@ class Storefront extends Component {
   	//Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
   	startGeneralIdleTimer(this.props.location.pathname);
 
-    RootscopeStore.addChangeListener(this._onRootstoreChange);
+    TsvSettingsStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
 
     TsvActions.apiCall('fetchProduct', (err, data) => {
       if (err) Big.throw(err);
-      RootscopeActions.setSession('products', data)
+      TsvSettingsStore.setSession('products', data)
     });
 
     TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
@@ -73,18 +72,18 @@ class Storefront extends Component {
     	Big.log('fetchProductCategoriesByParentCategoryID');
     	Big.log(err);
     	Big.log(data);
-    	RootscopeActions.setConfig('categories', data);
+    	TsvSettingsStore.setConfig('categories', data);
     });
 
 	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 		if (err) Big.throw(err);
-		RootscopeActions.setCache('shoppingCart', data);
+		TsvSettingsStore.setCache('shoppingCart', data);
 	});
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-    RootscopeStore.removeChangeListener(this._onRootstoreChange);
+    TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
     StorefrontStore.removeChangeListener(this._onStoreFrontChange);
   }
 
@@ -92,10 +91,10 @@ class Storefront extends Component {
   	// if (event && event.type == 'config' && event.path == 'categories') {
 		// Big.log('[_onRootstoreChange]');
 		// Big.log(event);
-		// Big.log(RootscopeStore.getConfig('categories'));
+		// Big.log(TsvSettingsStore.getConfig('categories'));
 		this.setState({
-			categories: RootscopeStore.getConfig('categories') || [],
-			products: RootscopeStore.getSession('products') || [],
+			categories: TsvSettingsStore.getConfig('categories') || [],
+			products: TsvSettingsStore.getSession('products') || [],
 		});
 
   	// }

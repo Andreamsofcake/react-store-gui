@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import * as _E from 'elemental'
 
 import { Link, browserHistory } from 'react-router'
@@ -29,7 +28,7 @@ class AdminAutoMap extends Component {
       coilMap:[]
     }
 
-    if(RootscopeStore.getCache('machineList').length > 1){
+    if(TsvSettingsStore.getCache('machineList').length > 1){
         this.state.bShowMachine2 = true;
     }
 	this._onTsvChange = this._onTsvChange.bind(this);
@@ -42,8 +41,8 @@ class AdminAutoMap extends Component {
 
   mapMachine(machineID){
   	startGeneralIdleTimer(this.props.location.pathname);
-    if (!RootscopeStore.getSession('bRunningAutoMap')) {
-        RootscopeActions.setSession('bRunningAutoMap', true);
+    if (!TsvSettingsStore.getSession('bRunningAutoMap')) {
+        TsvSettingsStore.setSession('bRunningAutoMap', true);
         TsvActions.apiCall('runAutoMap', machineID, -1);
         this.setState({
         	status: 'Starting AutoMap',
@@ -59,12 +58,12 @@ class AdminAutoMap extends Component {
 	componentDidMount() {
 		startGeneralIdleTimer(this.props.location.pathname);
 		TsvStore.addChangeListener(this._onTsvChange);
-        RootscopeActions.setSession('bRunningAutoMap', false);
+        TsvSettingsStore.setSession('bRunningAutoMap', false);
 	}
 	
 	componentWillUnmount() {
 		TsvStore.removeChangeListener(this._onTsvChange);
-		RootscopeActions.setSession('bRunningAutoMap', false);
+		TsvSettingsStore.setSession('bRunningAutoMap', false);
 	}
 	
 	_onTsvChange(event) {
@@ -96,10 +95,7 @@ class AdminAutoMap extends Component {
 					break;
 
 				case "End":
-					// invariant! dang it
-					setTimeout(() => {
-						RootscopeActions.setSession('bRunningAutoMap', false);
-					}, 150);
+					TsvSettingsStore.setSession('bRunningAutoMap', false);
 					Big.warn('ok, should be pushing this coil map back out to the API!');
 					Big.log(this.state.coilMap);
 					break;

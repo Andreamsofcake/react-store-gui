@@ -161,7 +161,7 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 			} else {
 				_storeDB.set('config.' + action.data.path, action.data.value);
 			}
-			RootscopeStore.emitChange({ type: 'config', path: action.data.path });
+			TsvSettingsStore.emitChange({ type: 'config', path: action.data.path });
 			break;
 			
 		case appConstants.UPDATE_ROOT_CACHE:
@@ -173,7 +173,7 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 			} else {
 				_storeDB.set('cache.' + action.data.path, action.data.value);
 			}
-			RootscopeStore.emitChange({ type: 'cache', path: action.data.path });
+			TsvSettingsStore.emitChange({ type: 'cache', path: action.data.path });
 			//Big.warn(' someone updated CACHE, args:');
 			//Big.log(action.data);
 			break;
@@ -187,7 +187,7 @@ RootscopeStore.dispatch = AppDispatcher.register(function(payload){
 			} else {
 				_storeDB.set('session.' + action.data.path, action.data.value);
 			}
-			RootscopeStore.emitChange({ type: 'session', path: action.data.path });
+			TsvSettingsStore.emitChange({ type: 'session', path: action.data.path });
 			break;
 			
 		default:

@@ -59,7 +59,7 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 			currently all products are kept in the RootscopeStore,
 			eventually they will be here.
 		*/
-		let products = RootscopeStore.getSession('products');
+		let products = TsvSettingsStore.getSession('products');
 		if (products) {
 			let found = products.filter( P => { return P.productID == productID } );
 			if (found && found.length) {

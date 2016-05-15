@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import RootscopeActions from '../actions/RootscopeActions'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
-import RootscopeStore from '../stores/RootscopeStore'
+//import RootscopeActions from '../actions/RootscopeActions'
+//import RootscopeStore from '../stores/RootscopeStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 import ShoppingCartItem from './ShoppingCartItem'
@@ -26,29 +26,29 @@ class ShoppingCart extends Component {
     {/* MUST call super() before any this.*/}
     super(props, context);
 
-    //RootscopeActions.setConfig("bDisplayCgryNavigation2", RootscopeStore.getConfig('bDisplayCgryNavigation'));
+    //TsvSettingsStore.setConfig("bDisplayCgryNavigation2", TsvSettingsStore.getConfig('bDisplayCgryNavigation'));
     updateCredit();
-    //RootscopeActions.setSession('currentView', 'ShoppingCart');
-    //RootscopeActions.setCache('currentLocation', '/ShoppingCart');
+    //TsvSettingsStore.setSession('currentView', 'ShoppingCart');
+    //TsvSettingsStore.setCache('currentLocation', '/ShoppingCart');
 
     this.state = {
-      totalPrice: RootscopeStore.getCache('shoppingCart.summary.totalPrice'),
-      cart: RootscopeStore.getCache('shoppingCart.detail'),
-      salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
+      totalPrice: TsvSettingsStore.getCache('shoppingCart.summary.totalPrice'),
+      cart: TsvSettingsStore.getCache('shoppingCart.detail'),
+      salesTaxAmount: TsvSettingsStore.getCache('shoppingCart.summary.salesTaxAmount'),
       emptyCart: false,
       bShowCgryNav: true,
-      summary: RootscopeStore.getCache('shoppingCart.summary'),
+      summary: TsvSettingsStore.getCache('shoppingCart.summary'),
       bShowTax: false,
       bShowCouponBtn: false
     };
 
-    //RootscopeActions.setConfig('summary', this.state.summary);
+    //TsvSettingsStore.setConfig('summary', this.state.summary);
 
     if (this.state.salesTaxAmount > 0) {
 		this.state.bShowTax = true;
     };
 
-    if (RootscopeStore.getCache('custommachinesettings.bHasCouponCodes')) {
+    if (TsvSettingsStore.getCache('custommachinesettings.bHasCouponCodes')) {
         this.state.bShowCouponBtn = true;
     }
 
@@ -58,33 +58,30 @@ class ShoppingCart extends Component {
 
   cancel(){
     emptyCart();
-    //RootscopeActions.setConfig('itemsInCart', 0);
+    //TsvSettingsStore.setConfig('itemsInCart', 0);
     //gotoDefaultIdlePage();
-    // FIXME invariant!
-    setTimeout(() => {
-	    browserHistory.push('/Storefront');
-	}, 250);
+    browserHistory.push('/Storefront');
 
   }
 
 	componentDidMount() {
-		RootscopeStore.addChangeListener(this._onRootstoreChange);
+		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		TsvStore.addChangeListener(this._onTsvChange);
 		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 			if (err) Big.throw(err);
-			RootscopeActions.setCache('shoppingCart', data);
+			TsvSettingsStore.setCache('shoppingCart', data);
 		});
 		startGeneralIdleTimer(this.props.location.pathname);
 	}
 	
 	componentWillUnmount() {
-		RootscopeStore.removeChangeListener(this._onRootstoreChange);
+		TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
 		TsvStore.removeChangeListener(this._onTsvChange);
 	}
 
 	_onTsvChange(event) {
 		if (event && event.method === 'cardTransactionResponse') {
-			if (!RootscopeStore.getSession('bVendingInProcess')) {
+			if (!TsvSettingsStore.getSession('bVendingInProcess')) {
 				cardTransaction(event.data[0]);
 				browserHistory.push( "/CardVending" );
 			}
@@ -92,7 +89,7 @@ class ShoppingCart extends Component {
 	}
 	
   _onRootstoreChange() {
-    var data = RootscopeStore.getCache('shoppingCart');
+    var data = TsvSettingsStore.getCache('shoppingCart');
 
 	if (this.state.loadedCartOnce && (!data.detail || !data.detail.length)) {
 	  	//gotoDefaultIdlePage();

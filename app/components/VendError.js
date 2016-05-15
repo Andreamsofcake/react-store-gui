@@ -4,8 +4,7 @@ import * as Translate from '../../lib/Translate'
 
 import * as _E from 'elemental'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 
 import {
@@ -19,12 +18,12 @@ class VendError extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'VendError');
-    //RootscopeActions.setCache('currentLocation', '/VendError');
+    //TsvSettingsStore.setSession('currentView', 'VendError');
+    //TsvSettingsStore.setCache('currentLocation', '/VendError');
     updateCredit();
     this.state = {
-      errorMsg1: RootscopeStore.getSession('vendErrorMsg1'),
-      errorMsg2: RootscopeStore.getSession('vendErrorMsg2')
+      errorMsg1: TsvSettingsStore.getSession('vendErrorMsg1'),
+      errorMsg2: TsvSettingsStore.getSession('vendErrorMsg2')
     }
     vendErrorTimer();
 

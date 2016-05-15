@@ -7,7 +7,7 @@ import { browserHistory } from 'react-router'
 import CL_Actions from '../actions/CustomerLoginActions'
 import CL_Store from '../stores/CustomerStore'
 
-import RootscopeStore from '../stores/RootscopeStore'
+//import TsvSettingsStore from '../stores/TsvSettingsStore'
 import TsvStore from '../stores/TsvStore'
 import {
 	startGeneralIdleTimer,

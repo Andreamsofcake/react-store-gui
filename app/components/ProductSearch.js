@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import RootscopeActions from '../actions/RootscopeActions'
+//import RootscopeActions from '../actions/RootscopeActions'
+//import RootscopeStore from '../stores/RootscopeStore'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
-import RootscopeStore from '../stores/RootscopeStore'
 import ProductListItem from './ProductListItem'
 
 import { browserHistory } from 'react-router'
@@ -21,42 +21,42 @@ class ProductSearch extends Component {
     super(props, context);
 
     this.state = {
-      bShowBackBtn: RootscopeStore.getCache('custommachinesettings.bCategoryView'),
+      bShowBackBtn: TsvSettingsStore.getCache('custommachinesettings.bCategoryView'),
       products: [],
       _Index: 0
     }
 
-    RootscopeActions.setConfig('bDisplayCgry', false);
+    TsvSettingsStore.setConfig('bDisplayCgry', false);
     updateCredit();
-    RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance'))
-    //RootscopeActions.setSession('currentView', 'ProductSearch');
-    //RootscopeActions.setCache('currentLocation', '/ProductSearch');
+    TsvSettingsStore.setConfig('credit', TsvSettingsStore.getSession('creditBalance'))
+    //TsvSettingsStore.setSession('currentView', 'ProductSearch');
+    //TsvSettingsStore.setCache('currentLocation', '/ProductSearch');
 
-    if (typeof window !== 'undefined') {
-    	window.RootscopeStore = RootscopeStore;
-    }
+    //if (typeof window !== 'undefined') {
+    	//window.RootscopeStore = RootscopeStore;
+    //}
 
   }
 
   componentDidMount() {
 	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 		if (err) Big.throw(err);
-		RootscopeActions.setCache('shoppingCart', data);
+		TsvSettingsStore.setCache('shoppingCart', data);
 	});
 
     let state = {
-    	products: RootscopeStore.getConfig('products'),
-    	bShowBackBtn: RootscopeStore.getCache('custommachinesettings.bCategoryView')
+    	products: TsvSettingsStore.getConfig('products'),
+    	bShowBackBtn: TsvSettingsStore.getCache('custommachinesettings.bCategoryView')
     }
 
     this.setState(state);
 
     if (!state.products) {
 		Big.warn('have to go fetch all products! (fix in refactor, but ProductSearch is not long-term used anyway ... just old code for testing');
-		//Big.log(RootscopeStore.getConfig('products'));
+		//Big.log(TsvSettingsStore.getConfig('products'));
 		TsvActions.apiCall('fetchProduct', (err, data) => {
 			if (err) Big.throw(err);
-			RootscopeActions.setConfig('products', data);
+			TsvSettingsStore.setConfig('products', data);
 			this.setState({
 				products: data
 			});
@@ -89,11 +89,11 @@ class ProductSearch extends Component {
     if(product.stockCount > 0){
     	TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
     		if (err) Big.throw(err);
-	      RootscopeActions.setConfig('pvr', response);
+	      TsvSettingsStore.setConfig('pvr', response);
 
 	      TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 			if (err) Big.throw(err);
-			RootscopeActions.setCache('shoppingCart', data);
+			TsvSettingsStore.setCache('shoppingCart', data);
 	      });
 
 	      // this will throw it to the simple checkout page, don't want to do that we want to shop!
@@ -103,13 +103,13 @@ class ProductSearch extends Component {
   }
 
   logoClicked() {
-    RootscopeActions.gotoDefaultIdlePage();
+    TsvSettingsStore.gotoDefaultIdlePage();
   }
 
   updateCategory(categoryID) {
   	TsvActions.apiCall('fetchProductByCategory', categoryID, (err, data) => {
 		if (err) Big.throw(err);
-		RootscopeActions.setConfig('products', data);
+		TsvSettingsStore.setConfig('products', data);
 		this.setState({
 			products: data
 		});
@@ -190,7 +190,7 @@ class ProductSearch extends Component {
   }
 
   renderCategoryTable() {
-    var categories = RootscopeStore.getProductCategories();
+    var categories = TsvSettingsStore.getProductCategories();
     return (
         <_E.Row>
 

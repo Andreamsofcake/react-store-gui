@@ -1,7 +1,7 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import appConstants from '../constants/appConstants'
 //import TsvService from '../../lib/TsvService'
-import RootscopeActions from '../actions/RootscopeActions'
+//import RootscopeActions from '../actions/RootscopeActions'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
@@ -26,7 +26,7 @@ var StorefrontActions = {
   		if (err) Big.throw(err);
   		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
   			if (err) Big.throw(err);
-  			RootscopeActions.setCache('shoppingCart', data);
+  			TsvSettingsStore.setCache('shoppingCart', data);
   		});
   	});
   },
@@ -42,7 +42,7 @@ var StorefrontActions = {
 
     TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
       if (err) Big.throw(err);
-      RootscopeActions.setCache('shoppingCart', data);
+      TsvSettingsStore.setCache('shoppingCart', data);
 
       let removeQty = (qty) => {
         if (qty > 0) {
@@ -51,14 +51,14 @@ var StorefrontActions = {
             if (err) Big.throw(err);
             TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
               if (err) Big.throw(err);
-              RootscopeActions.setCache('shoppingCart', data);
+              TsvSettingsStore.setCache('shoppingCart', data);
               removeQty(qty);
             });
           });
         } else {
           TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
             if (err) Big.throw(err);
-            RootscopeActions.setCache('shoppingCart', data);
+            TsvSettingsStore.setCache('shoppingCart', data);
           });
         }
       }
@@ -78,7 +78,7 @@ var StorefrontActions = {
   		if (err) Big.throw(err);
   		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
   			if (err) Big.throw(err);
-  			RootscopeActions.setCache('shoppingCart', data);
+  			TsvSettingsStore.setCache('shoppingCart', data);
   		});
   	});
   },
@@ -101,10 +101,10 @@ var StorefrontActions = {
     if(product.stockCount > 0){
       TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
         if (err) Big.throw(err);
-        RootscopeActions.setConfig('pvr', response);
+        TsvSettingsStore.setConfig('pvr', response);
         TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
           if (err) Big.throw(err);
-          RootscopeActions.setCache('shoppingCart', data);
+          TsvSettingsStore.setCache('shoppingCart', data);
         });
       });
     }

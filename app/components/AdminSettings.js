@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import * as _E from 'elemental'
 import { Link, browserHistory } from 'react-router'
 
@@ -21,31 +20,31 @@ class AdminSettings extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'AdminSettings');
+    //TsvSettingsStore.setSession('currentView', 'AdminSettings');
     this.state = this.getStateSettings();
-    this._onRootscopeChange = this._onRootscopeChange.bind(this);
+    this._onTsvSettingsChange = this._onTsvSettingsChange.bind(this);
   }
   
   getStateSettings() {
   	/*return*/var state = {
-      supportLanguages: RootscopeStore.getConfig('supportLanguages'),
+      supportLanguages: TsvSettingsStore.getConfig('supportLanguages'),
 
-      defaultLanguage: RootscopeStore.getCache('machineSettings.defaultLanguage'),
-      CCProcessorMode: RootscopeStore.getCache('machineSettings.CCProcessorMode'),
-      MachineSerialNumber: RootscopeStore.getCache('machineSettings.MachineSerialNumber'),
-      CCMerchantKey: RootscopeStore.getCache('machineSettings.CCMerchantKey'),
-      CCMerchantID: RootscopeStore.getCache('machineSettings.CCMerchantID'),
-      DropSensorAttached: RootscopeStore.getCache('machineSettings.DropSensorAttached'),
-      CCReaderType: RootscopeStore.getCache('machineSettings.CCReaderType'),
-      VMCPlatform: RootscopeStore.getCache('machineSettings.VMCPlatform'),
-      MachineCount: RootscopeStore.getCache('machineSettings.MachineCount'),
-      VMCControlCOMPort: RootscopeStore.getCache('machineSettings.VMCControlCOMPort'),
-      SalesTaxRate: RootscopeStore.getCache('machineSettings.SalesTaxRate'),
-      ShoppingCartMaxItemCount: RootscopeStore.getCache('machineSettings.ShoppingCartMaxItemCount'),
+      defaultLanguage: TsvSettingsStore.getCache('machineSettings.defaultLanguage'),
+      CCProcessorMode: TsvSettingsStore.getCache('machineSettings.CCProcessorMode'),
+      MachineSerialNumber: TsvSettingsStore.getCache('machineSettings.MachineSerialNumber'),
+      CCMerchantKey: TsvSettingsStore.getCache('machineSettings.CCMerchantKey'),
+      CCMerchantID: TsvSettingsStore.getCache('machineSettings.CCMerchantID'),
+      DropSensorAttached: TsvSettingsStore.getCache('machineSettings.DropSensorAttached'),
+      CCReaderType: TsvSettingsStore.getCache('machineSettings.CCReaderType'),
+      VMCPlatform: TsvSettingsStore.getCache('machineSettings.VMCPlatform'),
+      MachineCount: TsvSettingsStore.getCache('machineSettings.MachineCount'),
+      VMCControlCOMPort: TsvSettingsStore.getCache('machineSettings.VMCControlCOMPort'),
+      SalesTaxRate: TsvSettingsStore.getCache('machineSettings.SalesTaxRate'),
+      ShoppingCartMaxItemCount: TsvSettingsStore.getCache('machineSettings.ShoppingCartMaxItemCount'),
 
-      bHasShoppingCart: RootscopeStore.getCache('custommachinesettings.bHasShoppingCart'),
-      singleProductDonation: RootscopeStore.getCache('custommachinesettings.singleProductDonation'),
-      minimumDonationAmount: RootscopeStore.getCache('custommachinesettings.minimumDonationAmount'),
+      bHasShoppingCart: TsvSettingsStore.getCache('custommachinesettings.bHasShoppingCart'),
+      singleProductDonation: TsvSettingsStore.getCache('custommachinesettings.singleProductDonation'),
+      minimumDonationAmount: TsvSettingsStore.getCache('custommachinesettings.minimumDonationAmount'),
     }
     Big.log('getStateSettings()');
     Big.log(state);
@@ -68,35 +67,35 @@ class AdminSettings extends Component {
 
   	machineSettingsProps.forEach( PROP => {
   		let val = this.state[PROP];
-  		if (val !== RootscopeStore.getCache('machineSettings.'+PROP)) {
+  		if (val !== TsvSettingsStore.getCache('machineSettings.'+PROP)) {
   			TsvActions.apiCall('setMachineSetting', PROP, val);
   		}
   	});
 
   	customMachineSettingsProps.forEach( PROP => {
   		let val = this.state[PROP];
-  		if (val !== RootscopeStore.getCache('custommachinesettings.'+PROP)) {
+  		if (val !== TsvSettingsStore.getCache('custommachinesettings.'+PROP)) {
   			TsvActions.apiCall('setCustomMachineSetting', PROP, val);
   		}
   	});
 
-  	let languageSupported = RootscopeStore.getCache('custommachinesettings.languageSupported');
+  	let languageSupported = TsvSettingsStore.getCache('custommachinesettings.languageSupported');
   	if (languageSupported !== this.state.supportLanguages) {
   		TsvActions.apiCall('setCustomMachineSetting', "languageSupported", this.state.supportLanguages);
-  		RootscopeActions.setConfig('supportLanguages', this.state.supportLanguages);
+  		TsvSettingsStore.setConfig('supportLanguages', this.state.supportLanguages);
   	}
 
-	let MS = RootscopeStore.getCache('machineSettings');
+	let MS = TsvSettingsStore.getCache('machineSettings');
 	machineSettingsProps.forEach( PROP => {
 		MS[PROP] = this.state[PROP];
 	});
 
-	let CMS = RootscopeStore.getCache('custommachinesettings');
+	let CMS = TsvSettingsStore.getCache('custommachinesettings');
 	customMachineSettingsProps.forEach( PROP => {
 		CMS[PROP] = this.state[PROP];
 	});
 	
-	RootscopeActions.setCache({
+	TsvSettingsStore.setCache({
 		custommachinesettings: CMS,
 		machineSettings: MS
 	});
@@ -105,17 +104,17 @@ class AdminSettings extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-  	RootscopeStore.addChangeListener(this._onRootscopeChange);
+  	TsvSettingsStore.addChangeListener(this._onTsvSettingsChange);
 	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-  	RootscopeStore.removeChangeListener(this._onRootscopeChange);
+  	TsvSettingsStore.removeChangeListener(this._onTsvSettingsChange);
   }
   
-  _onRootscopeChange(event) {
-    Big.log('_onRootscopeChange(event)');
+  _onTsvSettingsChange(event) {
+    Big.log('_onTsvSettingsChange(event)');
     Big.log(event);
     if (
     	(event.type === 'cache' && event.path === '__multiple__') ||
