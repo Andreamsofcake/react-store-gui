@@ -60,10 +60,7 @@ class ShoppingCart extends Component {
     emptyCart();
     //TsvSettingsStore.setConfig('itemsInCart', 0);
     //gotoDefaultIdlePage();
-    // FIXME invariant!
-    setTimeout(() => {
-	    browserHistory.push('/Storefront');
-	}, 250);
+    browserHistory.push('/Storefront');
 
   }
 

@@ -20,9 +20,10 @@ class ShoppingCartMini extends Component {
 	componentDidMount() {
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		// artificial delay due to TSV race conditions
-		setTimeout(() => {
+		// let's see if new TsvSettingsStore fixes it?
+		//setTimeout(() => {
 			this.getCartData();
-		}, 1000);
+		//}, 1000);
 	}
 
 	// Remove change listers from stores

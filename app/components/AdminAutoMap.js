@@ -95,10 +95,7 @@ class AdminAutoMap extends Component {
 					break;
 
 				case "End":
-					// invariant! dang it
-					setTimeout(() => {
-						TsvSettingsStore.setSession('bRunningAutoMap', false);
-					}, 150);
+					TsvSettingsStore.setSession('bRunningAutoMap', false);
 					Big.warn('ok, should be pushing this coil map back out to the API!');
 					Big.log(this.state.coilMap);
 					break;

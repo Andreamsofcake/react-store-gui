@@ -362,13 +362,6 @@ export function startGeneralIdleTimer(fromPage) {
 		currentPageView = fromPage;
 	}
 	killGeneralIdleTimer();
-	/*
-	var timer = setTimeout(() => {
-		//Big.log("Hi Ping generalIdleTimer timeout...");
-		Big.log("onGeneralIdleTimeout() @" + TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000));
-		onGeneralTimeout();
-	}, TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
-	*/
     var T = new timer( onGeneralTimeout, TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
     T.self(T);
 	setTimer('generalIdleTimer', T);
@@ -534,26 +527,6 @@ export function startPaymentTimer( idlePage ){
 		Big.log( TsvSettingsStore.getCache('custommachinesettings') );
 		Big.throw('startPaymentTimer: I need a timeoutLength to start a timeout! none found.');
 	}
-	
-	/*
-	var timeout = setTimeout( () => {
-		emptyCart();
-		//stopPaymentTimer();
-		killTimers('paymentTimer');
-
-		switch (idlePage) {
-			// "View1" is the keypad input interface for single product choose + purchase (no cart)
-			case 'View1':
-				browserHistory.push('/View1');
-				break;
-
-			default:
-				gotoDefaultIdlePage();
-				break;
-		}
-
-	}, timeoutLength );
-	*/
 	
     var T = new timer( () => {
 		emptyCart();

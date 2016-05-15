@@ -2362,10 +2362,7 @@
 	            break;
 
 	          case "End":
-	            // invariant! dang it
-	            setTimeout(function () {
-	              _TsvSettingsStore2.default.setSession('bRunningAutoMap', false);
-	            }, 150);
+	            _TsvSettingsStore2.default.setSession('bRunningAutoMap', false);
 	            Big.warn('ok, should be pushing this coil map back out to the API!');
 	            Big.log(this.state.coilMap);
 	            break;
@@ -6953,8 +6950,6 @@
 		}, {
 			key: '_onTsvChange',
 			value: function _onTsvChange(event) {
-				var _this3 = this;
-
 				if (event && event.method) {
 					if (!event.data.length) {
 						Big.error('method "' + event.method + '", but no args or data???');
@@ -6984,15 +6979,9 @@
 
 							this.setState(state);
 
-							// dreaded invariant dispatching in a dispatch error:
-							// FIXME: must figure out a better way to track the state vars app-wide,
-							// too many RootscopeAction => Store => dispatches
-							setTimeout(function () {
-								(0, _TsvUtils.resetPaymentTimer)();
-								_TsvSettingsStore2.default.setSession('creditBalance', state.insertedAmount);
-								_this3.checkBalance(state.insertedAmount);
-							}, 150);
-
+							(0, _TsvUtils.resetPaymentTimer)();
+							_TsvSettingsStore2.default.setSession('creditBalance', state.insertedAmount);
+							this.checkBalance(state.insertedAmount);
 							break;
 
 						case 'cardTransactionRespose':
@@ -7050,7 +7039,7 @@
 						_react2.default.createElement(
 							'h1',
 							null,
-							'Error: no cart items found to purchase!'
+							'Error: no cart items found to purchase, sorry!'
 						),
 						_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
 								_reactRouter.Link,
@@ -7269,12 +7258,7 @@
 	    key: 'cancel',
 	    value: function cancel() {
 	      (0, _TsvUtils.emptyCart)();
-	      //TsvSettingsStore.setConfig('itemsInCart', 0);
-	      //gotoDefaultIdlePage();
-	      // FIXME invariant!
-	      setTimeout(function () {
-	        _reactRouter.browserHistory.push('/Storefront');
-	      }, 250);
+	      _reactRouter.browserHistory.push('/Storefront');
 	    }
 	  }, {
 	    key: 'cash',
@@ -8560,10 +8544,7 @@
 	      emptyCart();
 	      //TsvSettingsStore.setConfig('itemsInCart', 0);
 	      //gotoDefaultIdlePage();
-	      // FIXME invariant!
-	      setTimeout(function () {
-	        _reactRouter.browserHistory.push('/Storefront');
-	      }, 250);
+	      _reactRouter.browserHistory.push('/Storefront');
 	    }
 	  }, {
 	    key: 'componentDidMount',
@@ -10908,13 +10889,6 @@
 			currentPageView = fromPage;
 		}
 		killGeneralIdleTimer();
-		/*
-	 var timer = setTimeout(() => {
-	 	//Big.log("Hi Ping generalIdleTimer timeout...");
-	 	Big.log("onGeneralIdleTimeout() @" + TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000));
-	 	onGeneralTimeout();
-	 }, TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
-	 */
 		var T = new _index.timer(onGeneralTimeout, _TsvSettingsStore2.default.getCache('custommachinesettings.generalPageTimeout', 120000));
 		T.self(T);
 		setTimer('generalIdleTimer', T);
@@ -11080,23 +11054,6 @@
 			Big.log(_TsvSettingsStore2.default.getCache('custommachinesettings'));
 			Big.throw('startPaymentTimer: I need a timeoutLength to start a timeout! none found.');
 		}
-
-		/*
-	 var timeout = setTimeout( () => {
-	 	emptyCart();
-	 	//stopPaymentTimer();
-	 	killTimers('paymentTimer');
-	 		switch (idlePage) {
-	 		// "View1" is the keypad input interface for single product choose + purchase (no cart)
-	 		case 'View1':
-	 			browserHistory.push('/View1');
-	 			break;
-	 			default:
-	 			gotoDefaultIdlePage();
-	 			break;
-	 	}
-	 	}, timeoutLength );
-	 */
 
 		var T = new _index.timer(function () {
 			emptyCart();
@@ -15576,13 +15533,12 @@
 		_createClass(ShoppingCartMini, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				var _this2 = this;
-
 				_TsvSettingsStore2.default.addChangeListener(this._onRootstoreChange);
 				// artificial delay due to TSV race conditions
-				setTimeout(function () {
-					_this2.getCartData();
-				}, 1000);
+				// let's see if new TsvSettingsStore fixes it?
+				//setTimeout(() => {
+				this.getCartData();
+				//}, 1000);
 			}
 
 			// Remove change listers from stores

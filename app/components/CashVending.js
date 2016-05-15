@@ -210,15 +210,9 @@ class CashVending extends Component {
 
 					this.setState(state);
 
-					// dreaded invariant dispatching in a dispatch error:
-					// FIXME: must figure out a better way to track the state vars app-wide,
-					// too many RootscopeAction => Store => dispatches
-					setTimeout(() => {
-						resetPaymentTimer();
-						TsvSettingsStore.setSession('creditBalance', state.insertedAmount);
-						this.checkBalance(state.insertedAmount);
-					}, 150);
-
+					resetPaymentTimer();
+					TsvSettingsStore.setSession('creditBalance', state.insertedAmount);
+					this.checkBalance(state.insertedAmount);
 					break;
 
 				case 'cardTransactionRespose':
@@ -265,7 +259,7 @@ class CashVending extends Component {
 	  	}, 5000);
   		return (
   			<div>
-				<h1>Error: no cart items found to purchase!</h1>
+				<h1>Error: no cart items found to purchase, sorry!</h1>
 				{/*<pre>{ JSON.stringify(this.state.cart, null, 4) }</pre>*/}
 				<_E.Button component={(<Link to="/Storefront">Storefront</Link>)} />
   			</div>
