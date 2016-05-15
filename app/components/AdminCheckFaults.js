@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
@@ -23,7 +22,7 @@ class AdminCheckFaults extends Component {
       machineID: 0,
     };
 
-    if (RootscopeStore.getCache('machineList').length > 1) {
+    if (TsvSettingsStore.getCache('machineList').length > 1) {
     	this.state.bShowDropDownForMachines = true;
     };
 
@@ -48,7 +47,7 @@ class AdminCheckFaults extends Component {
         this.setState({
 			bRunningClearFaults: true
         });
-        RootscopeActions.setSession('bRunningClearFaults', true);
+        TsvSettingsStore.setSession('bRunningClearFaults', true);
         getFaultCodes(this.state.machineID);
       }
   }
@@ -56,13 +55,13 @@ class AdminCheckFaults extends Component {
   // Add change listeners to stores
 	componentDidMount() {
 		startGeneralIdleTimer(this.props.location.pathname);
-		RootscopeActions.setSession('bRunningClearFaults', false);
+		TsvSettingsStore.setSession('bRunningClearFaults', false);
 		this.getFaultCodes(this.state.machineID);
 		TsvStore.addChangeListener(this._onTsvChange);
 	}
 	
 	componentWillUnmount() {
-		RootscopeActions.setSession('bRunningClearFaults', false);
+		TsvSettingsStore.setSession('bRunningClearFaults', false);
 		TsvStore.removeChangeListener(this._onTsvChange);
 	}
 	
@@ -75,7 +74,7 @@ class AdminCheckFaults extends Component {
           bRunningClearFaults: false
         });
         
-        RootscopeActions.setSession('bRunningClearFaults', false);
+        TsvSettingsStore.setSession('bRunningClearFaults', false);
         
         getFaultCodes(machineID);
 	}
@@ -83,7 +82,7 @@ class AdminCheckFaults extends Component {
 
   getMachineSelectOptions() {
     var options = [];
-    RootscopeStore.getCache('machineList').forEach( MACHINE => {
+    TsvSettingsStore.getCache('machineList').forEach( MACHINE => {
       options.push({ label: 'Machine ' + MACHINE, value: MACHINE });
     })
     return options;
@@ -95,7 +94,7 @@ class AdminCheckFaults extends Component {
 
         	<h1 style={{fontWeight:300}}>Check Faults</h1>
 
-          { RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
+          { TsvSettingsStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
 
           <_E.Button type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
 

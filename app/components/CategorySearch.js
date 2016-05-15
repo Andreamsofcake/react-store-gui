@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import CategoryListItem from './CategoryListItem'
@@ -28,12 +27,12 @@ class CategorySearch extends Component {
       bShowPrevArrow: false,
       bShowNextArrow: false,
       _Index: 0,
-      categories: RootscopeStore.getConfig('categories')
+      categories: TsvSettingsStore.getConfig('categories')
     }
 
-    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    //RootscopeActions.setSession('currentView', 'CategorySearch');
-    //RootscopeActions.setCache('currentLocation', '/CategorySearch');
+    TsvSettingsStore.setConfig('bDisplayCgryNavigation', false);
+    //TsvSettingsStore.setSession('currentView', 'CategorySearch');
+    //TsvSettingsStore.setCache('currentLocation', '/CategorySearch');
     updateCredit();
 
 	this._onRootstoreChange = this._onRootstoreChange.bind(this);
@@ -51,13 +50,13 @@ class CategorySearch extends Component {
     //var categoryID = cat.categoryID;
   	TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', cat.categoryID, (err, data) => {
     	if (err) Big.throw(err);
-    	RootscopeActions.setConfig('categories', data);
+    	TsvSettingsStore.setConfig('categories', data);
     	if (data.length === 0) {
     		TsvActions.apiCall('fetchProductByCategory', cat.categoryID, (err, data) => {
 		    	if (err) Big.throw(err);
 		    	Big.log('setting products data................................................................................' +"\n................................................................................\n");
 		    	Big.log(data);
-		    	RootscopeActions.setConfig('products', data);
+		    	TsvSettingsStore.setConfig('products', data);
 		    	browserHistory.push("/ProductSearch");
 		    });
     	}
@@ -67,14 +66,14 @@ class CategorySearch extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-		RootscopeStore.addChangeListener(this._onRootstoreChange);
+		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
 			if (err) Big.throw(err);
-			RootscopeActions.setConfig('categories', data);
+			TsvSettingsStore.setConfig('categories', data);
 		});
 
 		isCartEmpty( (err, isEmpty) => {
-			if (RootscopeStore.getCache('custommachinesettings.txtIdleScene') === "category_search" || !isEmpty ) {
+			if (TsvSettingsStore.getCache('custommachinesettings.txtIdleScene') === "category_search" || !isEmpty ) {
 				startGeneralIdleTimer(this.props.location.pathname);
 			}
 		})
@@ -82,16 +81,16 @@ class CategorySearch extends Component {
 
   // Remove change listers from stores
   componentWillUnmount() {
-		RootscopeStore.removeChangeListener(this._onRootstoreChange);
+		TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
   }
 
   _onRootstoreChange(event) {
   	if (event && event.type == 'config' && event.path == 'categories') {
 		//Big.log('[_onRootstoreChange]');
 		//Big.log(event);
-		//Big.log(RootscopeStore.getConfig('categories'));
+		//Big.log(TsvSettingsStore.getConfig('categories'));
 		this.setState({
-			categories: RootscopeStore.getConfig('categories')
+			categories: TsvSettingsStore.getConfig('categories')
 		});
   	}
   }

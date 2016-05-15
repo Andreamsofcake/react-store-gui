@@ -196,3 +196,22 @@ export function timer(callback, delay) {
     this.start();
 
 }
+
+/*
+function intersect(a, b) {
+    var t;
+    if (b.length > a.length) t = b, b = a, a = t; // indexOf to loop over shorter
+	return a
+		.filter(function(e) { return (b.indexOf(e) !== -1) }) // same as before
+		.filter(function (e, i, c) { // extra step to remove duplicates
+			return c.indexOf(e) === i;
+		});
+}
+*/
+/**
+ * computes intersect of two arrays
+ * @array a - array to intersect
+ * @array b - array to intersect
+ * @returns {array} - intersect of a and b
+ */
+export function intersect(a, b) { var t; if (b.length > a.length) t = b, b = a, a = t; return a .filter(function(e) { return (b.indexOf(e) !== -1) }) .filter(function (e, i, c) { return c.indexOf(e) === i; }); }

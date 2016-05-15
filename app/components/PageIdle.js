@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
@@ -18,12 +17,12 @@ class PageIdle extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    RootscopeActions.setConfig({
+    TsvSettingsStore.setConfig({
     	bDisplayCgryNavigation: false,
-    	bShowCredit: RootscopeStore.getCache('credit') && true
+    	bShowCredit: TsvSettingsStore.getCache('credit') && true
     });
 
-    // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
+    // this might be as simple as TsvSettingsStore.setConfig('bAbleToLogin', false)
     TsvActions.apiCall('disableLoginDevices');
 
 	var binders = [

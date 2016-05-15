@@ -9,8 +9,7 @@ import { updateCredit } from '../utils/TsvUtils'
 import * as Translate from '../../lib/Translate'
 import * as _E from 'elemental'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 
 import ComEmulator from './ComEmulator'
 import CustomerStatusDisplay from './CustomerStatusDisplay'
@@ -49,10 +48,10 @@ class App extends Component {
 			
 			if (!data.currencyFilter) { data.currencyFilter = 'currency'; }
 			
-			RootscopeActions.setCache('machineSettings', data);
+			TsvSettingsStore.setCache('machineSettings', data);
 
             if (data.MachineCount && data.MachineCount > 1) {
-                RootscopeActions.setConfig('bDualMachine', true);
+                TsvSettingsStore.setConfig('bDualMachine', true);
             }
 
 		});
@@ -72,8 +71,8 @@ class App extends Component {
 			// this skips the 0-9 keypad coil view:
 			data.txtSearchScene = 'category_search';
 
-			RootscopeActions.setCache('custommachinesettings', data);
-			RootscopeActions.setConfig({
+			TsvSettingsStore.setCache('custommachinesettings', data);
+			TsvSettingsStore.setConfig({
 				supportLanguages: data.languageSupported || 'En',
 				bDualLanguage: multipleLangs,
 				bShowLanguageFlag: multipleLangs,
@@ -91,10 +90,10 @@ class App extends Component {
 				return;
 			}
 			
-			RootscopeActions.setCache('machineList', data);
+			TsvSettingsStore.setCache('machineList', data);
 		});
 		
-		//RootscopeActions.setConfig('cgryNavTitle', Translate.translate('CategorySearch', 'NavTitle'));
+		//TsvSettingsStore.setConfig('cgryNavTitle', Translate.translate('CategorySearch', 'NavTitle'));
 
         updateCredit();
         
@@ -114,10 +113,10 @@ class App extends Component {
 	_onTsvChange(event) {
 		if (event && event.method === 'notifyTSVReady') {
 			Big.log("Got event notifyTSVReady");
-			if (RootscopeStore.getCache('currentLocation') === '/View0') {
+			if (TsvSettingsStore.getCache('currentLocation') === '/View0') {
 				Big.log("Redirect to default idle page or reload");
 
-				if (!RootscopeStore.getCache('custommachinesettings')) {
+				if (!TsvSettingsStore.getCache('custommachinesettings')) {
 					//TsvService.reloadPage();
 					window.location.reload();
 

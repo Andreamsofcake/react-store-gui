@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
@@ -21,17 +20,17 @@ class AdminInventory extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'AdminInventory');
+    //TsvSettingsStore.setSession('currentView', 'AdminInventory');
     this.state = {
       instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
       machineID: 0,
       num: "",
-      maxChars: RootscopeStore.getConfig('bDualMachine') ? 3 : 2,
+      maxChars: TsvSettingsStore.getConfig('bDualMachine') ? 3 : 2,
       inventoryGuiState: 'selectSlot',
       showKeypad: false
     }
 
-    if(RootscopeStore.getCache('machineList').length > 1){
+    if(TsvSettingsStore.getCache('machineList').length > 1){
         this.state.bShowDropDownForMachines = true;
     }
   }
@@ -39,7 +38,7 @@ class AdminInventory extends Component {
   // Add change listeners to stores
   componentDidMount() {
     TsvActions.apiCall('fetchMachineIds', (err, ids) => {
-        RootscopeActions.setCache('machineList', ids);
+        TsvSettingsStore.setCache('machineList', ids);
         if (ids && ids.length > 1) {
         	this.setState({
         		bShowDropDownForMachines: true
@@ -258,7 +257,7 @@ class AdminInventory extends Component {
   getMachineSelectOptions() {
   	startGeneralIdleTimer(this.props.location.pathname);
     var options = [];
-    RootscopeStore.getCache('machineList').forEach( MACHINE => {
+    TsvSettingsStore.getCache('machineList').forEach( MACHINE => {
       options.push({ label: 'Machine ' + MACHINE, value: MACHINE });
     })
     return options;
@@ -313,7 +312,7 @@ class AdminInventory extends Component {
 			<_E.Row>
 				<_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
 				<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}>
-					{ RootscopeStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
+					{ TsvSettingsStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
 					<p><_E.Button size="lg" id="fillMachine" onClick={this.fillMachine.bind(this)}>{Translate.translate('AdminInventory', 'FillMachine')}</_E.Button></p>
 					<h4 id="displayMachine">{Translate.translate('AdminInventory','FillAllCoilsForMachine')} { this.state.machineID + 1 }</h4>
 				</_E.Col>

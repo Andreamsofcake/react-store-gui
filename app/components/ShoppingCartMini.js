@@ -3,7 +3,7 @@ import * as _E from 'elemental'
 import { browserHistory } from 'react-router'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 
 class ShoppingCartMini extends Component {
 	
@@ -18,7 +18,7 @@ class ShoppingCartMini extends Component {
 	
 	// Add change listeners to stores
 	componentDidMount() {
-		RootscopeStore.addChangeListener(this._onRootstoreChange);
+		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		// artificial delay due to TSV race conditions
 		setTimeout(() => {
 			this.getCartData();
@@ -27,7 +27,7 @@ class ShoppingCartMini extends Component {
 
 	// Remove change listers from stores
 	componentWillUnmount() {
-		RootscopeStore.removeChangeListener(this._onRootstoreChange);
+		TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
 	}
 
 	_onRootstoreChange(event) {
@@ -39,7 +39,7 @@ class ShoppingCartMini extends Component {
 		returnData = returnData || false;
 
 		var qty = 0
-			, cart = RootscopeStore.getCache('shoppingCart.detail')
+			, cart = TsvSettingsStore.getCache('shoppingCart.detail')
 			;
 
 		if (cart) {

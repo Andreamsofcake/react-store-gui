@@ -1,5 +1,6 @@
-import RootscopeStore from '../stores/RootscopeStore'
-import RootscopeActions from '../actions/RootscopeActions'
+//import RootscopeStore from '../stores/RootscopeStore'
+//import RootscopeActions from '../actions/RootscopeActions'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import TsvActions from '../actions/TsvActions'
 import { forceBoolean, moneyformat, timer } from './index'
 import * as Translate from '../../lib/Translate'
@@ -29,7 +30,7 @@ export function currencyFilter(amt, type) {
 	if (!amt || isNaN(amt)) {
 		return 'error';
 	}
-	type = type || RootscopeStore.getConfig('currencyType'); //'currency';
+	type = type || TsvSettingsStore.getConfig('currencyType'); //'currency';
 	
 	switch (type) {
 		case 'currency':
@@ -70,7 +71,7 @@ export function currencyFilter(amt, type) {
 }
 
 export function registerKF() {
-	var app_config = RootscopeStore.getAppConfig();
+	var app_config = TsvSettingsStore.getAppConfig();
 	//TsvActions.apiCall('registerComponent',"KioskFramework", "1.0.0.3", "2015-12-10");
 	TsvActions.apiCall('registerComponent', app_config.name, app_config.version, app_config.releaseDate);
 }
@@ -79,7 +80,7 @@ export function setVendingInProcessFlag(bool) {
 	Big.log("setVendingInProcessFlag()");
 	bool = typeof bool === 'undefined' ? true : bool;
 	bool = forceBoolean(bool);
-	RootscopeActions.setSession('bVendingInProcess', bool);
+	TsvSettingsStore.setSession('bVendingInProcess', bool);
 }
 
 export function clearVendingInProcessFlag() {
@@ -87,7 +88,7 @@ export function clearVendingInProcessFlag() {
 }
 
 export function emptyCart() {
-	RootscopeActions.setCache('shoppingCart.detail', []);
+	TsvSettingsStore.setCache('shoppingCart.detail', []);
 	TsvActions.apiCall('emptyCart');
 }
 
@@ -97,7 +98,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 	resetSelectedItem();
 
 	TsvActions.apiCall('fetchShoppingCart2', (err, cart) => {
-		RootscopeActions.setCache('shoppingCart', cart);
+		TsvSettingsStore.setCache('shoppingCart', cart);
 
 		switch(processStatus){
 			case "VEND_SUCCESS":
@@ -115,14 +116,14 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 					//pay out
 					/*
 					// Kent is not sure about this? if we are "done" and vend error happens, why turn the payment device back on?
-					if (RootscopeStore.getCache('currentLocation') == "/CashVending"){
+					if (TsvSettingsStore.getCache('currentLocation') == "/CashVending"){
 					if (currentPageView == 'CashVending') {
 						TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
 					}
 					*/
-					RootscopeActions.setSession({
+					TsvSettingsStore.setSession({
 						vendErrorMsg1: Translate.translate("Vending", "PartialVendFailure"),
-						vendErrorMsg2: Translate.translate("Vending", "YouHaveBeenCharged") + currencyFilter( RootscopeStore.getSession('vendSettleTotal') )
+						vendErrorMsg2: Translate.translate("Vending", "YouHaveBeenCharged") + currencyFilter( TsvSettingsStore.getSession('vendSettleTotal') )
 					});
 					browserHistory.push("/VendError");
 				}
@@ -130,7 +131,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 
 			case "VEND_FAILURE":
 				Big.log("Got event vendResponse(): "+processStatus);
-				RootscopeActions.setSession({
+				TsvSettingsStore.setSession({
 					vendErrorMsg1: Translate.translate("Vending", "TotalVendFailure"),
 					vendErrorMsg2: Translate.translate("Vending", "YouWereNotCharged")
 				});
@@ -139,7 +140,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 
 			case "EXCEPTION":
 				Big.log("Got event vendResponse(): "+processStatus);
-				RootscopeActions.setSession({
+				TsvSettingsStore.setSession({
 					vendErrorMsg1: Translate.translate("Vending", "TotalVendFailure"),
 					vendErrorMsg2: Translate.translate("Vending", "YouWereNotCharged")
 				});
@@ -158,9 +159,9 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 }
 
 export function isFullSuccessVendResult() {
-	RootscopeActions.setSession('vendSettleTotal', RootscopeStore.getCache('shoppingCart.summary.netTotalPrice') );
-	var itemsVendFail = RootscopeStore.getCache('shoppingCart.summary.vendFailCount')
-		, itemsVendSuccess = RootscopeStore.getCache('shoppingCart.summary.vendItemCount') - itemsVendFail
+	TsvSettingsStore.setSession('vendSettleTotal', TsvSettingsStore.getCache('shoppingCart.summary.netTotalPrice') );
+	var itemsVendFail = TsvSettingsStore.getCache('shoppingCart.summary.vendFailCount')
+		, itemsVendSuccess = TsvSettingsStore.getCache('shoppingCart.summary.vendItemCount') - itemsVendFail
 		;
 
 	if (itemsVendFail > 0) {
@@ -173,17 +174,17 @@ export function isFullSuccessVendResult() {
 
 export function checkBalance() {
 	//Big.log("checkBalance()!!!!!");
-	var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice')
-		, creditBalance = RootscopeStore.getSession('creditBalance')
-		, sc_detail = RootscopeStore.getCache('shoppingCart.detail') || []
+	var total = TsvSettingsStore.getCache('shoppingCart.summary.TotalPrice')
+		, creditBalance = TsvSettingsStore.getSession('creditBalance')
+		, sc_detail = TsvSettingsStore.getCache('shoppingCart.detail') || []
 		;
 
 	if ( creditBalance * 100 >= total * 100 && sc_detail.length > 0 ) {
 		TsvActions.apiCall('disablePaymentDevice');
-		var v_i_p = RootscopeStore.getSession('bVendingInProcess');
+		var v_i_p = TsvSettingsStore.getSession('bVendingInProcess');
 		if (!v_i_p) {
 			//Big.log("Inserted Enough Cash should vend...!!!!!");
-			//RootscopeActions.setSession('cashMsg', "Vending...");
+			//TsvSettingsStore.setSession('cashMsg', "Vending...");
 			setVendingInProcessFlag(true);
 			//Big.log("tsv.session.bVendingInProcess: " + v_i_p);
 			TsvActions.apiCall('disablePaymentDevice');
@@ -193,9 +194,9 @@ export function checkBalance() {
 }
 
 export function autoCheckout() {
-	var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice')
-		, creditBalance = RootscopeStore.getSession('creditBalance')
-		, cartItems = RootscopeStore.getCache('shoppingCart.detail') || []
+	var total = TsvSettingsStore.getCache('shoppingCart.summary.TotalPrice')
+		, creditBalance = TsvSettingsStore.getSession('creditBalance')
+		, cartItems = TsvSettingsStore.getCache('shoppingCart.detail') || []
 		, itemsInCart = cartItems.length;
 
 	Big.log("autoCheckout() totalPrice = " + total + " credit = " + creditBalance + " items = " + itemsInCart);
@@ -205,9 +206,9 @@ export function autoCheckout() {
 		TsvActions.apiCall('disablePaymentDevice');
 
 		Big.log("check vend in process?");
-		if (!RootscopeStore.getSession('bVendingInProcess')) {
+		if (!TsvSettingsStore.getSession('bVendingInProcess')) {
 			//Big.log("Calling gotoPayment on rootScope");
-			//RootscopeActions.gotoPayment();
+			//TsvSettingsStore.gotoPayment();
 			// it's in here now....
 			gotoPayment();
 		}
@@ -245,7 +246,7 @@ export function cardTransaction(level) {
 			msg = Translate.translate("CardVending", "CardUnknownErrorMessage");
 			break;
 	}
-	RootscopeActions.setSession('cardMsg', msg);
+	TsvSettingsStore.setSession('cardMsg', msg);
 	return msg;
 }
 
@@ -256,20 +257,20 @@ export function onGeneralTimeout() {
 	
 	let gotoDef = false;
 
-	if (RootscopeStore.getConfig('bDualLanguage')) {
-		var dfltLang = RootscopeStore.getCache('custommachinesettings.languageDefaulted', "En");
+	if (TsvSettingsStore.getConfig('bDualLanguage')) {
+		var dfltLang = TsvSettingsStore.getCache('custommachinesettings.languageDefaulted', "En");
 
 		//Big.warn('old code calling for DOM manipulation, no good.... who called this?');
 		//$('.showflag').removeClass('showflag').addClass('hideflag');
 		//document.getElementById(dfltLang).className = "showflag";
-		RootscopeActions.setConfig('selectedLanguage', dfltLang);
+		TsvSettingsStore.setConfig('selectedLanguage', dfltLang);
 		Translate.selectLanguage(dfltLang);
 	}
 
-	//Big.log("RootscopeStore.getCache('currentLocation'): "+RootscopeStore.getCache('currentLocation'));
+	//Big.log("TsvSettingsStore.getCache('currentLocation'): "+TsvSettingsStore.getCache('currentLocation'));
 	Big.log('currentPageView: '+currentPageView);
 
-	//switch (RootscopeStore.getCache('currentLocation')) {
+	//switch (TsvSettingsStore.getCache('currentLocation')) {
 	switch (currentPageView) {
 
 		case "/PageIdle": // this is the "idle" page... should be here instead of storefront eventually, but for now we have no idle graphics
@@ -307,7 +308,7 @@ export function onGeneralTimeout() {
 			break;
 
 		case "/Admin/CheckFaults":
-			if(!RootscopeStore.getSession('bRunningClearFaults')){
+			if(!TsvSettingsStore.getSession('bRunningClearFaults')){
 				//gotoDefaultIdlePage(); //$location, $rootScope);
 				gotoDef = true;
 				Big.log("Idle Timeout from /Admin/CheckFaults not running ClearFaults");
@@ -315,7 +316,7 @@ export function onGeneralTimeout() {
 			break;
 
 		case "/Admin/AutoMap":
-			if(!RootscopeStore.getSession('bRunningAutoMap')){
+			if(!TsvSettingsStore.getSession('bRunningAutoMap')){
 				//gotoDefaultIdlePage(); //$location, $rootScope);
 				gotoDef = true;
 				Big.log("Idle Timeout from /Admin/AutoMap not running AutoMap");
@@ -323,7 +324,7 @@ export function onGeneralTimeout() {
 			break;
 
 		default:
-			//Big.log("Idle Timeout from "+RootscopeStore.getCache('currentLocation'));
+			//Big.log("Idle Timeout from "+TsvSettingsStore.getCache('currentLocation'));
 			Big.log("Idle Timeout from " + currentPageView);
 			emptyCart();
 			//gotoDefaultIdlePage(); //$location, $rootScope);
@@ -338,15 +339,15 @@ export function onGeneralTimeout() {
 }
 
 export function thankYouTimer() {
-    //var timer = setTimeout( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.thankyouPageTimeout' ) );
-    var T = new timer( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.thankyouPageTimeout', 10000) );
+    //var timer = setTimeout( gotoDefaultIdlePage, TsvSettingsStore.getCache('custommachinesettings.thankyouPageTimeout' ) );
+    var T = new timer( gotoDefaultIdlePage, TsvSettingsStore.getCache('custommachinesettings.thankyouPageTimeout', 10000) );
     T.self(T);
     setTimer('thankyouTimer', T);
 }
 
 export function vendErrorTimer() {
-    //var timer = setTimeout( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.VendErrorTimeout', 10000) );
-    var T = new timer( gotoDefaultIdlePage, RootscopeStore.getCache('custommachinesettings.VendErrorTimeout', 10000) );
+    //var timer = setTimeout( gotoDefaultIdlePage, TsvSettingsStore.getCache('custommachinesettings.VendErrorTimeout', 10000) );
+    var T = new timer( gotoDefaultIdlePage, TsvSettingsStore.getCache('custommachinesettings.VendErrorTimeout', 10000) );
     T.self(T);
     setTimer('vendErrorTimer', T);
 }
@@ -364,11 +365,11 @@ export function startGeneralIdleTimer(fromPage) {
 	/*
 	var timer = setTimeout(() => {
 		//Big.log("Hi Ping generalIdleTimer timeout...");
-		Big.log("onGeneralIdleTimeout() @" + RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000));
+		Big.log("onGeneralIdleTimeout() @" + TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000));
 		onGeneralTimeout();
-	}, RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
+	}, TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
 	*/
-    var T = new timer( onGeneralTimeout, RootscopeStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
+    var T = new timer( onGeneralTimeout, TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
     T.self(T);
 	setTimer('generalIdleTimer', T);
 }
@@ -399,7 +400,7 @@ function dropTimer(label) {
 }
 
 export function isCartEmpty(cb) {
-	var cart = RootscopeStore.getCache('shoppingCart');
+	var cart = TsvSettingsStore.getCache('shoppingCart');
 	if (!cart) {
 
 		Big.warn('this may be out of sync, as we have to check with the TsvActions.apiCall(fetchShoppingCart2) thing for data');
@@ -409,7 +410,7 @@ export function isCartEmpty(cb) {
 				Big.warn(err);
 				cb(null, false);
 			}
-			RootscopeActions.setCache('shoppingCart', data);
+			TsvSettingsStore.setCache('shoppingCart', data);
 			cb(null, !(data.detail && data.detail.length));
 		})
 
@@ -425,7 +426,7 @@ var timesIdleCalled = 0;
 export function gotoDefaultIdlePage() { //$location, $rootScope){
 
 	// can't go to idle page until we get settings!
-	if (RootscopeStore.getCache('custommachinesettings', undefined) === undefined) {
+	if (TsvSettingsStore.getCache('custommachinesettings', undefined) === undefined) {
 		window.location.reload();
 		return;
 	}
@@ -433,12 +434,12 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 	function activated(setActivation) {
 		if (setActivation) {
 			// no need to constantly poke this thing:
-			RootscopeActions.setConfig('activated', true);
+			TsvSettingsStore.setConfig('activated', true);
 		}
 
 		resetSelectedItem();
 
-		if (RootscopeStore.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
+		if (TsvSettingsStore.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
 			browserHistory.push("/PageIdle");
 			return;
 
@@ -449,7 +450,7 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 		}
 	}
 	
-	if (RootscopeStore.getConfig('activated')) {
+	if (TsvSettingsStore.getConfig('activated')) {
 		activated(false)
 	} else {
 	
@@ -476,7 +477,7 @@ export function idleClicked() {
 
 export function resetSelectedItem() {
 	//Big.log("resetSelectedItem()!");
-	RootscopeActions.setSession({
+	TsvSettingsStore.setSession({
 		bRunningClearFaults: false,
 		bRunningAutoMap: false,
 		cashMsg: Translate.translate("CashVending", "HintMessageInsertCash"),
@@ -513,14 +514,14 @@ export function killTimers(timerList) {
 					dropTimer(TIMER);
 				}
 			});
-			//RootscopeActions.setTimers(timerSet);
+			//TsvSettingsStore.setTimers(timerSet);
 		}
 	}
 
 }
 
 export function startPaymentTimer( idlePage ){
-	var timeoutLength = RootscopeStore.getCache('custommachinesettings.paymentPageTimeout');
+	var timeoutLength = TsvSettingsStore.getCache('custommachinesettings.paymentPageTimeout');
 /*
 	// allow override to /View1
 	idlePage = idlePage || 'idle';
@@ -530,7 +531,7 @@ export function startPaymentTimer( idlePage ){
 	idlePage = 'idle';
 */
 	if (!timeoutLength) {
-		Big.log( RootscopeStore.getCache('custommachinesettings') );
+		Big.log( TsvSettingsStore.getCache('custommachinesettings') );
 		Big.throw('startPaymentTimer: I need a timeoutLength to start a timeout! none found.');
 	}
 	
@@ -586,21 +587,21 @@ stuff below here are old "rootscope" actions mostly.
 
 // this is never called anywhere:
 export function getCreditMessage() {
-	if (RootscopeStore.getConfig('bCashless')) {
-		return Translate.translate("BalanceLabel") + ":" + '\n' + currencyFilter( RootscopeStore.getConfig('fundsAvailable') );
+	if (TsvSettingsStore.getConfig('bCashless')) {
+		return Translate.translate("BalanceLabel") + ":" + '\n' + currencyFilter( TsvSettingsStore.getConfig('fundsAvailable') );
 	} else {
-		return Translate.translate("CreditLabel") + ":"  + '\n'+  currencyFilter( RootscopeStore.getConfig('credit') );
+		return Translate.translate("CreditLabel") + ":"  + '\n'+  currencyFilter( TsvSettingsStore.getConfig('credit') );
 	}
 }
 
 // this is never called anywhere:
 export function getShowCredit() {
-	if (RootscopeStore.getConfig('bCashless')) {
-		var fundsA = RootscopeStore.getConfig('fundsAvailable');
-		return typeof fundsA !== 'undefined' && fundsA !== 0 && RootscopeStore.getConfig('bShowCredit');
+	if (TsvSettingsStore.getConfig('bCashless')) {
+		var fundsA = TsvSettingsStore.getConfig('fundsAvailable');
+		return typeof fundsA !== 'undefined' && fundsA !== 0 && TsvSettingsStore.getConfig('bShowCredit');
 	} else {
-		var credit = RootscopeStore.getConfig('credit');
-		return typeof credit !== 'undefined' && credit !== 0 && RootscopeStore.getConfig('bShowCredit');
+		var credit = TsvSettingsStore.getConfig('credit');
+		return typeof credit !== 'undefined' && credit !== 0 && TsvSettingsStore.getConfig('bShowCredit');
 	}
 }
 
@@ -610,9 +611,9 @@ export function getShowCredit() {
 // this function was never called in the old code.... looks suspect as well.
 // if you try to use, test heavily and study the logic
 export function checkout() {
-	var bHasShoppingCart = RootscopeStore.getCache('custommachinesettings.bHasShoppingCart', true)
-		, fundsAvailable = RootscopeStore.getConfig('fundsAvailable')
-		, summary = RootscopeStore.getConfig('summary')
+	var bHasShoppingCart = TsvSettingsStore.getCache('custommachinesettings.bHasShoppingCart', true)
+		, fundsAvailable = TsvSettingsStore.getConfig('fundsAvailable')
+		, summary = TsvSettingsStore.getConfig('summary')
 		;
 
 	if (fundsAvailable >= summary.TotalPrice) {
@@ -620,7 +621,7 @@ export function checkout() {
 
 	} else {
 		//Big.log("bHasShoppingCart:" + TsvService .bCustomSetting('bHasShoppingCart', "true"));
-		if (bHasShoppingCart && RootscopeStore.getCache('currentLocation') != "/ShoppingCart"){
+		if (bHasShoppingCart && TsvSettingsStore.getCache('currentLocation') != "/ShoppingCart"){
 			browserHistory.push("/ShoppingCart");
 
 		} else {
@@ -629,7 +630,7 @@ export function checkout() {
 				return browserHistory.push("/ShoppingCart");
 			}
 
-			if (RootscopeStore.getCache('custommachinesettings.bAskForReceipt', false)) {
+			if (TsvSettingsStore.getCache('custommachinesettings.bAskForReceipt', false)) {
 				this.setConfig('keyboardView', "Enter_Email");
 				browserHistory.push("/Keyboard");
 			} else {
@@ -643,19 +644,19 @@ export function checkout() {
 export function gotoPayment(){
 	//TsvActions.apiCall("gotoPayment() called");
 	
-	var TotalPrice = RootscopeStore.getCache('shoppingCart.summary.TotalPrice', 0);
+	var TotalPrice = TsvSettingsStore.getCache('shoppingCart.summary.TotalPrice', 0);
 
 	if (TotalPrice != 0
-		&& RootscopeStore.getCache('custommachinesettings.HasCreditCard', true)
-		&& RootscopeStore.getCache('custommachinesettings.HasBillCoin', false)) {
+		&& TsvSettingsStore.getCache('custommachinesettings.HasCreditCard', true)
+		&& TsvSettingsStore.getCache('custommachinesettings.HasBillCoin', false)) {
 		browserHistory.push("/ChooseCashCard");
 
 	} else {
 
-		if (RootscopeStore.getCache('custommachinesettings.HasBillCoin', false)){
+		if (TsvSettingsStore.getCache('custommachinesettings.HasBillCoin', false)){
 			browserHistory.push("/CashVending");
 
-		} else if (RootscopeStore.getCache('custommachinesettings.HasCreditCard', true)) {
+		} else if (TsvSettingsStore.getCache('custommachinesettings.HasCreditCard', true)) {
 			browserHistory.push("/CardVending");
 
 		} else if (TotalPrice == 0) {
@@ -665,13 +666,13 @@ export function gotoPayment(){
 }
 
 export function updateCredit() {
-	var discount = RootscopeStore.getSession('discount', 0)
-		, creditBalance = RootscopeStore.getSession('creditBalance', 0)
+	var discount = TsvSettingsStore.getSession('discount', 0)
+		, creditBalance = TsvSettingsStore.getSession('creditBalance', 0)
 		;
-	RootscopeActions.setConfig('credit', discount + creditBalance);
+	TsvSettingsStore.setConfig('credit', discount + creditBalance);
 }
 
 export function coupon() {
-	RootscopeStore.setConfig('keyboardView', "Enter_Coupon");
+	TsvSettingsStore.setConfig('keyboardView', "Enter_Coupon");
 	browserHistory.push("/Keyboard");
 }

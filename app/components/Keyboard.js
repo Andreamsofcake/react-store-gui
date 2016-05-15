@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 
 import TsvActions from '../actions/TsvActions'
@@ -17,16 +16,16 @@ class Keyboard extends Component {
     // MUST call super() before any this.*
     super(props, context);
     
-    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
-    //RootscopeActions.setSession('currentView', 'Keyboard');
+    TsvSettingsStore.setConfig('bDisplayCgryNavigation', false);
+    //TsvSettingsStore.setSession('currentView', 'Keyboard');
     
     // original code does both of these, not sure why:
     updateCredit();
-    RootscopeActions.setConfig('credit', RootscopeStore.getSession('creditBalance') );
+    TsvSettingsStore.setConfig('credit', TsvSettingsStore.getSession('creditBalance') );
 
     keyboardTitle = "EnterEmailTitle";
 
-    //RootscopeActions.setConfig('bShowCredit', RootscopeStore.getCache('credit') && true);
+    //TsvSettingsStore.setConfig('bShowCredit', TsvSettingsStore.getCache('credit') && true);
     
     this.state = {
 		bShowBtns: true,
@@ -68,7 +67,7 @@ class Keyboard extends Component {
 		if (this[B]) { this[B] = this[B].bind(this); }
 	});
     
-    // this might be as simple as RootscopeActions.setConfig('bAbleToLogin', false)
+    // this might be as simple as TsvSettingsStore.setConfig('bAbleToLogin', false)
     //TsvActions.apiCall('disableLoginDevices');
   }
   
@@ -88,15 +87,15 @@ class Keyboard extends Component {
   }
 
   no() {
-  	RootscopeActions.gotoPayment();
+  	TsvSettingsStore.gotoPayment();
   }
 
   back() {
-  	RootscopeActions.removeKeyboard(); // probably is redundant, as we'll just close this component
-  	RootscopeActions.gotoPayment();
+  	TsvSettingsStore.removeKeyboard(); // probably is redundant, as we'll just close this component
+  	TsvSettingsStore.gotoPayment();
 
-	if (RootscopeStore.getCache('custommachinesettings.bHasShoppingCart') === true
-		&& RootscopeStore.getCache('currentLocation') != "/ShoppingCart") {
+	if (TsvSettingsStore.getCache('custommachinesettings.bHasShoppingCart') === true
+		&& TsvSettingsStore.getCache('currentLocation') != "/ShoppingCart") {
 		browserHistory.push('/ShoppingCart');
 
 	} else {
@@ -108,7 +107,7 @@ class Keyboard extends Component {
   enter() {
 	Big.log("entered! (enter key)");
 
-	var VIEW = RootscopeStore.getConfig('keyboardView');
+	var VIEW = TsvSettingsStore.getConfig('keyboardView');
 	switch(VIEW) {
 
 		case "Enter_Email":

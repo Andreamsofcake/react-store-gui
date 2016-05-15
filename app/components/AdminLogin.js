@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
@@ -23,7 +22,7 @@ class AdminLogin extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'AdminLogin');
+    //TsvSettingsStore.setSession('currentView', 'AdminLogin');
     TsvActions.apiCall('disableLoginDevices');
     emptyCart();
     this.state = {
@@ -35,7 +34,7 @@ class AdminLogin extends Component {
 
   enter() {
   	startGeneralIdleTimer(this.props.location.pathname);
-  	var localPass = RootscopeStore.getCache('machineSettings.AdminPassword')
+  	var localPass = TsvSettingsStore.getCache('machineSettings.AdminPassword')
   		, result = 'VALID'
   		;
   	  	

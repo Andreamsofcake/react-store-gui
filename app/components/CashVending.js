@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
@@ -34,30 +33,30 @@ class CashVending extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //RootscopeActions.setSession('currentView', 'CashVending');
-    //RootscopeActions.setCache('currentLocation', '/CashVending');
-    RootscopeActions.setConfig('bDisplayCgryNavigation', false);
+    //TsvSettingsStore.setSession('currentView', 'CashVending');
+    //TsvSettingsStore.setCache('currentLocation', '/CashVending');
+    TsvSettingsStore.setConfig('bDisplayCgryNavigation', false);
     updateCredit();
     TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
 
     this.state = {
-      insertedAmount: RootscopeStore.getSession('creditBalance'),
-      summary: RootscopeStore.getCache('shoppingCart.summary'),
+      insertedAmount: TsvSettingsStore.getSession('creditBalance'),
+      summary: TsvSettingsStore.getCache('shoppingCart.summary'),
       hintMsg: Translate.translate('CashVending', 'HintMessageInsertCash'),
       // only in cash.js:
-      //salesTaxAmount: RootscopeStore.getCache('shoppingCart.summary.salesTaxAmount'),
+      //salesTaxAmount: TsvSettingsStore.getCache('shoppingCart.summary.salesTaxAmount'),
       showCancelBtnCash: true,
-      cart: RootscopeStore.getCache('shoppingCart.detail'),
+      cart: TsvSettingsStore.getCache('shoppingCart.detail'),
       // only in cash.js:
-      //item: RootscopeStore.getCache('shoppingCart.detail')[0]
+      //item: TsvSettingsStore.getCache('shoppingCart.detail')[0]
     };
 
     resetPaymentTimer();
 
     // KENT note: this session var I believe is not used in Shopping Cart regime, and checkBalance only returns a boolean
-    RootscopeActions.setSession('bVendedOldCredit', this.checkBalance.bind(this));
+    TsvSettingsStore.setSession('bVendedOldCredit', this.checkBalance.bind(this));
 
-    if (RootscopeStore.getSession('bVendingInProcess')) {
+    if (TsvSettingsStore.getSession('bVendingInProcess')) {
 
         stopPaymentTimer();
 
@@ -77,7 +76,7 @@ class CashVending extends Component {
 
   cancel(){
   	// only in cash.js:
-    //RootscopeActions.setSession('insertedAmount', 0);
+    //TsvSettingsStore.setSession('insertedAmount', 0);
     TsvActions.apiCall('disablePaymentDevice');
     killTimers('paymentTimer');
     emptyCart();
@@ -87,16 +86,16 @@ class CashVending extends Component {
   }
 
   checkBalance(calculatedBalance){
-	  var total = RootscopeStore.getCache('shoppingCart.summary.TotalPrice')
-	  	, cart_detail = RootscopeStore.getCache('shoppingCart.detail') || []
-	  	, balance = calculatedBalance || RootscopeStore.getSession('creditBalance')
+	  var total = TsvSettingsStore.getCache('shoppingCart.summary.TotalPrice')
+	  	, cart_detail = TsvSettingsStore.getCache('shoppingCart.detail') || []
+	  	, balance = calculatedBalance || TsvSettingsStore.getSession('creditBalance')
 	  	;
 	  
 	  Big.log('checkBalance, 3 things:');
 	  Big.log([total, cart_detail, balance]);
 
 	  // cash.js logic:
-	  //if ((this.insertedAmount * 100) >= (total * 100) && RootscopeStore.getCache('shoppingCart.detail', []).length > 0){
+	  //if ((this.insertedAmount * 100) >= (total * 100) && TsvSettingsStore.getCache('shoppingCart.detail', []).length > 0){
 	  if (balance >= total && cart_detail.length > 0) {
 	  	
 		  Big.log('customer has inserted enough money!');
@@ -116,10 +115,10 @@ class CashVending extends Component {
 
 		  TsvActions.apiCall('disablePaymentDevice', () => {
 			  Big.log('... payment device disabled');
-			  if(!RootscopeStore.getSession('bVendingInProcess')){
+			  if(!TsvSettingsStore.getSession('bVendingInProcess')){
 				  Big.log('... vending was not in process, so vend away...!!!!!');
 				  // only in cash.js:
-				  RootscopeActions.setSession('bVendingInProcess', true);
+				  TsvSettingsStore.setSession('bVendingInProcess', true);
 				  TsvActions.apiCall('startVend');
 				  Big.log('... start vend has been called');
 				  this.setState({
@@ -132,7 +131,7 @@ class CashVending extends Component {
 				  Big.log('... vending WAS IN process, error maybe?');
 			  }
 		  });
-		  if (!RootscopeStore.getSession('bVendingInProcess')) {
+		  if (!TsvSettingsStore.getSession('bVendingInProcess')) {
 			  Big.warn('checkBalance() returning true');
 			  return true;
 		  }
@@ -148,23 +147,23 @@ class CashVending extends Component {
 	componentDidMount() {
 		startGeneralIdleTimer(this.props.location.pathname);
 		TsvStore.addChangeListener(this._onTsvChange);
-		RootscopeStore.addChangeListener(this._onRootstoreChange);
+		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		// let's check the balance at module load:
 		this.checkBalance();
 		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 			if (err) Big.throw(err);
-			RootscopeActions.setCache('shoppingCart', data);
+			TsvSettingsStore.setCache('shoppingCart', data);
 		});
 	}
 
 	// Remove change listers from stores
 	componentWillUnmount() {
 		TsvStore.removeChangeListener(this._onTsvChange);
-		RootscopeStore.removeChangeListener(this._onRootstoreChange);
+		TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
 	}
 
   _onRootstoreChange() {
-    var data = RootscopeStore.getCache('shoppingCart');
+    var data = TsvSettingsStore.getCache('shoppingCart');
 /*
 	if (this.state.loadedCartOnce && (!data.detail || !data.detail.length)) {
 	  	//gotoDefaultIdlePage();
@@ -197,13 +196,13 @@ class CashVending extends Component {
 						Big.warn('hmmmm maybe we need to fix the creditBalance calc? mine:['+(balance/100.00)+'], other:['+(this.state.summary.TotalPrice - (balance/100.00))+']' + "\n\n ... but maybe it gets taken care of local method 'checkBalance'");
 					}
 					// only in cash.js:
-					//RootscopeActions.setSession('creditBalance', this.state.summary.TotalPrice - balance/100.00);
+					//TsvSettingsStore.setSession('creditBalance', this.state.summary.TotalPrice - balance/100.00);
 
 					var state = {
 						insertedAmount: balance/100.00
 					};
 
-					if (!RootscopeStore.getSession('bVendingInProcess')) {
+					if (!TsvSettingsStore.getSession('bVendingInProcess')) {
 						state.hintMsg = Translate.translate('CashVending','HintMessageVending');
 						state.showSpinner = true;
 						state.showCancelBtnCash = false;
@@ -216,14 +215,14 @@ class CashVending extends Component {
 					// too many RootscopeAction => Store => dispatches
 					setTimeout(() => {
 						resetPaymentTimer();
-						RootscopeActions.setSession('creditBalance', state.insertedAmount);
+						TsvSettingsStore.setSession('creditBalance', state.insertedAmount);
 						this.checkBalance(state.insertedAmount);
 					}, 150);
 
 					break;
 
 				case 'cardTransactionRespose':
-					if(!RootscopeStore.getSession('bVendingInProcess')) {
+					if(!TsvSettingsStore.getSession('bVendingInProcess')) {
 						cardTransaction(event.data[0]);
 						browserHistory.push("/CardVending");
 					}

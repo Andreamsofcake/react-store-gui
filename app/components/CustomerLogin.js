@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
-import RootscopeActions from '../actions/RootscopeActions'
-import RootscopeStore from '../stores/RootscopeStore'
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 
 import CL_Actions from '../actions/CustomerLoginActions'
 import CL_Store from '../stores/CustomerStore'
@@ -30,7 +29,7 @@ class CustomerLogin extends Component {
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-    //RootscopeActions.setSession('currentView', 'CustomerLogin');
+    //TsvSettingsStore.setSession('currentView', 'CustomerLogin');
     this.state = {
     	params: this.props.params,
     	loginToken: null
