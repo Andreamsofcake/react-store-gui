@@ -1,9 +1,12 @@
 //import SDK from 'sdk-core-lib'
 import RQ from 'request'
 import * as CANDY from './CannedRouteResponses/TsvProxy'
-var debug = require('debug')('vending-app-gui:tsv-proxy');
+var debug = require('debug')('vending-app-gui:tsv-proxy')
 
-var isPingingMultievent = false
+	// targeted response enhancement:
+	, cart_actions = ['addToCartByProductID','addToCartByCoil','removeFromCartByCoilNo']
+
+	, isPingingMultievent = false
 	, multieventErrors = 0
 	, maxMultieventErrors = 10
 	, USE_HARDWARE_API = process.env.USE_HARDWARE_API || false
@@ -79,6 +82,25 @@ module.exports = {
 
 }
 
+function getShoppingCart(cb) {
+	RQ.post({
+		url: 'http://localhost:8085/tsv/flashapi',
+		body: ['fetchShoppingCart2'],
+		json: true
+	}, function(err, response, body) {
+		if (err) {
+			debug('FLASHAPI Proxy error:');
+			debug(err);
+			// DEV NOTE:: You cannot call reply().code() on an error, error will already be set?
+			cb( err );
+		}
+		debug('get Shopping Cart ..... FLASHAPI Proxy ok/response:');
+		debug(body);
+		
+		cb(null, body);
+	});
+}
+
 function runTsvFlashApi(request, reply) {
 	
 	var payload = CANDY.getPayload(request, reply);
@@ -96,7 +118,22 @@ function runTsvFlashApi(request, reply) {
 		}
 		debug('FLASHAPI Proxy ok/response:');
 		debug(body);
-		return reply( body ).code(200);
+		
+		// add the cart data to the return
+		if (cart_actions.indexOf(payload[0])) {
+			getShoppingCart((err, cart) => {
+				if (err) {
+					debug('error getting shopping cart for enhanced reply format...');
+				} else {
+					if (cart) {
+						body.shoppingCart = cart;
+					}
+				}
+				return reply( body ).code(200);
+			});
+		} else {
+			return reply( body ).code(200);
+		}
 	});
 }
 

@@ -36,3 +36,5 @@ local_config.js
 # webpack thing
 stats.generated.json
 simulatorMatch*
+.activate.json
+.registration.json

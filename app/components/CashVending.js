@@ -174,7 +174,8 @@ class CashVending extends Component {
 	  this.setState({
 		cart: data.detail,
 		summary: data.summary,
-		loadedCartOnce: true
+		loadedCartOnce: true,
+		//vendingItem: data.detail && data.detail.length ? data.detail[0] : null
 	  })
 	//}
 
@@ -267,7 +268,7 @@ class CashVending extends Component {
   	}
     return (
       <_E.Row>
-		<_E.Col sm="100%" lg="100%">
+		<_E.Col>
 		
 		<h2>Insert cash to complete your purchase</h2>
 
@@ -287,20 +288,24 @@ class CashVending extends Component {
 
         { this.hintMsg ? (<p id="hint">{this.hintMsg}</p>) : null }
 
-		<_E.Col sm="1/2">
-			<p style={{fontSize:'1.5em'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} Total: <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
+		<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
+		<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
+			<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} Total: <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
 		</_E.Col>
-		<_E.Col sm="1/2">
-			<p style={{fontSize:'1.5em'}}>{Translate.translate('CashVending', 'InsertedAmountLabel')} <strong>${ this.state.insertedAmount ? currencyFilter(this.state.insertedAmount) : '0.00' }</strong></p>
+		<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
+			<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'InsertedAmountLabel')} <strong>${ this.state.insertedAmount ? currencyFilter(this.state.insertedAmount) : '0.00' }</strong></p>
 		</_E.Col>
+		<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
 
 		{ this.state.showCancelBtnCash ? (
-		<div>
+		<_E.Col>
+		<_E.Row>
 			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
 			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
-			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">{this.renderCancelBtnCash()}</_E.Col>
+			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="danger" size="lg" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />Cancel Transaction</_E.Button></_E.Col>
 			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
-		</div>
+		</_E.Row>
+		</_E.Col>
 		) : null }
 		
 		{this.renderVendingItem()}
@@ -319,21 +324,15 @@ class CashVending extends Component {
   		return (
 			<_E.Col>
 				<h1 style={{textAlign: 'center'}}>Vending item:<br /><strong>{this.state.vendingItem.productName}</strong></h1>
+				<div style={{textAlign: 'center'}}>
+				<_E.Spinner size="lg" type="primary" />
 				{this.state.vendingItem.imagePath ? (
-					<img src={this.state.vendingItem.imagePath} />
-				) : null }
-				<_E.Spinner size="md" type="inverted" />
+					<img src={this.state.vendingItem.imagePath} style={{maxWidth:'35%',display:'block', margin: '1em auto'}} />
+				) : null }</div>
 			</_E.Col>
   		);
   	}
   	return null;
-  }
-
-  renderCancelBtnCash(){
-    // <img src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
-    return(
-      <_E.Button type="warning" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />Cancel Transaction</_E.Button>
-    )
   }
 
   renderSpinner(){

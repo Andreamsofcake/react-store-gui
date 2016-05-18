@@ -7,6 +7,7 @@ import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 import ShoppingCartItem from './ShoppingCartItem'
 
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
@@ -26,10 +27,9 @@ class ShoppingCart extends Component {
     {/* MUST call super() before any this.*/}
     super(props, context);
 
+    // bDisplayCgryNavigation2 is not used anywhere that I can see:
     //TsvSettingsStore.setConfig("bDisplayCgryNavigation2", TsvSettingsStore.getConfig('bDisplayCgryNavigation'));
     updateCredit();
-    //TsvSettingsStore.setSession('currentView', 'ShoppingCart');
-    //TsvSettingsStore.setCache('currentLocation', '/ShoppingCart');
 
     this.state = {
       totalPrice: TsvSettingsStore.getCache('shoppingCart.summary.totalPrice'),

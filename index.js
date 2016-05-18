@@ -15,11 +15,16 @@ var Hapi = require('hapi')
 	, fs = require('fs')
 
 	, SDK = require('sdk-core-lib')
+	, Bootup = require('./lib/Bootup')
 	, RQ = require('request')
 
 	, importerFunc = require('./lib/importer')
 //	, handler_dir = __dirname + '/route-handlers'
 //	, handler_importer = importerFunc(handler_dir)
+
+	, socketdebug = require('debug')('vending-app-gui:websocket-comm')
+	, serverdebug = require('debug')('vending-app-gui:server-comm')
+
 	;
 
 /****
@@ -38,8 +43,6 @@ var Hapi = require('hapi')
 
 ****/
 
-var socketdebug = require('debug')('vending-app-gui:websocket-comm');
-var serverdebug = require('debug')('vending-app-gui:server-comm');
 
 var server = new Hapi.Server();
 server.connection({
@@ -120,39 +123,7 @@ server.register([
 	//var routes = require('./route-handlers/routes')(route_handlers, server);
 	//server.route(routes);
 
-// HAY see right above? load the routes automatically!
-/*
-	var UserAccount = require('./routes/UserAccount')
-		, ModelListQuery = require('./routes/ModelListQuery')
-		, ModelUiConfig = require('./routes/ModelUiConfig')
-		, ModelItemSave = require('./routes/ModelItemSave')
-		, ModelItemGet = require('./routes/ModelItemGet')
-		;
-
-	server.route({
-		method: 'post',
-		path: '/api/model-list-query',
-		handler: ModelListQuery
-	});
-
-	server.route({
-		method: 'post',
-		path: '/api/model-ui-config',
-		handler: ModelUiConfig
-	});
-
-	server.route({
-		method: 'post',
-		path: '/api/model-item-save',
-		handler: ModelItemSave
-	});
-
-	server.route({
-		method: 'post',
-		path: '/api/model-item-get',
-		handler: ModelItemGet
-	});
-*/
+// HAY see right above? load the routes automatically! (requires more organization)
 
 	var TsvProxy = require('./routes/TsvProxy')
 		, ComBusEmulator = require('./routes/ComBusEmulator')
@@ -395,6 +366,37 @@ server.register([
 
 
 			****************************************/
+			
+			var bootupfunc = (err, ok) => {
+				//if (err) throw err;
+				if (err) {
+					// check and see where it fails
+					var activated = Bootup.CheckActivation()
+						, registered = Bootup.CheckRegistration()
+						, next
+						;
+					if (!activated) {
+						// activation fail
+						next = Bootup.Activate;
+						serverdebug('Bootup failed at activation');
+					} else if (!registered) {
+						// register fail
+						next = Bootup.Register;
+						serverdebug('Bootup failed at register');
+					} else {
+						// data load fail...
+						next = Bootup.Data;
+						serverdebug('Bootup failed at data loader');
+					}
+					setTimeout(() => { next(bootupfunc, true); }, process.env.BOOTUP_DELAY_TIME_MS || 5000);
+
+				} else {
+					serverdebug('Bootup responded, data:');
+					serverdebug(ok);
+				}
+			}
+			
+			Bootup.Cascade(bootupfunc);
 		}
 	});
 

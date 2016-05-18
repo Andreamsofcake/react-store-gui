@@ -3,6 +3,7 @@ import appConstants from '../constants/appConstants'
 //import TsvService from '../../lib/TsvService'
 //import RootscopeActions from '../actions/RootscopeActions'
 
+import TsvSettingsStore from '../stores/TsvSettingsStore'
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
@@ -19,15 +20,19 @@ var StorefrontActions = {
   minusQty(product) { // coil
   	let coil = product.coilNumber;
 
-  	Big.log('removeAllQty ///////');
+  	Big.log('removeOneQty ///////');
   	Big.log(product, coil);
 
   	TsvActions.apiCall('removeFromCartByCoilNo', coil, (err, ok) => {
   		if (err) Big.throw(err);
-  		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-  			if (err) Big.throw(err);
-  			TsvSettingsStore.setCache('shoppingCart', data);
-  		});
+  		if (ok && ok.shoppingCart) {
+  			TsvSettingsStore.setCache('shoppingCart', ok.shoppingCart);
+  		} else {
+			TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+				if (err) Big.throw(err);
+				TsvSettingsStore.setCache('shoppingCart', data);
+			});
+		}
   	});
   },
 
@@ -49,17 +54,24 @@ var StorefrontActions = {
           qty -= 1;
           TsvActions.apiCall('removeFromCartByCoilNo', coil, (err, ok) => {
             if (err) Big.throw(err);
-            TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-              if (err) Big.throw(err);
-              TsvSettingsStore.setCache('shoppingCart', data);
-              removeQty(qty);
-            });
+			if (ok && ok.shoppingCart) {
+				TsvSettingsStore.setCache('shoppingCart', ok.shoppingCart);
+			} else {
+				TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+				  if (err) Big.throw(err);
+				  TsvSettingsStore.setCache('shoppingCart', data);
+				  removeQty(qty);
+				});
+			}
           });
+        // don't think we need to do the last cart retrieval...
+        /*
         } else {
           TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
             if (err) Big.throw(err);
             TsvSettingsStore.setCache('shoppingCart', data);
           });
+          */
         }
       }
 
@@ -76,10 +88,14 @@ var StorefrontActions = {
 
   	TsvActions.apiCall('addToCartByCoil', coil, (err, ok) => {
   		if (err) Big.throw(err);
-  		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-  			if (err) Big.throw(err);
-  			TsvSettingsStore.setCache('shoppingCart', data);
-  		});
+  		if (ok && ok.shoppingCart) {
+  			TsvSettingsStore.setCache('shoppingCart', ok.shoppingCart);
+  		} else {
+			TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+				if (err) Big.throw(err);
+				TsvSettingsStore.setCache('shoppingCart', data);
+			});
+		}
   	});
   },
 
@@ -102,10 +118,14 @@ var StorefrontActions = {
       TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
         if (err) Big.throw(err);
         TsvSettingsStore.setConfig('pvr', response);
-        TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-          if (err) Big.throw(err);
-          TsvSettingsStore.setCache('shoppingCart', data);
-        });
+  		if (response && response.shoppingCart) {
+  			TsvSettingsStore.setCache('shoppingCart', response.shoppingCart);
+  		} else {
+			TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+			  if (err) Big.throw(err);
+			  TsvSettingsStore.setCache('shoppingCart', data);
+			});
+		}
       });
     }
   }

@@ -45,8 +45,7 @@ class Storefront extends Component {
     this.state = {
       categoryIdFilter:[],
       products: [],
-      categories: [],
-      quantity: 0
+      categories: []
     }
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
@@ -58,6 +57,8 @@ class Storefront extends Component {
   componentDidMount() {
   	//Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
   	startGeneralIdleTimer(this.props.location.pathname);
+  	
+  	var state = {}
 
     TsvSettingsStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
@@ -67,18 +68,23 @@ class Storefront extends Component {
       TsvSettingsStore.setSession('products', data)
     });
 
-    TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
-    	if (err) Big.throw(err);
-    	Big.log('fetchProductCategoriesByParentCategoryID');
-    	Big.log(err);
-    	Big.log(data);
-    	TsvSettingsStore.setConfig('categories', data);
-    });
-
+    if (!TsvSettingsStore.getConfig('categories')) {
+		TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
+			if (err) Big.throw(err);
+			Big.log('fetchProductCategoriesByParentCategoryID');
+			Big.log(err);
+			Big.log(data);
+			TsvSettingsStore.setConfig('categories', data);
+		});
+	} else {
+		state.categories = TsvSettingsStore.getConfig('categories');
+	}
+/*
 	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 		if (err) Big.throw(err);
 		TsvSettingsStore.setCache('shoppingCart', data);
 	});
+*/
   }
 
   // Remove change listers from stores
@@ -184,10 +190,15 @@ class Storefront extends Component {
     this.state.products.map( (P, $index) => {
       //let show = true;
       if (this.state.categoryIdFilter.length) {
-        if (this.state.categoryIdFilter.indexOf(P.productCategoryID) > -1) {
-          //show = false;
-          prods.push(P)
-        }
+      	if (P.categories) {
+      		// handle new structure!
+
+      	} else {
+			if (this.state.categoryIdFilter.indexOf(P.productCategoryID) > -1) {
+			  //show = false;
+			  prods.push(P)
+			}
+		}
       } else {
       	prods.push(P)
       }

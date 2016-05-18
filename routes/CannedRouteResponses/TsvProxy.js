@@ -251,6 +251,7 @@ var Candyland = CandyLand({
 				request.yar.set('test-shopping-cart', config.candy.test_cart);
 			}
 			response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
+			response.shoppingCart = config.candy.test_cart;
 			return response;
 		}
 		
@@ -279,6 +280,7 @@ var Candyland = CandyLand({
 				request.yar.set('test-shopping-cart', config.candy.test_cart);
 			}
 			response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
+			response.shoppingCart = config.candy.test_cart;
 			return response;
 		}
 
@@ -312,6 +314,7 @@ var Candyland = CandyLand({
 				request.yar.set('test-shopping-cart', config.candy.test_cart);
 			}
 			response = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success"};
+			response.shoppingCart = config.candy.test_cart;
 			return response;
 		}
 

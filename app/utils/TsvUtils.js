@@ -304,6 +304,9 @@ export function onGeneralTimeout() {
 				gotoDef = true;
 			} else {
 				Big.log("On "+currentPageView+" idle timeout disabled...Running the paymentTimer...");
+				if (T.getTimeLeft()) {
+					Big.log('time left in payment timer: '+T.getTimeLeft());
+				}
 			}
 			break;
 
@@ -324,8 +327,7 @@ export function onGeneralTimeout() {
 			break;
 
 		default:
-			//Big.log("Idle Timeout from "+TsvSettingsStore.getCache('currentLocation'));
-			Big.log("Idle Timeout from " + currentPageView);
+			Big.log("default ... Idle Timeout from " + currentPageView);
 			emptyCart();
 			//gotoDefaultIdlePage(); //$location, $rootScope);
 			gotoDef = true;
@@ -362,7 +364,8 @@ export function startGeneralIdleTimer(fromPage) {
 		currentPageView = fromPage;
 	}
 	killGeneralIdleTimer();
-    var T = new timer( onGeneralTimeout, TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000) );
+	var ts = TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000)
+    	, T = new timer( onGeneralTimeout, ts );
     T.self(T);
 	setTimer('generalIdleTimer', T);
 }

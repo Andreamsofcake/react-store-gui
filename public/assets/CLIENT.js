@@ -6949,6 +6949,7 @@
 			}
 		}, {
 			key: '_onTsvChange',
+			//vendingItem: data.detail && data.detail.length ? data.detail[0] : null
 			value: function _onTsvChange(event) {
 				if (event && event.method) {
 					if (!event.data.length) {
@@ -7053,7 +7054,7 @@
 					null,
 					_react2.default.createElement(
 						_E.Col,
-						{ sm: '100%', lg: '100%' },
+						null,
 						_react2.default.createElement(
 							'h2',
 							null,
@@ -7077,10 +7078,15 @@
 					) : null,
 					_react2.default.createElement(
 						_E.Col,
-						{ sm: '1/2' },
+						{ xs: '1/6', sm: '1/6', md: '1/6', lg: '1/6' },
+						' '
+					),
+					_react2.default.createElement(
+						_E.Col,
+						{ xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
 						_react2.default.createElement(
 							'p',
-							{ style: { fontSize: '1.5em' } },
+							{ style: { fontSize: '2em', textAlign: 'center' } },
 							Translate.translate('CashVending', 'TotalAmountLabel'),
 							' Total: ',
 							_react2.default.createElement(
@@ -7092,10 +7098,10 @@
 					),
 					_react2.default.createElement(
 						_E.Col,
-						{ sm: '1/2' },
+						{ xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
 						_react2.default.createElement(
 							'p',
-							{ style: { fontSize: '1.5em' } },
+							{ style: { fontSize: '2em', textAlign: 'center' } },
 							Translate.translate('CashVending', 'InsertedAmountLabel'),
 							' ',
 							_react2.default.createElement(
@@ -7106,34 +7112,48 @@
 							)
 						)
 					),
+					_react2.default.createElement(
+						_E.Col,
+						{ xs: '1/6', sm: '1/6', md: '1/6', lg: '1/6' },
+						' '
+					),
 					this.state.showCancelBtnCash ? _react2.default.createElement(
-						'div',
+						_E.Col,
 						null,
 						_react2.default.createElement(
-							_E.Col,
-							{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
-							' '
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+							_E.Row,
+							null,
 							_react2.default.createElement(
-								_E.Button,
-								{ type: 'primary', size: 'lg', onClick: function onClick() {
-										_reactRouter.browserHistory.push('/Storefront');
-									} },
-								Translate.translate('ShoppingCart', 'Shop_More')
+								_E.Col,
+								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+								' '
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+								_react2.default.createElement(
+									_E.Button,
+									{ type: 'primary', size: 'lg', onClick: function onClick() {
+											_reactRouter.browserHistory.push('/Storefront');
+										} },
+									Translate.translate('ShoppingCart', 'Shop_More')
+								)
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+								_react2.default.createElement(
+									_E.Button,
+									{ type: 'danger', size: 'lg', onClick: this.cancel.bind(this) },
+									_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
+									'Cancel Transaction'
+								)
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+								' '
 							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
-							this.renderCancelBtnCash()
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
-							' '
 						)
 					) : null,
 					this.renderVendingItem()
@@ -7157,22 +7177,15 @@
 								this.state.vendingItem.productName
 							)
 						),
-						this.state.vendingItem.imagePath ? _react2.default.createElement('img', { src: this.state.vendingItem.imagePath }) : null,
-						_react2.default.createElement(_E.Spinner, { size: 'md', type: 'inverted' })
+						_react2.default.createElement(
+							'div',
+							{ style: { textAlign: 'center' } },
+							_react2.default.createElement(_E.Spinner, { size: 'lg', type: 'primary' }),
+							this.state.vendingItem.imagePath ? _react2.default.createElement('img', { src: this.state.vendingItem.imagePath, style: { maxWidth: '35%', display: 'block', margin: '1em auto' } }) : null
+						)
 					);
 				}
 				return null;
-			}
-		}, {
-			key: 'renderCancelBtnCash',
-			value: function renderCancelBtnCash() {
-				// <img src="../Images/cancel.png" onClick={this.cancel.bind(this)} />
-				return _react2.default.createElement(
-					_E.Button,
-					{ type: 'warning', onClick: this.cancel.bind(this) },
-					_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
-					'Cancel Transaction'
-				);
 			}
 		}, {
 			key: 'renderSpinner',
@@ -8464,6 +8477,10 @@
 
 	var _ShoppingCartItem2 = _interopRequireDefault(_ShoppingCartItem);
 
+	var _TsvSettingsStore = __webpack_require__(47);
+
+	var _TsvSettingsStore2 = _interopRequireDefault(_TsvSettingsStore);
+
 	var _TsvStore = __webpack_require__(51);
 
 	var _TsvStore2 = _interopRequireDefault(_TsvStore);
@@ -8504,21 +8521,20 @@
 	    {/* MUST call super() before any this.*/}
 
 
+	    // bDisplayCgryNavigation2 is not used anywhere that I can see:
 	    //TsvSettingsStore.setConfig("bDisplayCgryNavigation2", TsvSettingsStore.getConfig('bDisplayCgryNavigation'));
 
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ShoppingCart).call(this, props, context));
 
 	    (0, _TsvUtils.updateCredit)();
-	    //TsvSettingsStore.setSession('currentView', 'ShoppingCart');
-	    //TsvSettingsStore.setCache('currentLocation', '/ShoppingCart');
 
 	    _this.state = {
-	      totalPrice: TsvSettingsStore.getCache('shoppingCart.summary.totalPrice'),
-	      cart: TsvSettingsStore.getCache('shoppingCart.detail'),
-	      salesTaxAmount: TsvSettingsStore.getCache('shoppingCart.summary.salesTaxAmount'),
+	      totalPrice: _TsvSettingsStore2.default.getCache('shoppingCart.summary.totalPrice'),
+	      cart: _TsvSettingsStore2.default.getCache('shoppingCart.detail'),
+	      salesTaxAmount: _TsvSettingsStore2.default.getCache('shoppingCart.summary.salesTaxAmount'),
 	      emptyCart: false,
 	      bShowCgryNav: true,
-	      summary: TsvSettingsStore.getCache('shoppingCart.summary'),
+	      summary: _TsvSettingsStore2.default.getCache('shoppingCart.summary'),
 	      bShowTax: false,
 	      bShowCouponBtn: false
 	    };
@@ -8529,7 +8545,7 @@
 	      _this.state.bShowTax = true;
 	    };
 
-	    if (TsvSettingsStore.getCache('custommachinesettings.bHasCouponCodes')) {
+	    if (_TsvSettingsStore2.default.getCache('custommachinesettings.bHasCouponCodes')) {
 	      _this.state.bShowCouponBtn = true;
 	    }
 
@@ -8549,25 +8565,25 @@
 	  }, {
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
-	      TsvSettingsStore.addChangeListener(this._onRootstoreChange);
+	      _TsvSettingsStore2.default.addChangeListener(this._onRootstoreChange);
 	      _TsvStore2.default.addChangeListener(this._onTsvChange);
 	      _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
 	        if (err) Big.throw(err);
-	        TsvSettingsStore.setCache('shoppingCart', data);
+	        _TsvSettingsStore2.default.setCache('shoppingCart', data);
 	      });
 	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 	    }
 	  }, {
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
-	      TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
+	      _TsvSettingsStore2.default.removeChangeListener(this._onRootstoreChange);
 	      _TsvStore2.default.removeChangeListener(this._onTsvChange);
 	    }
 	  }, {
 	    key: '_onTsvChange',
 	    value: function _onTsvChange(event) {
 	      if (event && event.method === 'cardTransactionResponse') {
-	        if (!TsvSettingsStore.getSession('bVendingInProcess')) {
+	        if (!_TsvSettingsStore2.default.getSession('bVendingInProcess')) {
 	          (0, _TsvUtils.cardTransaction)(event.data[0]);
 	          _reactRouter.browserHistory.push("/CardVending");
 	        }
@@ -8576,7 +8592,7 @@
 	  }, {
 	    key: '_onRootstoreChange',
 	    value: function _onRootstoreChange() {
-	      var data = TsvSettingsStore.getCache('shoppingCart');
+	      var data = _TsvSettingsStore2.default.getCache('shoppingCart');
 
 	      if (this.state.loadedCartOnce && (!data.detail || !data.detail.length)) {
 	        //gotoDefaultIdlePage();
@@ -8834,8 +8850,7 @@
 	    _this.state = {
 	      categoryIdFilter: [],
 	      products: [],
-	      categories: [],
-	      quantity: 0
+	      categories: []
 	    };
 
 	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
@@ -8853,6 +8868,8 @@
 	      //Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
 	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 
+	      var state = {};
+
 	      _TsvSettingsStore2.default.addChangeListener(this._onRootstoreChange);
 	      _StorefrontStore2.default.addChangeListener(this._onStoreFrontChange);
 
@@ -8861,18 +8878,23 @@
 	        _TsvSettingsStore2.default.setSession('products', data);
 	      });
 
-	      _TsvActions2.default.apiCall('fetchProductCategoriesByParentCategoryID', 0, function (err, data) {
-	        if (err) Big.throw(err);
-	        Big.log('fetchProductCategoriesByParentCategoryID');
-	        Big.log(err);
-	        Big.log(data);
-	        _TsvSettingsStore2.default.setConfig('categories', data);
-	      });
-
-	      _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
-	        if (err) Big.throw(err);
-	        _TsvSettingsStore2.default.setCache('shoppingCart', data);
-	      });
+	      if (!_TsvSettingsStore2.default.getConfig('categories')) {
+	        _TsvActions2.default.apiCall('fetchProductCategoriesByParentCategoryID', 0, function (err, data) {
+	          if (err) Big.throw(err);
+	          Big.log('fetchProductCategoriesByParentCategoryID');
+	          Big.log(err);
+	          Big.log(data);
+	          _TsvSettingsStore2.default.setConfig('categories', data);
+	        });
+	      } else {
+	        state.categories = _TsvSettingsStore2.default.getConfig('categories');
+	      }
+	      /*
+	      	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+	      		if (err) Big.throw(err);
+	      		TsvSettingsStore.setCache('shoppingCart', data);
+	      	});
+	      */
 	    }
 
 	    // Remove change listers from stores
@@ -10831,6 +10853,9 @@
 					gotoDef = true;
 				} else {
 					Big.log("On " + currentPageView + " idle timeout disabled...Running the paymentTimer...");
+					if (T.getTimeLeft()) {
+						Big.log('time left in payment timer: ' + T.getTimeLeft());
+					}
 				}
 				break;
 
@@ -10851,8 +10876,7 @@
 				break;
 
 			default:
-				//Big.log("Idle Timeout from "+TsvSettingsStore.getCache('currentLocation'));
-				Big.log("Idle Timeout from " + currentPageView);
+				Big.log("default ... Idle Timeout from " + currentPageView);
 				emptyCart();
 				//gotoDefaultIdlePage(); //$location, $rootScope);
 				gotoDef = true;
@@ -10889,7 +10913,8 @@
 			currentPageView = fromPage;
 		}
 		killGeneralIdleTimer();
-		var T = new _index.timer(onGeneralTimeout, _TsvSettingsStore2.default.getCache('custommachinesettings.generalPageTimeout', 120000));
+		var ts = _TsvSettingsStore2.default.getCache('custommachinesettings.generalPageTimeout', 120000),
+		    T = new _index.timer(onGeneralTimeout, ts);
 		T.self(T);
 		setTimer('generalIdleTimer', T);
 	}
@@ -11678,6 +11703,8 @@
 				if (!showButtons.length) {
 					return null;
 				}
+
+				Big.log('ok, render');
 
 				return _react2.default.createElement(
 					'div',
@@ -15232,6 +15259,10 @@
 
 	var _appConstants2 = _interopRequireDefault(_appConstants);
 
+	var _TsvSettingsStore = __webpack_require__(47);
+
+	var _TsvSettingsStore2 = _interopRequireDefault(_TsvSettingsStore);
+
 	var _TsvStore = __webpack_require__(51);
 
 	var _TsvStore2 = _interopRequireDefault(_TsvStore);
@@ -15248,25 +15279,28 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var Big = new _BigLogger2.default('Storefront');
 	//import TsvService from '../../lib/TsvService'
 	//import RootscopeActions from '../actions/RootscopeActions'
-
-	var Big = new _BigLogger2.default('Storefront');
 
 	var StorefrontActions = {
 	  minusQty: function minusQty(product) {
 	    // coil
 	    var coil = product.coilNumber;
 
-	    Big.log('removeAllQty ///////');
+	    Big.log('removeOneQty ///////');
 	    Big.log(product, coil);
 
 	    _TsvActions2.default.apiCall('removeFromCartByCoilNo', coil, function (err, ok) {
 	      if (err) Big.throw(err);
-	      _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
-	        if (err) Big.throw(err);
-	        TsvSettingsStore.setCache('shoppingCart', data);
-	      });
+	      if (ok && ok.shoppingCart) {
+	        _TsvSettingsStore2.default.setCache('shoppingCart', ok.shoppingCart);
+	      } else {
+	        _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
+	          if (err) Big.throw(err);
+	          _TsvSettingsStore2.default.setCache('shoppingCart', data);
+	        });
+	      }
 	    });
 	  },
 	  removeAllQty: function removeAllQty(product) {
@@ -15280,24 +15314,31 @@
 
 	    _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
 	      if (err) Big.throw(err);
-	      TsvSettingsStore.setCache('shoppingCart', data);
+	      _TsvSettingsStore2.default.setCache('shoppingCart', data);
 
 	      var removeQty = function removeQty(qty) {
 	        if (qty > 0) {
 	          qty -= 1;
 	          _TsvActions2.default.apiCall('removeFromCartByCoilNo', coil, function (err, ok) {
 	            if (err) Big.throw(err);
-	            _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
+	            if (ok && ok.shoppingCart) {
+	              _TsvSettingsStore2.default.setCache('shoppingCart', ok.shoppingCart);
+	            } else {
+	              _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
+	                if (err) Big.throw(err);
+	                _TsvSettingsStore2.default.setCache('shoppingCart', data);
+	                removeQty(qty);
+	              });
+	            }
+	          });
+	          // don't think we need to do the last cart retrieval...
+	          /*
+	          } else {
+	            TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 	              if (err) Big.throw(err);
 	              TsvSettingsStore.setCache('shoppingCart', data);
-	              removeQty(qty);
 	            });
-	          });
-	        } else {
-	          _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
-	            if (err) Big.throw(err);
-	            TsvSettingsStore.setCache('shoppingCart', data);
-	          });
+	            */
 	        }
 	      };
 
@@ -15314,10 +15355,14 @@
 
 	    _TsvActions2.default.apiCall('addToCartByCoil', coil, function (err, ok) {
 	      if (err) Big.throw(err);
-	      _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
-	        if (err) Big.throw(err);
-	        TsvSettingsStore.setCache('shoppingCart', data);
-	      });
+	      if (ok && ok.shoppingCart) {
+	        _TsvSettingsStore2.default.setCache('shoppingCart', ok.shoppingCart);
+	      } else {
+	        _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
+	          if (err) Big.throw(err);
+	          _TsvSettingsStore2.default.setCache('shoppingCart', data);
+	        });
+	      }
 	    });
 	  },
 	  toggleIDtoCategoryFilter: function toggleIDtoCategoryFilter(ID) {
@@ -15336,11 +15381,15 @@
 	    if (product.stockCount > 0) {
 	      _TsvActions2.default.apiCall('addToCartByProductID', product.productID, function (err, response) {
 	        if (err) Big.throw(err);
-	        TsvSettingsStore.setConfig('pvr', response);
-	        _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
-	          if (err) Big.throw(err);
-	          TsvSettingsStore.setCache('shoppingCart', data);
-	        });
+	        _TsvSettingsStore2.default.setConfig('pvr', response);
+	        if (response && response.shoppingCart) {
+	          _TsvSettingsStore2.default.setCache('shoppingCart', response.shoppingCart);
+	        } else {
+	          _TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
+	            if (err) Big.throw(err);
+	            _TsvSettingsStore2.default.setCache('shoppingCart', data);
+	          });
+	        }
 	      });
 	    }
 	  }

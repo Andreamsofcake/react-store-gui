@@ -154,6 +154,8 @@ class ComEmulator extends Component {
 		if (!showButtons.length) {
 			return null;
 		}
+		
+		Big.log('ok, render');
 
 		return (
 			<div id="ComEmulator">
