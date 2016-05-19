@@ -17,7 +17,8 @@ var CHANGE_EVENT = 'change'
 // example state vars:
 	, _store = {
 		reconnectProxyDelay: 10000,
-		tryProxyReconnects: true
+		tryProxyReconnects: true,
+		machineInfo: null
 	}
 	
 	, _storeDB = new muDB()
@@ -54,6 +55,10 @@ var TsvStore = objectAssign({}, EventEmitter.prototype, {
 		var args = Array.prototype.slice.call(arguments);
 		args.unshift(CHANGE_EVENT);
 		this.emit.apply(this, args );
+	},
+
+	getMachineInfo: function() {
+		return _store.machineInfo;
 	}
 
 });
@@ -89,6 +94,11 @@ TsvStore.dispatch = AppDispatcher.register(function(payload){
 			}
 			break;
 			
+		case appConstants.MACHINE_INFO:
+			_store.machineInfo = action.data.data;
+			TsvStore.emitChange({ type: action.actionType });
+			break;
+
 		default:
 			return true;
 			break;

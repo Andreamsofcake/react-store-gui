@@ -54,6 +54,7 @@ var appConstants = keyMirror({
 	TEST_REGISTER_PRINT: null,
 	TEST_MATCH_PRINT: null,
 	CLEAR_API_RESPONSES: null,
+	MACHINE_INFO: null,
 
 // TSV:
 	FLASH_API_MULTIEVENT: null,

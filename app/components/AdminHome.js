@@ -6,6 +6,8 @@ import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
+import appConstants from '../constants/appConstants'
+import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
 	startGeneralIdleTimer,
@@ -16,7 +18,10 @@ class AdminHome extends Component {
   constructor(props, context) {
     // MUST call super() before any this.*
     super(props, context);
-
+	this.state = {
+		machineInfo: TsvStore.getMachineInfo()
+	}
+	this._onTsvStoreChange = this._onTsvStoreChange.bind(this);
   }
 
   restart(){
@@ -31,10 +36,22 @@ class AdminHome extends Component {
   // Add change listeners to stores
   componentDidMount() {
 	startGeneralIdleTimer(this.props.location.pathname);
+	TsvStore.addChangeListener(this._onTsvStoreChange);
+	if (!this.state.machineInfo) {
+		TsvActions.getMachineInfo();
+	}
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
+  }
+  
+  _onTsvStoreChange(event) {
+  	if (event.type === appConstants.MACHINE_INFO) {
+  		this.setState({
+  			machineInfo: TsvStore.getMachineInfo()
+  		});
+  	}
   }
 
   render() {
@@ -42,7 +59,17 @@ class AdminHome extends Component {
       <_E.Row className="admin_home" style={{maxWidth:'85%',margin: '1em auto'}}>
         <_E.Col>
         	
-        	<h1 style={{fontWeight:300}}>Admin Home</h1>
+		  <h1 style={{fontWeight:300}}>Admin Home</h1>
+		  
+		  {this.state.machineInfo ? (
+		  	<p style={{textAlign:'center'}}>
+		  		Team Viewer ID: <strong>{this.state.machineInfo.teamViewerID}</strong><br />
+		  		Machine ID: <strong>{this.state.machineInfo._id}</strong><br />
+		  		AVT ID: <strong>{this.state.machineInfo.vendor_id}</strong>
+		  	</p>
+		  ) : (
+		  	<p>Loading machine info, one moment please....</p>
+		  )}
 
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>

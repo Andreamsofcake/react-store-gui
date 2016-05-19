@@ -249,3 +249,15 @@ img.boxShadowed {
 	height: 100%;
 	padding: 4em;
 }
+
+.machineIdTag {
+	position: fixed;
+	bottom: 5.5em;
+	left: -3.5em;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 0.70em;
+	color: rgba(0,0,0,0.25);
+	transform: rotate(-90deg);
+	text-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}

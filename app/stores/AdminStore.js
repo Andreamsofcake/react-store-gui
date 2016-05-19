@@ -36,7 +36,7 @@ var AdminStore = objectAssign({}, EventEmitter.prototype, {
 	
 	getApiResponses: function() {
 		return _store.apiResponses;
-	}
+	},
 
 });
 
@@ -55,7 +55,7 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 		case appConstants.CLEAR_API_RESPONSES:
 			_store.apiResponses = [];
 			break;
-
+		
 		default:
 			return true;
 			break;

@@ -131,6 +131,7 @@ server.register([
 		, CustomerMatchLogin = require('./routes/CustomerMatchLogin')
 		, CustomerRegisterModule = require('./routes/CustomerRegisterModule')
 		, PrintReaderModule = require('./routes/PrintReaderModule')
+		, MachineInfo = require('./routes/MachineInfo')
 		, ClientSideSetup = require('./routes/ClientSideSetup')
 		;
 
@@ -337,6 +338,12 @@ server.register([
 		method: 'post',
 		path: '/api/emulator',
 		handler: ComBusEmulator
+	});
+
+	server.route({
+		method: 'get',
+		path: '/api/machine-info',
+		handler: MachineInfo
 	});
 
 	server.route({

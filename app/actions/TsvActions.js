@@ -39,6 +39,32 @@ function _callbackError(callback, error) {
 
 var TsvActions = {
 	
+	getMachineInfo() {
+		axios.get('/api/machine-info')
+		.then(response => {
+			// uh, daaaaaable check?
+			if (response.data && response.data) {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.MACHINE_INFO,
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to get machine info, error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to get machine info, no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to get machine info, call chain error probably check component tree');
+			Big.log(error);
+			Big.throw(error);
+		})
+	},
+
 	serverHandshake() {
 		// essentially, registers a handler for this event by sending to it once:
 		SocketAPI.send('flash-api-multi-event', { _ws_args: { subscribe_to_externals: true } }, (response) => {

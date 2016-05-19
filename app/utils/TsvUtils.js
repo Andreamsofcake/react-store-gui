@@ -624,19 +624,20 @@ export function gotoPayment(){
 
 	if (TotalPrice != 0
 		&& TsvSettingsStore.getCache('custommachinesettings.HasCreditCard', true)
-		&& TsvSettingsStore.getCache('custommachinesettings.HasBillCoin', false)) {
+		&& TsvSettingsStore.getCache('custommachinesettings.HasBillCoin', true)) {
 		browserHistory.push("/ChooseCashCard");
 
 	} else {
 
-		if (TsvSettingsStore.getCache('custommachinesettings.HasBillCoin', false)){
+		if (TsvSettingsStore.getCache('custommachinesettings.HasBillCoin', true)){
 			browserHistory.push("/CashVending");
 
 		} else if (TsvSettingsStore.getCache('custommachinesettings.HasCreditCard', true)) {
 			browserHistory.push("/CardVending");
 
-		} else if (TotalPrice == 0) {
-			browserHistory.push("/CardVending");
+		// this doesn't seem right:
+		//} else if (TotalPrice == 0) {
+			//browserHistory.push("/CardVending");
 		}
 	}
 }

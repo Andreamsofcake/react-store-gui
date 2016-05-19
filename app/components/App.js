@@ -12,6 +12,7 @@ import * as _E from 'elemental'
 import TsvSettingsStore from '../stores/TsvSettingsStore'
 
 import ComEmulator from './ComEmulator'
+import MachineIdTag from './MachineIdTag'
 import CustomerStatusDisplay from './CustomerStatusDisplay'
 import AdminLoginButton from './AdminLoginButton'
 
@@ -103,6 +104,9 @@ class App extends Component {
 	
 	componentDidMount() {
 		TsvStore.addChangeListener(this._onTsvChange);
+		if (!TsvStore.getMachineInfo()) {
+			TsvActions.getMachineInfo();
+		}
         //TsvService.subscribe("notifyTSVReady", function, "app");
 	}
 	
@@ -143,6 +147,7 @@ class App extends Component {
 			<CustomerStatusDisplay adminInPath={adminInPath} location={this.props.location} />
 			
 			<ComEmulator />
+			<MachineIdTag />
 			<_E.Row gutter={-20}>
 				<_E.Col className="route-content">
 					{this.props.children && React.cloneElement(this.props.children, { appTesting: this.appTesting }) || (<div>
