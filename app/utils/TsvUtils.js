@@ -458,7 +458,8 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 		
 			if (!result || result.resultCode !== "SUCCESS") {
 				//Big.throw('WHY U NO ACTIVATE');
-				return browserHistory.push("/Admin/Activate");
+				// temporarily disabling this, not sure what the deal is with TSV <=> AVT
+				//return browserHistory.push("/Admin/Activate");
 			}
 		
 			activated(true);

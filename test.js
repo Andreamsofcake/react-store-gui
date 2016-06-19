@@ -3,6 +3,8 @@ var RQ = require('request')
 	, fs = require('fs')
 	;
 
+/*
+// simple test of machine nodejs proxy
 	RQ.post({
 		url: 'http://localhost:8086/machine/api-proxy',
 	//	body: [ 'resetCreditBalance' ],
@@ -21,7 +23,7 @@ var RQ = require('request')
 	
 		process.exit(1);
 	});
-
+*/
 
 if (process.argv[2] === 'api' && process.argv[3]) {
 
