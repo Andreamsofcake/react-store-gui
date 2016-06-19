@@ -11,7 +11,7 @@ var CHANGE_EVENT = 'change'
 
 // example state vars:
 	, _store = {
-		apiResponses: []
+		session: null
 	}
 	
 //	, _storeDB = new muDB()
@@ -19,7 +19,7 @@ var CHANGE_EVENT = 'change'
 
 //_storeDB.setDB(_store);
 
-var AdminStore = objectAssign({}, EventEmitter.prototype, {
+var SessionStore = objectAssign({}, EventEmitter.prototype, {
 	addChangeListener: function(cb) {
 		this.on(CHANGE_EVENT, cb);
 	},
@@ -38,29 +38,30 @@ var AdminStore = objectAssign({}, EventEmitter.prototype, {
 		return _store.apiResponses;
 	},
 
-	getClientUsers: function() {
-		return _store.clientUsers;
-	},
-
 });
 
-AdminStore.dispatch = AppDispatcher.register(function(payload){
+SessionStore.dispatch = AppDispatcher.register(function(payload){
 	var action = payload.action;
 	switch(action.actionType) {
 
+/*
+	SESSION_CREATED: null,
+	SESSION_UPDATED: null,
+	ADDED_USER_TO_SESSION: null,
+	SESSION_CLOSED: null,
+	SESSION_DROPPED: null,
+	TRANSACTION_CREATED: null,
+	TRANSACTION_UPDATED: null,
+*/
+
 		case appConstants.TEST_REGISTER_PRINT:
 		case appConstants.TEST_MATCH_PRINT:
-		case appConstants.REGISTER_CLIENT_USER_PRINT:
 			if (action.data && action.data.apiResponses) {
 				_store.apiResponses = action.data.apiResponses;
 			}
-			AdminStore.emitChange({ type: action.actionType });
+			SessionStore.emitChange({ type: action.actionType });
 			break;
 			
-		case appConstants.CLIENT_USERS_RECEIVED:
-			_store.clientUsers = action.data.clientUsers;
-			break;
-
 		case appConstants.CLEAR_API_RESPONSES:
 			_store.apiResponses = [];
 			break;
@@ -71,4 +72,4 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 	}
 });
 
-module.exports = AdminStore;
+module.exports = SessionStore;

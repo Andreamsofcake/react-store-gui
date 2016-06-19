@@ -38,6 +38,7 @@
     "inert": "^3.2.0",
     "joi": "^8.0.5",
     "mysql": "^2.10.2",
+    "node-uuid": "^1.4.7",
     "react": "^0.14.7",
     "react-addons-css-transition-group": "^0.14.7",
     "react-dom": "^0.14.7",
@@ -45,6 +46,7 @@
     "react-slick": "^0.11.1",
     "request": "^2.69.0",
     "sdk-core-lib": "git+https://44ef4f5b03539d64a43483e8a203ff1274f65fad:x-oauth-basic@github.com/sdkcore/sdkcore-api-lib.git",
+    "simple-encryptor": "^1.1.0",
     "socket.io": "^1.4.5",
     "socket.io-client": "^1.4.5",
     "yar": "^7.0.0"

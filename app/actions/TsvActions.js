@@ -43,7 +43,7 @@ var TsvActions = {
 		axios.get('/api/machine-info')
 		.then(response => {
 			// uh, daaaaaable check?
-			if (response.data && response.data) {
+			if (response.data && response.data.status && response.data.status == 'ok') {
 				AppDispatcher.handleServerAction({
 					actionType: appConstants.MACHINE_INFO,
 					data: response.data

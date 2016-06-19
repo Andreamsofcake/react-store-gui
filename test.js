@@ -3,11 +3,30 @@ var RQ = require('request')
 	, fs = require('fs')
 	;
 
-var url = 'http://localhost:8085/tsv/flashapi'
-	;
+	RQ.post({
+		url: 'http://localhost:8086/machine/api-proxy',
+	//	body: [ 'resetCreditBalance' ],
+	//	body: [ 'fetchCreditBalance' ],
+		body: {  },
+		json: true,
+		headers: {
+			'SDK-machine-key': 'foo'
+		}
+	}, function(err, response, body) {
+	
+		console.log('flashapi response:');
+		console.log(err);
+		//console.log(response);
+		console.log(body);
+	
+		process.exit(1);
+	});
+
 
 if (process.argv[2] === 'api' && process.argv[3]) {
 
+	var url = 'http://localhost:8085/tsv/flashapi';
+	
 	RQ.post({
 		url: url,
 	//	body: [ 'resetCreditBalance' ],

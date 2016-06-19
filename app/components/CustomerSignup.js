@@ -46,6 +46,7 @@ class CustomerSignup extends Component {
   // Add change listeners to stores
   componentDidMount() {
   	CS_Store.addChangeListener( this._onCSStoreChange );
+  	CS_Actions.clearSteps();
   	// reset the signup token on mount, should take care of retries, timeouts, etc
   	this.setState({
   		signupToken: uniq()
@@ -56,7 +57,9 @@ class CustomerSignup extends Component {
   // Remove change listers from stores
   componentWillUnmount() {
   	CS_Store.removeChangeListener( this._onCSStoreChange );
-  	CS_Actions.clearSteps();
+  	// causing invariant error (dispatch problem)...
+  	// moving to componentDidMount()
+  	//CS_Actions.clearSteps();
   }
   
   componentWillReceiveProps(nextProps) {

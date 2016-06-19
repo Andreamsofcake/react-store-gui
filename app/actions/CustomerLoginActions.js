@@ -35,6 +35,8 @@ var CustomerLoginActions = {
 	},
 
 	scanPrint(loginToken, simulatorPrintCustomer) {
+		Big.log('scanPrint, check what we are passing');
+		Big.log(loginToken, simulatorPrintCustomer);
 		SocketAPI.send('activate-module',
 			{ action: 'scan-print', module: 'print-scanner', gui: 'login', loginToken, simulatorPrintCustomer },
 			(data) => {

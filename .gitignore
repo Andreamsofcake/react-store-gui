@@ -38,3 +38,7 @@ stats.generated.json
 simulatorMatch*
 .activate.json
 .registration.json
+
+#sdk stuff
+mysql-tool
+mysql-tool/*

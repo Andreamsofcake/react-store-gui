@@ -42,6 +42,7 @@ class CustomerLogin extends Component {
   // Add change listeners to stores
   componentDidMount() {
   	CL_Store.addChangeListener( this._onCLStoreChange );
+  	CL_Actions.clearSteps();
   	// reset the login token on mount, should take care of retries, timeouts, etc
   	this.setState({
   		loginToken: uniq()
@@ -53,7 +54,9 @@ class CustomerLogin extends Component {
   // Remove change listers from stores
   componentWillUnmount() {
   	CL_Store.removeChangeListener( this._onCLStoreChange );
-  	CL_Actions.clearSteps();
+  	// causing invariant error (dispatch problem)...
+  	// moving to componentDidMount()
+  	//CL_Actions.clearSteps();
   }
   
   componentWillReceiveProps(nextProps) {

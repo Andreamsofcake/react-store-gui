@@ -37,6 +37,9 @@ class Step extends Component {
   }
   
   _onCLStoreChange(event) {
+  	// this component unmounting is causing an undefined error due to setState() on an unmounted component
+  	// FIXME: change to passing CLStoreChange from parent as a prop, instead of directly connecting.
+  	// make this change through all the steps
   	if (event.type === appConstants.PRINT_SCANNED_LOGIN) {
   		if (event.status === 'ok') {
   			this.setState({
@@ -60,7 +63,7 @@ class Step extends Component {
   	if (this.props.testing && !this.state.simulatorPrint) {
   		return alert('TESTING: Please choose a customer print from the orange buttons.');
   	}
-  	CL_Actions.scanPrint(this.props.loginToken, 1, this.state.simulatorPrint);
+  	CL_Actions.scanPrint(this.props.loginToken, this.state.simulatorPrint);
   }
 
   render() {

@@ -9,15 +9,73 @@ var Big = new Log('AdminActions');
 
 var AdminActions = {
 	
+	getClientUsers() {
+		axios.get('/api/get-client-users')
+		.then(response => {
+			// uh, daaaaaable check?
+			if (response.data && response.data.status && response.data.status == 'ok') {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.CLIENT_USERS_RECEIVED,
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to register print, error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to register print, no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to register print, call chain error probably check component tree');
+			Big.log(error);
+			Big.throw(error);
+		})
+	},
+	
+	registerClientUserPrintComplete( config ) {
+		axios.post('/api/register-client-user-print-complete', 
+			config  // .post() expects and passes this as a json object
+		)
+		.then(response => {
+			// fire and forget this one
+			if (response.data && response.data.status) {
+				/*
+				AppDispatcher.handleServerAction({
+					actionType: config.ACTION || appConstants.TEST_REGISTER_PRINT,
+					data: response.data
+				});
+				*/
+				Big.log('Client User print registration complete');
+				Big.log(response.data);
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to register print, error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to register print, no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to register print, call chain error probably check component tree');
+			Big.log(error);
+			//Big.throw(error);
+		})
+	},
+
 	registerPrint( config ) {
 		axios.post('/api/print-reader/grab-and-register-print', 
 			config  // .post() expects and passes this as a json object
 		)
 		.then(response => {
 			// uh, daaaaaable check?
-			if (response.data && response.data) {
+			if (response.data && response.data.status && response.data.status == 'ok') {
 				AppDispatcher.handleServerAction({
-					actionType: appConstants.TEST_REGISTER_PRINT,
+					actionType: config.ACTION || appConstants.TEST_REGISTER_PRINT,
 					data: response.data
 				});
 			} else {
@@ -43,7 +101,7 @@ var AdminActions = {
 		)
 		.then(response => {
 			// uh, daaaaaable check?
-			if (response.data && response.data) {
+			if (response.data && response.data.status && response.data.status == 'ok') {
 				AppDispatcher.handleServerAction({
 					actionType: appConstants.TEST_MATCH_PRINT,
 					data: response.data

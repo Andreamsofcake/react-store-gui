@@ -35,7 +35,7 @@ the app needs a .env file to run, these are default settings:
 CANNED_API_DATA=false
 COOKIE_PASSWORD=justthevendingappguiembeddedlocalsitedoesnotneedacomplexcookiepassword
 USE_HARDWARE_API=true
-CLIENT_PORTAL_URL=http://clients.sdkcore.com
+DATA_API_PROXY_URL=http://clients.sdkcore.com
 MYSQL_USER=
 MYSQL_PASSWORD=
 MACHINE_TYPE=avt
