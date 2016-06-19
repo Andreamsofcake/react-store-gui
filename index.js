@@ -191,7 +191,7 @@ server.register([
 						next = Bootup.Data;
 						serverdebug('Bootup failed at data loader');
 					}
-					setTimeout(() => { next(bootupfunc, true, true); }, 5000);//process.env.BOOTUP_DELAY_TIME_MS || 5000);
+					setTimeout(() => { next(bootupfunc, true, true); }, process.env.BOOTUP_DELAY_TIME_MS || 5000);
 
 				} else {
 					serverdebug('Bootup responded, data:');
