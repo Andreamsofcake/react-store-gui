@@ -162,7 +162,7 @@ server.register([
 
 			****************************************/
 			
-			var bootupfunc = (err, ok) => {
+			var bootupfunc = (err, configData) => {
 				//if (err) throw err;
 				if (err) {
 					// check and see where it fails
@@ -196,7 +196,9 @@ server.register([
 				} else {
 					serverdebug('Bootup responded, data:');
 					serverdebug(err);
-					serverdebug(ok);
+					serverdebug( configData );
+					//serverdebug( JSON.stringify(configData, null, 4) );
+					fs.writeFileSync('bootup-data-retrieval.json', JSON.stringify(configData, null, 4));
 					var registered = Bootup.CheckRegistration(true);
 					registered = registered && registered.registrationData ? registered.registrationData : false;
 					if (!registered || !registered.client || !registered.location) {

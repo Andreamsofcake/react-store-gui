@@ -116,7 +116,7 @@ class App extends Component {
 	
 	_onTsvChange(event) {
 		if (event && event.method === 'notifyTSVReady') {
-			Big.log("Got event notifyTSVReady");
+			Big.log("Got event notifyTSVReady, what is our current location? " + TsvSettingsStore.getCache('currentLocation'));
 			if (TsvSettingsStore.getCache('currentLocation') === '/View0') {
 				Big.log("Redirect to default idle page or reload");
 

@@ -26,7 +26,7 @@ class AdminHome extends Component {
 
   restart(){
       TsvActions.apiCall('restart');
-      browserHistory.push("/view0");
+      browserHistory.push("/View0");
   }
 
   shutdown(){
