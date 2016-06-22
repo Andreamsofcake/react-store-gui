@@ -20,16 +20,42 @@ var AdminActions = {
 				});
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to register print, error:');
+					Big.error('failed to get client users, error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to register print, no data returned. full response:');
+					Big.error('failed to get client users, no data returned. full response:');
 					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			Big.error('failed to register print, call chain error probably check component tree');
+			Big.error('failed to get client users, call chain error probably check component tree');
+			Big.log(error);
+			//Big.throw(error);
+		})
+	},
+	
+	refreshStorefrontData() {
+		axios.get('/api/refresh-storefront-data')
+		.then(response => {
+			// uh, daaaaaable check?
+			if (response.data && response.data.status && response.data.status == 'ok') {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.STOREFRONT_DATA_REFRESHED,
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to refresh store data, error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to refresh store data, no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to refresh store data, call chain error probably check component tree');
 			Big.log(error);
 			Big.throw(error);
 		})
@@ -119,7 +145,7 @@ var AdminActions = {
 		.catch(error => {
 			Big.error('failed to match print, call chain error probably check component tree');
 			Big.log(error);
-			Big.throw(error);
+			//Big.throw(error);
 		})
 	},
 	

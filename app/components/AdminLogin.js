@@ -22,9 +22,6 @@ class AdminLogin extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //TsvSettingsStore.setSession('currentView', 'AdminLogin');
-    TsvActions.apiCall('disableLoginDevices');
-    emptyCart();
     this.state = {
       num: "",
       maxChars: 6,

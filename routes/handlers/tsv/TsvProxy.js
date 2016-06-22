@@ -1,6 +1,6 @@
 //import SDK from 'sdk-core-lib'
 import RQ from 'request'
-import * as CANDY from './CannedRouteResponses/TsvProxy'
+import * as CANDY from '../CannedRouteResponses/TsvProxy'
 var debug = require('debug')('vending-app-gui:tsv-proxy')
 
 	// targeted response enhancement:

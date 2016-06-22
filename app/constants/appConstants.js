@@ -57,6 +57,7 @@ var appConstants = keyMirror({
 	MACHINE_INFO: null,
 	REGISTER_CLIENT_USER_PRINT: null,
 	CLIENT_USERS_RECEIVED: null,
+	STOREFRONT_DATA_REFRESHED: null,
 
 // Session
 	SESSION_CREATED: null,

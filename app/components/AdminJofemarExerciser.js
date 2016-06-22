@@ -20,11 +20,11 @@ class AdminJofemarExerciser extends Component {
     super(props, context);
 
     //TsvSettingsStore.setSession('currentView', 'AdminJofemarExerciser');
-    TsvActions.apiCall('disableLoginDevices');
-    emptyCart();
+
     TsvActions.apiCall('fetchMachineIds', (err, ids) => {
       	TsvSettingsStore.setCache('machineList', ids);
       });
+
     this.state = {
       num: "",
       maxChars: TsvSettingsStore.getConfig('bDualMachine') ? 3 : 2,

@@ -10,6 +10,7 @@ import appConstants from '../constants/appConstants'
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
+	emptyCart,
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
@@ -22,6 +23,10 @@ class AdminHome extends Component {
 		machineInfo: TsvStore.getMachineInfo()
 	}
 	this._onTsvStoreChange = this._onTsvStoreChange.bind(this);
+
+    //TsvSettingsStore.setSession('currentView', 'AdminBillAcceptor');
+    TsvActions.apiCall('disableLoginDevices');
+    emptyCart();
   }
 
   restart(){
@@ -97,7 +102,7 @@ class AdminHome extends Component {
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}>{/*<_E.Button type="primary" size="lg" component={(<Link to="/Admin/PrintReaderTest">{Translate.translate('AdminHome','PrintReaderTest')}</Link>)} />*/}</_E.Col>
+              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/StorefrontData">Refresh Storefront Data</Link>)} /></_E.Col>
               <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/BillAcceptor">{Translate.translate('AdminHome','BillAcceptor')}</Link>)} /></_E.Col>
               <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}>{/*<_E.Button type="primary" size="lg" component={(<Link to="/Admin/Settings">{Translate.translate('AdminHome','MachineSettings')}</Link>)} />*/}</_E.Col>
           </_E.Row>

@@ -19,10 +19,6 @@ class AdminBillAcceptor extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    //TsvSettingsStore.setSession('currentView', 'AdminBillAcceptor');
-    TsvActions.apiCall('disableLoginDevices');
-    emptyCart();
-
     this.state = {
 		acceptorState: 'off',
 		amtInserted: '0.00',

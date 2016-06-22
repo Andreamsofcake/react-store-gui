@@ -7,9 +7,9 @@ var fsplit = __filename.split(path.sep)
 	, ACTION = filen.substr(0, filen.lastIndexOf('.'))
 	, debug = require('debug')('vending-app-gui:routes:' + ACTION)
 	
-	, ClientSideSetup = require('./handlers/ClientSideSetup')
-	, MachineInfo = require('./handlers/MachineInfo')
-	, BigLog = require('./handlers/BigLog')
+	, ClientSideSetup = require('./handlers/base/ClientSideSetup')
+	, MachineInfo = require('./handlers/base/MachineInfo')
+	, BigLog = require('./handlers/base/BigLog')
 
 	;
 

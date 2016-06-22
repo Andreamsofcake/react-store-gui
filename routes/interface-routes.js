@@ -7,8 +7,8 @@ var fsplit = __filename.split(path.sep)
 	, ACTION = filen.substr(0, filen.lastIndexOf('.'))
 	, debug = require('debug')('vending-app-gui:routes:' + ACTION)
 	
-	, ActivateModule = require('./handlers/ActivateModule')
-	, PrintReaderModule = require('./handlers/PrintReaderModule')
+	, ActivateModule = require('./handlers/interface/ActivateModule')
+	, PrintReaderModule = require('./handlers/interface/PrintReaderModule')
 
 	;
 

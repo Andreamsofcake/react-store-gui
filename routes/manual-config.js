@@ -6,12 +6,14 @@ var baseRoutes = require('./base-routes')
 	, interfaceRoutes = require('./interface-routes')
 	, sessionRoutes = require('./session-routes')
 	, tsvRoutes = require('./tsv-proxy-routes')
+
+	, adminRoutes = require('./admin-routes')
 	
-	, ComBusEmulator = require('./handlers/ComBusEmulator')
+	, ComBusEmulator = require('./handlers/dev/ComBusEmulator')
 	;
 
 var devRoutes = [
-
+/*
 	{
 		method: 'GET',
 		path: '/yar',
@@ -42,7 +44,7 @@ var devRoutes = [
 			reply('testing yo').code(200);
 		}
 	},
-
+*/
 	{
 		method: 'post',
 		path: '/api/emulator',
@@ -52,4 +54,4 @@ var devRoutes = [
 ]
 
 // order is important! cascading route matching (I think)
-module.exports = [].concat(tsvRoutes, interfaceRoutes, customerRoutes, sessionRoutes, devRoutes, baseRoutes);
+module.exports = [].concat(tsvRoutes, interfaceRoutes, customerRoutes, sessionRoutes, adminRoutes, devRoutes, baseRoutes);

@@ -7,7 +7,7 @@ var fsplit = __filename.split(path.sep)
 	, ACTION = filen.substr(0, filen.lastIndexOf('.'))
 	, debug = require('debug')('vending-app-gui:routes:' + ACTION)
 	
-	, TsvProxy = require('./handlers/TsvProxy')
+	, TsvProxy = require('./handlers/tsv/TsvProxy')
 	;
 
 module.exports = [

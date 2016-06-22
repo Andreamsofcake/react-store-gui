@@ -19,6 +19,7 @@ import AdminJofemarExerciser from './components/AdminJofemarExerciser'
 import AdminLogin from './components/AdminLogin'
 import AdminPrintReaderTester from './components/AdminPrintReaderTester'
 import AdminSettings from './components/AdminSettings'
+import AdminStorefrontData from './components/AdminStorefrontData'
 import AdminSystemInfo from './components/AdminSystemInfo'
 import AdminVms from './components/AdminVms'
 
@@ -61,6 +62,7 @@ export default (
 			<Route path='Login' component={AdminLogin} />
 			<Route path='PrintReaderTest' component={AdminPrintReaderTester} />
 			<Route path='Settings' component={AdminSettings} />
+			<Route path='StorefrontData' component={AdminStorefrontData} />
 			<Route path='SystemInfo' component={AdminSystemInfo} />
 			<Route path='Vms' component={AdminVms} />
 

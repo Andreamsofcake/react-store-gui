@@ -1,7 +1,7 @@
 import Joi from 'joi'
 
-var SessionHandler = require('./handlers/SessionHandler')
-	, TransactionHandler = require('./handlers/TransactionHandler')
+var SessionHandler = require('./handlers/session/SessionHandler')
+	, TransactionHandler = require('./handlers/session/TransactionHandler')
 	;
 
 module.exports = [

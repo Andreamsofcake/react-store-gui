@@ -1,7 +1,7 @@
 import Joi from 'joi'
 
-var CustomerRegisterModule = require('./handlers/CustomerRegisterModule')
-	, CustomerMatchLogin = require('./handlers/CustomerMatchLogin')
+var CustomerRegisterModule = require('./handlers/customer/CustomerRegisterModule')
+	, CustomerMatchLogin = require('./handlers/customer/CustomerMatchLogin')
 	;
 
 module.exports = [

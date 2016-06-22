@@ -3,7 +3,7 @@ import path from 'path'
 import fs from 'fs'
 import RQ from 'request'
 
-import { CheckRegistration, TeamViewerID } from '../../lib/Bootup'
+import { CheckRegistration, TeamViewerID } from '../../../lib/Bootup'
 
 var fsplit = __filename.split(path.sep)
 	, filen = fsplit.pop()

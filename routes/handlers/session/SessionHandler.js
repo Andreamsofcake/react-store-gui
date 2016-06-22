@@ -2,7 +2,7 @@ import uuid from 'node-uuid'
 import SDK from 'sdk-core-lib'
 import path from 'path'
 //import fs from 'fs'
-import { CheckRegistration, ProxyCall } from '../../lib/Bootup'
+import { CheckRegistration, ProxyCall } from '../../../lib/Bootup'
 
 var fsplit = __filename.split(path.sep)
 	, filen = fsplit.pop()
