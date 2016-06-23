@@ -17794,8 +17794,6 @@
 	      if (images && images.length) {
 	        return _react2.default.createElement('img', { src: images[0].fileData, title: product.description, className: 'boxShadowed' });
 	      }
-	      Big.log('hmmm no images found?');
-	      Big.log(images);
 	      return _react2.default.createElement('img', { src: '/gfx/ProductImageNotFound.png', title: product.description, className: 'boxShadowed' });
 	    }
 	  }]);
@@ -18322,8 +18320,6 @@
 	      if (images && images.length) {
 	        return _react2.default.createElement('img', { src: images[0].fileData, className: 'boxShadowed' });
 	      }
-	      Big.log('hmmm no images found?');
-	      Big.log(images);
 	      return _react2.default.createElement('img', { src: '/gfx/ProductImageNotFound.png', className: 'boxShadowed' });
 	    }
 	  }]);
@@ -18445,8 +18441,6 @@
 	      if (images && images.length) {
 	        return _react2.default.createElement('img', { src: images[0].fileData, title: product.description, className: 'boxShadowed' });
 	      }
-	      Big.log('hmmm no images found?');
-	      Big.log(images);
 	      return _react2.default.createElement('img', { src: '/gfx/ProductImageNotFound.png', title: product.description, className: 'boxShadowed' });
 	    }
 	  }, {

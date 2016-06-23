@@ -39,8 +39,6 @@ class VendCartItem extends Component {
 			<img src={images[0].fileData} title={product.description} className="boxShadowed" />
 		);
   	}
-  	Big.log('hmmm no images found?');
-  	Big.log(images);
   	return (
   		<img src="/gfx/ProductImageNotFound.png" title={product.description} className="boxShadowed" />
   	);

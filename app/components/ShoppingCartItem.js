@@ -72,8 +72,6 @@ class ShoppingCartItem extends Component {
 			<img src={images[0].fileData} className="boxShadowed" />
 		);
   	}
-  	Big.log('hmmm no images found?');
-  	Big.log(images);
   	return (
   		<img src="/gfx/ProductImageNotFound.png" className="boxShadowed" />
   	);
