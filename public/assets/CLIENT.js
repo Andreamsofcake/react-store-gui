@@ -15648,6 +15648,9 @@
 
 			resetSelectedItem();
 			// need to log out any customer record at this point
+			Big.warn('uh, are we stuck on soething here? CL_Actions no has method???');
+			Big.log(Object.keys(_CustomerLoginActions2.default));
+			Big.log(_CustomerLoginActions2.default);
 			_CustomerLoginActions2.default.customerLogout();
 
 			if (_TsvSettingsStore2.default.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle") {

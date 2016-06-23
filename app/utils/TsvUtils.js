@@ -437,6 +437,9 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 
 		resetSelectedItem();
 		// need to log out any customer record at this point
+		Big.warn('uh, are we stuck on soething here? CL_Actions no has method???');
+		Big.log(Object.keys(CL_Actions));
+		Big.log(CL_Actions);
 		CL_Actions.customerLogout();
 
 		if (TsvSettingsStore.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
