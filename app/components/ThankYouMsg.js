@@ -43,7 +43,7 @@ class ThankYouMsg extends Component {
           <p>{' '}</p>
           <h3 style={{textAlign:'center'}}>Looking forwawrd to seeing you again.....</h3>
           <p>{' '}</p>
-          <p><_E.Button size="xs" type="success" onClick={() => { CL_Actions.customerLogout() }}>Logout</_E.Button></p>
+          <p style={{textAlign:'center'}}><_E.Button size="lg" type="primary" onClick={() => { CL_Actions.customerLogout() }}>Logout</_E.Button></p>
         </_E.Col>
       </_E.Row>
 

@@ -11109,10 +11109,10 @@
 	          ),
 	          _react2.default.createElement(
 	            'p',
-	            null,
+	            { style: { textAlign: 'center' } },
 	            _react2.default.createElement(
 	              _E.Button,
-	              { size: 'xs', type: 'success', onClick: function onClick() {
+	              { size: 'lg', type: 'primary', onClick: function onClick() {
 	                  _CustomerLoginActions2.default.customerLogout();
 	                } },
 	              'Logout'
