@@ -50,6 +50,7 @@ var appConstants = keyMirror({
 	
 	CUSTOMER_LOADED: null, // "load by membership id"
 	CREDIT_PURCHASE_COMPLETED: null,
+	MEMBERSHIP_CARD_SCANNED_LOGIN: null,
 
 // Emulator:
 	TEST_EMULATOR_RESULT: null,

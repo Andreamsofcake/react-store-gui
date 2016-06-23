@@ -132,6 +132,20 @@ var CustomerLoginActions = {
 		);
 	},
 	
+	membershipCardSwipe(loginToken) {
+		SocketAPI.send('activate-module',
+			{ action: 'scan-membership-card', module: 'license-scanner', gui: 'login', loginToken },
+			(data) => {
+				// we're not validating here, either the scan completed or failed... pass it through.
+				// CustomerStore will decide if the event is ok or err
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.MEMBERSHIP_CARD_SCANNED_LOGIN,
+					data: data
+				});
+			}
+		);
+	},
+
 	clearSteps() {
 		AppDispatcher.handleServerAction({
 			actionType: appConstants.CUSTOMER_RESET_LOGIN

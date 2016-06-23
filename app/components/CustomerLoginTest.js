@@ -84,6 +84,7 @@ class CustomerLoginTest extends Component {
   			this.setState({
   				testCustomers: A_Store.getTestCustomers()
   			});
+  			CL_Actions.membershipCardSwipe(this.state.loginToken);
   			break;
   	}
   }
@@ -103,6 +104,12 @@ class CustomerLoginTest extends Component {
 				console.log(CL_Store.getCustomerCredit());
 				browserHistory.push('/Storefront');
 			}
+  			break;
+  		
+  		case appConstants.MEMBERSHIP_CARD_SCANNED_LOGIN:
+  			if (event.membership_id) { // eventually check for loginToken? maybe not needed
+  				this.loadTestCustomer({ membership_id: event.membership_id });
+  			}
   			break;
 
   		case appConstants.LICENSE_SCANNED_LOGIN:

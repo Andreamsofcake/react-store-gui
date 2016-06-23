@@ -167,6 +167,13 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			}
 			CustomerStore.emitChange({ type: appConstants.LICENSE_SCANNED_LOGIN, status: action.data.status });
 			break;
+		
+		case appConstants.MEMBERSHIP_CARD_SCANNED_LOGIN:
+			if (action.data.status === 'ok') {
+				//pushStep('login', appConstants.LICENSE_SCANNED_LOGIN);
+			}
+			CustomerStore.emitChange({ type: appConstants.MEMBERSHIP_CARD_SCANNED_LOGIN, status: action.data.status, membership_id: action.data.status == 'ok' ? action.data.membership_id : null });
+			break;
 
 		case appConstants.PRINT_SCANNED_LOGIN:
 			if (action.data.status === 'ok') {

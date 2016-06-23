@@ -70,9 +70,12 @@ var tx_data = {
 						tx_data.products.push(D.productName); // AVT product has mongo ID as productName
 					});
 
-					tx_data.data_blob = cart;
+					tx_data.data_blob = {
+						detail: cart.detail,
+						summary: cart.summary
+					}
 					tx_data.total_amount_charged_cents = cart.summary.TotalPrice * 100;
-					tx_data.total_amount_paid_cents = tx_data.amount_cents;
+					tx_data.total_amount_paid_cents = amount_cents;
 
 					tx_data.payments = [ {
 						amount_paid_cents: tx_data.total_amount_paid_cents,
