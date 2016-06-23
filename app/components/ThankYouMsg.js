@@ -6,6 +6,8 @@ import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
+import CL_Actions from '../actions/CustomerLoginActions'
+
 import {
 	gotoDefaultIdlePage,
 	thankYouTimer,
@@ -40,6 +42,8 @@ class ThankYouMsg extends Component {
           <h1 style={{textAlign:'center'}}>Thanks for your business!</h1>
           <p>{' '}</p>
           <h3 style={{textAlign:'center'}}>Looking forwawrd to seeing you again.....</h3>
+          <p>{' '}</p>
+          <p><_E.Button size="xs" type="success" onClick={() => { CL_Actions.customerLogout() }}>Logout</_E.Button></p>
         </_E.Col>
       </_E.Row>
 

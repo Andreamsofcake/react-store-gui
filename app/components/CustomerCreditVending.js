@@ -58,6 +58,7 @@ class CashVending extends Component {
       cart: TsvSettingsStore.getCache('shoppingCart.detail'),
       customer: CL_Store.getCustomer(),
       customerCredit: CL_Store.getCustomerCredit(),
+      transactionComplete: false
       
       // only in cash.js:
       //item: TsvSettingsStore.getCache('shoppingCart.detail')[0]
@@ -160,7 +161,8 @@ class CashVending extends Component {
   _onSessionStoreChange(event) {
   	if (event && event.type === appConstants.CREDIT_PURCHASE_COMPLETED) {
 		var state = {
-			insertedAmount: this.state.summary.TotalPrice
+			insertedAmount: this.state.summary.TotalPrice,
+			transactionComplete: true
 		};
 		this.setState(state);
 		
@@ -186,12 +188,7 @@ class CashVending extends Component {
   		&& this.state.customerCredit.current_credit_cents
   		&& this.state.summary.TotalPrice * 100 <= this.state.customerCredit.current_credit_cents
   	) {
-  		// TESTING!
-  		// for realz, this will have to go back to server and capture/spend the credits first...
-  		
-  		var FAKE_TRANSACTION_ID = 'testing';
-  		
-  		SessionActions.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100, FAKE_TRANSACTION_ID);
+  		SessionActions.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100);
 
   	} else {
   		alert('Sorry, something happened there, you don\'t appear to have enough credits now.');
@@ -398,6 +395,11 @@ class CashVending extends Component {
   }
   
   renderPayCreditsOption() {
+  	if (this.state.transactionComplete) {
+  		return (
+  			<p style={{fontSize:'2em',textAlign:'center'}}>Payment complete, thanks!</p>
+  		);
+  	}
   	if (this.state.summary.TotalPrice
   		&& this.state.customer
   		&& this.state.customerCredit
@@ -413,10 +415,6 @@ class CashVending extends Component {
   		<p style={{fontSize:'2em',textAlign:'center'}}>Sorry, you don't have enough credit to make this purchase. Please add credits through Living On or remove some items from your cart.
   		<br />
   		<_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/ShoppingCart') }}>View My Cart</_E.Button>
-  		<br />
-  		<pre style={{fontSize: '0.6em'}}>
-  		{JSON.stringify(this.state, null, 4)}
-  		</pre>
   		</p>
   	);
   }

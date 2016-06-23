@@ -8010,12 +8010,13 @@
 				showCancelBtnCash: true,
 				cart: _TsvSettingsStore2.default.getCache('shoppingCart.detail'),
 				customer: _CustomerStore2.default.getCustomer(),
-				customerCredit: _CustomerStore2.default.getCustomerCredit()
+				customerCredit: _CustomerStore2.default.getCustomerCredit(),
+				transactionComplete: false
 
+				// only in cash.js:
+				//item: TsvSettingsStore.getCache('shoppingCart.detail')[0]
 			};
 
-			// only in cash.js:
-			//item: TsvSettingsStore.getCache('shoppingCart.detail')[0]
 			(0, _TsvUtils.resetPaymentTimer)();
 
 			// KENT note: this session var I believe is not used in Shopping Cart regime, and checkBalance only returns a boolean
@@ -8118,7 +8119,8 @@
 			value: function _onSessionStoreChange(event) {
 				if (event && event.type === _appConstants2.default.CREDIT_PURCHASE_COMPLETED) {
 					var state = {
-						insertedAmount: this.state.summary.TotalPrice
+						insertedAmount: this.state.summary.TotalPrice,
+						transactionComplete: true
 					};
 					this.setState(state);
 
@@ -8140,12 +8142,7 @@
 			key: 'completeCreditPurchase',
 			value: function completeCreditPurchase() {
 				if (this.state.summary.TotalPrice && this.state.customer && this.state.customerCredit && this.state.customerCredit.current_credit_cents && this.state.summary.TotalPrice * 100 <= this.state.customerCredit.current_credit_cents) {
-					// TESTING!
-					// for realz, this will have to go back to server and capture/spend the credits first...
-
-					var FAKE_TRANSACTION_ID = 'testing';
-
-					_SessionActions2.default.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100, FAKE_TRANSACTION_ID);
+					_SessionActions2.default.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100);
 				} else {
 					alert('Sorry, something happened there, you don\'t appear to have enough credits now.');
 				}
@@ -8420,6 +8417,13 @@
 		}, {
 			key: 'renderPayCreditsOption',
 			value: function renderPayCreditsOption() {
+				if (this.state.transactionComplete) {
+					return _react2.default.createElement(
+						'p',
+						{ style: { fontSize: '2em', textAlign: 'center' } },
+						'Payment complete, thanks!'
+					);
+				}
 				if (this.state.summary.TotalPrice && this.state.customer && this.state.customerCredit && this.state.customerCredit.current_credit_cents && this.state.summary.TotalPrice * 100 <= this.state.customerCredit.current_credit_cents) {
 					return _react2.default.createElement(
 						_E.Button,
@@ -8439,12 +8443,6 @@
 								_reactRouter.browserHistory.push('/ShoppingCart');
 							} },
 						'View My Cart'
-					),
-					_react2.default.createElement('br', null),
-					_react2.default.createElement(
-						'pre',
-						{ style: { fontSize: '0.6em' } },
-						JSON.stringify(this.state, null, 4)
 					)
 				);
 			}
@@ -11032,6 +11030,10 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
+	var _CustomerLoginActions = __webpack_require__(84);
+
+	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
+
 	var _TsvUtils = __webpack_require__(78);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
@@ -11099,6 +11101,22 @@
 	            'h3',
 	            { style: { textAlign: 'center' } },
 	            'Looking forwawrd to seeing you again.....'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            ' '
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            _react2.default.createElement(
+	              _E.Button,
+	              { size: 'xs', type: 'success', onClick: function onClick() {
+	                  _CustomerLoginActions2.default.customerLogout();
+	                } },
+	              'Logout'
+	            )
 	          )
 	        )
 	      );
