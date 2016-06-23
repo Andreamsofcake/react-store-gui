@@ -4821,6 +4821,10 @@
 
 	var _TsvUtils = __webpack_require__(67);
 
+	var _BigLogger = __webpack_require__(1);
+
+	var _BigLogger2 = _interopRequireDefault(_BigLogger);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -4832,6 +4836,8 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 	//import TsvService from '../../lib/TsvService'
 
+
+	var Big = new _BigLogger2.default('AdminJofemarExerciser');
 
 	var AdminJofemarExerciser = function (_Component) {
 	  _inherits(AdminJofemarExerciser, _Component);
@@ -4930,6 +4936,8 @@
 	    value: function _onTsvChange(event) {
 	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 	      if (event && event.method == 'notifyVmsEvent') {
+	        Big.log('TSV event');
+	        Big.log(event);
 	        var status = this.state.vmsStatus;
 	        status.push(eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')');
 	        this.setState({
@@ -17908,11 +17916,6 @@
 		},
 		getImagesForProduct: function getImagesForProduct(product) {
 			if (_store.storefrontData.productImages.length) {
-				Big.log('getImagesForProduct');
-				Big.log(product);
-				Big.log(_store.storefrontData.productImages.map(function (I) {
-					return I.product;
-				}));
 				return _store.storefrontData.productImages.filter(function (I) {
 					return I.product === product._id;
 				});

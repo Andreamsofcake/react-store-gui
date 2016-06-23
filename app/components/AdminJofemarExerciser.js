@@ -13,6 +13,9 @@ import {
 	startGeneralIdleTimer,
 } from '../utils/TsvUtils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminJofemarExerciser');
+
 class AdminJofemarExerciser extends Component {
 
   constructor(props, context) {
@@ -92,6 +95,8 @@ class AdminJofemarExerciser extends Component {
     _onTsvChange(event) {
     	startGeneralIdleTimer(this.props.location.pathname);
     	if (event && event.method == 'notifyVmsEvent') {
+    		Big.log('TSV event');
+    		Big.log(event);
     		var status = this.state.vmsStatus;
     		status.push(eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')');
 			this.setState({

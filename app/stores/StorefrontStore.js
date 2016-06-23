@@ -77,9 +77,6 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 	
 	getImagesForProduct(product) {
 		if (_store.storefrontData.productImages.length) {
-			Big.log('getImagesForProduct');
-			Big.log(product);
-			Big.log(_store.storefrontData.productImages.map( I => { return I.product }) );
 			return _store.storefrontData.productImages.filter( I => { return I.product === product._id });
 		}
 		return null;
