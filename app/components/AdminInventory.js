@@ -220,7 +220,7 @@ class AdminInventory extends Component {
 	          	  var data2 = StorefrontStore.decorateProducts(data);
 				  this.setState({
 					verifiedProductData: data2,
-					productImages: StorefrontStore.getImagesForProduct(data2)
+					productImages: StorefrontStore.getImagesForProduct(data2),
 					// just reference it direct if you need... verifiedProductData.inventoryCount
 					//stockCount: "Stock Count: " + data.inventoryCount,
 					num: ""
