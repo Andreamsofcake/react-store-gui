@@ -156,10 +156,11 @@ class CustomerLoginTest extends Component {
     	<div>
 		  <_E.Row >
 			<_E.Col>
-			  <h2>TEST Customer Login</h2>
-			  <p>This module is for quick testing of the system while we're finishing support for the membership cards.</p>
-			  <p>Choose a customer below to shop with.</p>
-			  <p><strong>Don't worry, this will ONLY be here when the machine is in test mode!</strong></p>
+			  <h1>TEST Customer Login</h1>
+			  <p style={{fontSize: '1.3em'}}>This module is for quick testing of the system while we're finishing support for the membership cards.</p>
+			  <p style={{fontSize: '1.3em'}}>Choose a customer below to shop with.</p>
+			  <p style={{fontSize: '1.3em'}}><strong>Don't worry, this will ONLY be here when the machine is in test mode!</strong></p>
+			  <h3>OR: if you have a card in hand that matches one of the test accounts (talk to Kevin) then you can use that instead</h3>
 			</_E.Col>
 		  </_E.Row>
 		  <_E.Row >

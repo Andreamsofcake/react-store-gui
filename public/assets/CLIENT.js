@@ -9495,28 +9495,33 @@
 	            _E.Col,
 	            null,
 	            _react2.default.createElement(
-	              'h2',
+	              'h1',
 	              null,
 	              'TEST Customer Login'
 	            ),
 	            _react2.default.createElement(
 	              'p',
-	              null,
+	              { style: { fontSize: '1.3em' } },
 	              'This module is for quick testing of the system while we\'re finishing support for the membership cards.'
 	            ),
 	            _react2.default.createElement(
 	              'p',
-	              null,
+	              { style: { fontSize: '1.3em' } },
 	              'Choose a customer below to shop with.'
 	            ),
 	            _react2.default.createElement(
 	              'p',
-	              null,
+	              { style: { fontSize: '1.3em' } },
 	              _react2.default.createElement(
 	                'strong',
 	                null,
 	                'Don\'t worry, this will ONLY be here when the machine is in test mode!'
 	              )
+	            ),
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              'OR: if you have a card in hand that matches one of the test accounts (talk to Kevin) then you can use that instead'
 	            )
 	          )
 	        ),
@@ -10338,6 +10343,10 @@
 
 	var _BigLogger2 = _interopRequireDefault(_BigLogger);
 
+	var _CustomerStore = __webpack_require__(85);
+
+	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
+
 	var _TsvStore = __webpack_require__(75);
 
 	var _TsvStore2 = _interopRequireDefault(_TsvStore);
@@ -10397,6 +10406,7 @@
 
 	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
 	    _this._onStoreFrontChange = _this._onStoreFrontChange.bind(_this);
+	    _this._onCLStoreChange = _this._onCLStoreChange.bind(_this);
 
 	    if (window) {
 	      window.SFS = _StorefrontStore2.default;
@@ -10418,6 +10428,7 @@
 
 	      _TsvSettingsStore2.default.addChangeListener(this._onRootstoreChange);
 	      _StorefrontStore2.default.addChangeListener(this._onStoreFrontChange);
+	      _CustomerStore2.default.addChangeListener(this._onCLStoreChange);
 
 	      _TsvActions2.default.apiCall('fetchProduct', function (err, data) {
 	        if (err) Big.throw(err);
@@ -10454,6 +10465,15 @@
 	    value: function componentWillUnmount() {
 	      _TsvSettingsStore2.default.removeChangeListener(this._onRootstoreChange);
 	      _StorefrontStore2.default.removeChangeListener(this._onStoreFrontChange);
+	      _CustomerStore2.default.removeChangeListener(this._onCLStoreChange);
+	    }
+	  }, {
+	    key: '_onCLStoreChange',
+	    value: function _onCLStoreChange(event) {
+	      this.setState({
+	        customer: _CustomerStore2.default.getCustomer()
+	        //customerCredit: CL_Store.getCustomerCredit()
+	      });
 	    }
 	  }, {
 	    key: '_onRootstoreChange',
@@ -10496,8 +10516,38 @@
 	      _StorefrontActions2.default.addToCart(product, e);
 	    }
 	  }, {
+	    key: 'renderPleaseLogin',
+	    value: function renderPleaseLogin() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            _E.Col,
+	            { style: { textAlign: 'center' } },
+	            _react2.default.createElement(
+	              'h1',
+	              { style: { marginTop: '10em', textAlign: 'center' } },
+	              'You must login before you can shop'
+	            ),
+	            _react2.default.createElement(
+	              'p',
+	              { style: { fontSize: '1.3em', textAlign: 'center' } },
+	              'Click the login button at the top to get started.'
+	            )
+	          )
+	        )
+	      );
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+
+	      if (!this.state.customer) {
+	        return this.renderPleaseLogin();
+	      }
 
 	      var allType = !this.state.categoryIdFilter.length ? "primary" : "hollow-primary";
 	      return _react2.default.createElement(

@@ -32,6 +32,8 @@ Big.setOptions({
 });
 */
 
+import CL_Store from '../stores/CustomerStore'
+
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
@@ -52,6 +54,7 @@ class Storefront extends Component {
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
     this._onStoreFrontChange = this._onStoreFrontChange.bind(this);
+	this._onCLStoreChange = this._onCLStoreChange.bind(this);
     
     if (window) {
     	window.SFS = StorefrontStore;
@@ -68,6 +71,7 @@ class Storefront extends Component {
 
     TsvSettingsStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
+	CL_Store.addChangeListener(this._onCLStoreChange);
 
     TsvActions.apiCall('fetchProduct', (err, data) => {
       if (err) Big.throw(err);
@@ -101,8 +105,16 @@ class Storefront extends Component {
   componentWillUnmount() {
     TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
     StorefrontStore.removeChangeListener(this._onStoreFrontChange);
+	CL_Store.removeChangeListener(this._onCLStoreChange);
   }
 
+	_onCLStoreChange(event) {
+		this.setState({
+			customer: CL_Store.getCustomer()
+			//customerCredit: CL_Store.getCustomerCredit()
+		});
+	}
+	
   _onRootstoreChange(event) {
   	// if (event && event.type == 'config' && event.path == 'categories') {
 		// Big.log('[_onRootstoreChange]');
@@ -139,9 +151,26 @@ class Storefront extends Component {
   	startGeneralIdleTimer(this.props.location.pathname);
     StorefrontActions.addToCart(product, e)
   }
+  
+  renderPleaseLogin() {
+  	return (
+    	<div>
+		  <_E.Row >
+			<_E.Col style={{textAlign: 'center'}}>
+			  <h1 style={{marginTop: '10em', textAlign: 'center'}}>You must login before you can shop</h1>
+			  <p style={{fontSize: '1.3em', textAlign: 'center'}}>Click the login button at the top to get started.</p>
+			</_E.Col>
+		  </_E.Row>
+    	</div>
+  	);
+  }
 
   render() {
 
+	if (!this.state.customer) {
+		return this.renderPleaseLogin();
+	}
+    
     let allType = !this.state.categoryIdFilter.length ? "primary": "hollow-primary"
     return (
       <_E.Row >
