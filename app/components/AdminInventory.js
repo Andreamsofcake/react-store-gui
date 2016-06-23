@@ -98,7 +98,7 @@ class AdminInventory extends Component {
 					break;
 
 				default:
-					state.instructionMessage = 'Filling slot for '+this.state.verifiedProductData.productName+', one moment please...'; //Translate.translate('AdminInventory', 'EnterStockAmount');
+					state.instructionMessage = 'Filling slot for '+(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)+', one moment please...'; //Translate.translate('AdminInventory', 'EnterStockAmount');
 					state.coilNumber = this.state.num;
 					state.num = '';
 					state.inventoryGuiState = 'processing';
@@ -130,11 +130,17 @@ class AdminInventory extends Component {
 				Big.throw(err);
 				return;
 			}
-			var data2 = StorefrontStore.decorateProducts(data);
-			let state = {
-				verifiedProductData: data2,
-				productImages: StorefrontStore.getImagesForProduct(data2)
-			};
+			if (data) {
+				var data2 = StorefrontStore.decorateProducts(data);
+				let state = {
+					verifiedProductData: data2,
+					productImages: StorefrontStore.getImagesForProduct(data2)
+				};
+			} else {
+				let state = {
+					verifiedProductData: data
+				};
+			}
 			Big.log('verifiedProductData');
 			Big.log(state);
 
@@ -188,11 +194,14 @@ class AdminInventory extends Component {
   	startGeneralIdleTimer(this.props.location.pathname);
       if (this.state.coilNumber != "" && this.state.num != ""){
 		  this.setState({
-		  	instructionMessage: 'Adding '+this.state.num+' '+this.state.verifiedProductData.productName+' from stock count, one moment please.',
+		  	instructionMessage: 'Adding '+this.state.num+' '+(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)+' from stock count, one moment please.',
 		  	inventoryGuiState: 'processing'
 		  });
           TsvActions.apiCall('addStock', this.state.coilNumber, this.state.num, (err, data) => {
 			  TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
+
+	          	  // FIXME: blindly assuming that we get good product data after a successful coil select
+
 	          	  var data2 = StorefrontStore.decorateProducts(data);
 				  this.setState({
 					verifiedProductData: data2,
@@ -218,11 +227,14 @@ class AdminInventory extends Component {
   	startGeneralIdleTimer(this.props.location.pathname);
       if (this.state.coilNumber != "" && this.state.num != ""){
 		  this.setState({
-		  	instructionMessage: 'Removing '+this.state.num+' '+this.state.verifiedProductData.productName+' from stock count, one moment please.',
+		  	instructionMessage: 'Removing '+this.state.num+' '+(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)+' from stock count, one moment please.',
 		  	inventoryGuiState: 'processing'
 		  });
           TsvActions.apiCall('removeStock', this.state.coilNumber, this.state.num, (err, data) => {
 	          TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
+
+	          	  // FIXME: blindly assuming that we get good product data after a successful coil select
+
 	          	  var data2 = StorefrontStore.decorateProducts(data);
 				  this.setState({
 					verifiedProductData: data2,
@@ -379,7 +391,7 @@ class AdminInventory extends Component {
 			<_E.Row>
 			  <_E.Col sm="100%" md="100%" lg="100%">
 				  <p style={{textAlign:'center'}}>Coil: <strong>{this.state.coilNumber}</strong> Current Stock Count: <strong>{this.state.verifiedProductData.inventoryCount}</strong></p>
-				  <h3 style={{textAlign:'center'}}>{this.state.verifiedProductData.productName}</h3>
+				  <h3 style={{textAlign:'center'}}>{(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)}</h3>
 				  {this.renderProductImage()}
 			  </_E.Col>
 			</_E.Row>

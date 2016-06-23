@@ -4100,7 +4100,7 @@
 								break;
 
 							default:
-								state.instructionMessage = 'Filling slot for ' + _this3.state.verifiedProductData.productName + ', one moment please...'; //Translate.translate('AdminInventory', 'EnterStockAmount');
+								state.instructionMessage = 'Filling slot for ' + (_this3.state.verifiedProductData.name || _this3.state.verifiedProductData.productName) + ', one moment please...'; //Translate.translate('AdminInventory', 'EnterStockAmount');
 								state.coilNumber = _this3.state.num;
 								state.num = '';
 								state.inventoryGuiState = 'processing';
@@ -4134,11 +4134,17 @@
 							Big.throw(err);
 							return;
 						}
-						var data2 = _StorefrontStore2.default.decorateProducts(data);
-						var state = {
-							verifiedProductData: data2,
-							productImages: _StorefrontStore2.default.getImagesForProduct(data2)
-						};
+						if (data) {
+							var data2 = _StorefrontStore2.default.decorateProducts(data);
+							var _state = {
+								verifiedProductData: data2,
+								productImages: _StorefrontStore2.default.getImagesForProduct(data2)
+							};
+						} else {
+							var _state2 = {
+								verifiedProductData: data
+							};
+						}
 						Big.log('verifiedProductData');
 						Big.log(state);
 
@@ -4195,11 +4201,14 @@
 				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				if (this.state.coilNumber != "" && this.state.num != "") {
 					this.setState({
-						instructionMessage: 'Adding ' + this.state.num + ' ' + this.state.verifiedProductData.productName + ' from stock count, one moment please.',
+						instructionMessage: 'Adding ' + this.state.num + ' ' + (this.state.verifiedProductData.name || this.state.verifiedProductData.productName) + ' from stock count, one moment please.',
 						inventoryGuiState: 'processing'
 					});
 					_TsvActions2.default.apiCall('addStock', this.state.coilNumber, this.state.num, function (err, data) {
 						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this5.state.coilNumber, function (err, data) {
+
+							// FIXME: blindly assuming that we get good product data after a successful coil select
+
 							var data2 = _StorefrontStore2.default.decorateProducts(data);
 							_this5.setState({
 								verifiedProductData: data2,
@@ -4228,11 +4237,14 @@
 				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				if (this.state.coilNumber != "" && this.state.num != "") {
 					this.setState({
-						instructionMessage: 'Removing ' + this.state.num + ' ' + this.state.verifiedProductData.productName + ' from stock count, one moment please.',
+						instructionMessage: 'Removing ' + this.state.num + ' ' + (this.state.verifiedProductData.name || this.state.verifiedProductData.productName) + ' from stock count, one moment please.',
 						inventoryGuiState: 'processing'
 					});
 					_TsvActions2.default.apiCall('removeStock', this.state.coilNumber, this.state.num, function (err, data) {
 						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this6.state.coilNumber, function (err, data) {
+
+							// FIXME: blindly assuming that we get good product data after a successful coil select
+
 							var data2 = _StorefrontStore2.default.decorateProducts(data);
 							_this6.setState({
 								verifiedProductData: data2,
@@ -4587,7 +4599,7 @@
 								_react2.default.createElement(
 									'h3',
 									{ style: { textAlign: 'center' } },
-									this.state.verifiedProductData.productName
+									this.state.verifiedProductData.name || this.state.verifiedProductData.productName
 								),
 								this.renderProductImage()
 							)
@@ -17923,7 +17935,7 @@
 			return _store.storefrontData;
 		},
 		getImagesForProduct: function getImagesForProduct(product) {
-			if (_store.storefrontData.productImages.length) {
+			if (product && _store.storefrontData.productImages.length) {
 				return _store.storefrontData.productImages.filter(function (I) {
 					return I.product === product._id;
 				});

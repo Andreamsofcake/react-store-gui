@@ -76,7 +76,7 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 	},
 	
 	getImagesForProduct(product) {
-		if (_store.storefrontData.productImages.length) {
+		if (product && _store.storefrontData.productImages.length) {
 			return _store.storefrontData.productImages.filter( I => { return I.product === product._id });
 		}
 		return null;
