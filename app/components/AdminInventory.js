@@ -130,9 +130,13 @@ class AdminInventory extends Component {
 				Big.throw(err);
 				return;
 			}
-			let state = { verifiedProductData: data };
+			var data2 = StorefrontStore.decorateProducts(data);
+			let state = {
+				verifiedProductData: data2,
+				productImages: StorefrontStore.getImagesForProduct(data2)
+			};
 			Big.log('verifiedProductData');
-			Big.log(data);
+			Big.log(state);
 
 			switch (data.result) {
 				case "UNKNOWN":
@@ -189,8 +193,10 @@ class AdminInventory extends Component {
 		  });
           TsvActions.apiCall('addStock', this.state.coilNumber, this.state.num, (err, data) => {
 			  TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
+	          	  var data2 = StorefrontStore.decorateProducts(data);
 				  this.setState({
-					verifiedProductData: data,
+					verifiedProductData: data2,
+					productImages: StorefrontStore.getImagesForProduct(data2),
 					num: ""
 				  });
 

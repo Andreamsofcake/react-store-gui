@@ -4134,9 +4134,13 @@
 							Big.throw(err);
 							return;
 						}
-						var state = { verifiedProductData: data };
+						var data2 = _StorefrontStore2.default.decorateProducts(data);
+						var state = {
+							verifiedProductData: data2,
+							productImages: _StorefrontStore2.default.getImagesForProduct(data2)
+						};
 						Big.log('verifiedProductData');
-						Big.log(data);
+						Big.log(state);
 
 						switch (data.result) {
 							case "UNKNOWN":
@@ -4196,8 +4200,10 @@
 					});
 					_TsvActions2.default.apiCall('addStock', this.state.coilNumber, this.state.num, function (err, data) {
 						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this5.state.coilNumber, function (err, data) {
+							var data2 = _StorefrontStore2.default.decorateProducts(data);
 							_this5.setState({
-								verifiedProductData: data,
+								verifiedProductData: data2,
+								productImages: _StorefrontStore2.default.getImagesForProduct(data2),
 								num: ""
 							});
 
