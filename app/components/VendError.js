@@ -10,6 +10,7 @@ import { browserHistory } from 'react-router'
 import {
 	gotoDefaultIdlePage,
 	vendErrorTimer,
+	updateCredit
 } from '../utils/TsvUtils'
 
 class VendError extends Component {

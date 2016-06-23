@@ -58,7 +58,7 @@ class CashVending extends Component {
 
     if (TsvSettingsStore.getSession('bVendingInProcess')) {
 
-        stopPaymentTimer();
+        killTimers('paymentTimer');
 
         this.state.showSpinner = true;
         this.state.hintMsg = Translate.translate('CashVending','HintMessageVending');
@@ -225,7 +225,7 @@ class CashVending extends Component {
 
 				case 'vendResponse':
 				  	vendResponse(event.data[0]);
-				  	stopPaymentTimer();
+				  	killTimers('paymentTimer');
 					break;
 				
 				case 'notifyVendingItem':

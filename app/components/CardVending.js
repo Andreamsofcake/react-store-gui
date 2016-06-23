@@ -191,7 +191,7 @@ class CardVending extends Component {
 			switch (event.method) {
 				case 'vendResponse':
 					vendResponse(event.data); //processStatus);
-					stopPaymentTimer();
+					killTimers('paymentTimer');
 					break;
 				case 'cardTransactionResponse':
 					this.cardTransactionHandler(event.data);

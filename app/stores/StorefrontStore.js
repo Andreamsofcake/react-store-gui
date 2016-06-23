@@ -96,6 +96,7 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 				let thisProd = _store.storefrontData.products.filter( P => { return P._id == AP.productName; });
 				if (thisProd && thisProd.length) {
 					thisProd = JSON.parse( JSON.stringify( thisProd[0] ));
+					/*
 					thisProd.price = AP.price;
 					thisProd.productID = AP.productID;
 					thisProd.inventoryCount = AP.inventoryCount;
@@ -103,6 +104,12 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 					if (AP.qtyInCart) {
 						thisProd.qtyInCart = AP.qtyInCart;
 					}
+					*/
+					Object.keys(AP).forEach( KEY => {
+						if (!thisProd.hasOwnProperty(KEY) || !thisProd[KEY]) {
+							thisProd[KEY] = AP[KEY]
+						}
+					});
 					stack.push(thisProd);
 				}
 			});

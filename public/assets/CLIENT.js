@@ -632,7 +632,7 @@
 
 	var _AdminHome2 = _interopRequireDefault(_AdminHome);
 
-	var _AdminInventory = __webpack_require__(20);
+	var _AdminInventory = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/AdminInventory\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var _AdminInventory2 = _interopRequireDefault(_AdminInventory);
 
@@ -1354,8 +1354,6 @@
 
 	var _utils = __webpack_require__(5);
 
-	var _TsvUtils = __webpack_require__(67);
-
 	var _Translate = __webpack_require__(68);
 
 	var Translate = _interopRequireWildcard(_Translate);
@@ -1395,6 +1393,8 @@
 	var _StorefrontActions = __webpack_require__(76);
 
 	var _StorefrontActions2 = _interopRequireDefault(_StorefrontActions);
+
+	var _TsvUtils = __webpack_require__(67);
 
 	var _BigLogger = __webpack_require__(1);
 
@@ -1785,7 +1785,7 @@
 	            _TsvSettingsStore2.default.setCache('shoppingCart', cart);
 	        });
 
-	        updateCredit();
+	        (0, _TsvUtils.updateCredit)();
 	        var item = _TsvSettingsStore2.default.getConfig('pvr');
 
 	        // moved up here, closer to the actual declaration
@@ -3943,845 +3943,7 @@
 	exports.default = AdminHome;
 
 /***/ },
-/* 20 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-		value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(8);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Translate = __webpack_require__(68);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _TsvSettingsStore = __webpack_require__(69);
-
-	var _TsvSettingsStore2 = _interopRequireDefault(_TsvSettingsStore);
-
-	var _reactRouter = __webpack_require__(9);
-
-	var _elemental = __webpack_require__(121);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	var _TsvActions = __webpack_require__(75);
-
-	var _TsvActions2 = _interopRequireDefault(_TsvActions);
-
-	var _TsvUtils = __webpack_require__(67);
-
-	var _BigLogger = __webpack_require__(1);
-
-	var _BigLogger2 = _interopRequireDefault(_BigLogger);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	//import TsvService from '../../lib/TsvService'
-
-
-	var Big = new _BigLogger2.default('AdminInventory');
-
-	var AdminInventory = function (_Component) {
-		_inherits(AdminInventory, _Component);
-
-		function AdminInventory(props, context) {
-			_classCallCheck(this, AdminInventory);
-
-			//TsvSettingsStore.setSession('currentView', 'AdminInventory');
-
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AdminInventory).call(this, props, context));
-			// MUST call super() before any this.*
-
-
-			_this.state = {
-				instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-				machineID: 0,
-				num: "",
-				maxChars: _TsvSettingsStore2.default.getConfig('bDualMachine') ? 3 : 2,
-				inventoryGuiState: 'selectSlot',
-				showKeypad: false
-			};
-
-			if (_TsvSettingsStore2.default.getCache('machineList').length > 1) {
-				_this.state.bShowDropDownForMachines = true;
-			}
-			return _this;
-		}
-
-		// Add change listeners to stores
-
-
-		_createClass(AdminInventory, [{
-			key: 'componentDidMount',
-			value: function componentDidMount() {
-				var _this2 = this;
-
-				_TsvActions2.default.apiCall('fetchMachineIds', function (err, ids) {
-					_TsvSettingsStore2.default.setCache('machineList', ids);
-					if (ids && ids.length > 1) {
-						_this2.setState({
-							bShowDropDownForMachines: true
-						});
-					}
-				});
-
-				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-			}
-
-			// Remove change listers from stores
-
-		}, {
-			key: 'componentWillUnmount',
-			value: function componentWillUnmount() {}
-		}, {
-			key: 'fillMachine',
-			value: function fillMachine() {
-				if (this.state.machineID) {
-					(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-					_TsvActions2.default.apiCall('fillMachine', this.state.machineID.toString());
-				} else {
-					alert('error, cannot fill the machine as there is no machineID');
-				}
-			}
-		}, {
-			key: 'fillCoil',
-			value: function fillCoil() {
-				var _this3 = this;
-
-				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				if (this.state.coilNumber != "") {
-					_TsvActions2.default.apiCall('adminValidateProductByCoil', this.state.coilNumber, function (err, data) {
-						if (err) {
-							Big.throw(err);
-							return;
-						}
-						var state = { verifiedProductData: data };
-
-						switch (state.verifiedProductData.result) {
-							case "UNKNOWN":
-								state.instructionMessage = Translate.translate('AdminInventory', 'UnknownProduct');
-								setTimeout(function () {
-									_this3.setState({
-										instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-										inventoryGuiState: 'selectSlot',
-										num: ""
-									});
-								}, 3000);
-								break;
-
-							case "INVALID_PRODUCT":
-								state.instructionMessage = Translate.translate('AdminInventory', 'InvalidProduct');
-								setTimeout(function () {
-									_this3.setState({
-										instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-										inventoryGuiState: 'selectSlot',
-										num: ""
-									});
-								}, 3000);
-								break;
-
-							default:
-								state.instructionMessage = 'Filling slot for ' + _this3.state.verifiedProductData.productName + ', one moment please...'; //Translate.translate('AdminInventory', 'EnterStockAmount');
-								state.coilNumber = _this3.state.num;
-								state.num = '';
-								state.inventoryGuiState = 'processing';
-								_TsvActions2.default.apiCall('fillCoil', state.coilNumber, function () {
-									// artificial delay for GUI flow:
-									setTimeout(function () {
-										_this3.setState({
-											instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-											inventoryGuiState: 'selectSlot',
-											num: "",
-											coilNumber: null
-										});
-									}, 3000);
-								});
-								break;
-						}
-						_this3.setState(state);
-					});
-				}
-			}
-		}, {
-			key: 'selectSlot',
-			value: function selectSlot() {
-				var _this4 = this;
-
-				var num = parseInt(this.state.num);
-				if (num) {
-					(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-					_TsvActions2.default.apiCall('adminValidateProductByCoil', this.state.num, function (err, data) {
-						if (err) {
-							Big.throw(err);
-							return;
-						}
-						var state = { verifiedProductData: data };
-						Big.log('verifiedProductData');
-						Big.log(data);
-
-						switch (data.result) {
-							case "UNKNOWN":
-								state.instructionMessage = Translate.translate('AdminInventory', 'UnknownProduct');
-								setTimeout(function () {
-									_this4.setState({
-										instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-										inventoryGuiState: 'selectSlot',
-										num: ""
-									});
-								}, 3000);
-								break;
-
-							case "INVALID_PRODUCT":
-								state.instructionMessage = Translate.translate('AdminInventory', 'InvalidProduct');
-								setTimeout(function () {
-									_this4.setState({
-										instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-										inventoryGuiState: 'selectSlot',
-										num: ""
-									});
-								}, 3000);
-								break;
-
-							default:
-								state.instructionMessage = Translate.translate('AdminInventory', 'EnterStockAmount');
-								state.coilNumber = _this4.state.num;
-								state.num = '';
-								state.inventoryGuiState = 'stock';
-								break;
-						}
-						_this4.setState(state);
-					});
-				}
-			}
-		}, {
-			key: 'cancelSlot',
-			value: function cancelSlot() {
-				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				this.setState({
-					inventoryGuiState: 'selectSlot',
-					num: "",
-					verifiedProductData: null,
-					coilNumber: null
-				});
-			}
-		}, {
-			key: 'addStock',
-			value: function addStock() {
-				var _this5 = this;
-
-				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				if (this.state.coilNumber != "" && this.state.num != "") {
-					this.setState({
-						instructionMessage: 'Adding ' + this.state.num + ' ' + this.state.verifiedProductData.productName + ' from stock count, one moment please.',
-						inventoryGuiState: 'processing'
-					});
-					_TsvActions2.default.apiCall('addStock', this.state.coilNumber, this.state.num, function (err, data) {
-						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this5.state.coilNumber, function (err, data) {
-							_this5.setState({
-								verifiedProductData: data,
-								num: ""
-							});
-
-							setTimeout(function () {
-								_this5.setState({
-									instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-									inventoryGuiState: 'selectSlot',
-									num: ""
-								});
-							}, 2000);
-						});
-					});
-				} else {
-					Big.warn('tried to addStock, but did not have both "coilNumber" and "num" in state');
-				}
-			}
-		}, {
-			key: 'removeStock',
-			value: function removeStock() {
-				var _this6 = this;
-
-				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				if (this.state.coilNumber != "" && this.state.num != "") {
-					this.setState({
-						instructionMessage: 'Removing ' + this.state.num + ' ' + this.state.verifiedProductData.productName + ' from stock count, one moment please.',
-						inventoryGuiState: 'processing'
-					});
-					_TsvActions2.default.apiCall('removeStock', this.state.coilNumber, this.state.num, function (err, data) {
-						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this6.state.coilNumber, function (err, data) {
-							_this6.setState({
-								verifiedProductData: data,
-								// just reference it direct if you need... verifiedProductData.inventoryCount
-								//stockCount: "Stock Count: " + data.inventoryCount,
-								num: ""
-							});
-
-							setTimeout(function () {
-								_this6.setState({
-									instructionMessage: Translate.translate('AdminInventory', 'EnterCoil'),
-									inventoryGuiState: 'selectSlot',
-									num: ""
-								});
-							}, 2000);
-						});
-					});
-				} else {
-					Big.warn('tried to removeStock, but did not have both "coilNumber" and "num" in state');
-				}
-			}
-		}, {
-			key: 'clear',
-			value: function clear() {
-				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				this.setState({
-					num: ""
-				});
-			}
-		}, {
-			key: 'press',
-			value: function press(digit) {
-				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				var num = this.state.num;
-				if (num.length < this.state.maxChars) {
-					num += digit;
-				}
-				this.setState({
-					num: parseInt(num).toString()
-				});
-			}
-		}, {
-			key: 'getMachineSelectOptions',
-			value: function getMachineSelectOptions() {
-				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				var options = [];
-				_TsvSettingsStore2.default.getCache('machineList').forEach(function (MACHINE) {
-					options.push({ label: 'Machine ' + MACHINE, value: MACHINE });
-				});
-				return options;
-			}
-		}, {
-			key: 'render',
-			value: function render() {
-				return _react2.default.createElement(
-					_E.Row,
-					{ className: 'inventory', style: { maxWidth: '50%', margin: '1em auto' } },
-					_react2.default.createElement(
-						'h1',
-						{ style: { fontWeight: 300 } },
-						'Inventory'
-					),
-					_react2.default.createElement(
-						_E.Col,
-						null,
-						_react2.default.createElement(
-							'h2',
-							{ id: 'instruction' },
-							this.state.instructionMessage
-						),
-						this.renderSelectSlot(),
-						this.renderManageStockForSlot()
-					)
-				);
-			}
-		}, {
-			key: 'renderSelectSlot',
-			value: function renderSelectSlot() {
-				if (this.state.inventoryGuiState === 'selectSlot') {
-					return _react2.default.createElement(
-						'div',
-						null,
-						this.renderKeypad(),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', type: 'warning', onClick: this.clear.bind(this) },
-									'Clear'
-								)
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								' '
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								_react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
-										_reactRouter.Link,
-										{ to: '/Admin/Home' },
-										Translate.translate('AdminHome', 'Home')
-									) })
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ style: { margin: '0 auto', display: 'block' }, size: 'lg', type: 'primary', onClick: this.selectSlot.bind(this) },
-									'Select Slot ',
-									this.state.num
-								)
-							),
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								null,
-								_react2.default.createElement(
-									'div',
-									{ style: { textAlign: 'center', border: '1px solid #dfdfdf', backgroundColor: '#fff', borderRadius: '4px', margin: '20px auto' } },
-									_react2.default.createElement(
-										'h2',
-										null,
-										'Slot number: ',
-										this.state.num
-									)
-								)
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
-								_TsvSettingsStore2.default.getCache('machineList').length > 1 ? _react2.default.createElement(_E.FormSelect, { name: 'selectMachine', value: this.state.machineID, options: this.getMachineSelectOptions() }) : null,
-								_react2.default.createElement(
-									'p',
-									null,
-									_react2.default.createElement(
-										_E.Button,
-										{ size: 'lg', id: 'fillMachine', onClick: this.fillMachine.bind(this) },
-										Translate.translate('AdminInventory', 'FillMachine')
-									)
-								),
-								_react2.default.createElement(
-									'h4',
-									{ id: 'displayMachine' },
-									Translate.translate('AdminInventory', 'FillAllCoilsForMachine'),
-									' ',
-									this.state.machineID + 1
-								)
-							),
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
-						)
-					);
-				}
-				return null;
-			}
-		}, {
-			key: 'renderManageStockForSlot',
-			value: function renderManageStockForSlot() {
-				if (this.state.inventoryGuiState === 'stock') {
-					return _react2.default.createElement(
-						'div',
-						null,
-						this.renderKeypad(),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', type: 'warning', onClick: this.clear.bind(this) },
-									'Clear'
-								)
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								' '
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', type: 'primary', onClick: this.cancelSlot.bind(this) },
-									_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
-									'Cancel'
-								)
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								null,
-								_react2.default.createElement(
-									'div',
-									{ style: { textAlign: 'center', border: '1px solid #dfdfdf', backgroundColor: '#fff', borderRadius: '4px', margin: '20px auto' } },
-									_react2.default.createElement(
-										'h2',
-										null,
-										'stock amount: ',
-										this.state.num
-									)
-								)
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', style: { float: 'left' }, type: 'danger', onClick: this.removeStock.bind(this) },
-									_react2.default.createElement(_E.Glyph, { icon: 'dash' }),
-									'Remove ',
-									this.state.num,
-									' Items'
-								)
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', style: { float: 'right' }, type: 'success', onClick: this.addStock.bind(this) },
-									_react2.default.createElement(_E.Glyph, { icon: 'plus' }),
-									'Add ',
-									this.state.num,
-									' Items'
-								)
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2' },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', type: 'primary', onClick: this.fillCoil.bind(this), style: { margin: '0 auto', display: 'block' } },
-									'Fill Slot To Par'
-								)
-							),
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '100%', md: '100%', lg: '100%' },
-								_react2.default.createElement(
-									'p',
-									{ style: { textAlign: 'center' } },
-									'Coil: ',
-									_react2.default.createElement(
-										'strong',
-										null,
-										this.state.coilNumber
-									),
-									' Current Stock Count: ',
-									_react2.default.createElement(
-										'strong',
-										null,
-										this.state.verifiedProductData.inventoryCount
-									)
-								),
-								_react2.default.createElement(
-									'h3',
-									{ style: { textAlign: 'center' } },
-									this.state.verifiedProductData.productName
-								),
-								this.state.verifiedProductData.imagePath ? _react2.default.createElement(
-									'p',
-									{ style: { textAlign: 'center' } },
-									_react2.default.createElement('img', { src: this.state.verifiedProductData.imagePath, className: 'boxShadowed', style: { maxHeight: '10em' } })
-								) : _react2.default.createElement(
-									'p',
-									{ style: { textTransform: 'uppercase', textAlign: 'center' } },
-									'no',
-									_react2.default.createElement('br', null),
-									'product',
-									_react2.default.createElement('br', null),
-									'image',
-									_react2.default.createElement('br', null),
-									'found'
-								)
-							)
-						)
-					);
-				}
-				return null;
-			}
-		}, {
-			key: 'renderKeypad',
-			value: function renderKeypad() {
-				return _react2.default.createElement(
-					'div',
-					null,
-					_react2.default.createElement(
-						_E.Row,
-						null,
-						_react2.default.createElement(
-							'p',
-							null,
-							' '
-						)
-					),
-					_react2.default.createElement(
-						_E.Row,
-						null,
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 1) },
-								'1'
-							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 2) },
-								'2'
-							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 3) },
-								'3'
-							)
-						)
-					),
-					_react2.default.createElement(
-						_E.Row,
-						null,
-						_react2.default.createElement(
-							'p',
-							null,
-							' '
-						)
-					),
-					_react2.default.createElement(
-						_E.Row,
-						null,
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 4) },
-								'4'
-							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 5) },
-								'5'
-							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 6) },
-								'6'
-							)
-						)
-					),
-					_react2.default.createElement(
-						_E.Row,
-						null,
-						_react2.default.createElement(
-							'p',
-							null,
-							' '
-						)
-					),
-					_react2.default.createElement(
-						_E.Row,
-						null,
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 7) },
-								'7'
-							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 8) },
-								'8'
-							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 9) },
-								'9'
-							)
-						)
-					),
-					_react2.default.createElement(
-						_E.Row,
-						null,
-						_react2.default.createElement(
-							'p',
-							null,
-							' '
-						)
-					),
-					_react2.default.createElement(
-						_E.Row,
-						null,
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							' '
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							_react2.default.createElement(
-								_E.Button,
-								{ size: 'lg', onClick: this.press.bind(this, 0) },
-								'0'
-							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-							' '
-						)
-					)
-				);
-			}
-		}]);
-
-		return AdminInventory;
-	}(_react.Component);
-
-	exports.default = AdminInventory;
-
-/***/ },
+/* 20 */,
 /* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -7075,7 +6237,7 @@
 					switch (event.method) {
 						case 'vendResponse':
 							(0, _TsvUtils.vendResponse)(event.data); //processStatus);
-							stopPaymentTimer();
+							(0, _TsvUtils.killTimers)('paymentTimer');
 							break;
 						case 'cardTransactionResponse':
 							this.cardTransactionHandler(event.data);
@@ -7259,7 +6421,7 @@
 
 			if (_TsvSettingsStore2.default.getSession('bVendingInProcess')) {
 
-				stopPaymentTimer();
+				(0, _TsvUtils.killTimers)('paymentTimer');
 
 				_this.state.showSpinner = true;
 				_this.state.hintMsg = Translate.translate('CashVending', 'HintMessageVending');
@@ -7437,7 +6599,7 @@
 
 						case 'vendResponse':
 							(0, _TsvUtils.vendResponse)(event.data[0]);
-							stopPaymentTimer();
+							(0, _TsvUtils.killTimers)('paymentTimer');
 							break;
 
 						case 'notifyVendingItem':
@@ -10165,7 +9327,7 @@
 	    // MUST call super() before any this.*
 
 
-	    updateCredit();
+	    (0, _TsvUtils.updateCredit)();
 	    _this.state = {
 	      errorMsg1: _TsvSettingsStore2.default.getSession('vendErrorMsg1'),
 	      errorMsg2: _TsvSettingsStore2.default.getSession('vendErrorMsg2')
@@ -10296,7 +9458,7 @@
 	    _TsvSettingsStore2.default.setConfig('bDisplayCgryNavigation', false);
 	    //TsvSettingsStore.setSession('currentView', 'CategorySearch');
 	    //TsvSettingsStore.setCache('currentLocation', '/CategorySearch');
-	    updateCredit();
+	    (0, _TsvUtils.updateCredit)();
 
 	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
 	    return _this;
@@ -17936,13 +17098,20 @@
 					});
 					if (thisProd && thisProd.length) {
 						thisProd = JSON.parse(JSON.stringify(thisProd[0]));
-						thisProd.price = AP.price;
-						thisProd.productID = AP.productID;
-						thisProd.inventoryCount = AP.inventoryCount;
-						thisProd.stockCount = AP.stockCount;
-						if (AP.qtyInCart) {
-							thisProd.qtyInCart = AP.qtyInCart;
-						}
+						/*
+	     thisProd.price = AP.price;
+	     thisProd.productID = AP.productID;
+	     thisProd.inventoryCount = AP.inventoryCount;
+	     thisProd.stockCount = AP.stockCount;
+	     if (AP.qtyInCart) {
+	     	thisProd.qtyInCart = AP.qtyInCart;
+	     }
+	     */
+						Object.keys(AP).forEach(function (KEY) {
+							if (!thisProd.hasOwnProperty(KEY) || !thisProd[KEY]) {
+								thisProd[KEY] = AP[KEY];
+							}
+						});
 						stack.push(thisProd);
 					}
 				});
@@ -57601,7 +56770,7 @@
 
 			if (_TsvSettingsStore2.default.getSession('bVendingInProcess')) {
 
-				stopPaymentTimer();
+				(0, _TsvUtils.killTimers)('paymentTimer');
 
 				_this.state.showSpinner = true;
 				_this.state.hintMsg = Translate.translate('CashVending', 'HintMessageVending');
@@ -57793,7 +56962,7 @@
 
 						case 'vendResponse':
 							(0, _TsvUtils.vendResponse)(event.data[0]);
-							stopPaymentTimer();
+							(0, _TsvUtils.killTimers)('paymentTimer');
 							break;
 
 						case 'notifyVendingItem':

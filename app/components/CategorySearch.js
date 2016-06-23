@@ -10,6 +10,7 @@ import CategoryListItem from './CategoryListItem'
 import TsvActions from '../actions/TsvActions'
 import {
 	isCartEmpty,
+	updateCredit
 } from '../utils/TsvUtils'
 
 import Log from '../utils/BigLogger'

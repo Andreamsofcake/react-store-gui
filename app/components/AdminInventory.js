@@ -6,6 +6,8 @@ import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
+import StorefrontStore from '../stores/StorefrontStore'
+
 import TsvActions from '../actions/TsvActions'
 import {
 	startGeneralIdleTimer,
@@ -215,8 +217,10 @@ class AdminInventory extends Component {
 		  });
           TsvActions.apiCall('removeStock', this.state.coilNumber, this.state.num, (err, data) => {
 	          TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
+	          	  var data2 = StorefrontStore.decorateProducts(data);
 				  this.setState({
-					verifiedProductData: data,
+					verifiedProductData: data2,
+					productImages: StorefrontStore.getImagesForProduct(data2)
 					// just reference it direct if you need... verifiedProductData.inventoryCount
 					//stockCount: "Stock Count: " + data.inventoryCount,
 					num: ""
@@ -313,8 +317,10 @@ class AdminInventory extends Component {
 				<_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
 				<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}>
 					{ TsvSettingsStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
+					{/*
 					<p><_E.Button size="lg" id="fillMachine" onClick={this.fillMachine.bind(this)}>{Translate.translate('AdminInventory', 'FillMachine')}</_E.Button></p>
 					<h4 id="displayMachine">{Translate.translate('AdminInventory','FillAllCoilsForMachine')} { this.state.machineID + 1 }</h4>
+					*/}
 				</_E.Col>
 				<_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}></_E.Col>
 			</_E.Row>
@@ -368,10 +374,7 @@ class AdminInventory extends Component {
 			  <_E.Col sm="100%" md="100%" lg="100%">
 				  <p style={{textAlign:'center'}}>Coil: <strong>{this.state.coilNumber}</strong> Current Stock Count: <strong>{this.state.verifiedProductData.inventoryCount}</strong></p>
 				  <h3 style={{textAlign:'center'}}>{this.state.verifiedProductData.productName}</h3>
-				  {this.state.verifiedProductData.imagePath ? 
-					(<p style={{textAlign:'center'}}><img src={this.state.verifiedProductData.imagePath} className="boxShadowed" style={{maxHeight:'10em'}} /></p>)
-					: (<p style={{textTransform:'uppercase',textAlign:'center'}}>no<br />product<br />image<br />found</p>)
-					}
+				  {this.renderProductImage()}
 			  </_E.Col>
 			</_E.Row>
 
@@ -380,6 +383,19 @@ class AdminInventory extends Component {
 		);
 	}
 	return null;
+  }
+  
+  renderProductImage() {
+  	/*
+	  {this.state.verifiedProductData.imagePath ? 
+		(<p style={{textAlign:'center'}}><img src={this.state.verifiedProductData.imagePath} className="boxShadowed" style={{maxHeight:'10em'}} /></p>)
+		: (<p style={{textTransform:'uppercase',textAlign:'center'}}>no<br />product<br />image<br />found</p>)
+		}
+	*/
+	if (this.state.productImages && this.state.productImages.length) {
+		return (<p style={{textAlign:'center'}}><img src={this.state.productImages[0].fileData} className="boxShadowed" style={{maxHeight:'10em'}} /></p>)
+	}
+	return (<p style={{textTransform:'uppercase',textAlign:'center'}}>no<br />product<br />image<br />found</p>);
   }
 
   renderKeypad() {

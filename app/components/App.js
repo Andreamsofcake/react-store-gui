@@ -3,7 +3,6 @@ import { Link } from 'react-router'
 //import './scss/App.scss'
 
 import { isClient } from '../utils'
-import { updateCredit } from '../utils/TsvUtils'
 
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
@@ -23,7 +22,8 @@ import StorefrontActions from '../actions/StorefrontActions'
 import {
 	init,
 	registerKF,
-	gotoDefaultIdlePage
+	gotoDefaultIdlePage,
+	updateCredit
 } from '../utils/TsvUtils'
 
 import Log from '../utils/BigLogger'
