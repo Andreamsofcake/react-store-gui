@@ -4,6 +4,8 @@ import appConstants from '../constants/appConstants'
 import axios from 'axios'
 //import { browserHistory } from 'react-router'
 
+import TsvSettingsStore from '../stores/TsvSettingsStore'
+
 import Log from '../utils/BigLogger'
 var Big = new Log('SessionActions');
 
@@ -225,6 +227,48 @@ var SessionActions = {
 			Big.throw(error);
 		})
 	},
+	
+	// temporary method, may become permanent with correct logic changes:
+	spendCustomerCredit(customer, amount_cents, transaction) {
+
+/***
+construct some temporary objects for testing here...
+**/
+
+		var cart = TsvSettingsStore.getCache('shoppingCart');
+		
+		axios.post('/api/spend-customer-credit',
+			{ customer, amount_cents, cart } // transaction taken out, we are quickly generating on the server
+		)
+		.then(response => {
+			if (response.data && response.data.status && response.data.status == 'ok') {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.CREDIT_PURCHASE_COMPLETED,
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to update transaction, error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to update transaction, no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to update transaction, call chain error probably check component tree');
+			Big.log(error);
+			Big.throw(error);
+		})
+	},
+	
+	updateCurrentCustomerCredit(credit) {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.UPDATE_CURRENT_CUSTOMER_CREDIT,
+			data: credit
+		});
+	}
 
 
 };

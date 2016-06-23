@@ -34,6 +34,32 @@ var AdminActions = {
 			//Big.throw(error);
 		})
 	},
+
+	getTestCustomers() {
+		axios.get('/api/get-test-customers')
+		.then(response => {
+			// uh, daaaaaable check?
+			if (response.data && response.data.status && response.data.status == 'ok') {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.TEST_CUSTOMERS_RECEIVED,
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to get test customers, error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to get test customers, no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to get test customers, call chain error probably check component tree');
+			Big.log(error);
+			//Big.throw(error);
+		})
+	},
 	
 	refreshStorefrontData() {
 		axios.get('/api/refresh-storefront-data')

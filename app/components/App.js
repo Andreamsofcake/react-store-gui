@@ -148,7 +148,7 @@ class App extends Component {
 			{!adminInPath ? (
 				<AdminLoginButton testing={this.appTesting} />
 				) : null}
-			<CustomerStatusDisplay adminInPath={adminInPath} location={this.props.location} />
+			<CustomerStatusDisplay testing={this.appTesting} adminInPath={adminInPath} location={this.props.location} />
 			
 			<ComEmulator />
 			<MachineIdTag />

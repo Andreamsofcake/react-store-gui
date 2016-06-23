@@ -47,6 +47,9 @@ var appConstants = keyMirror({
 	CUSTOMER_RESET_SIGNUP: null,
 	CUSTOMER_REFRESH: null,
 	ADMIN_VERIFIED_SIGNUP: null,
+	
+	CUSTOMER_LOADED: null, // "load by membership id"
+	CREDIT_PURCHASE_COMPLETED: null,
 
 // Emulator:
 	TEST_EMULATOR_RESULT: null,
@@ -59,6 +62,7 @@ var appConstants = keyMirror({
 	REGISTER_CLIENT_USER_PRINT: null,
 	CLIENT_USERS_RECEIVED: null,
 	STOREFRONT_DATA_REFRESHED: null,
+	TEST_CUSTOMERS_RECEIVED: null,
 
 // Session
 	SESSION_CREATED: null,
@@ -68,6 +72,8 @@ var appConstants = keyMirror({
 	SESSION_DROPPED: null,
 	TRANSACTION_CREATED: null,
 	TRANSACTION_UPDATED: null,
+	
+	CREDIT_PURCHASE_COMPLETED: null,
 
 // TSV:
 	FLASH_API_MULTIEVENT: null,

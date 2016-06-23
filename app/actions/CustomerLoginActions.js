@@ -18,6 +18,27 @@ var Big = new Log('CustomerLoginActions');
 
 var CustomerLoginActions = {
 
+	loadCustomerByMembershipId(membership_id) {
+		axios.post('/api/load-customer-by-membership-id', { membership_id })
+		.then(response => {
+			if (response.data && response.data.customer) {
+
+				/**** temporary call, due to session probs with IO ****/
+				setCurrentCustomer(response.data);
+				/**** END temporary call ****/
+
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.CUSTOMER_LOADED,
+					data: response.data
+				});
+			}
+		})
+		.catch(error => {
+			Big.error('failed to load customer by membership id???');
+			Big.log(error);
+		})
+	},
+
 	refreshCustomer() {
 		axios.get('/api/customer-refresh')
 		.then(response => {
@@ -98,16 +119,7 @@ var CustomerLoginActions = {
 			(data) => {
 
 				/**** temporary call, due to session probs with IO ****/
-				if (data && data.customer) {
-					axios.post('/api/set-loggedin-customer', { customer: data.customer })
-					.then(response => {
-						Big.log('temp action: updated the current customer after login');
-					})
-					.catch(error => {
-						Big.error('failed to set current customer???');
-						Big.log(error);
-					})
-				}
+				setCurrentCustomer(data);
 				/**** END temporary call ****/
 				
 				// we're not validating here, either the scan completed or failed... pass it through.
@@ -142,5 +154,18 @@ var CustomerLoginActions = {
 
 
 };
+
+function setCurrentCustomer(data) {
+	if (data && data.customer) {
+		axios.post('/api/set-loggedin-customer', { customer: data.customer, credit: data.credit || false })
+		.then(response => {
+			Big.log('temp action: updated the current customer after login');
+		})
+		.catch(error => {
+			Big.error('failed to set current customer???');
+			Big.log(error);
+		})
+	}
+}
 
 module.exports = CustomerLoginActions;

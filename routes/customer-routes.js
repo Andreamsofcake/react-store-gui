@@ -2,6 +2,8 @@ import Joi from 'joi'
 
 var CustomerRegisterModule = require('./handlers/customer/CustomerRegisterModule')
 	, CustomerMatchLogin = require('./handlers/customer/CustomerMatchLogin')
+	, LoadCustomerByMembershipId = require('./handlers/customer/LoadCustomerByMembershipId')
+	, CustomerSpendCredits = require('./handlers/customer/CustomerSpendCredits')
 	;
 
 module.exports = [
@@ -44,13 +46,27 @@ module.exports = [
 			}
 		}
 	},
+	
+	{
+		method: 'post',
+		path: '/api/load-customer-by-membership-id',
+		handler: LoadCustomerByMembershipId
+	},
+
+	{
+		method: 'post',
+		path: '/api/spend-customer-credit',
+		handler: CustomerSpendCredits
+	},
 
 	{
 		method: 'get',
 		path: '/api/customer-refresh',
 		handler: (request, reply) => {
-			var customer = request.yar.get('current_customer');
-			reply({ status: 'ok', customer: customer });
+			var customer = request.yar.get('current_customer')
+				, credit = request.yar.get('current_customer_credit') || { credit_amount_cents: 0 }
+				;
+			reply({ status: 'ok', customer: customer, credit: credit });
 		}
 	},
 
@@ -59,6 +75,7 @@ module.exports = [
 		path: '/api/reset-current-customer',
 		handler: (request, reply) => {
 			request.yar.set('current_customer', null);
+			request.yar.set('current_customer_credit', null);
 			reply({ status: 'ok' });
 		}
 	},
@@ -71,6 +88,7 @@ module.exports = [
 		handler: (request, reply) => {
 			if (request.payload.customer) {
 				request.yar.set('current_customer', request.payload.customer);
+				request.yar.set('current_customer_credit', request.payload.credit || false);
 			}
 			reply({ status: 'ok' });
 		}

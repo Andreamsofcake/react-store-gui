@@ -30,6 +30,7 @@ import ChooseCashCard from './components/ChooseCashCard'
 import CustomerCreditVending from './components/CustomerCreditVending'
 import CustomerLogin from './components/CustomerLogin'
 import CustomerSignup from './components/CustomerSignup'
+import CustomerLoginTest from './components/CustomerLoginTest'
 import ProductDetail from './components/ProductDetail'
 import ShoppingCart from './components/ShoppingCart'
 import Storefront from './components/Storefront'
@@ -74,6 +75,9 @@ export default (
 
 		<Route path='CustomerLogin' component={CustomerLogin} />
 		<Route path='CustomerLogin/:step' component={CustomerLogin} />
+		
+		<Route path='CustomerLoginTest' component={CustomerLoginTest} />
+		<Route path='CustomerLoginTest/:step' component={CustomerLoginTest} />
 
 		{/*<Route path='Storefront_Static' component={StorefrontStatic} />*/}
 		<Route path='Storefront' component={Storefront} />

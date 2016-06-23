@@ -35,8 +35,13 @@ function setCustomer(obj) {
 	_store.customer = obj;
 }
 
+function setCustomerCredit(obj) {
+	_store.customerCredit = obj;
+}
+
 function clearCustomer() {
 	_store.customer = null;
+	_store.customerCredit = null;
 }
 
 var CustomerStore = objectAssign({}, EventEmitter.prototype, {
@@ -59,6 +64,10 @@ var CustomerStore = objectAssign({}, EventEmitter.prototype, {
 			return _store[kind + 'StepsComplete'];
 		}
 		return [];
+	},
+
+	getCustomerCredit: function() {
+		return _store.customerCredit;
 	},
 
 	getCustomer: function() {
@@ -176,6 +185,24 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			}
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
 			break;
+		
+		case appConstants.CUSTOMER_LOADED:
+			if (action.data.status === 'ok' && action.data.customer) {
+				clearSteps('login');
+				setCustomer(action.data.customer);
+				if (action.data.credit) {
+					setCustomerCredit(action.data.credit);
+				}
+			} else {
+				clearCustomer();
+			}
+			CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOADED, status: action.data.status });
+			break;
+		
+		case appConstants.UPDATE_CURRENT_CUSTOMER_CREDIT:
+			setCustomerCredit(action.data);
+			CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOADED, status: 'ok' });
+			break;
 
 		case appConstants.CUSTOMER_RESET_LOGIN:
 			clearSteps('login');
@@ -187,6 +214,7 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			clearSteps('signup');
 			if (action.data) {
 				setCustomer(action.data.customer);
+				setCustomerCredit(action.data.credit);
 			}
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_REFRESH, status: action.data.status });
 			break;

@@ -6,6 +6,8 @@ import { forceBoolean, moneyformat, timer } from './index'
 import * as Translate from '../../lib/Translate'
 import { browserHistory } from 'react-router'
 
+import CL_Actions from '../actions/CustomerLoginActions'
+
 import Log from './BigLogger'
 var Big = new Log('TsvUtils');
 
@@ -434,6 +436,8 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 		}
 
 		resetSelectedItem();
+		// need to log out any customer record at this point
+		CL_Actions.customerLogout();
 
 		if (TsvSettingsStore.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
 			browserHistory.push("/PageIdle");

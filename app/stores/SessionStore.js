@@ -66,6 +66,10 @@ SessionStore.dispatch = AppDispatcher.register(function(payload){
 			_store.apiResponses = [];
 			break;
 		
+		case appConstants.CREDIT_PURCHASE_COMPLETED:
+			SessionStore.emitChange({ type: action.actionType, customerCredit: action.data.credit });
+			break;
+		
 		default:
 			return true;
 			break;

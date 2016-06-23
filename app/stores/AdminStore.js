@@ -11,7 +11,9 @@ var CHANGE_EVENT = 'change'
 
 // example state vars:
 	, _store = {
-		apiResponses: []
+		apiResponses: [],
+		clientUsers: [],
+		testCustomers: [],
 	}
 	
 //	, _storeDB = new muDB()
@@ -42,6 +44,10 @@ var AdminStore = objectAssign({}, EventEmitter.prototype, {
 		return _store.clientUsers;
 	},
 
+	getTestCustomers: function() {
+		return _store.testCustomers;
+	},
+
 });
 
 AdminStore.dispatch = AppDispatcher.register(function(payload){
@@ -58,7 +64,12 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 			break;
 			
 		case appConstants.CLIENT_USERS_RECEIVED:
-			_store.clientUsers = action.data.clientUsers;
+			_store.clientUsers = action.data.data;
+			AdminStore.emitChange({ type: action.actionType });
+			break;
+			
+		case appConstants.TEST_CUSTOMERS_RECEIVED:
+			_store.testCustomers = action.data.data;
 			AdminStore.emitChange({ type: action.actionType });
 			break;
 			

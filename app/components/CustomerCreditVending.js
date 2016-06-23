@@ -11,6 +11,14 @@ import { currencyFilter } from '../utils/TsvUtils'
 import VendCartItem from './VendCartItem'
 import StorefrontStore from '../stores/StorefrontStore'
 
+import CL_Actions from '../actions/CustomerLoginActions'
+import CL_Store from '../stores/CustomerStore'
+
+import appConstants from '../constants/appConstants'
+
+import SessionActions from '../actions/SessionActions'
+import SessionStore from '../stores/SessionStore'
+
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
@@ -48,6 +56,9 @@ class CashVending extends Component {
       //salesTaxAmount: TsvSettingsStore.getCache('shoppingCart.summary.salesTaxAmount'),
       showCancelBtnCash: true,
       cart: TsvSettingsStore.getCache('shoppingCart.detail'),
+      customer: CL_Store.getCustomer(),
+      customerCredit: CL_Store.getCustomerCredit(),
+      
       // only in cash.js:
       //item: TsvSettingsStore.getCache('shoppingCart.detail')[0]
     };
@@ -71,6 +82,8 @@ class CashVending extends Component {
       
       this._onRootstoreChange = this._onRootstoreChange.bind(this);
       this._onTsvChange = this._onTsvChange.bind(this);
+      this._onSessionStoreChange = this._onSessionStoreChange.bind(this);
+      this.completeCreditPurchase = this.completeCreditPurchase.bind(this);
       this.storefrontTimeout = null;
 
   }
@@ -143,12 +156,54 @@ class CashVending extends Component {
 	  Big.log([cart_detail, balance]);
 	  return false;
   }
+  
+  _onSessionStoreChange(event) {
+  	if (event && event.type === appConstants.CREDIT_PURCHASE_COMPLETED) {
+		var state = {
+			insertedAmount: this.state.summary.TotalPrice
+		};
+		this.setState(state);
+		
+		Big.log('payFullWithCustomerCredit');
+		Big.log(state);
+
+		resetPaymentTimer();
+		TsvSettingsStore.setSession('creditBalance', state.insertedAmount);
+		this.checkBalance(state.insertedAmount);
+		
+		// FIXME: need a server method to refresh the credits, this is ok for now, as it passes through returned credit obj from API/PROXY
+		// dang invariants
+		setTimeout(() => {
+			SessionActions.updateCurrentCustomerCredit(event.customerCredit);
+		}, 150);
+  	}
+  }
+  
+  completeCreditPurchase() {
+  	if (this.state.summary.TotalPrice
+  		&& this.state.customer
+  		&& this.state.customerCredit
+  		&& this.state.customerCredit.current_credit_cents
+  		&& this.state.summary.TotalPrice * 100 <= this.state.customerCredit.current_credit_cents
+  	) {
+  		// TESTING!
+  		// for realz, this will have to go back to server and capture/spend the credits first...
+  		
+  		var FAKE_TRANSACTION_ID = 'testing';
+  		
+  		SessionActions.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100, FAKE_TRANSACTION_ID);
+
+  	} else {
+  		alert('Sorry, something happened there, you don\'t appear to have enough credits now.');
+  	}
+  }
 
   // Add change listeners to stores
 	componentDidMount() {
 		startGeneralIdleTimer(this.props.location.pathname);
 		TsvStore.addChangeListener(this._onTsvChange);
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
+		SessionStore.addChangeListener(this._onSessionStoreChange);
 		// let's check the balance at module load:
 		this.checkBalance();
 		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
@@ -161,6 +216,7 @@ class CashVending extends Component {
 	componentWillUnmount() {
 		TsvStore.removeChangeListener(this._onTsvChange);
 		TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
+		SessionStore.removeChangeListener(this._onSessionStoreChange);
 	}
 
   _onRootstoreChange() {
@@ -312,15 +368,15 @@ class CashVending extends Component {
 
 		<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
 		<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
-			<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} Total: <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
+			<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
 		</_E.Col>
 		<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
-			<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'InsertedAmountLabel')} <strong>${ this.state.insertedAmount ? currencyFilter(this.state.insertedAmount) : '0.00' }</strong></p>
+			{this.renderPayCreditsOption()}
 		</_E.Col>
 		<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
 
 		{ this.state.showCancelBtnCash ? (
-		<_E.Col>
+		<_E.Col style={{marginTop: '3em'}}>
 		<_E.Row>
 			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
 			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
@@ -339,6 +395,30 @@ class CashVending extends Component {
       </_E.Row>
     );
 
+  }
+  
+  renderPayCreditsOption() {
+  	if (this.state.summary.TotalPrice
+  		&& this.state.customer
+  		&& this.state.customerCredit
+  		&& this.state.customerCredit.current_credit_cents
+  		&& this.state.summary.TotalPrice * 100 <= this.state.customerCredit.current_credit_cents
+  	) {
+  		return (
+  			<_E.Button type="primary" size="lg" onClick={this.completeCreditPurchase}>Spend My Credits</_E.Button>
+  		);
+  	}
+  	//<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'InsertedAmountLabel')} <strong>${ this.state.insertedAmount ? currencyFilter(this.state.insertedAmount) : '0.00' }</strong></p>
+  	return (
+  		<p style={{fontSize:'2em',textAlign:'center'}}>Sorry, you don't have enough credit to make this purchase. Please add credits through Living On or remove some items from your cart.
+  		<br />
+  		<_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/ShoppingCart') }}>View My Cart</_E.Button>
+  		<br />
+  		<pre style={{fontSize: '0.6em'}}>
+  		{JSON.stringify(this.state, null, 4)}
+  		</pre>
+  		</p>
+  	);
   }
   
   renderVendingItem() {
