@@ -9,12 +9,13 @@ import { browserHistory } from 'react-router'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
-import {
-	emptyCart,
-} from '../utils/TsvUtils'
 
 import Log from '../utils/BigLogger'
 var Big = new Log('CustomerLoginActions');
+
+import {
+	emptyCart,
+} from '../utils/TsvUtils'
 
 var CustomerLoginActions = {
 
@@ -183,3 +184,4 @@ function setCurrentCustomer(data) {
 }
 
 module.exports = CustomerLoginActions;
+

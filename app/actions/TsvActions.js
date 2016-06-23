@@ -163,6 +163,21 @@ var TsvActions = {
 		})
 
 	},
+
+	// FIXME / DEVNOTE: this is duplicated from CustomerLoginActions, due to module load race condition
+	customerLogout() {
+		//emptyCart(); // << done in TsvUtils call
+		axios.get('/api/reset-current-customer')
+		.then(response => {
+			AppDispatcher.handleServerAction({
+				actionType: appConstants.CUSTOMER_LOGOUT
+			});
+		})
+		.catch(error => {
+			Big.error('failed to logout customer???');
+			Big.log(error);
+		})
+	}
 };
 
 module.exports = TsvActions;

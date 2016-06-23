@@ -6,8 +6,6 @@ import { forceBoolean, moneyformat, timer } from './index'
 import * as Translate from '../../lib/Translate'
 import { browserHistory } from 'react-router'
 
-import CL_Actions from '../actions/CustomerLoginActions'
-
 import Log from './BigLogger'
 var Big = new Log('TsvUtils');
 
@@ -437,10 +435,13 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 
 		resetSelectedItem();
 		// need to log out any customer record at this point
-		Big.warn('uh, are we stuck on soething here? CL_Actions no has method???');
-		Big.log(Object.keys(CL_Actions));
-		Big.log(CL_Actions);
-		CL_Actions.customerLogout();
+		//Big.warn('uh, are we stuck on soething here? CL_Actions no has method???');
+		//Big.log(Object.keys(CL_Actions));
+		//Big.log(CL_Actions);
+		//CL_Actions.customerLogout();
+		// moved into here to kill module load race condition:
+		TsvActions.customerLogout();
+		emptyCart();
 
 		if (TsvSettingsStore.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
 			browserHistory.push("/PageIdle");

@@ -14991,6 +14991,20 @@
 				Big.throw(error);
 				_callbackError(error);
 			});
+		},
+
+
+		// FIXME / DEVNOTE: this is duplicated from CustomerLoginActions, due to module load race condition
+		customerLogout: function customerLogout() {
+			//emptyCart(); // << done in TsvUtils call
+			_axios2.default.get('/api/reset-current-customer').then(function (response) {
+				_AppDispatcher2.default.handleServerAction({
+					actionType: _appConstants2.default.CUSTOMER_LOGOUT
+				});
+			}).catch(function (error) {
+				Big.error('failed to logout customer???');
+				Big.log(error);
+			});
 		}
 	};
 
@@ -15218,10 +15232,6 @@
 
 	var _reactRouter = __webpack_require__(9);
 
-	var _CustomerLoginActions = __webpack_require__(84);
-
-	var _CustomerLoginActions2 = _interopRequireDefault(_CustomerLoginActions);
-
 	var _BigLogger = __webpack_require__(1);
 
 	var _BigLogger2 = _interopRequireDefault(_BigLogger);
@@ -15230,9 +15240,10 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Big = new _BigLogger2.default('TsvUtils'); //import RootscopeStore from '../stores/RootscopeStore'
+	//import RootscopeStore from '../stores/RootscopeStore'
 	//import RootscopeActions from '../actions/RootscopeActions'
 
+	var Big = new _BigLogger2.default('TsvUtils');
 
 	var serviceIsStarted = false
 
@@ -15656,10 +15667,13 @@
 
 			resetSelectedItem();
 			// need to log out any customer record at this point
-			Big.warn('uh, are we stuck on soething here? CL_Actions no has method???');
-			Big.log(Object.keys(_CustomerLoginActions2.default));
-			Big.log(_CustomerLoginActions2.default);
-			_CustomerLoginActions2.default.customerLogout();
+			//Big.warn('uh, are we stuck on soething here? CL_Actions no has method???');
+			//Big.log(Object.keys(CL_Actions));
+			//Big.log(CL_Actions);
+			//CL_Actions.customerLogout();
+			// moved into here to kill module load race condition:
+			_TsvActions2.default.customerLogout();
+			emptyCart();
 
 			if (_TsvSettingsStore2.default.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle") {
 				_reactRouter.browserHistory.push("/PageIdle");
@@ -16592,17 +16606,18 @@
 
 	var _TsvActions2 = _interopRequireDefault(_TsvActions);
 
-	var _TsvUtils = __webpack_require__(78);
-
 	var _BigLogger = __webpack_require__(1);
 
 	var _BigLogger2 = _interopRequireDefault(_BigLogger);
 
+	var _TsvUtils = __webpack_require__(78);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Big = new _BigLogger2.default('CustomerLoginActions');
 	//import TsvService from '../../lib/TsvService'
 	//import RootscopeActions from '../actions/RootscopeActions'
+
+	var Big = new _BigLogger2.default('CustomerLoginActions');
 
 	var CustomerLoginActions = {
 		loadCustomerByMembershipId: function loadCustomerByMembershipId(membership_id) {

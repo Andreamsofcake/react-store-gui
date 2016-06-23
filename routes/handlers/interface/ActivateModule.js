@@ -79,26 +79,6 @@ module.exports = function(request, reply) {
 					}
 					break;
 
-				case 'scan-membership-card':
-					//curl -s -H "Content-Type: application/json" -X POST -d "{}" http://127.0.0.1:8001/api/v1/bio/eseek/m280/grabcard
-
-					RQ.post({
-						url: 'http://localhost:8001/api/v1/bio/eseek/m280/grabcard',
-						body: {},
-						json: true
-					}, (err, response, body) => {
-						if (err) return reply({ status: 'err', err: err }).code(500);
-						
-						if (body && body.status === 'ok' && body.data) {
-							reply({ status: 'ok', membership_id: body.data }).code(200);
-							
-						} else {
-							reply({ status: 'ok', msg: body.msg || 'invalid card' }).code(500);
-						}
-					});
-
-					break;
-
 				case 'm280':
 				case 'license-scanner':
 					if (process.env.CANNED_API_DATA) {
@@ -126,7 +106,26 @@ module.exports = function(request, reply) {
 						}
 						return reply({ status: 'err', msg: 'TESTING: no simulatorLicenseName found to track' }).code(404);
 					} else {
-						reply({ status: 'err', msg: 'actual license scanning not implemented yet, check your .env file for CANNED_API_DATA' }).code(500);
+						if (action === 'scan-membership-card') {
+
+							RQ.post({
+								url: 'http://localhost:8001/api/v1/bio/eseek/m280/grabcard',
+								body: {},
+								json: true
+							}, (err, response, body) => {
+								if (err) return reply({ status: 'err', err: err }).code(500);
+						
+								if (body && body.status === 'ok' && body.data) {
+									reply({ status: 'ok', membership_id: body.data }).code(200);
+							
+								} else {
+									reply({ status: 'ok', msg: body.msg || 'invalid card' }).code(500);
+								}
+							});
+
+						} else {
+							reply({ status: 'err', msg: 'actual license scanning not implemented yet, check your .env file for CANNED_API_DATA' }).code(500);
+						}
 					}
 					break;
 			}
