@@ -4134,14 +4134,15 @@
 							Big.throw(err);
 							return;
 						}
+						var state = void 0;
 						if (data) {
 							var data2 = _StorefrontStore2.default.decorateProducts(data);
-							var _state = {
+							state = {
 								verifiedProductData: data2,
 								productImages: _StorefrontStore2.default.getImagesForProduct(data2)
 							};
 						} else {
-							var _state2 = {
+							state = {
 								verifiedProductData: data
 							};
 						}

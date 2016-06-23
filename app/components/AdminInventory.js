@@ -130,14 +130,15 @@ class AdminInventory extends Component {
 				Big.throw(err);
 				return;
 			}
+			let state;
 			if (data) {
 				var data2 = StorefrontStore.decorateProducts(data);
-				let state = {
+				state = {
 					verifiedProductData: data2,
 					productImages: StorefrontStore.getImagesForProduct(data2)
 				};
 			} else {
-				let state = {
+				state = {
 					verifiedProductData: data
 				};
 			}
