@@ -57569,6 +57569,10 @@
 
 	var _VendCartItem2 = _interopRequireDefault(_VendCartItem);
 
+	var _StorefrontStore = __webpack_require__(94);
+
+	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
+
 	var _TsvStore = __webpack_require__(74);
 
 	var _TsvStore2 = _interopRequireDefault(_TsvStore);
@@ -57832,8 +57836,8 @@
 							var data = event.data[0],
 							    productImages;
 							if (data) {
-								data = StorefrontStore.decorateProducts(data);
-								productImages = StorefrontStore.getImagesForProduct(data);
+								data = _StorefrontStore2.default.decorateProducts(data);
+								productImages = _StorefrontStore2.default.getImagesForProduct(data);
 							}
 							this.setState({
 								vendingItem: data,

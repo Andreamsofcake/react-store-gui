@@ -9,6 +9,7 @@ import * as _E from 'elemental'
 import { currencyFilter } from '../utils/TsvUtils'
 
 import VendCartItem from './VendCartItem'
+import StorefrontStore from '../stores/StorefrontStore'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
