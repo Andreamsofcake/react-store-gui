@@ -75,8 +75,9 @@ class ShoppingCartMini extends Component {
 	
 	renderCheckoutButton() {
 		if (this.state.qty > 0) {
+			var payLocation = '/CustomerCreditVending'; // '/ChooseCashCard'
 			return (
-				<_E.Button type="success" size="lg" style={{marginLeft:'0.5em'}} onClick={() => { browserHistory.push('/ChooseCashCard') }}>{Translate.translate('ShoppingCart','Checkout')}</_E.Button>
+				<_E.Button type="success" size="lg" style={{marginLeft:'0.5em'}} onClick={() => { browserHistory.push(payLocation) }}>{Translate.translate('ShoppingCart','Checkout')}</_E.Button>
 			);
 		}
 		return null;

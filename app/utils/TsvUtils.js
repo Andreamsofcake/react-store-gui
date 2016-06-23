@@ -622,6 +622,10 @@ export function gotoPayment(){
 	//TsvActions.apiCall("gotoPayment() called");
 	
 	var TotalPrice = TsvSettingsStore.getCache('shoppingCart.summary.TotalPrice', 0);
+	
+	// all payments for now with Living On are customer credits only
+	var payLocation = '/CustomerCreditVending'; // '/ChooseCashCard'
+	return browserHistory.push(payLocation);
 
 	if (TotalPrice != 0
 		&& TsvSettingsStore.getCache('custommachinesettings.HasCreditCard', true)

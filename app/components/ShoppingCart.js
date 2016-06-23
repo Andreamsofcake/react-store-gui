@@ -183,8 +183,9 @@ class ShoppingCart extends Component {
   
   renderCheckoutButton() {
   	if (this.state.cart && this.state.cart.length) {
+  		var payLocation = '/CustomerCreditVending'; // '/ChooseCashCard'
   		return (
-			<_E.Button type="success" size="lg" onClick={() => { browserHistory.push('/ChooseCashCard') }}>{Translate.translate('ShoppingCart','Checkout')}</_E.Button>
+			<_E.Button type="success" size="lg" onClick={() => { browserHistory.push(payLocation) }}>{Translate.translate('ShoppingCart','Checkout')}</_E.Button>
   		);
   	}
   	return null;

@@ -9228,10 +9228,11 @@
 	    key: 'renderCheckoutButton',
 	    value: function renderCheckoutButton() {
 	      if (this.state.cart && this.state.cart.length) {
+	        var payLocation = '/CustomerCreditVending'; // '/ChooseCashCard'
 	        return _react2.default.createElement(
 	          _E.Button,
 	          { type: 'success', size: 'lg', onClick: function onClick() {
-	              _reactRouter.browserHistory.push('/ChooseCashCard');
+	              _reactRouter.browserHistory.push(payLocation);
 	            } },
 	          Translate.translate('ShoppingCart', 'Checkout')
 	        );
@@ -13317,6 +13318,10 @@
 		//TsvActions.apiCall("gotoPayment() called");
 
 		var TotalPrice = _TsvSettingsStore2.default.getCache('shoppingCart.summary.TotalPrice', 0);
+
+		// all payments for now with Living On are customer credits only
+		var payLocation = '/CustomerCreditVending'; // '/ChooseCashCard'
+		return _reactRouter.browserHistory.push(payLocation);
 
 		if (TotalPrice != 0 && _TsvSettingsStore2.default.getCache('custommachinesettings.HasCreditCard', true) && _TsvSettingsStore2.default.getCache('custommachinesettings.HasBillCoin', true)) {
 			_reactRouter.browserHistory.push("/ChooseCashCard");
@@ -18186,10 +18191,11 @@
 			key: 'renderCheckoutButton',
 			value: function renderCheckoutButton() {
 				if (this.state.qty > 0) {
+					var payLocation = '/CustomerCreditVending'; // '/ChooseCashCard'
 					return _react2.default.createElement(
 						_E.Button,
 						{ type: 'success', size: 'lg', style: { marginLeft: '0.5em' }, onClick: function onClick() {
-								_reactRouter.browserHistory.push('/ChooseCashCard');
+								_reactRouter.browserHistory.push(payLocation);
 							} },
 						Translate.translate('ShoppingCart', 'Checkout')
 					);
