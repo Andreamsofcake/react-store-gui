@@ -57829,8 +57829,15 @@
 						case 'notifyVendingItem':
 							//Big.log('vendingItem');
 							//Big.log(event.data[0]);
+							var data = event.data[0],
+							    productImages;
+							if (data) {
+								data = StorefrontStore.decorateProducts(data);
+								productImages = StorefrontStore.getImagesForProduct(data);
+							}
 							this.setState({
-								vendingItem: event.data[0]
+								vendingItem: data,
+								vendingProductImages: productImages
 							});
 							break;
 
@@ -58003,16 +58010,29 @@
 							_react2.default.createElement(
 								'strong',
 								null,
-								this.state.vendingItem.productName
+								this.state.vendingItem.name || this.state.vendingItem.productName
 							)
 						),
 						_react2.default.createElement(
 							'div',
 							{ style: { textAlign: 'center' } },
 							_react2.default.createElement(_E.Spinner, { size: 'lg', type: 'primary' }),
-							this.state.vendingItem.imagePath ? _react2.default.createElement('img', { src: this.state.vendingItem.imagePath, style: { maxWidth: '35%', display: 'block', margin: '1em auto' } }) : null
+							this.renderVendImage()
 						)
 					);
+				}
+				return null;
+			}
+		}, {
+			key: 'renderVendImage',
+			value: function renderVendImage() {
+				/*
+	   {this.state.vendingItem.imagePath ? (
+	   <img src={this.state.vendingItem.imagePath} style={{maxWidth:'35%',display:'block', margin: '1em auto'}} />
+	   ) : null }
+	   */
+				if (this.state.vendingProductImages && this.state.vendingProductImages.length) {
+					return _react2.default.createElement('img', { src: this.state.vendingProductImages[0].fileData, style: { maxWidth: '50%', display: 'block', margin: '1em auto' } });
 				}
 				return null;
 			}

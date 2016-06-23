@@ -245,8 +245,15 @@ class CashVending extends Component {
 				case 'notifyVendingItem':
 					//Big.log('vendingItem');
 					//Big.log(event.data[0]);
+					var data = event.data[0]
+						, productImages;
+					if (data) {
+						data = StorefrontStore.decorateProducts(data);
+						productImages = StorefrontStore.getImagesForProduct(data);
+					}
 					this.setState({
-						vendingItem: event.data[0]
+						vendingItem: data,
+						vendingProductImages: productImages
 					});
 					break;
 				
@@ -337,16 +344,29 @@ class CashVending extends Component {
   	if (this.state.vendingItem) {
   		return (
 			<_E.Col>
-				<h1 style={{textAlign: 'center'}}>Vending item:<br /><strong>{this.state.vendingItem.productName}</strong></h1>
+				<h1 style={{textAlign: 'center'}}>Vending item:<br /><strong>{this.state.vendingItem.name || this.state.vendingItem.productName}</strong></h1>
 				<div style={{textAlign: 'center'}}>
 				<_E.Spinner size="lg" type="primary" />
-				{this.state.vendingItem.imagePath ? (
-					<img src={this.state.vendingItem.imagePath} style={{maxWidth:'35%',display:'block', margin: '1em auto'}} />
-				) : null }</div>
+					{this.renderVendImage()}
+				</div>
 			</_E.Col>
   		);
   	}
   	return null;
+  }
+  
+  renderVendImage() {
+  	/*
+		{this.state.vendingItem.imagePath ? (
+			<img src={this.state.vendingItem.imagePath} style={{maxWidth:'35%',display:'block', margin: '1em auto'}} />
+		) : null }
+	*/
+	if (this.state.vendingProductImages && this.state.vendingProductImages.length) {
+		return (
+			<img src={this.state.vendingProductImages[0].fileData} style={{maxWidth:'50%',display:'block', margin: '1em auto'}} />
+		);
+	}
+	return null;
   }
 
   renderSpinner(){
