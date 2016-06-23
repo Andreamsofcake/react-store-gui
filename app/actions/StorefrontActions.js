@@ -1,7 +1,6 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import appConstants from '../constants/appConstants'
-//import TsvService from '../../lib/TsvService'
-//import RootscopeActions from '../actions/RootscopeActions'
+import axios from 'axios'
 
 import TsvSettingsStore from '../stores/TsvSettingsStore'
 import TsvStore from '../stores/TsvStore'
@@ -17,6 +16,22 @@ var Big = new Log('Storefront');
 
 var StorefrontActions = {
 
+	loadStorefrontData() {
+		axios.get('/api/get-storefront-data')
+		.then(response => {
+			if (response.data && response.data.data) {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.STOREFRONT_DATA_RECEIVED,
+					data: response.data.data
+				});
+			}
+		})
+		.catch(error => {
+			Big.error('failed to refresh customer???');
+			Big.log(error);
+		})
+	},
+  
   minusQty(product) { // coil
   	let coil = product.coilNumber;
 

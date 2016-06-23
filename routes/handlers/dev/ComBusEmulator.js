@@ -23,7 +23,12 @@ module.exports = function(request, reply) {
 		request.yar.set('emulatorInsertedCash', totalInserted);
 		emulator_command = ['creditBalanceChanged', amt, totalInserted];
 	}
-	
+
+//*	
+	if (emulator_command && emulator_command[0] && emulator_command[0][0] && emulator_command[0][0] === 'payFullWithCustomerCredit') {
+		emulator_command = ['payFullWithCustomerCredit'];
+	}
+//*/
 	// commands are sent through a "multi event" handler, which expects arrays of arrays
 	//io.to('flash-api-multi-event').emit('flash-api-multi-event', [ emulator_command ]);
 	// update: having ComEmulator send pre-wrapped commands

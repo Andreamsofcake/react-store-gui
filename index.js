@@ -198,7 +198,7 @@ server.register([
 					serverdebug(err);
 					serverdebug( configData );
 					//serverdebug( JSON.stringify(configData, null, 4) );
-					fs.writeFileSync('bootup-data-retrieval.json', JSON.stringify(configData, null, 4));
+					fs.writeFileSync('bootup-data-retrieval.json', JSON.stringify( Bootup.ConfigData(), null, 4));
 					var registered = Bootup.CheckRegistration(true);
 					registered = registered && registered.registrationData ? registered.registrationData : false;
 					if (!registered || !registered.client || !registered.location) {

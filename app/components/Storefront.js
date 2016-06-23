@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 //import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import Slider from 'react-slick';
+
 import TsvSettingsStore from '../stores/TsvSettingsStore'
 import StorefrontActions from '../actions/StorefrontActions'
 import StorefrontStore from '../stores/StorefrontStore'
+
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
@@ -50,6 +52,10 @@ class Storefront extends Component {
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
     this._onStoreFrontChange = this._onStoreFrontChange.bind(this);
+    
+    if (window) {
+    	window.SFS = StorefrontStore;
+    }
 
   }
 
@@ -68,6 +74,8 @@ class Storefront extends Component {
       TsvSettingsStore.setSession('products', data)
     });
 
+/*
+// using own categories now
     if (!TsvSettingsStore.getConfig('categories')) {
 		TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
 			if (err) Big.throw(err);
@@ -79,6 +87,8 @@ class Storefront extends Component {
 	} else {
 		state.categories = TsvSettingsStore.getConfig('categories');
 	}
+*/
+	state.categories = StorefrontStore.getStorefrontData('categories');
 /*
 	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 		if (err) Big.throw(err);
@@ -98,9 +108,14 @@ class Storefront extends Component {
 		// Big.log('[_onRootstoreChange]');
 		// Big.log(event);
 		// Big.log(TsvSettingsStore.getConfig('categories'));
+		
+		var products = TsvSettingsStore.getSession('products')
+			, categories = StorefrontStore.getStorefrontData('categories')
+			;
+		
 		this.setState({
-			categories: TsvSettingsStore.getConfig('categories') || [],
-			products: TsvSettingsStore.getSession('products') || [],
+			categories: categories || [],
+			products: StorefrontStore.decorateProducts(products) || [],
 		});
 
   	// }
@@ -156,9 +171,9 @@ class Storefront extends Component {
 			return (
 				<_E.ButtonGroup>
 				{this.state.categories.map((category, $index) => {
-					let type=this.state.categoryIdFilter.indexOf(category.categoryID) > -1 ? "primary": "hollow-primary"
+					let type=this.state.categoryIdFilter.indexOf(category._id) > -1 ? "primary": "hollow-primary"
 					return (
-					  <_E.Button style={{backgroundColor: '#fff'}} key={$index} type={type} onClick={this.categoryClick.bind(this, category.categoryID)} >{category.categoryName}</_E.Button>
+					  <_E.Button style={{backgroundColor: '#fff'}} key={$index} type={type} onClick={this.categoryClick.bind(this, category._id)} >{category.label}</_E.Button>
 					)
 				  }
 				)}
@@ -192,12 +207,8 @@ class Storefront extends Component {
       if (this.state.categoryIdFilter.length) {
       	if (P.categories) {
       		// handle new structure!
-
-      	} else {
-			if (this.state.categoryIdFilter.indexOf(P.productCategoryID) > -1) {
-			  //show = false;
-			  prods.push(P)
-			}
+      		var contains = P.categories.some( v => { return this.state.categoryIdFilter.indexOf(v) >= 0; } )
+      		if (contains) prods.push(P);
 		}
       } else {
       	prods.push(P)

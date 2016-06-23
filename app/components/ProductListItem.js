@@ -3,6 +3,10 @@ import * as _E from 'elemental'
 //import TsvService from '../../lib/TsvService'
 import { browserHistory } from 'react-router'
 
+import StorefrontStore from '../stores/StorefrontStore'
+import Log from '../utils/BigLogger'
+var Big = new Log('ProductListItem');
+
 import { currencyFilter } from '../utils/TsvUtils'
 
 class ProductListItem extends Component {
@@ -17,15 +21,15 @@ class ProductListItem extends Component {
 
   render() {
     var product = this.props.data;
-
+    
     return (
 
           <div className="product-list-item">
               <div onClick={this.viewProduct.bind(this)} className="product-name">
-				<h3>{product.productName}</h3>
+				<h3>{product.name}</h3>
               </div>
               <div onClick={this.viewProduct.bind(this)} className="image-container">
-				  <img src={product.imagePath} title={product.description} className="boxShadowed" />
+				  {this.renderProductImage(product)}
               </div>
               <div className="product-list-item-add-to-cart clearfix">
               	<div>
@@ -37,6 +41,20 @@ class ProductListItem extends Component {
 
     );
 
+  }
+  
+  renderProductImage(product) {
+  	var images = StorefrontStore.getImagesForProduct(product);
+  	if (images && images.length) {
+		return (
+			<img src={images[0].fileData} title={product.description} className="boxShadowed" />
+		);
+  	}
+  	Big.log('hmmm no images found?');
+  	Big.log(images);
+  	return (
+  		<img src="/gfx/ProductImageNotFound.png" title={product.description} className="boxShadowed" />
+  	);
   }
   
   renderAddToCart() {

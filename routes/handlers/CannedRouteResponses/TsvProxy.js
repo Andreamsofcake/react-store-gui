@@ -8,36 +8,43 @@ var Candyland = CandyLand({
 	// canned data sets:
 	candy: {
 
-		prods: [
-				{"productID":1000,"sku":"SKU-1000","productName":"Living On... Reese's Cookies","description":"Hand-made just like grandma used to! Each cookie packs a big 20mg of THC. 2 per pack.","price":10.00,"imagePath":"/gfx/DemoProducts/kris-cookies.jpg","productCategoryID":11},
-				{"productID":1001,"sku":"SKU-1001","productName":"Living On... Brownie Bites","description":"Chocolate decadence in each bite. Each brownie packs a big 20mg of THC. 2 per pack.","price":10.00,"imagePath":"/gfx/DemoProducts/kris-brownies.jpg","productCategoryID":11},
-				{"productID":1002,"sku":"SKU-1002","productName":"Living On... Star Gummies","description":"Super sour and fruity, these yummy gummies will do you right. 150mg THC per pack","price":25.00,"imagePath":"/gfx/DemoProducts/kris-star-gummies.jpg","productCategoryID":11},
-				{"productID":1003,"sku":"SKU-1003","productName":"Living On... Lolly Pops","description":"Great for keeping cannabis in your pocket! 4 suckers per pack, 10mg THC each.","price":10.00,"imagePath":"/gfx/DemoProducts/kris-suckers.jpg","productCategoryID":11},
-				{"productID":1004,"sku":"SKU-1004","productName":"Beyond Blue Dream","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/beyond-blue-dream_EIGHTH_900x900.jpg","productCategoryID":10},
-				{"productID":1005,"sku":"SKU-1005","productName":"God's Gift","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/gods-gift_EIGHTH_900x900.jpg","productCategoryID":10},
-				{"productID":1006,"sku":"SKU-1006","productName":"Girl Scout Cookies","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/gsc_EIGHTH_900x900.jpg","productCategoryID":10},
-				{"productID":1007,"sku":"SKU-1007","productName":"Holy Grail","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/holy-grail-og_EIGHTH_900x900.jpg","productCategoryID":10},
-				{"productID":1008,"sku":"SKU-1008","productName":"Maui Waui","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/maui-waui_EIGHTH_900x900.jpg","productCategoryID":10},
-				{"productID":1009,"sku":"SKU-1009","productName":"Paris OG","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/paris-og_EIGHTH_900x900.jpg","productCategoryID":10},
-				{"productID":1010,"sku":"SKU-1010","productName":"Sour Lemon OG","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/sour-lemon-og_EIGHTH_900x900.jpg","productCategoryID":10},
-				{"productID":1011,"sku":"SKU-1011","productName":"Tahoe OG","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/tahoe-og_EIGHTH_900x900.jpg","productCategoryID":10},
-				{"productID":1012,"sku":"SKU-1012","productName":"Blue City Diesel - Factory Packed","description":"Stay-fresh packs for the busy stoner. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/factory-bluecitydiesel_900x900.png","productCategoryID":10},
-				{"productID":1013,"sku":"SKU-1013","productName":"Jack Frost - Factory Packed","description":"Stay-fresh packs for the busy stoner. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/factory-jackfrost_900x900.png","productCategoryID":10},
-				{"productID":1014,"sku":"SKU-1014","productName":"Bhang Bar - Fire Chocolate","description":"Stay-fresh packs for the busy stoner. 1/8","price":13.00,"imagePath":"/gfx/DemoProducts/bhang-chocolate-front.png","productCategoryID":11},
-				{"productID":1015,"sku":"SKU-1015","productName":"Bubble Hash","description":"Lorem ipsum. Please halp.","price":13.00,"imagePath":"/gfx/DemoProducts/OGbubbleHash-extracts.jpg","productCategoryID":13},
-				{"productID":1016,"sku":"SKU-1016","productName":"Shatter","description":"Lorem ipsum. Please halp.","price":13.00,"imagePath":"/gfx/DemoProducts/shatter-extracts.jpg","productCategoryID":13},
-				{"productID":1015,"sku":"SKU-1015","productName":"Wax","description":"Lorem ipsum. Please halp.","price":13.00,"imagePath":"/gfx/DemoProducts/wax-extracts.jpg","productCategoryID":13}
-			]
-	
+		__prods: [
+			{"productID":1000,"sku":"SKU-1000","productName":"Living On... Reese's Cookies","description":"Hand-made just like grandma used to! Each cookie packs a big 20mg of THC. 2 per pack.","price":10.00,"imagePath":"/gfx/DemoProducts/kris-cookies.jpg","productCategoryID":11},
+			{"productID":1001,"sku":"SKU-1001","productName":"Living On... Brownie Bites","description":"Chocolate decadence in each bite. Each brownie packs a big 20mg of THC. 2 per pack.","price":10.00,"imagePath":"/gfx/DemoProducts/kris-brownies.jpg","productCategoryID":11},
+			{"productID":1002,"sku":"SKU-1002","productName":"Living On... Star Gummies","description":"Super sour and fruity, these yummy gummies will do you right. 150mg THC per pack","price":25.00,"imagePath":"/gfx/DemoProducts/kris-star-gummies.jpg","productCategoryID":11},
+			{"productID":1003,"sku":"SKU-1003","productName":"Living On... Lolly Pops","description":"Great for keeping cannabis in your pocket! 4 suckers per pack, 10mg THC each.","price":10.00,"imagePath":"/gfx/DemoProducts/kris-suckers.jpg","productCategoryID":11},
+			{"productID":1004,"sku":"SKU-1004","productName":"Beyond Blue Dream","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/beyond-blue-dream_EIGHTH_900x900.jpg","productCategoryID":10},
+			{"productID":1005,"sku":"SKU-1005","productName":"God's Gift","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/gods-gift_EIGHTH_900x900.jpg","productCategoryID":10},
+			{"productID":1006,"sku":"SKU-1006","productName":"Girl Scout Cookies","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/gsc_EIGHTH_900x900.jpg","productCategoryID":10},
+			{"productID":1007,"sku":"SKU-1007","productName":"Holy Grail","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/holy-grail-og_EIGHTH_900x900.jpg","productCategoryID":10},
+			{"productID":1008,"sku":"SKU-1008","productName":"Maui Waui","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/maui-waui_EIGHTH_900x900.jpg","productCategoryID":10},
+			{"productID":1009,"sku":"SKU-1009","productName":"Paris OG","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/paris-og_EIGHTH_900x900.jpg","productCategoryID":10},
+			{"productID":1010,"sku":"SKU-1010","productName":"Sour Lemon OG","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/sour-lemon-og_EIGHTH_900x900.jpg","productCategoryID":10},
+			{"productID":1011,"sku":"SKU-1011","productName":"Tahoe OG","description":"Highest quality Cannabis flower in the province. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/tahoe-og_EIGHTH_900x900.jpg","productCategoryID":10},
+			{"productID":1012,"sku":"SKU-1012","productName":"Blue City Diesel - Factory Packed","description":"Stay-fresh packs for the busy stoner. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/factory-bluecitydiesel_900x900.png","productCategoryID":10},
+			{"productID":1013,"sku":"SKU-1013","productName":"Jack Frost - Factory Packed","description":"Stay-fresh packs for the busy stoner. 1/8","price":45.00,"imagePath":"/gfx/DemoProducts/factory-jackfrost_900x900.png","productCategoryID":10},
+			{"productID":1014,"sku":"SKU-1014","productName":"Bhang Bar - Fire Chocolate","description":"Stay-fresh packs for the busy stoner. 1/8","price":13.00,"imagePath":"/gfx/DemoProducts/bhang-chocolate-front.png","productCategoryID":11},
+			{"productID":1015,"sku":"SKU-1015","productName":"Bubble Hash","description":"Lorem ipsum. Please halp.","price":13.00,"imagePath":"/gfx/DemoProducts/OGbubbleHash-extracts.jpg","productCategoryID":13},
+			{"productID":1016,"sku":"SKU-1016","productName":"Shatter","description":"Lorem ipsum. Please halp.","price":13.00,"imagePath":"/gfx/DemoProducts/shatter-extracts.jpg","productCategoryID":13},
+			{"productID":1015,"sku":"SKU-1015","productName":"Wax","description":"Lorem ipsum. Please halp.","price":13.00,"imagePath":"/gfx/DemoProducts/wax-extracts.jpg","productCategoryID":13}
+		]
+		
+		, prods: [
+			{"productID":1000,"price":10,"productName":"573b7e98985faf200d57c85b"},
+			{"productID":1001,"price":25,"productName":"573b7f85985faf200d57c85c"},
+			{"productID":1002,"price":15,"productName":"573b7f99985faf200d57c85d"},
+			{"productID":1003,"price":7,"productName":"573b828efd00106510f7c17f"}
+		]
+
 		, prodExtras: { "stockCount": 30, "inventoryCount": 30, "isEmpty": false, "coilNumber": "N/A", "productCategory": null, "productType": "PRODUCT_RECORD", "Attributes": {} }
 
 		, cats: [
-				{"categoryID":10,"parentCategoryID":0,"categoryName":"Flower","categoryDescription":"Cannabis flower products","imagePath":"/gfx/Categories/"},
-				{"categoryID":11,"parentCategoryID":0,"categoryName":"Edibles","categoryDescription":"Edible cannabis","imagePath":"/gfx/Categories/"},
-				{"categoryID":12,"parentCategoryID":0,"categoryName":"CBD","categoryDescription":"Medical CBD - non psychoactive","imagePath":"/gfx/Categories/"},
-				{"categoryID":13,"parentCategoryID":0,"categoryName":"Extracts","categoryDescription":"Wax, shatter, bubble hash, etc.","imagePath":"/gfx/Categories/"},
-				{"categoryID":14,"parentCategoryID":0,"categoryName":"Vapor","categoryDescription":"E-Vapes and other similar products","imagePath":"/gfx/Categories/"},
-			]
+			{"categoryID":10,"parentCategoryID":0,"categoryName":"Flower","categoryDescription":"Cannabis flower products","imagePath":"/gfx/Categories/"},
+			{"categoryID":11,"parentCategoryID":0,"categoryName":"Edibles","categoryDescription":"Edible cannabis","imagePath":"/gfx/Categories/"},
+			{"categoryID":12,"parentCategoryID":0,"categoryName":"CBD","categoryDescription":"Medical CBD - non psychoactive","imagePath":"/gfx/Categories/"},
+			{"categoryID":13,"parentCategoryID":0,"categoryName":"Extracts","categoryDescription":"Wax, shatter, bubble hash, etc.","imagePath":"/gfx/Categories/"},
+			{"categoryID":14,"parentCategoryID":0,"categoryName":"Vapor","categoryDescription":"E-Vapes and other similar products","imagePath":"/gfx/Categories/"},
+		]
 
 			/*
 			// AVT default stuff:

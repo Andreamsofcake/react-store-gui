@@ -32,7 +32,7 @@ class ShoppingCart extends Component {
     updateCredit();
 
     this.state = {
-      totalPrice: TsvSettingsStore.getCache('shoppingCart.summary.totalPrice'),
+      totalPrice: TsvSettingsStore.getCache('shoppingCart.summary.TotalPrice'),
       cart: TsvSettingsStore.getCache('shoppingCart.detail'),
       salesTaxAmount: TsvSettingsStore.getCache('shoppingCart.summary.salesTaxAmount'),
       emptyCart: false,
@@ -98,6 +98,7 @@ class ShoppingCart extends Component {
 	} else {
 	  this.setState({
 		cart: data.detail,
+		totalPrice: data.summary.TotalPrice,
 		summary: data.summary,
 		loadedCartOnce: true
 	  })
@@ -121,7 +122,7 @@ class ShoppingCart extends Component {
 
                 { this.state.bShowTax ? this.renderShowTax() : null }
 
-                <p>{Translate.translate('ShoppingCart','TotalPrice')}: { this.state.totalPrice ? currencyFilter(this.state.totalPrice) : 0.00 }</p>
+                <p>{Translate.translate('ShoppingCart','TotalPrice')}: {this.getTotalPrice()}</p>
 
             </_E.Row>
                 ) : (<p style={{margin: '40px auto'}}>&nbsp;</p>)}
@@ -141,6 +142,21 @@ class ShoppingCart extends Component {
     );
 
   }
+  
+  getTotalPrice() {
+  	if (this.state.totalPrice) {
+  		return currencyFilter(this.state.totalPrice);
+  	}
+  	if (this.state.summary.TotalPrice) {
+  		return currencyFilter(this.state.summary.TotalPrice);
+  	}
+  	// ok, must calculate for some reason:
+  	var total = 0;
+  	this.state.cart.forEach( C => {
+  		total += (C.price * C.qtyInCart);
+  	});
+  	return currencyFilter(total);
+  }
 
   renderShoppingCart() {
   	if (!this.state.cart || !this.state.cart.length) {
@@ -150,6 +166,9 @@ class ShoppingCart extends Component {
   			</div>
   		);
   	}
+  	
+  	Big.log('renderShoppingCart, check state');
+  	Big.log(this.state);
 
 	return this.state.cart.map((prd, $index) => {
 		return (

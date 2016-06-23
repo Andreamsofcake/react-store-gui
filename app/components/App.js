@@ -18,6 +18,8 @@ import AdminLoginButton from './AdminLoginButton'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
+import StorefrontActions from '../actions/StorefrontActions'
+
 import {
 	init,
 	registerKF,
@@ -38,6 +40,8 @@ class App extends Component {
 		
 		init();
 		registerKF();
+		
+		StorefrontActions.loadStorefrontData();
 		
 		TsvActions.apiCall('fetchAllMachineSettings', (err, data) => {
 			if (err) Big.throw(err);

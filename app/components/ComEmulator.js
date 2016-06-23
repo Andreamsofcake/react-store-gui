@@ -59,6 +59,13 @@ class ComEmulator extends Component {
 		
 		var buttons = [
 
+			// credits:
+			{
+				label: 'Pay Full Amount',
+				cmd: [['payFullWithCustomerCredit']],
+				showFor: ['ChooseCashCard','CustomerCreditVending']
+			},
+
 			// cash:
 			{
 				label: 'Insert $5',

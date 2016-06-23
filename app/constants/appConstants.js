@@ -25,6 +25,7 @@ var appConstants = keyMirror({
 // Storefront:
 	TOGGLE_CATEGORY_ID_TO_FILTER: null,
 	CLEAR_CATEGORY_FILTER: null,
+	STOREFRONT_DATA_RECEIVED: null,
 	
 // Customer:
 	CUSTOMER_LOGOUT: null,

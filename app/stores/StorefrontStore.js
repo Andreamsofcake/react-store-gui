@@ -9,33 +9,48 @@ import { EventEmitter } from 'events'
 import muDB from '../../lib/muDB'
 
 import RootscopeStore from './RootscopeStore'
+import Log from '../utils/BigLogger'
+var Big = new Log('StorefrontStore');
 
 import { isClient } from '../utils'
 
 var CHANGE_EVENT = 'change'
 , _store = {
-  categoryIdFilter: []
+	categoryIdFilter: [],
+	storefrontData: {
+		products: [],
+		productImages: [],
+		categories: [],
+		planogram: {}
+	}
 }
 
 // , _storeDB = new muDB()
 ;
 
+function setStorefrontData(databomb) {
+	_store.storefrontData.products = databomb.products || [];
+	_store.storefrontData.productImages = databomb.productImages || [];
+	_store.storefrontData.categories = databomb.categories || [];
+	_store.storefrontData.planogram = databomb.planogram || [];
+}
+
 function toggleIDtoCategoryFilter(ID) {
-  if(_store.categoryIdFilter.indexOf(ID)== -1){
-    _store.categoryIdFilter.push(ID);
-  }
-  else {
-    _store.categoryIdFilter.splice(_store.categoryIdFilter.indexOf(ID), 1)
-  }
+	if(_store.categoryIdFilter.indexOf(ID)== -1){
+		_store.categoryIdFilter.push(ID);
+	}
+	else {
+		_store.categoryIdFilter.splice(_store.categoryIdFilter.indexOf(ID), 1)
+	}
 }
 
 function clearFilter(){
-  _store.categoryIdFilter = []
+	_store.categoryIdFilter = []
 }
 // _storeDB.setDB(_store);
 
 var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
-  addChangeListener: function(cb) {
+	addChangeListener: function(cb) {
 		this.on(CHANGE_EVENT, cb);
 	},
 
@@ -51,6 +66,53 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 
 	getCategoryFilter: function() {
 		return _store.categoryIdFilter
+	},
+	
+	getStorefrontData(which) {
+		if (which && _store.storefrontData[which]) {
+			return _store.storefrontData[which];
+		}
+		return _store.storefrontData;
+	},
+	
+	getImagesForProduct(product) {
+		if (_store.storefrontData.productImages.length) {
+			Big.log('getImagesForProduct');
+			Big.log(product);
+			Big.log(_store.storefrontData.productImages.map( I => { return I.product }) );
+			return _store.storefrontData.productImages.filter( I => { return I.product === product._id });
+		}
+		return null;
+	},
+	
+	decorateProducts(avtProducts) {
+		if (!avtProducts) return avtProducts;
+		var isSingle = false;
+		// make sure an array, but just return the one result.
+		if (!(avtProducts instanceof Array)) {
+			avtProducts = [avtProducts];
+			isSingle = true;
+		}
+		if (_store.storefrontData.products.length) {
+			var stack = [];
+			avtProducts.forEach( AP => {
+				let thisProd = _store.storefrontData.products.filter( P => { return P._id == AP.productName; });
+				if (thisProd && thisProd.length) {
+					thisProd = JSON.parse( JSON.stringify( thisProd[0] ));
+					thisProd.price = AP.price;
+					thisProd.productID = AP.productID;
+					thisProd.inventoryCount = AP.inventoryCount;
+					thisProd.stockCount = AP.stockCount;
+					if (AP.qtyInCart) {
+						thisProd.qtyInCart = AP.qtyInCart;
+					}
+					stack.push(thisProd);
+				}
+			});
+			return isSingle ? stack.pop() : stack;
+		}
+		// FAIL
+		return avtProducts;
 	},
 
 	getProductById: function(productID) {
@@ -83,6 +145,11 @@ StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 		case appConstants.CLEAR_CATEGORY_FILTER:
 			clearFilter();
 			StorefrontStore.emitChange();
+			break;
+
+		case appConstants.STOREFRONT_DATA_RECEIVED:
+			setStorefrontData(action.data);
+			StorefrontStore.emitChange({ type: appConstants.STOREFRONT_DATA_RECEIVED });
 			break;
 
 		default:

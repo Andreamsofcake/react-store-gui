@@ -8,6 +8,9 @@ import { browserHistory, Link } from 'react-router'
 import ShoppingCartMini from './ShoppingCartMini'
 import * as _E from 'elemental'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('ProductDetail');
+
 import {
 	currencyFilter,
 	startGeneralIdleTimer,
@@ -31,7 +34,7 @@ class ProductDetail extends Component {
      StorefrontStore.addChangeListener(this._onStoreFrontChange);
      this.setState({
      	loadedAtLeastOnce: true,
-		product: StorefrontStore.getProductById(this.props.params.productID)
+		product: StorefrontStore.decorateProducts( StorefrontStore.getProductById(this.props.params.productID) )
      })
      startGeneralIdleTimer(this.props.location.pathname);
    }
@@ -97,7 +100,7 @@ class ProductDetail extends Component {
 		  <ShoppingCartMini className="scart-mini" />
           <_E.Row>
 			 <_E.Col className="productDetailHeader">
-			   <h2 style={{marginBottom:0,marginTop:'1em',fontSize:'2.7em'}}>{prod.productName}</h2>
+			   <h2 style={{marginBottom:0,marginTop:'1em',fontSize:'2.7em'}}>{prod.name}</h2>
             	<p>{prod.description}</p>
 			 </_E.Col>
           </_E.Row>
@@ -106,7 +109,7 @@ class ProductDetail extends Component {
            <div className="productDetailBody">
                <_E.Row>
                  <_E.Col basis="50%" className="product-preview">
-                   <img src={prod.imagePath} title={prod.description} className="boxShadowed" onClick={this.toggleModal.bind(this)} />
+                   {this.renderProductImage(prod)}
                  </_E.Col>
                  <_E.Col basis="50%">
                    <p className="prdPrice">Price ${currencyFilter(prod.price)} </p>
@@ -127,6 +130,20 @@ class ProductDetail extends Component {
          ) : null}
        </_E.Row>
      );
+   }
+   
+   renderProductImage(product) {
+  	var images = StorefrontStore.getImagesForProduct(product);
+  	if (images && images.length) {
+		return (
+			<img src={images[0].fileData} title={product.description} className="boxShadowed" onClick={this.toggleModal.bind(this)} />
+		);
+  	}
+  	Big.log('hmmm no images found?');
+  	Big.log(images);
+  	return (
+  		<img src="/gfx/ProductImageNotFound.png" title={product.description} className="boxShadowed" onClick={this.toggleModal.bind(this)} />
+  	);
    }
 
 	renderAddToCart() {

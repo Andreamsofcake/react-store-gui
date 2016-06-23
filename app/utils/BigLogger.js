@@ -246,6 +246,7 @@ class BigLog {
 								callback(null, { arg: this.prefixArg(arg, options), options });
 							}
 						} else if (method === 'throw') {
+							//throw new Error( this.prefix || this.options.prefix + ' -- ' + this.prefixArg(arg, options));
 							throw new Error(this.prefixArg(arg, options));
 						}
 					//} else {

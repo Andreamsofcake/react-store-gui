@@ -34,6 +34,11 @@ class ChooseCashCard extends Component {
 
   }
 
+  customerCredit() {
+    //TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
+    browserHistory.push("/CustomerCreditVending");
+  }
+
   cash() {
     TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
     browserHistory.push("/CashVending");
@@ -71,10 +76,13 @@ class ChooseCashCard extends Component {
       <_E.Col>
 		  <h2>{Translate.translate('CashCard', 'InstructionMessage')}</h2>
 		  <_E.Row>
-			  <_E.Col sm="1/2">
+			  <_E.Col sm="1/3">
+				  <_E.Button type="primary" size="lg" onClick={this.customerCredit}>Pay with Customer Credit</_E.Button>
+				</_E.Col>
+			  <_E.Col sm="1/3">
 				  <img className="paymentMethod" onClick={this.cash} src={Translate.localizedImage('cash.png')} alt="cash" style={{maxWidth:'90%'}} />
 				</_E.Col>
-			  <_E.Col sm="1/2">
+			  <_E.Col sm="1/3">
 				  <img className="paymentMethod" onClick={this.card} src={Translate.localizedImage('card.png')} alt="card" style={{maxWidth:'90%'}} />
 			  </_E.Col>
 		  </_E.Row>

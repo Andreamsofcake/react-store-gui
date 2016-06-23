@@ -10,6 +10,8 @@ import appConstants from '../constants/appConstants'
 
 import AdminStore from '../stores/AdminStore'
 import AdminActions from '../actions/AdminActions'
+import StorefrontActions from '../actions/StorefrontActions'
+
 import {
 	emptyCart,
 	startGeneralIdleTimer,
@@ -45,6 +47,8 @@ class AdminStorefrontData extends Component {
   		this.setState({
   			refreshingData: false
   		});
+  		// refresh the client once this is done:
+  		StorefrontActions.loadStorefrontData();
   	}
   }
   

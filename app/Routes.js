@@ -27,6 +27,7 @@ import AdminVms from './components/AdminVms'
 import CardVending from './components/CardVending'
 import CashVending from './components/CashVending'
 import ChooseCashCard from './components/ChooseCashCard'
+import CustomerCreditVending from './components/CustomerCreditVending'
 import CustomerLogin from './components/CustomerLogin'
 import CustomerSignup from './components/CustomerSignup'
 import ProductDetail from './components/ProductDetail'
@@ -81,6 +82,7 @@ export default (
 		<Route path='CardVending' component={CardVending} />
 		<Route path='CashVending' component={CashVending} />
 		<Route path='ChooseCashCard' component={ChooseCashCard} />
+		<Route path='CustomerCreditVending' component={CustomerCreditVending} />
 
 		<Route path='ShoppingCart' component={ShoppingCart} />
 		<Route path='ThankYouMsg' component={ThankYouMsg} />
