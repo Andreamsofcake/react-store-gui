@@ -49,7 +49,8 @@ class Storefront extends Component {
     this.state = {
       categoryIdFilter:[],
       products: [],
-      categories: []
+      categories: [],
+      customer: CL_Store.getCustomer()
     }
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);

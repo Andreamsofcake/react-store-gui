@@ -10401,7 +10401,8 @@
 	    _this.state = {
 	      categoryIdFilter: [],
 	      products: [],
-	      categories: []
+	      categories: [],
+	      customer: _CustomerStore2.default.getCustomer()
 	    };
 
 	    _this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
