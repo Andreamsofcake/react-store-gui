@@ -203,11 +203,20 @@ class CashVending extends Component {
 		TsvStore.addChangeListener(this._onTsvChange);
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		SessionStore.addChangeListener(this._onSessionStoreChange);
-		// let's check the balance at module load:
-		this.checkBalance();
+
 		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 			if (err) Big.throw(err);
 			TsvSettingsStore.setCache('shoppingCart', data);
+
+			// let's check the balance at module load:
+			//this.checkBalance();
+			this.setState({
+				insertedAmount: TsvSettingsStore.getSession('creditBalance'),
+				summary: data.summary,
+				cart: data.detail,
+				customer: CL_Store.getCustomer(),
+				customerCredit: CL_Store.getCustomerCredit(),
+			}, () => this.checkBalance);
 		});
 	}
 
@@ -327,6 +336,7 @@ class CashVending extends Component {
   	}
   	if (this.state.vendingComplete) {
   		TsvSettingsStore.setSession('bVendingInProcess', false);
+  		TsvSettingsStore.setSession('creditBalance', 0);
   		browserHistory.push('/ThankYouMsg');
   		return (
   			<div>

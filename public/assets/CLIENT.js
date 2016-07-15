@@ -8153,15 +8153,28 @@
 		}, {
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				var _this2 = this;
+
 				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				_TsvStore2.default.addChangeListener(this._onTsvChange);
 				_TsvSettingsStore2.default.addChangeListener(this._onRootstoreChange);
 				_SessionStore2.default.addChangeListener(this._onSessionStoreChange);
-				// let's check the balance at module load:
-				this.checkBalance();
+
 				_TsvActions2.default.apiCall('fetchShoppingCart2', function (err, data) {
 					if (err) Big.throw(err);
 					_TsvSettingsStore2.default.setCache('shoppingCart', data);
+
+					// let's check the balance at module load:
+					//this.checkBalance();
+					_this2.setState({
+						insertedAmount: _TsvSettingsStore2.default.getSession('creditBalance'),
+						summary: data.summary,
+						cart: data.detail,
+						customer: _CustomerStore2.default.getCustomer(),
+						customerCredit: _CustomerStore2.default.getCustomerCredit()
+					}, function () {
+						return _this2.checkBalance;
+					});
 				});
 			}
 
@@ -8286,6 +8299,7 @@
 				}
 				if (this.state.vendingComplete) {
 					_TsvSettingsStore2.default.setSession('bVendingInProcess', false);
+					_TsvSettingsStore2.default.setSession('creditBalance', 0);
 					_reactRouter.browserHistory.push('/ThankYouMsg');
 					return _react2.default.createElement(
 						'div',
@@ -16856,9 +16870,18 @@
 
 	var _events = __webpack_require__(189);
 
+	var _TsvSettingsStore = __webpack_require__(70);
+
+	var _TsvSettingsStore2 = _interopRequireDefault(_TsvSettingsStore);
+
 	var _utils = __webpack_require__(5);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	//import muDB from '../../lib/muDB'
+
+	//import TsvService from '../../lib/TsvService'
+	//import * as Translate from '../../lib/Translate'
 
 	var CHANGE_EVENT = 'change',
 	    _store = {
@@ -16866,10 +16889,6 @@
 		signupStepsComplete: [],
 		customer: null
 	};
-	//import muDB from '../../lib/muDB'
-
-	//import TsvService from '../../lib/TsvService'
-	//import * as Translate from '../../lib/Translate'
 
 	function pushStep(kind, step) {
 		if (_store[kind + 'StepsComplete']) {
@@ -17050,6 +17069,9 @@
 			case _appConstants2.default.CUSTOMER_LOADED:
 				if (action.data.status === 'ok' && action.data.customer) {
 					clearSteps('login');
+					// not sure if this is good spot for this logic or not, but it solves some issues:
+					_TsvSettingsStore2.default.setSession('bVendingInProcess', false);
+					_TsvSettingsStore2.default.setSession('creditBalance', 0);
 					setCustomer(action.data.customer);
 					if (action.data.credit) {
 						setCustomerCredit(action.data.credit);

@@ -7,6 +7,8 @@ import objectAssign from 'react/lib/Object.assign'
 import { EventEmitter } from 'events'
 //import muDB from '../../lib/muDB'
 
+import TsvSettingsStore from './TsvSettingsStore'
+
 import { isClient } from '../utils'
 
 var CHANGE_EVENT = 'change'
@@ -196,6 +198,9 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 		case appConstants.CUSTOMER_LOADED:
 			if (action.data.status === 'ok' && action.data.customer) {
 				clearSteps('login');
+				// not sure if this is good spot for this logic or not, but it solves some issues:
+				TsvSettingsStore.setSession('bVendingInProcess', false);
+				TsvSettingsStore.setSession('creditBalance', 0);
 				setCustomer(action.data.customer);
 				if (action.data.credit) {
 					setCustomerCredit(action.data.credit);
