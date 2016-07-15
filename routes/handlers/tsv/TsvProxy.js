@@ -42,7 +42,23 @@ module.exports = {
 
 		//var data = { status: 'ok', msg: 'Multievent test response', tryReconnects: false, payload: request.payload };
 		var data = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success", tryReconnects: false, payload: request.payload };
-		return reply( data ).code(200);
+		/*return */reply( data ).code(200);
+		/*
+		ProxyCall('systemMachineEvent', {
+			client: MI.registrationData.client // need to get client here....
+
+		}, (err, response) => {
+		
+			if (err) return reply({ status: 'err', error: err }).code(500);
+
+			if (!response || !response.data || !response.data.items) {
+				return reply({ status: 'ok', msg: 'no users found' }).code(404);
+			}
+			
+			reply({ status: 'ok', msg: 'users found', data: response.data.items }).code(200);
+		
+		});
+		*/
 	},
 
 	Flashapi: function(request, reply) {

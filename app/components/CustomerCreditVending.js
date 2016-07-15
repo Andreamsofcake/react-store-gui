@@ -326,6 +326,7 @@ class CashVending extends Component {
   		clearTimeout(this.storefrontTimeout);
   	}
   	if (this.state.vendingComplete) {
+  		TsvSettingsStore.setSession('bVendingInProcess', false);
   		browserHistory.push('/ThankYouMsg');
   		return (
   			<div><h1>Vending complete!</h1></div>
