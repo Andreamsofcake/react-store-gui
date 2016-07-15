@@ -174,7 +174,7 @@ function multieventProxyPing(io) {
 				var MI = CheckRegistration(true);
 				
 				if (MI && MI.registrationData && MI.registrationData._id) {
-					ProxyCall('systemMachineEvent', {
+					ProxyCall('machineEventNew', {
 						machine: MI.registrationData._id,
 						event: body
 
