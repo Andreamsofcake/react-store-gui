@@ -11307,11 +11307,11 @@
 	    // MUST call super() before any this.*
 
 
-	    (0, _TsvUtils.updateCredit)();
 	    _this.state = {
 	      errorMsg1: _TsvSettingsStore2.default.getSession('vendErrorMsg1'),
 	      errorMsg2: _TsvSettingsStore2.default.getSession('vendErrorMsg2')
 	    };
+	    (0, _TsvUtils.updateCredit)();
 	    (0, _TsvUtils.vendErrorTimer)();
 
 	    return _this;
@@ -11322,7 +11322,12 @@
 
 
 	    // Add change listeners to stores
-	    value: function componentDidMount() {}
+	    value: function componentDidMount() {
+	      this.setState({
+	        errorMsg1: _TsvSettingsStore2.default.getSession('vendErrorMsg1'),
+	        errorMsg2: _TsvSettingsStore2.default.getSession('vendErrorMsg2')
+	      });
+	    }
 
 	    // Remove change listers from stores
 
@@ -11347,6 +11352,15 @@
 	            'p',
 	            null,
 	            this.errorMsg2
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'pre',
+	            null,
+	            JSON.stringify(_TsvSettingsStore2.default.getCache('shoppingCart'), null, 4)
 	          )
 	        )
 	      );
