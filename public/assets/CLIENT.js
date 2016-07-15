@@ -11323,6 +11323,7 @@
 
 	    // Add change listeners to stores
 	    value: function componentDidMount() {
+	      killGeneralIdleTimer();
 	      this.setState({
 	        errorMsg1: _TsvSettingsStore2.default.getSession('vendErrorMsg1'),
 	        errorMsg2: _TsvSettingsStore2.default.getSession('vendErrorMsg2')
@@ -11344,14 +11345,19 @@
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
-	            'p',
+	            'h2',
 	            null,
-	            this.errorMsg1
+	            'NOTE: for testing, the idle timer is stopped!'
 	          ),
 	          _react2.default.createElement(
 	            'p',
 	            null,
-	            this.errorMsg2
+	            this.state.errorMsg1
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.state.errorMsg2
 	          )
 	        ),
 	        _react2.default.createElement(

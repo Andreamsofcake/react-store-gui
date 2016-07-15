@@ -32,6 +32,7 @@ class VendError extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+  	killGeneralIdleTimer();
 	this.setState({
 		errorMsg1: TsvSettingsStore.getSession('vendErrorMsg1'),
 		errorMsg2: TsvSettingsStore.getSession('vendErrorMsg2')
@@ -46,8 +47,9 @@ class VendError extends Component {
   	return (
       <_E.Row className="VendError">
       	<_E.Col>
-			<p>{this.errorMsg1}</p>
-			<p>{this.errorMsg2}</p>
+      		<h2>NOTE: for testing, the idle timer is stopped!</h2>
+			<p>{this.state.errorMsg1}</p>
+			<p>{this.state.errorMsg2}</p>
       	</_E.Col>
       	<div>
       	<pre>
