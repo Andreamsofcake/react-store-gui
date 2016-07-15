@@ -46,7 +46,7 @@ class CashVending extends Component {
     //TsvSettingsStore.setCache('currentLocation', '/CashVending');
     TsvSettingsStore.setConfig('bDisplayCgryNavigation', false);
     updateCredit();
-    TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
+    //TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
 
     this.state = {
       insertedAmount: TsvSettingsStore.getSession('creditBalance'),
@@ -116,6 +116,7 @@ class CashVending extends Component {
 		  Big.log('customer has inserted enough money!');
 		  
 	  	  var creditDue = balance - total;
+	  	  /*
 	  	  if (creditDue) {
 	  	  	// 1. clear the credit in Paylink
 	  	  	// 2. push the credit to the customer
@@ -127,9 +128,10 @@ class CashVending extends Component {
 	  	  } else {
 	  	  	Big.log(' >>>>>>> no credit due.');
 	  	  }
+	  	  */
 
-		  TsvActions.apiCall('disablePaymentDevice', () => {
-			  Big.log('... payment device disabled');
+		  //TsvActions.apiCall('disablePaymentDevice', () => {
+			  //Big.log('... payment device disabled');
 			  if(!TsvSettingsStore.getSession('bVendingInProcess')){
 				  Big.log('... vending was not in process, so vend away...!!!!!');
 				  // only in cash.js:
@@ -145,7 +147,7 @@ class CashVending extends Component {
 			  } else {
 				  Big.log('... vending WAS IN process, error maybe?');
 			  }
-		  });
+		  //});
 		  if (!TsvSettingsStore.getSession('bVendingInProcess')) {
 			  Big.warn('checkBalance() returning true');
 			  return true;

@@ -7999,7 +7999,7 @@
 
 			_TsvSettingsStore2.default.setConfig('bDisplayCgryNavigation', false);
 			(0, _TsvUtils.updateCredit)();
-			_TsvActions2.default.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
+			//TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
 
 			_this.state = {
 				insertedAmount: _TsvSettingsStore2.default.getSession('creditBalance'),
@@ -8057,8 +8057,6 @@
 		}, {
 			key: 'checkBalance',
 			value: function checkBalance(calculatedBalance) {
-				var _this2 = this;
-
 				var total = _TsvSettingsStore2.default.getCache('shoppingCart.summary.TotalPrice'),
 				    cart_detail = _TsvSettingsStore2.default.getCache('shoppingCart.detail') || [],
 				    balance = calculatedBalance || _TsvSettingsStore2.default.getSession('creditBalance');
@@ -8073,36 +8071,38 @@
 					Big.log('customer has inserted enough money!');
 
 					var creditDue = balance - total;
-					if (creditDue) {
-						// 1. clear the credit in Paylink
-						// 2. push the credit to the customer
-						// (logically those should reverse, we should make sure the credit is pushed before we clear....)
-						// FIXME later
-						_TsvActions2.default.apiCall('resetCreditBalance', function () {
-							Big.log(' >>>>>>> customer should receive ' + creditDue + ' in credits to their account!');
+					/*
+	    if (creditDue) {
+	    	// 1. clear the credit in Paylink
+	    	// 2. push the credit to the customer
+	    	// (logically those should reverse, we should make sure the credit is pushed before we clear....)
+	    	// FIXME later
+	    	TsvActions.apiCall('resetCreditBalance', () => {
+	    		Big.log(' >>>>>>> customer should receive '+creditDue+' in credits to their account!');
+	    	});
+	    } else {
+	    	Big.log(' >>>>>>> no credit due.');
+	    }
+	    */
+
+					//TsvActions.apiCall('disablePaymentDevice', () => {
+					//Big.log('... payment device disabled');
+					if (!_TsvSettingsStore2.default.getSession('bVendingInProcess')) {
+						Big.log('... vending was not in process, so vend away...!!!!!');
+						// only in cash.js:
+						_TsvSettingsStore2.default.setSession('bVendingInProcess', true);
+						_TsvActions2.default.apiCall('startVend');
+						Big.log('... start vend has been called');
+						this.setState({
+							hintMsg: Translate.translate('CashVending', 'HintMessageVending'),
+							showCancelBtnCash: false,
+							showSpinner: true,
+							vendingItem: null
 						});
 					} else {
-						Big.log(' >>>>>>> no credit due.');
+						Big.log('... vending WAS IN process, error maybe?');
 					}
-
-					_TsvActions2.default.apiCall('disablePaymentDevice', function () {
-						Big.log('... payment device disabled');
-						if (!_TsvSettingsStore2.default.getSession('bVendingInProcess')) {
-							Big.log('... vending was not in process, so vend away...!!!!!');
-							// only in cash.js:
-							_TsvSettingsStore2.default.setSession('bVendingInProcess', true);
-							_TsvActions2.default.apiCall('startVend');
-							Big.log('... start vend has been called');
-							_this2.setState({
-								hintMsg: Translate.translate('CashVending', 'HintMessageVending'),
-								showCancelBtnCash: false,
-								showSpinner: true,
-								vendingItem: null
-							});
-						} else {
-							Big.log('... vending WAS IN process, error maybe?');
-						}
-					});
+					//});
 					if (!_TsvSettingsStore2.default.getSession('bVendingInProcess')) {
 						Big.warn('checkBalance() returning true');
 						return true;
