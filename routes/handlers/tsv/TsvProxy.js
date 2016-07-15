@@ -1,6 +1,8 @@
 //import SDK from 'sdk-core-lib'
 import RQ from 'request'
 import * as CANDY from '../CannedRouteResponses/TsvProxy'
+import { ProxyCall, CheckRegistration } from '../../../lib/Bootup'
+
 var debug = require('debug')('vending-app-gui:tsv-proxy')
 
 	// targeted response enhancement:
@@ -43,20 +45,6 @@ module.exports = {
 		//var data = { status: 'ok', msg: 'Multievent test response', tryReconnects: false, payload: request.payload };
 		var data = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success", tryReconnects: false, payload: request.payload };
 		/*return */reply( data ).code(200);
-
-		ProxyCall('systemMachineEvent', {
-			machine: MI._id,
-			event: request.payload
-
-		}, (err, response) => {
-		
-			if (err) {
-				debug('ProxyCall Event recording FAIL!');
-				debug(err);
-			} else {
-				debug('ProxyCall Event recording success');
-			}		
-		});
 
 	},
 
@@ -182,6 +170,26 @@ function multieventProxyPing(io) {
 				// windoze no likey, must send to all sockets:
 				//io.to('flash-api-multi-event').emit('flash-api-multi-event', [ body ]);
 				io.sockets.emit('flash-api-multi-event', body);
+				
+				var MI = CheckRegistration(true);
+				
+				if (MI && MI.registrationData && MI.registrationData._id) {
+					ProxyCall('systemMachineEvent', {
+						machine: MI.registrationData._id,
+						event: body
+
+					}, (err, response) => {
+		
+						if (err) {
+							debug('ProxyCall Event recording FAIL!');
+							debug(err);
+						} else {
+							debug('ProxyCall Event recording success');
+						}		
+					});
+				}
+
+
 			}
 			
 		}
