@@ -161,7 +161,7 @@ var TsvSettingsStore = objectAssign({}, EventEmitter.prototype, {
 	},
 
 	setConfig(path, value) {
-		if (!value && path && typeof path === 'object') {
+		if (value === undefined && path && typeof path === 'object') {
 			Object.keys(path).forEach( KEY => {
 				_storeDB.set('config.' + KEY, path[KEY]);
 			});
@@ -173,7 +173,7 @@ var TsvSettingsStore = objectAssign({}, EventEmitter.prototype, {
 	},
 	
 	setCache(path, value) {
-		if (!value && path && typeof path === 'object') {
+		if (value === undefined && path && typeof path === 'object') {
 			Object.keys(path).forEach( KEY => {
 				_storeDB.set('cache.' + KEY, path[KEY]);
 			});
@@ -185,7 +185,7 @@ var TsvSettingsStore = objectAssign({}, EventEmitter.prototype, {
 	},
 
 	setSession(path, value) {
-		if (!value && path && typeof path === 'object') {
+		if (value === undefined && path && typeof path === 'object') {
 			Object.keys(path).forEach( KEY => {
 				_storeDB.set('session.' + KEY, path[KEY]);
 			});

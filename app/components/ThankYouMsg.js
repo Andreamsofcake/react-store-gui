@@ -20,7 +20,7 @@ class ThankYouMsg extends Component {
     // MUST call super() before any this.*
     super(props, context);
 
-    TsvSettingsStore.setConfig("bDisplayCgryNavigation2", TsvSettingsStore.getConfig('bDisplayCgryNavigation'));
+    //TsvSettingsStore.setConfig("bDisplayCgryNavigation2", TsvSettingsStore.getConfig('bDisplayCgryNavigation'));
     updateCredit();
     
     thankYouTimer();
@@ -29,6 +29,7 @@ class ThankYouMsg extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+    TsvSettingsStore.setSession('bVendingInProcess', false);
   }
 
   // Remove change listers from stores
@@ -40,7 +41,7 @@ class ThankYouMsg extends Component {
       <_E.Row className="PageIdle">
         <_E.Col>
           <h1 style={{textAlign:'center'}}>Thanks for your business!</h1>
-          <p>{' '}</p>
+          <p>{' '} bVendingInProcess: {TsvSettingsStore.getSession('bVendingInProcess')}</p>
           <h3 style={{textAlign:'center'}}>Looking forwawrd to seeing you again.....</h3>
           <p>{' '}</p>
           <p style={{textAlign:'center'}}><_E.Button size="lg" type="primary" onClick={() => { CL_Actions.customerLogout() }}>Logout</_E.Button></p>

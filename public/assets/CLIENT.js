@@ -8294,6 +8294,12 @@
 							'h1',
 							null,
 							'Vending complete!'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							' bVendingInProcess: ',
+							_TsvSettingsStore2.default.getSession('bVendingInProcess')
 						)
 					);
 				}
@@ -8326,6 +8332,12 @@
 							'h2',
 							null,
 							'Use your Customer Credit to complete your purchase'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							' bVendingInProcess: ',
+							_TsvSettingsStore2.default.getSession('bVendingInProcess')
 						),
 						_react2.default.createElement(
 							_E.Col,
@@ -11055,11 +11067,12 @@
 	  function ThankYouMsg(props, context) {
 	    _classCallCheck(this, ThankYouMsg);
 
+	    //TsvSettingsStore.setConfig("bDisplayCgryNavigation2", TsvSettingsStore.getConfig('bDisplayCgryNavigation'));
+
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ThankYouMsg).call(this, props, context));
 	    // MUST call super() before any this.*
 
 
-	    _TsvSettingsStore2.default.setConfig("bDisplayCgryNavigation2", _TsvSettingsStore2.default.getConfig('bDisplayCgryNavigation'));
 	    (0, _TsvUtils.updateCredit)();
 
 	    (0, _TsvUtils.thankYouTimer)();
@@ -11072,7 +11085,9 @@
 
 
 	    // Add change listeners to stores
-	    value: function componentDidMount() {}
+	    value: function componentDidMount() {
+	      _TsvSettingsStore2.default.setSession('bVendingInProcess', false);
+	    }
 
 	    // Remove change listers from stores
 
@@ -11096,7 +11111,9 @@
 	          _react2.default.createElement(
 	            'p',
 	            null,
-	            ' '
+	            ' ',
+	            ' bVendingInProcess: ',
+	            _TsvSettingsStore2.default.getSession('bVendingInProcess')
 	          ),
 	          _react2.default.createElement(
 	            'h3',
@@ -14018,7 +14035,7 @@
 		},
 
 		setConfig: function setConfig(path, value) {
-			if (!value && path && (typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object') {
+			if (value === undefined && path && (typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object') {
 				Object.keys(path).forEach(function (KEY) {
 					_storeDB.set('config.' + KEY, path[KEY]);
 				});
@@ -14029,7 +14046,7 @@
 			TsvSettingsStore.emitChange({ type: 'config', path: path });
 		},
 		setCache: function setCache(path, value) {
-			if (!value && path && (typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object') {
+			if (value === undefined && path && (typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object') {
 				Object.keys(path).forEach(function (KEY) {
 					_storeDB.set('cache.' + KEY, path[KEY]);
 				});
@@ -14040,7 +14057,7 @@
 			TsvSettingsStore.emitChange({ type: 'cache', path: path });
 		},
 		setSession: function setSession(path, value) {
-			if (!value && path && (typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object') {
+			if (value === undefined && path && (typeof path === 'undefined' ? 'undefined' : _typeof(path)) === 'object') {
 				Object.keys(path).forEach(function (KEY) {
 					_storeDB.set('session.' + KEY, path[KEY]);
 				});

@@ -329,7 +329,10 @@ class CashVending extends Component {
   		TsvSettingsStore.setSession('bVendingInProcess', false);
   		browserHistory.push('/ThankYouMsg');
   		return (
-  			<div><h1>Vending complete!</h1></div>
+  			<div>
+	  			<h1>Vending complete!</h1>
+				<p> bVendingInProcess: {TsvSettingsStore.getSession('bVendingInProcess')}</p>
+  			</div>
   		);
   	}
   	if (!this.state.cart || !this.state.cart.length) {
@@ -348,7 +351,8 @@ class CashVending extends Component {
       <_E.Row>
 		<_E.Col>
 		
-		<h2>Use your Customer Credit to complete your purchase</h2>
+			<h2>Use your Customer Credit to complete your purchase</h2>
+			<p> bVendingInProcess: {TsvSettingsStore.getSession('bVendingInProcess')}</p>
 
 			  <_E.Col>
 			{this.state.cart.map( (prd, $index) => {
