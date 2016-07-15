@@ -499,12 +499,29 @@ export function resetPaymentTimer() {
 	startPaymentTimer();
 }
 
+export function killAllTimers() {
+	var timerSet = getTimers();
+	if (timerSet) {
+		Object.keys(timerSet).forEach( K => {
+			var ref = timerSet[K];
+			if (ref) {
+				if (ref.stop) {
+					ref.stop();
+				} else {
+					clearTimeout(ref);
+				}
+			}
+			dropTimer(K);
+		});
+	}
+}
+
 export function killTimers(timerList) {
 
 	if (timerList && typeof timerList === 'string') { timerList = [timerList]; }
 
 	if (timerList && timerList.length) {
-		var timerSet = getTimers()
+		var timerSet = getTimers();
 		if (timerSet) {
 			timerList.forEach( TIMER => {
 				if (timerSet[TIMER]) {
@@ -519,7 +536,6 @@ export function killTimers(timerList) {
 					dropTimer(TIMER);
 				}
 			});
-			//TsvSettingsStore.setTimers(timerSet);
 		}
 	}
 

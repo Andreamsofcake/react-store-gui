@@ -716,7 +716,7 @@
 
 	var _TransactionRefund2 = _interopRequireDefault(_TransactionRefund);
 
-	var _VendError = __webpack_require__(41);
+	var _VendError = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/VendError\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var _VendError2 = _interopRequireDefault(_VendError);
 
@@ -11251,134 +11251,7 @@
 	exports.default = Transaction_Refund;
 
 /***/ },
-/* 41 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(9);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Translate = __webpack_require__(69);
-
-	var Translate = _interopRequireWildcard(_Translate);
-
-	var _elemental = __webpack_require__(125);
-
-	var _E = _interopRequireWildcard(_elemental);
-
-	var _TsvSettingsStore = __webpack_require__(70);
-
-	var _TsvSettingsStore2 = _interopRequireDefault(_TsvSettingsStore);
-
-	var _reactRouter = __webpack_require__(8);
-
-	var _TsvUtils = __webpack_require__(73);
-
-	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	//import TsvService from '../../lib/TsvService'
-
-
-	var VendError = function (_Component) {
-	  _inherits(VendError, _Component);
-
-	  function VendError(props, context) {
-	    _classCallCheck(this, VendError);
-
-	    //TsvSettingsStore.setSession('currentView', 'VendError');
-	    //TsvSettingsStore.setCache('currentLocation', '/VendError');
-
-	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VendError).call(this, props, context));
-	    // MUST call super() before any this.*
-
-
-	    _this.state = {
-	      errorMsg1: _TsvSettingsStore2.default.getSession('vendErrorMsg1'),
-	      errorMsg2: _TsvSettingsStore2.default.getSession('vendErrorMsg2')
-	    };
-	    (0, _TsvUtils.updateCredit)();
-	    (0, _TsvUtils.vendErrorTimer)();
-
-	    return _this;
-	  }
-
-	  _createClass(VendError, [{
-	    key: 'componentDidMount',
-
-
-	    // Add change listeners to stores
-	    value: function componentDidMount() {
-	      killGeneralIdleTimer();
-	      this.setState({
-	        errorMsg1: _TsvSettingsStore2.default.getSession('vendErrorMsg1'),
-	        errorMsg2: _TsvSettingsStore2.default.getSession('vendErrorMsg2')
-	      });
-	    }
-
-	    // Remove change listers from stores
-
-	  }, {
-	    key: 'componentWillUnmount',
-	    value: function componentWillUnmount() {}
-	  }, {
-	    key: 'render',
-	    value: function render() {
-	      return _react2.default.createElement(
-	        _E.Row,
-	        { className: 'VendError' },
-	        _react2.default.createElement(
-	          _E.Col,
-	          null,
-	          _react2.default.createElement(
-	            'h2',
-	            null,
-	            'NOTE: for testing, the idle timer is stopped!'
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            this.state.errorMsg1
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            this.state.errorMsg2
-	          )
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          null,
-	          _react2.default.createElement(
-	            'pre',
-	            null,
-	            JSON.stringify(_TsvSettingsStore2.default.getCache('shoppingCart'), null, 4)
-	          )
-	        )
-	      );
-	    }
-	  }]);
-
-	  return VendError;
-	}(_react.Component);
-
-	exports.default = VendError;
-
-/***/ },
+/* 41 */,
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -14475,6 +14348,7 @@
 	exports.idleClicked = idleClicked;
 	exports.resetSelectedItem = resetSelectedItem;
 	exports.resetPaymentTimer = resetPaymentTimer;
+	exports.killAllTimers = killAllTimers;
 	exports.killTimers = killTimers;
 	exports.startPaymentTimer = startPaymentTimer;
 	exports.getCreditMessage = getCreditMessage;
@@ -14997,6 +14871,23 @@
 		startPaymentTimer();
 	}
 
+	function killAllTimers() {
+		var timerSet = getTimers();
+		if (timerSet) {
+			Object.keys(timerSet).forEach(function (K) {
+				var ref = timerSet[K];
+				if (ref) {
+					if (ref.stop) {
+						ref.stop();
+					} else {
+						clearTimeout(ref);
+					}
+				}
+				dropTimer(K);
+			});
+		}
+	}
+
 	function killTimers(timerList) {
 
 		if (timerList && typeof timerList === 'string') {
@@ -15019,7 +14910,6 @@
 						dropTimer(TIMER);
 					}
 				});
-				//TsvSettingsStore.setTimers(timerSet);
 			}
 		}
 	}

@@ -10,6 +10,7 @@ import { browserHistory } from 'react-router'
 import {
 	gotoDefaultIdlePage,
 	vendErrorTimer,
+	killAllTimers
 	updateCredit
 } from '../utils/TsvUtils'
 
@@ -26,13 +27,14 @@ class VendError extends Component {
       errorMsg2: TsvSettingsStore.getSession('vendErrorMsg2')
     }
     updateCredit();
-    vendErrorTimer();
+    //vendErrorTimer();
+    killAllTimers();
 
   };
 
   // Add change listeners to stores
   componentDidMount() {
-  	killGeneralIdleTimer();
+  	killAllTimers();
 	this.setState({
 		errorMsg1: TsvSettingsStore.getSession('vendErrorMsg1'),
 		errorMsg2: TsvSettingsStore.getSession('vendErrorMsg2')
@@ -44,6 +46,7 @@ class VendError extends Component {
   }
 
   render() {
+  	killAllTimers();
   	return (
       <_E.Row className="VendError">
       	<_E.Col>
