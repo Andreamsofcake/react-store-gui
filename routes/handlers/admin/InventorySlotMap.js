@@ -15,30 +15,31 @@ var fsplit = __filename.split(path.sep)
 
 module.exports = function(request, reply) {
 	
-	var numSlots = 99
-		, numCalls = 0
+	var maxSlots = 99
+		, currentSlotNumber = 0
 		, map = []
 		, errmap = []
 		;
 	
-	function saveMapData(err, ok) {
-		numCalls += 1;
+	function saveMapData(err, slotInfo) {
+
 		if (err) {
 			errmap.push(err);
 		} else {
-			map.push(ok);
+			slotInfo.slot = currentSlotNumber;
+			map.push(slotInfo);
 		}
 		
-		if (numCalls === numSlots) {
+		if (currentSlotNumber === maxSlots) {
 			fs.writeFileSync('./inventory-slot-map-data.json', JSON.stringify({ slotMap: map, errmap, configData: ConfigData() }));
 			return reply({ status: 'ok', msg: 'inventory map created', data:
 				{ slotMap: map, errmap, configData: ConfigData() }
 			}).code(200);
 		} else {
-			FlashapiCall(['adminValidateProductByCoil', numCalls + 1], saveMapData);
+			FlashapiCall(['adminValidateProductByCoil', currentSlotNumber += 1], saveMapData);
 		}
 	}
 	
-	FlashapiCall(['adminValidateProductByCoil', numCalls + 1], saveMapData);
+	FlashapiCall(['adminValidateProductByCoil', currentSlotNumber += 1], saveMapData);
 
 }

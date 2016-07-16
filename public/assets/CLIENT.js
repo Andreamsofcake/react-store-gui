@@ -59396,7 +59396,8 @@
 		}, {
 			key: '_onAdminStoreChange',
 			value: function _onAdminStoreChange(event) {
-				Big.log('_onAdminStoreChange').log(event);
+				Big.log('_onAdminStoreChange');
+				Big.log(event);
 				if (event.type === _appConstants2.default.INVENTORY_SLOTMAP_RECEVIED) {
 					this.setState({
 						slotMap: _AdminStore2.default.getInventorySlotmap()
