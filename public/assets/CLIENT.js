@@ -59447,8 +59447,17 @@
 	      });
 	      */
 
+							// update local count so we don't have to ping the API to refresh
+							var ISM = _this2.state.inventorySlotMap;
+							ISM.map.forEach(function (M) {
+								if (M.slot == _this2.state.coilNumber) {
+									M.inventoryCount += parseInt(_this2.state.slotProductCount);
+								}
+							});
+
 							setTimeout(function () {
 								_this2.setState({
+									inventorySlotMap: ISM,
 									instructionMessage: '',
 									inventoryGuiState: 'selectSlot',
 									slotProductCount: "0"
@@ -59486,6 +59495,17 @@
 	        slotProductCount: ""
 	      });
 	      */
+
+							// update local count so we don't have to ping the API to refresh
+							var ISM = _this3.state.inventorySlotMap;
+							ISM.map.forEach(function (M) {
+								if (M.slot == _this3.state.coilNumber) {
+									M.inventoryCount -= parseInt(_this3.state.slotProductCount);
+									if (M.inventoryCount < 0) {
+										M.inventoryCount = 0;
+									}
+								}
+							});
 
 							setTimeout(function () {
 								_this3.setState({

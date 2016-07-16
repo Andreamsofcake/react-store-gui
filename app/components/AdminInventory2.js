@@ -124,9 +124,18 @@ class AdminInventory2 extends Component {
 						slotProductCount: ""
 					});
 					*/
+					
+					// update local count so we don't have to ping the API to refresh
+					let ISM = this.state.inventorySlotMap;
+					ISM.map.forEach( M => {
+						if (M.slot == this.state.coilNumber) {
+							M.inventoryCount += parseInt(this.state.slotProductCount);
+						}
+					});
 
 					setTimeout( () => {
 						this.setState({
+							inventorySlotMap: ISM,
 							instructionMessage: '',
 							inventoryGuiState: 'selectSlot',
 							slotProductCount: "0"
@@ -161,6 +170,15 @@ class AdminInventory2 extends Component {
 					  slotProductCount: ""
 					});
 					*/
+
+					// update local count so we don't have to ping the API to refresh
+					let ISM = this.state.inventorySlotMap;
+					ISM.map.forEach( M => {
+						if (M.slot == this.state.coilNumber) {
+							M.inventoryCount -= parseInt(this.state.slotProductCount);
+							if (M.inventoryCount < 0) { M.inventoryCount = 0; }
+						}
+					});
 
 					setTimeout( () => {
 						this.setState({
