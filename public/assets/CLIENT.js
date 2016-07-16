@@ -59388,6 +59388,7 @@
 				Big.log('_onAdminStoreChange');
 				Big.log(event);
 				if (event.type === _appConstants2.default.INVENTORY_SLOTMAP_RECEVIED) {
+					Big.log('ok, set the state now, we have the inventory');
 					this.setState({
 						inventorySlotMap: _AdminStore2.default.getInventorySlotmap()
 					});

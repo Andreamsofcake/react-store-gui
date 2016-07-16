@@ -71,6 +71,7 @@ class AdminInventory2 extends Component {
 		Big.log('_onAdminStoreChange');	
 		Big.log(event);
 		if (event.type === appConstants.INVENTORY_SLOTMAP_RECEVIED) {
+			Big.log('ok, set the state now, we have the inventory');
 			this.setState({
 				inventorySlotMap: AdminStore.getInventorySlotmap()
 			});
