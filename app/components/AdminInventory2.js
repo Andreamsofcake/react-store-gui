@@ -70,6 +70,8 @@ class AdminInventory2 extends Component {
 	}
 	
 	_onAdminStoreChange(event) {
+		Big.log('_onAdminStoreChange')
+			.log(event);
 		if (event.type === appConstants.INVENTORY_SLOTMAP_RECEVIED) {
 			this.setState({
 				slotMap: AdminStore.getInventorySlotmap()

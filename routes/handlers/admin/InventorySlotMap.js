@@ -30,6 +30,7 @@ module.exports = function(request, reply) {
 		}
 		
 		if (numCalls === numSlots) {
+			fs.writeFileSync('./inventory-slot-map-data.json', JSON.stringify({ slotMap: map, errmap, configData: ConfigData() }));
 			return reply({ status: 'ok', msg: 'inventory map created', data:
 				{ slotMap: map, errmap, configData: ConfigData() }
 			}).code(200);
