@@ -209,13 +209,36 @@ class AdminInventory2 extends Component {
 		);
 	}
   
+	parseSlotMap(map) {
+		Big.log('parseSlotMap');
+		Big.log(map);
+		if (map && map.length) {
+			var products = {};
+			map.forEach( M => {
+				if (['OUT_OF_STOCK', 'AVAILABLE'].indexOf(M.result) > -1) {
+					if (!products.hasOwnProperty(M.productName)) {
+						Big.log('found a new product: ' + M.productName);
+						products[M.productName] = [];
+					}
+					products[M.productName].push(M);
+				}
+			});
+			Big.log('parseSlotMap RETURN');
+			return products;
+		}
+		Big.log('parseSlotMap RETURN NULL????');
+		return null;
+	}
+
 	renderSlotMap() {
 		if (this.state.inventoryGuiState !== 'selectSlot') {
 			return null;
 		}
 
+		Big.log('renderSlotMap');
 		let ISM = this.parseSlotMap(this.state.inventorySlotMap.map)
 			, components = Object.keys(ISM).map( (M, idx) => {
+				Big.log('component ' + (idx + 1));
 				let pData = StorefrontStore.decorateProducts({ productName: M })
 					, pImages = StorefrontStore.getImagesForProduct(pData)
 					;
@@ -253,6 +276,8 @@ class AdminInventory2 extends Component {
 	
 	renderProductSlots(slots) {
 		if (slots && slots.length) {
+			Big.log('renderProductSlots');
+			Big.log(slots);
 			return (
 				<_E.Row style={{marginTop: '1em'}}>
 					{slots.map( (S, idx) => {
@@ -279,22 +304,6 @@ class AdminInventory2 extends Component {
 		);
 	}
 	
-	parseSlotMap(map) {
-		if (map && map.length) {
-			var products = {};
-			map.forEach( M => {
-				if (['OUT_OF_STOCK', 'AVAILABLE'].indexOf(M.result) > -1) {
-					if (!products.hasOwnProperty(M.productName)) {
-						products[M.productName] = [];
-					}
-					products[M.productName].push(M);
-				}
-			});
-			return products;
-		}
-		return null;
-	}
-
 	renderManageStockForSlot() {
 		if (this.state.inventoryGuiState !== 'stock') {
 			return null;
@@ -364,7 +373,7 @@ class AdminInventory2 extends Component {
 		*/
 		images = images || this.state.productImages;
 		if (images && images.length) {
-			return (<p style={{textAlign:'center'}}><img src={this.state.productImages[0].fileData} className="boxShadowed" style={{maxHeight:'10em'}} /></p>)
+			return (<p style={{textAlign:'center'}}><img src={images[0].fileData} className="boxShadowed" style={{maxHeight:'10em'}} /></p>)
 		}
 		return (<p className="boxShadowed" style={{textTransform:'uppercase',textAlign:'center'}}>no<br />product<br />image<br />found</p>);
 	}

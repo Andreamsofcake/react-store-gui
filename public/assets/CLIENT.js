@@ -59547,6 +59547,28 @@
 				);
 			}
 		}, {
+			key: 'parseSlotMap',
+			value: function parseSlotMap(map) {
+				Big.log('parseSlotMap');
+				Big.log(map);
+				if (map && map.length) {
+					var products = {};
+					map.forEach(function (M) {
+						if (['OUT_OF_STOCK', 'AVAILABLE'].indexOf(M.result) > -1) {
+							if (!products.hasOwnProperty(M.productName)) {
+								Big.log('found a new product: ' + M.productName);
+								products[M.productName] = [];
+							}
+							products[M.productName].push(M);
+						}
+					});
+					Big.log('parseSlotMap RETURN');
+					return products;
+				}
+				Big.log('parseSlotMap RETURN NULL????');
+				return null;
+			}
+		}, {
 			key: 'renderSlotMap',
 			value: function renderSlotMap() {
 				var _this4 = this;
@@ -59555,8 +59577,10 @@
 					return null;
 				}
 
+				Big.log('renderSlotMap');
 				var ISM = this.parseSlotMap(this.state.inventorySlotMap.map),
 				    components = Object.keys(ISM).map(function (M, idx) {
+					Big.log('component ' + (idx + 1));
 					var pData = _StorefrontStore2.default.decorateProducts({ productName: M }),
 					    pImages = _StorefrontStore2.default.getImagesForProduct(pData);
 					return _react2.default.createElement(
@@ -59628,6 +59652,8 @@
 				var _this5 = this;
 
 				if (slots && slots.length) {
+					Big.log('renderProductSlots');
+					Big.log(slots);
 					return _react2.default.createElement(
 						_E.Row,
 						{ style: { marginTop: '1em' } },
@@ -59669,23 +59695,6 @@
 					null,
 					'No slot data found, please contact your rep as this is an error.'
 				);
-			}
-		}, {
-			key: 'parseSlotMap',
-			value: function parseSlotMap(map) {
-				if (map && map.length) {
-					var products = {};
-					map.forEach(function (M) {
-						if (['OUT_OF_STOCK', 'AVAILABLE'].indexOf(M.result) > -1) {
-							if (!products.hasOwnProperty(M.productName)) {
-								products[M.productName] = [];
-							}
-							products[M.productName].push(M);
-						}
-					});
-					return products;
-				}
-				return null;
 			}
 		}, {
 			key: 'renderManageStockForSlot',
@@ -59863,7 +59872,7 @@
 					return _react2.default.createElement(
 						'p',
 						{ style: { textAlign: 'center' } },
-						_react2.default.createElement('img', { src: this.state.productImages[0].fileData, className: 'boxShadowed', style: { maxHeight: '10em' } })
+						_react2.default.createElement('img', { src: images[0].fileData, className: 'boxShadowed', style: { maxHeight: '10em' } })
 					);
 				}
 				return _react2.default.createElement(
