@@ -52,8 +52,9 @@ var appConstants = keyMirror({
 	CREDIT_PURCHASE_COMPLETED: null,
 	MEMBERSHIP_CARD_SCANNED_LOGIN: null,
 
-// Emulator:
+// Emulator / GUI testing:
 	TEST_EMULATOR_RESULT: null,
+	TEST_CUSTOMERS_RECEIVED: null,
 
 // Admin panel:
 	TEST_REGISTER_PRINT: null,
@@ -63,7 +64,7 @@ var appConstants = keyMirror({
 	REGISTER_CLIENT_USER_PRINT: null,
 	CLIENT_USERS_RECEIVED: null,
 	STOREFRONT_DATA_REFRESHED: null,
-	TEST_CUSTOMERS_RECEIVED: null,
+	INVENTORY_SLOTMAP_RECEVIED: null,
 
 // Session
 	SESSION_CREATED: null,

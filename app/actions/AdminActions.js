@@ -36,6 +36,7 @@ var AdminActions = {
 	},
 
 	getTestCustomers() {
+		let me = 'test customers';
 		axios.get('/api/get-test-customers')
 		.then(response => {
 			// uh, daaaaaable check?
@@ -46,19 +47,53 @@ var AdminActions = {
 				});
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to get test customers, error:');
+					Big.error('failed to get '+me+', error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to get test customers, no data returned. full response:');
+					Big.error('failed to get '+me+', no data returned. full response:');
 					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			Big.error('failed to get test customers, call chain error probably check component tree');
+			Big.error('failed to get '+me+', call chain error probably check component tree');
 			Big.log(error);
 			//Big.throw(error);
 		})
+	},
+	
+	getInventorySlotmap() {
+		let me = 'inventory slot map';
+		axios.get('/api/inventory-slot-map')
+		.then(response => {
+			// uh, daaaaaable check?
+			if (response.data && response.data.status && response.data.status == 'ok') {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.INVENTORY_SLOTMAP_RECEVIED,
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to get '+me+', error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to get '+me+', no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to get '+me+', call chain error probably check component tree');
+			Big.log(error);
+			//Big.throw(error);
+		})
+	},
+
+	clearInventorySlotmap() {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.INVENTORY_SLOTMAP_CLEAR,
+			data: null
+		});
 	},
 	
 	refreshStorefrontData() {

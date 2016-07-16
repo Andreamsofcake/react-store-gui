@@ -81,6 +81,23 @@ module.exports = {
 		//var data = { status: 'ok', msg: 'Flashapi test response', payload: request.payload };
 		var data = {"result":0,"resultCode":"SUCCESS","errorMessage":"Success", payload: request.payload };
 		return reply( data ).code(200);
+	},
+	
+	FlashapiCall: function(apiAction, cb) {
+		RQ.post({
+			url: 'http://localhost:8085/tsv/flashapi',
+			body: apiAction, // ['fetchShoppingCart2']
+			json: true
+		}, function(err, response, body) {
+			if (err) {
+				debug('FlashapiCall Proxy error:');
+				debug(err);
+				cb( err );
+			}
+			debug('FlashapiCall ok/response:');
+			debug(body);
+			cb(null, body);
+		});
 	}
 
 }

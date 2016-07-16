@@ -10,7 +10,7 @@ import { browserHistory } from 'react-router'
 import {
 	gotoDefaultIdlePage,
 	vendErrorTimer,
-	killAllTimers
+	killAllTimers,
 	updateCredit
 } from '../utils/TsvUtils'
 

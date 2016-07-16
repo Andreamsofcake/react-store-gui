@@ -636,6 +636,10 @@
 
 	var _AdminInventory2 = _interopRequireDefault(_AdminInventory);
 
+	var _AdminInventory3 = __webpack_require__(440);
+
+	var _AdminInventory4 = _interopRequireDefault(_AdminInventory3);
+
 	var _AdminJofemarExerciser = __webpack_require__(21);
 
 	var _AdminJofemarExerciser2 = _interopRequireDefault(_AdminJofemarExerciser);
@@ -716,7 +720,7 @@
 
 	var _TransactionRefund2 = _interopRequireDefault(_TransactionRefund);
 
-	var _VendError = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/VendError\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _VendError = __webpack_require__(41);
 
 	var _VendError2 = _interopRequireDefault(_VendError);
 
@@ -734,7 +738,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	// idle modules ?
+	// admin modules
 	exports.default = _react2.default.createElement(
 		_reactRouter.Route,
 		{ path: '/', component: _App2.default },
@@ -751,6 +755,7 @@
 			_react2.default.createElement(_reactRouter.Route, { path: 'ComponentControl', component: _AdminComponentControl2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'Home', component: _AdminHome2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'Inventory', component: _AdminInventory2.default }),
+			_react2.default.createElement(_reactRouter.Route, { path: 'Inventory2', component: _AdminInventory4.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'JofemarExerciser', component: _AdminJofemarExerciser2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'Login', component: _AdminLogin2.default }),
 			_react2.default.createElement(_reactRouter.Route, { path: 'PrintReaderTest', component: _AdminPrintReaderTester2.default }),
@@ -786,7 +791,7 @@
 	// store modules
 
 
-	// admin modules
+	// idle modules ?
 
 /***/ },
 /* 3 */
@@ -3740,7 +3745,7 @@
 	                        null,
 	                        _react2.default.createElement(
 	                            _E.Col,
-	                            { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'right' } },
+	                            { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'right' } },
 	                            _react2.default.createElement(_E.Button, { type: 'primary', size: 'lg', component: _react2.default.createElement(
 	                                    _reactRouter.Link,
 	                                    { to: '/Admin/Vms' },
@@ -3749,7 +3754,7 @@
 	                        ),
 	                        _react2.default.createElement(
 	                            _E.Col,
-	                            { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+	                            { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } },
 	                            _react2.default.createElement(_E.Button, { type: 'primary', size: 'lg', component: _react2.default.createElement(
 	                                    _reactRouter.Link,
 	                                    { to: '/Admin/Inventory' },
@@ -3758,7 +3763,16 @@
 	                        ),
 	                        _react2.default.createElement(
 	                            _E.Col,
-	                            { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'left' } },
+	                            { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } },
+	                            _react2.default.createElement(_E.Button, { type: 'primary', size: 'lg', component: _react2.default.createElement(
+	                                    _reactRouter.Link,
+	                                    { to: '/Admin/Inventory2' },
+	                                    'new inventory'
+	                                ) })
+	                        ),
+	                        _react2.default.createElement(
+	                            _E.Col,
+	                            { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'left' } },
 	                            _react2.default.createElement(_E.Button, { type: 'primary', size: 'lg', component: _react2.default.createElement(
 	                                    _reactRouter.Link,
 	                                    { to: '/Admin/JofemarExerciser' },
@@ -11251,7 +11265,136 @@
 	exports.default = Transaction_Refund;
 
 /***/ },
-/* 41 */,
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(9);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Translate = __webpack_require__(69);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _elemental = __webpack_require__(125);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _TsvSettingsStore = __webpack_require__(70);
+
+	var _TsvSettingsStore2 = _interopRequireDefault(_TsvSettingsStore);
+
+	var _reactRouter = __webpack_require__(8);
+
+	var _TsvUtils = __webpack_require__(73);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+
+
+	var VendError = function (_Component) {
+	  _inherits(VendError, _Component);
+
+	  function VendError(props, context) {
+	    _classCallCheck(this, VendError);
+
+	    //TsvSettingsStore.setSession('currentView', 'VendError');
+	    //TsvSettingsStore.setCache('currentLocation', '/VendError');
+
+	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(VendError).call(this, props, context));
+	    // MUST call super() before any this.*
+
+
+	    _this.state = {
+	      errorMsg1: _TsvSettingsStore2.default.getSession('vendErrorMsg1'),
+	      errorMsg2: _TsvSettingsStore2.default.getSession('vendErrorMsg2')
+	    };
+	    (0, _TsvUtils.updateCredit)();
+	    //vendErrorTimer();
+	    (0, _TsvUtils.killAllTimers)();
+
+	    return _this;
+	  }
+
+	  _createClass(VendError, [{
+	    key: 'componentDidMount',
+
+
+	    // Add change listeners to stores
+	    value: function componentDidMount() {
+	      (0, _TsvUtils.killAllTimers)();
+	      this.setState({
+	        errorMsg1: _TsvSettingsStore2.default.getSession('vendErrorMsg1'),
+	        errorMsg2: _TsvSettingsStore2.default.getSession('vendErrorMsg2')
+	      });
+	    }
+
+	    // Remove change listers from stores
+
+	  }, {
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {}
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      (0, _TsvUtils.killAllTimers)();
+	      return _react2.default.createElement(
+	        _E.Row,
+	        { className: 'VendError' },
+	        _react2.default.createElement(
+	          _E.Col,
+	          null,
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            'NOTE: for testing, the idle timer is stopped!'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.state.errorMsg1
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            this.state.errorMsg2
+	          )
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          null,
+	          _react2.default.createElement(
+	            'pre',
+	            null,
+	            JSON.stringify(_TsvSettingsStore2.default.getCache('shoppingCart'), null, 4)
+	          )
+	        )
+	      );
+	    }
+	  }]);
+
+	  return VendError;
+	}(_react.Component);
+
+	exports.default = VendError;
+
+/***/ },
 /* 42 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -15963,8 +16106,9 @@
 		CREDIT_PURCHASE_COMPLETED: null,
 		MEMBERSHIP_CARD_SCANNED_LOGIN: null,
 
-		// Emulator:
+		// Emulator / GUI testing:
 		TEST_EMULATOR_RESULT: null,
+		TEST_CUSTOMERS_RECEIVED: null,
 
 		// Admin panel:
 		TEST_REGISTER_PRINT: null,
@@ -15974,7 +16118,7 @@
 		REGISTER_CLIENT_USER_PRINT: null,
 		CLIENT_USERS_RECEIVED: null,
 		STOREFRONT_DATA_REFRESHED: null,
-		TEST_CUSTOMERS_RECEIVED: null,
+		INVENTORY_SLOTMAP_RECEVIED: null,
 
 		// Session
 		SESSION_CREATED: null,
@@ -16247,6 +16391,7 @@
 			});
 		},
 		getTestCustomers: function getTestCustomers() {
+			var me = 'test customers';
 			_axios2.default.get('/api/get-test-customers').then(function (response) {
 				// uh, daaaaaable check?
 				if (response.data && response.data.status && response.data.status == 'ok') {
@@ -16256,17 +16401,47 @@
 					});
 				} else {
 					if (response.data && response.data.error) {
-						Big.error('failed to get test customers, error:');
+						Big.error('failed to get ' + me + ', error:');
 						Big.log(response.data.error);
 					} else {
-						Big.error('failed to get test customers, no data returned. full response:');
+						Big.error('failed to get ' + me + ', no data returned. full response:');
 						Big.log(response);
 					}
 				}
 			}).catch(function (error) {
-				Big.error('failed to get test customers, call chain error probably check component tree');
+				Big.error('failed to get ' + me + ', call chain error probably check component tree');
 				Big.log(error);
 				//Big.throw(error);
+			});
+		},
+		getInventorySlotmap: function getInventorySlotmap() {
+			var me = 'inventory slot map';
+			_axios2.default.get('/api/inventory-slot-map').then(function (response) {
+				// uh, daaaaaable check?
+				if (response.data && response.data.status && response.data.status == 'ok') {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.INVENTORY_SLOTMAP_RECEVIED,
+						data: response.data
+					});
+				} else {
+					if (response.data && response.data.error) {
+						Big.error('failed to get ' + me + ', error:');
+						Big.log(response.data.error);
+					} else {
+						Big.error('failed to get ' + me + ', no data returned. full response:');
+						Big.log(response);
+					}
+				}
+			}).catch(function (error) {
+				Big.error('failed to get ' + me + ', call chain error probably check component tree');
+				Big.log(error);
+				//Big.throw(error);
+			});
+		},
+		clearInventorySlotmap: function clearInventorySlotmap() {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.INVENTORY_SLOTMAP_CLEAR,
+				data: null
 			});
 		},
 		refreshStorefrontData: function refreshStorefrontData() {
@@ -16411,7 +16586,8 @@
 	    _store = {
 		apiResponses: [],
 		clientUsers: [],
-		testCustomers: []
+		testCustomers: [],
+		inventorySlotMap: []
 	}
 
 	//	, _storeDB = new muDB()
@@ -16444,6 +16620,10 @@
 
 		getTestCustomers: function getTestCustomers() {
 			return _store.testCustomers;
+		},
+
+		getInventorySlotmap: function getInventorySlotmap() {
+			return _store.inventorySlotMap;
 		}
 
 	});
@@ -16478,6 +16658,16 @@
 
 			case _appConstants2.default.CLEAR_API_RESPONSES:
 				_store.apiResponses = [];
+				break;
+
+			case _appConstants2.default.INVENTORY_SLOTMAP_RECEVIED:
+				_store.inventorySlotMap = action.data.data;
+				AdminStore.emitChange({ type: action.actionType });
+				break;
+
+			case _appConstants2.default.INVENTORY_SLOTMAP_CLEAR:
+				_store.inventorySlotMap = [];
+				AdminStore.emitChange({ type: action.actionType });
 				break;
 
 			default:
@@ -59072,6 +59262,750 @@
 	  a.prototype = new fn;
 	  a.prototype.constructor = a;
 	};
+
+/***/ },
+/* 440 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(9);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Translate = __webpack_require__(69);
+
+	var Translate = _interopRequireWildcard(_Translate);
+
+	var _TsvSettingsStore = __webpack_require__(70);
+
+	var _TsvSettingsStore2 = _interopRequireDefault(_TsvSettingsStore);
+
+	var _reactRouter = __webpack_require__(8);
+
+	var _elemental = __webpack_require__(125);
+
+	var _E = _interopRequireWildcard(_elemental);
+
+	var _appConstants = __webpack_require__(79);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _AdminActions = __webpack_require__(81);
+
+	var _AdminActions2 = _interopRequireDefault(_AdminActions);
+
+	var _AdminStore = __webpack_require__(82);
+
+	var _AdminStore2 = _interopRequireDefault(_AdminStore);
+
+	var _StorefrontStore = __webpack_require__(80);
+
+	var _StorefrontStore2 = _interopRequireDefault(_StorefrontStore);
+
+	var _TsvActions = __webpack_require__(72);
+
+	var _TsvActions2 = _interopRequireDefault(_TsvActions);
+
+	var _TsvUtils = __webpack_require__(73);
+
+	var _BigLogger = __webpack_require__(1);
+
+	var _BigLogger2 = _interopRequireDefault(_BigLogger);
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//import TsvService from '../../lib/TsvService'
+
+
+	var Big = new _BigLogger2.default('AdminInventory2');
+
+	var AdminInventory2 = function (_Component) {
+		_inherits(AdminInventory2, _Component);
+
+		function AdminInventory2(props, context) {
+			_classCallCheck(this, AdminInventory2);
+
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AdminInventory2).call(this, props, context));
+
+			_this.state = {
+				//instructionMessage: Translate.translate('AdminInventory2', 'EnterCoil'),
+				//machineID: 0,
+				//num: "",
+				//maxChars: TsvSettingsStore.getConfig('bDualMachine') ? 3 : 2,
+				//inventoryGuiState: 'selectSlot',
+				//showKeypad: false
+				slotMap: []
+			};
+
+			if (_TsvSettingsStore2.default.getCache('machineList').length > 1) {
+				_this.state.bShowDropDownForMachines = true;
+			}
+
+			_this._onAdminStoreChange = _this._onAdminStoreChange.bind(_this);
+			return _this;
+		}
+
+		// Add change listeners to stores
+
+
+		_createClass(AdminInventory2, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+
+				// clear, then listen:
+				_AdminActions2.default.clearInventorySlotmap();
+				_AdminStore2.default.addChangeListener(this._onAdminStoreChange);
+				_AdminActions2.default.getInventorySlotmap();
+
+				/*
+	   TsvActions.apiCall('fetchMachineIds', (err, ids) => {
+	   	TsvSettingsStore.setCache('machineList', ids);
+	   	if (ids && ids.length > 1) {
+	   		this.setState({
+	   			bShowDropDownForMachines: true
+	   		});
+	   	}
+	   });
+	   */
+
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+			}
+
+			// Remove change listers from stores
+
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				_AdminStore2.default.removeChangeListener(this._onAdminStoreChange);
+			}
+		}, {
+			key: '_onAdminStoreChange',
+			value: function _onAdminStoreChange(event) {
+				if (event.type === _appConstants2.default.INVENTORY_SLOTMAP_RECEVIED) {
+					this.setState({
+						slotMap: _AdminStore2.default.getInventorySlotmap()
+					});
+				}
+			}
+		}, {
+			key: 'addStock',
+			value: function addStock() {
+				var _this2 = this;
+
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+				if (this.state.coilNumber != "" && this.state.num != "") {
+					this.setState({
+						instructionMessage: 'Adding ' + this.state.num + ' ' + (this.state.verifiedProductData.name || this.state.verifiedProductData.productName) + ' from stock count, one moment please.',
+						inventoryGuiState: 'processing'
+					});
+					_TsvActions2.default.apiCall('addStock', this.state.coilNumber, this.state.num, function (err, data) {
+						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this2.state.coilNumber, function (err, data) {
+
+							// FIXME: blindly assuming that we get good product data after a successful coil select
+
+							var data2 = _StorefrontStore2.default.decorateProducts(data);
+							_this2.setState({
+								verifiedProductData: data2,
+								productImages: _StorefrontStore2.default.getImagesForProduct(data2),
+								num: ""
+							});
+
+							setTimeout(function () {
+								_this2.setState({
+									instructionMessage: Translate.translate('AdminInventory2', 'EnterCoil'),
+									inventoryGuiState: 'selectSlot',
+									num: ""
+								});
+							}, 2000);
+						});
+					});
+				} else {
+					Big.warn('tried to addStock, but did not have both "coilNumber" and "num" in state');
+				}
+			}
+		}, {
+			key: 'removeStock',
+			value: function removeStock() {
+				var _this3 = this;
+
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+				if (this.state.coilNumber != "" && this.state.num != "") {
+					this.setState({
+						instructionMessage: 'Removing ' + this.state.num + ' ' + (this.state.verifiedProductData.name || this.state.verifiedProductData.productName) + ' from stock count, one moment please.',
+						inventoryGuiState: 'processing'
+					});
+					_TsvActions2.default.apiCall('removeStock', this.state.coilNumber, this.state.num, function (err, data) {
+						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this3.state.coilNumber, function (err, data) {
+
+							// FIXME: blindly assuming that we get good product data after a successful coil select
+
+							var data2 = _StorefrontStore2.default.decorateProducts(data);
+							_this3.setState({
+								verifiedProductData: data2,
+								productImages: _StorefrontStore2.default.getImagesForProduct(data2),
+								// just reference it direct if you need... verifiedProductData.inventoryCount
+								//stockCount: "Stock Count: " + data.inventoryCount,
+								num: ""
+							});
+
+							setTimeout(function () {
+								_this3.setState({
+									instructionMessage: Translate.translate('AdminInventory2', 'EnterCoil'),
+									inventoryGuiState: 'selectSlot',
+									num: ""
+								});
+							}, 2000);
+						});
+					});
+				} else {
+					Big.warn('tried to removeStock, but did not have both "coilNumber" and "num" in state');
+				}
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+
+				if (!this.state.slotMap || !this.state.slotMap.length) {
+					return _react2.default.createElement(
+						'h3',
+						null,
+						'Loading inventory map, one moment please...'
+					);
+				}
+
+				return _react2.default.createElement(
+					_E.Row,
+					{ className: 'inventory', style: { maxWidth: '50%', margin: '1em auto' } },
+					_react2.default.createElement(
+						'h1',
+						{ style: { fontWeight: 300 } },
+						'Inventory Snapshot View'
+					),
+					_react2.default.createElement(
+						_E.Col,
+						null,
+						_react2.default.createElement(
+							'p',
+							null,
+							'Shows all inventory and allows quantity settings for every available slot'
+						),
+						this.renderSlotMap()
+					)
+				);
+			}
+		}, {
+			key: 'renderSlotMap',
+			value: function renderSlotMap() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'p',
+						null,
+						'SLOT MAP!'
+					),
+					_react2.default.createElement(
+						'pre',
+						null,
+						JSON.stringify(this.state.slotMap, null, 4)
+					)
+				);
+			}
+		}, {
+			key: 'renderSelectSlot',
+			value: function renderSelectSlot() {
+				if (this.state.inventoryGuiState === 'selectSlot') {
+					return _react2.default.createElement(
+						'div',
+						null,
+						this.renderKeypad(),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								'p',
+								null,
+								' '
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+								_react2.default.createElement(
+									_E.Button,
+									{ size: 'lg', type: 'warning', onClick: this.clear.bind(this) },
+									'Clear'
+								)
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+								' '
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+								_react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
+										_reactRouter.Link,
+										{ to: '/Admin/Home' },
+										Translate.translate('AdminHome', 'Home')
+									) })
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+								_react2.default.createElement(
+									_E.Button,
+									{ style: { margin: '0 auto', display: 'block' }, size: 'lg', type: 'primary', onClick: this.selectSlot.bind(this) },
+									'Select Slot ',
+									this.state.num
+								)
+							),
+							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								'p',
+								null,
+								' '
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								_E.Col,
+								null,
+								_react2.default.createElement(
+									'div',
+									{ style: { textAlign: 'center', border: '1px solid #dfdfdf', backgroundColor: '#fff', borderRadius: '4px', margin: '20px auto' } },
+									_react2.default.createElement(
+										'h2',
+										null,
+										'Slot number: ',
+										this.state.num
+									)
+								)
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								'p',
+								null,
+								' '
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+								_TsvSettingsStore2.default.getCache('machineList').length > 1 ? _react2.default.createElement(_E.FormSelect, { name: 'selectMachine', value: this.state.machineID, options: this.getMachineSelectOptions() }) : null
+							),
+							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
+						)
+					);
+				}
+				return null;
+			}
+		}, {
+			key: 'renderManageStockForSlot',
+			value: function renderManageStockForSlot() {
+				if (this.state.inventoryGuiState === 'stock') {
+					return _react2.default.createElement(
+						'div',
+						null,
+						this.renderKeypad(),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								'p',
+								null,
+								' '
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+								_react2.default.createElement(
+									_E.Button,
+									{ size: 'lg', type: 'warning', onClick: this.clear.bind(this) },
+									'Clear'
+								)
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+								' '
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+								_react2.default.createElement(
+									_E.Button,
+									{ size: 'lg', type: 'primary', onClick: this.cancelSlot.bind(this) },
+									_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
+									'Cancel'
+								)
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								'p',
+								null,
+								' '
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								_E.Col,
+								null,
+								_react2.default.createElement(
+									'div',
+									{ style: { textAlign: 'center', border: '1px solid #dfdfdf', backgroundColor: '#fff', borderRadius: '4px', margin: '20px auto' } },
+									_react2.default.createElement(
+										'h2',
+										null,
+										'stock amount: ',
+										this.state.num
+									)
+								)
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								'p',
+								null,
+								' '
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+								_react2.default.createElement(
+									_E.Button,
+									{ size: 'lg', style: { float: 'left' }, type: 'danger', onClick: this.removeStock.bind(this) },
+									_react2.default.createElement(_E.Glyph, { icon: 'dash' }),
+									'Remove ',
+									this.state.num,
+									' Items'
+								)
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+								_react2.default.createElement(
+									_E.Button,
+									{ size: 'lg', style: { float: 'right' }, type: 'success', onClick: this.addStock.bind(this) },
+									_react2.default.createElement(_E.Glyph, { icon: 'plus' }),
+									'Add ',
+									this.state.num,
+									' Items'
+								)
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								'p',
+								null,
+								' '
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '1/2', md: '1/2', lg: '1/2' },
+								_react2.default.createElement(
+									_E.Button,
+									{ size: 'lg', type: 'primary', onClick: this.fillCoil.bind(this), style: { margin: '0 auto', display: 'block' } },
+									'Fill Slot To Par'
+								)
+							),
+							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								'p',
+								null,
+								' '
+							)
+						),
+						_react2.default.createElement(
+							_E.Row,
+							null,
+							_react2.default.createElement(
+								_E.Col,
+								{ sm: '100%', md: '100%', lg: '100%' },
+								_react2.default.createElement(
+									'p',
+									{ style: { textAlign: 'center' } },
+									'Coil: ',
+									_react2.default.createElement(
+										'strong',
+										null,
+										this.state.coilNumber
+									),
+									' Current Stock Count: ',
+									_react2.default.createElement(
+										'strong',
+										null,
+										this.state.verifiedProductData.inventoryCount
+									)
+								),
+								_react2.default.createElement(
+									'h3',
+									{ style: { textAlign: 'center' } },
+									this.state.verifiedProductData.name || this.state.verifiedProductData.productName
+								),
+								this.renderProductImage()
+							)
+						)
+					);
+				}
+				return null;
+			}
+		}, {
+			key: 'renderProductImage',
+			value: function renderProductImage() {
+				/*
+	     {this.state.verifiedProductData.imagePath ? 
+	   	(<p style={{textAlign:'center'}}><img src={this.state.verifiedProductData.imagePath} className="boxShadowed" style={{maxHeight:'10em'}} /></p>)
+	   	: (<p style={{textTransform:'uppercase',textAlign:'center'}}>no<br />product<br />image<br />found</p>)
+	   	}
+	   */
+				if (this.state.productImages && this.state.productImages.length) {
+					return _react2.default.createElement(
+						'p',
+						{ style: { textAlign: 'center' } },
+						_react2.default.createElement('img', { src: this.state.productImages[0].fileData, className: 'boxShadowed', style: { maxHeight: '10em' } })
+					);
+				}
+				return _react2.default.createElement(
+					'p',
+					{ style: { textTransform: 'uppercase', textAlign: 'center' } },
+					'no',
+					_react2.default.createElement('br', null),
+					'product',
+					_react2.default.createElement('br', null),
+					'image',
+					_react2.default.createElement('br', null),
+					'found'
+				);
+			}
+		}, {
+			key: 'renderKeypad',
+			value: function renderKeypad() {
+				return _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							'p',
+							null,
+							' '
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 1) },
+								'1'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 2) },
+								'2'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 3) },
+								'3'
+							)
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							'p',
+							null,
+							' '
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 4) },
+								'4'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 5) },
+								'5'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 6) },
+								'6'
+							)
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							'p',
+							null,
+							' '
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 7) },
+								'7'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 8) },
+								'8'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 9) },
+								'9'
+							)
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							'p',
+							null,
+							' '
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							' '
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', onClick: this.press.bind(this, 0) },
+								'0'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							' '
+						)
+					)
+				);
+			}
+		}]);
+
+		return AdminInventory2;
+	}(_react.Component);
+
+	exports.default = AdminInventory2;
 
 /***/ }
 /******/ ]);

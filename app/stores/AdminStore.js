@@ -14,6 +14,7 @@ var CHANGE_EVENT = 'change'
 		apiResponses: [],
 		clientUsers: [],
 		testCustomers: [],
+		inventorySlotMap: [],
 	}
 	
 //	, _storeDB = new muDB()
@@ -47,6 +48,10 @@ var AdminStore = objectAssign({}, EventEmitter.prototype, {
 	getTestCustomers: function() {
 		return _store.testCustomers;
 	},
+	
+	getInventorySlotmap: function() {
+		return _store.inventorySlotMap;
+	}
 
 });
 
@@ -80,6 +85,16 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 
 		case appConstants.CLEAR_API_RESPONSES:
 			_store.apiResponses = [];
+			break;
+		
+		case appConstants.INVENTORY_SLOTMAP_RECEVIED:
+			_store.inventorySlotMap = action.data.data;
+			AdminStore.emitChange({ type: action.actionType });
+			break;
+		
+		case appConstants.INVENTORY_SLOTMAP_CLEAR:
+			_store.inventorySlotMap = [];
+			AdminStore.emitChange({ type: action.actionType });
 			break;
 		
 		default:

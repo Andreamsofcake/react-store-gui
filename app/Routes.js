@@ -15,6 +15,7 @@ import AdminCheckFaults from './components/AdminCheckFaults'
 import AdminComponentControl from './components/AdminComponentControl'
 import AdminHome from './components/AdminHome'
 import AdminInventory from './components/AdminInventory'
+import AdminInventory2 from './components/AdminInventory2'
 import AdminJofemarExerciser from './components/AdminJofemarExerciser'
 import AdminLogin from './components/AdminLogin'
 import AdminPrintReaderTester from './components/AdminPrintReaderTester'
@@ -60,6 +61,7 @@ export default (
 			<Route path='ComponentControl' component={AdminComponentControl} />
 			<Route path='Home' component={AdminHome} />
 			<Route path='Inventory' component={AdminInventory} />
+			<Route path='Inventory2' component={AdminInventory2} />
 			<Route path='JofemarExerciser' component={AdminJofemarExerciser} />
 			<Route path='Login' component={AdminLogin} />
 			<Route path='PrintReaderTest' component={AdminPrintReaderTester} />

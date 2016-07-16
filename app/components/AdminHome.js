@@ -86,9 +86,10 @@ class AdminHome extends Component {
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Vms">{Translate.translate('AdminHome','Vms')}</Link>)} /></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Inventory">{Translate.translate('AdminHome','Inventory')}</Link>)} /></_E.Col>
-              <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/JofemarExerciser">{Translate.translate('AdminHome','JofemarExerciser')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'right'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Vms">{Translate.translate('AdminHome','Vms')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Inventory">{Translate.translate('AdminHome','Inventory')}</Link>)} /></_E.Col>
+              <_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'center'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/Inventory2">new inventory</Link>)} /></_E.Col>
+              <_E.Col sm="1/4" md="1/4" lg="1/4" style={{textAlign:'left'}}><_E.Button type="primary" size="lg" component={(<Link to="/Admin/JofemarExerciser">{Translate.translate('AdminHome','JofemarExerciser')}</Link>)} /></_E.Col>
           </_E.Row>
 
           <_E.Row><p>{' '}</p></_E.Row>
