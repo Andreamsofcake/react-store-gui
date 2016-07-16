@@ -34,7 +34,7 @@ class ProductListItem extends Component {
               <div className="product-list-item-add-to-cart clearfix">
               	<div>
               		{this.renderAddToCart()}
-                  <p className="prdPrice">${currencyFilter(product.price)} </p>
+					<p className="prdPrice">${currencyFilter(product.price)} <em>({product.stockCount})</em></p>
                 </div>
               </div>
           </div>

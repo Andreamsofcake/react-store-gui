@@ -9895,6 +9895,12 @@
 	                'p',
 	                null,
 	                prod.description
+	              ),
+	              _react2.default.createElement(
+	                'p',
+	                { style: { fontSize: '1.25em' } },
+	                'Quantity in stock: ',
+	                prod.stockCount
 	              )
 	            )
 	          )
@@ -20180,7 +20186,14 @@
 	              { className: 'prdPrice' },
 	              '$',
 	              (0, _TsvUtils.currencyFilter)(product.price),
-	              ' '
+	              ' ',
+	              _react2.default.createElement(
+	                'em',
+	                null,
+	                '(',
+	                product.stockCount,
+	                ')'
+	              )
 	            )
 	          )
 	        )

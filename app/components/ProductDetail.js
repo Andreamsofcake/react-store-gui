@@ -102,6 +102,7 @@ class ProductDetail extends Component {
 			 <_E.Col className="productDetailHeader">
 			   <h2 style={{marginBottom:0,marginTop:'1em',fontSize:'2.7em'}}>{prod.name}</h2>
             	<p>{prod.description}</p>
+            	<p style={{fontSize:'1.25em'}}>Quantity in stock: {prod.stockCount}</p>
 			 </_E.Col>
           </_E.Row>
          </_E.Col>
