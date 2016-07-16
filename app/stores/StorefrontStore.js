@@ -116,7 +116,7 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 			return isSingle ? stack.pop() : stack;
 		}
 		// FAIL
-		return avtProducts;
+		return isSingle ? avtProducts.pop() : avtProducts;
 	},
 
 	getProductById: function(productID) {

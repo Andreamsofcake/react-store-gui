@@ -21,6 +21,12 @@ module.exports = function(request, reply) {
 		, errmap = []
 		;
 	
+	if (process.env.CANNED_API_DATA) {
+		return reply({ status: 'ok', msg: 'inventory map created', data:
+			JSON.parse(fs.readFileSync('./mysql-tool/inventory-slot-map-data.json').toString())
+		}).code(200);
+	}
+	
 	function saveMapData(err, slotInfo) {
 
 		if (err) {

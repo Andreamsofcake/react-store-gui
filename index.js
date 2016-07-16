@@ -191,7 +191,28 @@ server.register([
 						next = Bootup.Data;
 						serverdebug('Bootup failed at data loader');
 					}
-					setTimeout(() => { next(bootupfunc, true, true); }, process.env.BOOTUP_DELAY_TIME_MS || 5000);
+					/*****
+					
+						DEVNOTE / FIXME:
+						
+						for some reason, when next is Bootup.Data,
+						the delay on the setTimeout gets ignored and the server goes nuts looping on the function call.
+						
+						need to spelunk. for now, it just skips the looped call (BAD BAD)
+					
+					*****/
+					serverdebug('what is delay re-run time? ms:' + process.env.BOOTUP_DELAY_TIME_MS);
+					serverdebug(typeof process.env.BOOTUP_DELAY_TIME_MS);
+					serverdebug(parseInt(process.env.BOOTUP_DELAY_TIME_MS));
+					if (process.env.BOOTUP_DELAY_TIME_MS > 5000) {
+						var DELAY = parseInt(process.env.BOOTUP_DELAY_TIME_MS) || 5000;
+						serverdebug('well what the fack, it loops at high speed anyway');
+						//setTimeout(() => { next(bootupfunc, true, true); }, parseInt(process.env.BOOTUP_DELAY_TIME_MS) || 5000);
+						//setTimeout(function() { next(bootupfunc, true, true); }, DELAY);
+						setTimeout( () => { serverdebug('wøøt'); }, DELAY);
+					} else {
+						serverdebug('short debug time, skip for now');
+					}
 
 				} else {
 					serverdebug('Bootup responded, data:');

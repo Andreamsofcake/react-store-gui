@@ -27,7 +27,7 @@ var StorefrontActions = {
 			}
 		})
 		.catch(error => {
-			Big.error('failed to refresh customer???');
+			Big.error('failed to refresh storefront data???');
 			Big.log(error);
 		})
 	},

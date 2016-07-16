@@ -261,3 +261,15 @@ img.boxShadowed {
 	transform: rotate(-90deg);
 	text-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
 }
+
+.admin-inventory-product-node {
+	background-color: #fff;
+	padding: 0.3em;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+	border-top-left-radius: 8px 8px;
+	border-top-right-radius: 8px 8px;
+	border-bottom-left-radius: 4px 4px;
+	border-bottom-right-radius: 4px 4px;
+	margin-bottom: 1em;
+	width: 100%;
+}

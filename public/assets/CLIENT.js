@@ -3746,7 +3746,7 @@
 	                        null,
 	                        _react2.default.createElement(
 	                            _E.Col,
-	                            { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'right' } },
+	                            { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'right' } },
 	                            _react2.default.createElement(_E.Button, { type: 'primary', size: 'lg', component: _react2.default.createElement(
 	                                    _reactRouter.Link,
 	                                    { to: '/Admin/Vms' },
@@ -3755,25 +3755,16 @@
 	                        ),
 	                        _react2.default.createElement(
 	                            _E.Col,
-	                            { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } },
+	                            { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 	                            _react2.default.createElement(_E.Button, { type: 'primary', size: 'lg', component: _react2.default.createElement(
 	                                    _reactRouter.Link,
-	                                    { to: '/Admin/Inventory' },
+	                                    { to: '/Admin/Inventory2' },
 	                                    Translate.translate('AdminHome', 'Inventory')
 	                                ) })
 	                        ),
 	                        _react2.default.createElement(
 	                            _E.Col,
-	                            { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } },
-	                            _react2.default.createElement(_E.Button, { type: 'primary', size: 'lg', component: _react2.default.createElement(
-	                                    _reactRouter.Link,
-	                                    { to: '/Admin/Inventory2' },
-	                                    'new inventory'
-	                                ) })
-	                        ),
-	                        _react2.default.createElement(
-	                            _E.Col,
-	                            { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'left' } },
+	                            { sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'left' } },
 	                            _react2.default.createElement(_E.Button, { type: 'primary', size: 'lg', component: _react2.default.createElement(
 	                                    _reactRouter.Link,
 	                                    { to: '/Admin/JofemarExerciser' },
@@ -15926,7 +15917,7 @@
 	        });
 	      }
 	    }).catch(function (error) {
-	      Big.error('failed to refresh customer???');
+	      Big.error('failed to refresh storefront data???');
 	      Big.log(error);
 	    });
 	  },
@@ -16287,7 +16278,7 @@
 				return isSingle ? stack.pop() : stack;
 			}
 			// FAIL
-			return avtProducts;
+			return isSingle ? avtProducts.pop() : avtProducts;
 		},
 
 
@@ -59343,13 +59334,11 @@
 			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AdminInventory2).call(this, props, context));
 
 			_this.state = {
-				//instructionMessage: Translate.translate('AdminInventory2', 'EnterCoil'),
 				//machineID: 0,
-				//num: "",
-				//maxChars: TsvSettingsStore.getConfig('bDualMachine') ? 3 : 2,
-				//inventoryGuiState: 'selectSlot',
-				//showKeypad: false
-				slotMap: []
+				inventoryGuiState: 'selectSlot',
+				slotProductCount: "0",
+				slotMap: [],
+				maxInSlot: 50 // guess here
 			};
 
 			if (_TsvSettingsStore2.default.getCache('machineList').length > 1) {
@@ -59407,39 +59396,67 @@
 				}
 			}
 		}, {
+			key: 'manageSlot',
+			value: function manageSlot(slot) {
+				Big.log('manageSlot');
+				Big.log(slot);
+
+				var data = _StorefrontStore2.default.decorateProducts(slot);
+				this.setState({
+					verifiedProductData: data,
+					productImages: _StorefrontStore2.default.getImagesForProduct(data),
+					coilNumber: slot.slot,
+					inventoryGuiState: 'stock',
+					slotProductCount: '0'
+				});
+			}
+		}, {
+			key: 'cancelSlot',
+			value: function cancelSlot() {
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+				this.setState({
+					inventoryGuiState: 'selectSlot',
+					slotProductCount: "0",
+					verifiedProductData: null,
+					coilNumber: null
+				});
+			}
+		}, {
 			key: 'addStock',
 			value: function addStock() {
 				var _this2 = this;
 
 				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				if (this.state.coilNumber != "" && this.state.num != "") {
+				if (this.state.coilNumber != "" && this.state.slotProductCount != "") {
 					this.setState({
-						instructionMessage: 'Adding ' + this.state.num + ' ' + (this.state.verifiedProductData.name || this.state.verifiedProductData.productName) + ' from stock count, one moment please.',
+						instructionMessage: 'Adding ' + this.state.slotProductCount + ' ' + (this.state.verifiedProductData.name || this.state.verifiedProductData.productName) + ' from stock count, one moment please.',
 						inventoryGuiState: 'processing'
 					});
-					_TsvActions2.default.apiCall('addStock', this.state.coilNumber, this.state.num, function (err, data) {
+					_TsvActions2.default.apiCall('addStock', this.state.coilNumber, this.state.slotProductCount, function (err, data) {
 						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this2.state.coilNumber, function (err, data) {
 
 							// FIXME: blindly assuming that we get good product data after a successful coil select
 
-							var data2 = _StorefrontStore2.default.decorateProducts(data);
-							_this2.setState({
-								verifiedProductData: data2,
-								productImages: _StorefrontStore2.default.getImagesForProduct(data2),
-								num: ""
-							});
+							/*
+	      var data2 = StorefrontStore.decorateProducts(data);
+	      this.setState({
+	      	verifiedProductData: data2,
+	      	productImages: StorefrontStore.getImagesForProduct(data2),
+	      	slotProductCount: ""
+	      });
+	      */
 
 							setTimeout(function () {
 								_this2.setState({
-									instructionMessage: Translate.translate('AdminInventory2', 'EnterCoil'),
+									instructionMessage: '',
 									inventoryGuiState: 'selectSlot',
-									num: ""
+									slotProductCount: "0"
 								});
 							}, 2000);
 						});
 					});
 				} else {
-					Big.warn('tried to addStock, but did not have both "coilNumber" and "num" in state');
+					Big.warn('tried to addStock, but did not have both "coilNumber" and "slotProductCount" in state');
 				}
 			}
 		}, {
@@ -59448,36 +59465,38 @@
 				var _this3 = this;
 
 				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				if (this.state.coilNumber != "" && this.state.num != "") {
+				if (this.state.coilNumber != "" && this.state.slotProductCount != "") {
 					this.setState({
-						instructionMessage: 'Removing ' + this.state.num + ' ' + (this.state.verifiedProductData.name || this.state.verifiedProductData.productName) + ' from stock count, one moment please.',
+						instructionMessage: 'Removing ' + this.state.slotProductCount + ' ' + (this.state.verifiedProductData.name || this.state.verifiedProductData.productName) + ' from stock count, one moment please.',
 						inventoryGuiState: 'processing'
 					});
-					_TsvActions2.default.apiCall('removeStock', this.state.coilNumber, this.state.num, function (err, data) {
+					_TsvActions2.default.apiCall('removeStock', this.state.coilNumber, this.state.slotProductCount, function (err, data) {
 						_TsvActions2.default.apiCall('adminValidateProductByCoil', _this3.state.coilNumber, function (err, data) {
 
 							// FIXME: blindly assuming that we get good product data after a successful coil select
 
-							var data2 = _StorefrontStore2.default.decorateProducts(data);
-							_this3.setState({
-								verifiedProductData: data2,
-								productImages: _StorefrontStore2.default.getImagesForProduct(data2),
-								// just reference it direct if you need... verifiedProductData.inventoryCount
-								//stockCount: "Stock Count: " + data.inventoryCount,
-								num: ""
-							});
+							/*
+	      var data2 = StorefrontStore.decorateProducts(data);
+	      this.setState({
+	        verifiedProductData: data2,
+	        productImages: StorefrontStore.getImagesForProduct(data2),
+	        // just reference it direct if you need... verifiedProductData.inventoryCount
+	        //stockCount: "Stock Count: " + data.inventoryCount,
+	        slotProductCount: ""
+	      });
+	      */
 
 							setTimeout(function () {
 								_this3.setState({
-									instructionMessage: Translate.translate('AdminInventory2', 'EnterCoil'),
+									instructionMessage: '',
 									inventoryGuiState: 'selectSlot',
-									num: ""
+									slotProductCount: "0"
 								});
 							}, 2000);
 						});
 					});
 				} else {
-					Big.warn('tried to removeStock, but did not have both "coilNumber" and "num" in state');
+					Big.warn('tried to removeStock, but did not have both "coilNumber" and "slotProductCount" in state');
 				}
 			}
 		}, {
@@ -59487,348 +59506,359 @@
 				var ISM = this.state.inventorySlotMap;
 				if (!ISM || !ISM.map.length || !ISM.map) {
 					return _react2.default.createElement(
-						'h3',
-						null,
-						'Loading inventory map, one moment please...'
+						_E.Row,
+						{ className: 'inventory', style: { maxWidth: '80%', margin: '1em auto' } },
+						_react2.default.createElement(
+							_E.Col,
+							null,
+							_react2.default.createElement(
+								'h3',
+								null,
+								'Loading inventory map, one moment please...'
+							)
+						)
 					);
 				}
 
 				return _react2.default.createElement(
 					_E.Row,
-					{ className: 'inventory', style: { maxWidth: '50%', margin: '1em auto' } },
-					_react2.default.createElement(
-						'h1',
-						{ style: { fontWeight: 300 } },
-						'Inventory Snapshot View'
-					),
+					{ className: 'inventory', style: { maxWidth: '80%', margin: '1em auto' } },
 					_react2.default.createElement(
 						_E.Col,
 						null,
 						_react2.default.createElement(
-							'p',
-							null,
-							'Shows all inventory and allows quantity settings for every available slot'
+							'h1',
+							{ style: { fontWeight: 300 } },
+							'Inventory Manager'
 						),
-						this.renderSlotMap()
+						this.state.instructionMessage ? _react2.default.createElement(
+							'h2',
+							null,
+							this.state.instructionMessage
+						) : null
+					),
+					_react2.default.createElement(
+						_E.Col,
+						null,
+						this.renderSlotMap(),
+						this.renderManageStockForSlot()
 					)
 				);
 			}
 		}, {
 			key: 'renderSlotMap',
 			value: function renderSlotMap() {
-				var ISM = this.state.inventorySlotMap;
+				var _this4 = this;
+
+				if (this.state.inventoryGuiState !== 'selectSlot') {
+					return null;
+				}
+
+				var ISM = this.parseSlotMap(this.state.inventorySlotMap.map),
+				    components = Object.keys(ISM).map(function (M, idx) {
+					var pData = _StorefrontStore2.default.decorateProducts({ productName: M }),
+					    pImages = _StorefrontStore2.default.getImagesForProduct(pData);
+					return _react2.default.createElement(
+						_E.Col,
+						{ key: idx },
+						_react2.default.createElement(
+							'div',
+							{ className: 'admin-inventory-product-node' },
+							_react2.default.createElement(
+								_E.Row,
+								null,
+								_react2.default.createElement(
+									_E.Col,
+									{ sm: '1', md: '1/3', lg: '1/3' },
+									_react2.default.createElement(
+										'h3',
+										{ style: { textAlign: 'center' } },
+										pData.name || pData.productName
+									),
+									_react2.default.createElement(
+										'p',
+										{ style: { textAlign: 'center', fontWeight: 'bold' } },
+										'Total in machine: ',
+										function () {
+											var i = 0;ISM[M].map(function (foo) {
+												i += foo.inventoryCount;
+											});return i;
+										}()
+									),
+									_this4.renderProductImage(pImages)
+								),
+								_react2.default.createElement(
+									_E.Col,
+									{ sm: '1', md: '2/3', lg: '2/3' },
+									_this4.renderProductSlots(ISM[M])
+								)
+							)
+						)
+					);
+				});
+
 				return _react2.default.createElement(
-					'div',
+					_E.Row,
 					null,
 					_react2.default.createElement(
-						'p',
+						_E.Col,
 						null,
-						'SLOT MAP!'
+						_react2.default.createElement(
+							'div',
+							{ style: { float: 'right', marginBottom: '2em' } },
+							_react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/Admin/Home' },
+									Translate.translate('AdminHome', 'Home')
+								) })
+						),
+						_react2.default.createElement(
+							'p',
+							{ style: { fontSize: '1.5em' } },
+							'Click a slot button to manage the inventory level for that slot.'
+						)
 					),
-					_react2.default.createElement(
-						'pre',
-						null,
-						JSON.stringify(ISM.map, null, 4)
-					)
+					components
 				);
 			}
 		}, {
-			key: 'renderSelectSlot',
-			value: function renderSelectSlot() {
-				if (this.state.inventoryGuiState === 'selectSlot') {
+			key: 'renderProductSlots',
+			value: function renderProductSlots(slots) {
+				var _this5 = this;
+
+				if (slots && slots.length) {
 					return _react2.default.createElement(
-						'div',
-						null,
-						this.renderKeypad(),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
+						_E.Row,
+						{ style: { marginTop: '1em' } },
+						slots.map(function (S, idx) {
+							/*
+	      <_E.Col key={idx} sm="1/3" md="1/3" lg="1/3">
+	      	<p className="text-center">slot: {S.slot}, current quantity: {S.inventoryCount}</p>
+	      </_E.Col>
+	      */
+							return _react2.default.createElement(
 								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+								{ key: idx, sm: '1/3', md: '1/3', lg: '1/3' },
 								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', type: 'warning', onClick: this.clear.bind(this) },
-									'Clear'
-								)
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								' '
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								_react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
-										_reactRouter.Link,
-										{ to: '/Admin/Home' },
-										Translate.translate('AdminHome', 'Home')
-									) })
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ style: { margin: '0 auto', display: 'block' }, size: 'lg', type: 'primary', onClick: this.selectSlot.bind(this) },
-									'Select Slot ',
-									this.state.num
-								)
-							),
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								null,
-								_react2.default.createElement(
-									'div',
-									{ style: { textAlign: 'center', border: '1px solid #dfdfdf', backgroundColor: '#fff', borderRadius: '4px', margin: '20px auto' } },
+									'p',
+									{ style: { textAlign: 'center', marginBottom: '2em' } },
 									_react2.default.createElement(
-										'h2',
+										_E.Button,
+										{ style: { margin: '0 auto', display: 'block' }, size: 'lg', type: 'primary', onClick: _this5.manageSlot.bind(_this5, S) },
+										'Manage Slot ',
+										S.slot
+									),
+									_react2.default.createElement(
+										'strong',
 										null,
-										'Slot number: ',
-										this.state.num
+										_react2.default.createElement(
+											'em',
+											null,
+											'current count: ',
+											S.inventoryCount
+										)
 									)
 								)
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
-								_TsvSettingsStore2.default.getCache('machineList').length > 1 ? _react2.default.createElement(_E.FormSelect, { name: 'selectMachine', value: this.state.machineID, options: this.getMachineSelectOptions() }) : null
-							),
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
-						)
+							);
+						})
 					);
+				}
+				return _react2.default.createElement(
+					'p',
+					null,
+					'No slot data found, please contact your rep as this is an error.'
+				);
+			}
+		}, {
+			key: 'parseSlotMap',
+			value: function parseSlotMap(map) {
+				if (map && map.length) {
+					var products = {};
+					map.forEach(function (M) {
+						if (['OUT_OF_STOCK', 'AVAILABLE'].indexOf(M.result) > -1) {
+							if (!products.hasOwnProperty(M.productName)) {
+								products[M.productName] = [];
+							}
+							products[M.productName].push(M);
+						}
+					});
+					return products;
 				}
 				return null;
 			}
 		}, {
 			key: 'renderManageStockForSlot',
 			value: function renderManageStockForSlot() {
-				if (this.state.inventoryGuiState === 'stock') {
-					return _react2.default.createElement(
-						'div',
+				if (this.state.inventoryGuiState !== 'stock') {
+					return null;
+				}
+
+				return _react2.default.createElement(
+					'div',
+					{ style: { maxWidth: '60%', margin: '1em auto' } },
+					_react2.default.createElement(
+						_E.Row,
 						null,
-						this.renderKeypad(),
 						_react2.default.createElement(
-							_E.Row,
+							'p',
 							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
+							' '
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1', md: '1/3', lg: '1/3' },
+							this.renderProductImage()
 						),
 						_react2.default.createElement(
-							_E.Row,
-							null,
+							_E.Col,
+							{ sm: '1', md: '2/3', lg: '2/3' },
 							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', type: 'warning', onClick: this.clear.bind(this) },
-									'Clear'
-								)
+								'h2',
+								{ style: { marginTop: 0 } },
+								this.state.verifiedProductData.name || this.state.verifiedProductData.productName
 							),
 							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								' '
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', type: 'primary', onClick: this.cancelSlot.bind(this) },
-									_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
-									'Cancel'
-								)
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
 								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								null,
+								{ style: { fontSize: '1.5em' } },
+								'Slot: ',
 								_react2.default.createElement(
-									'div',
-									{ style: { textAlign: 'center', border: '1px solid #dfdfdf', backgroundColor: '#fff', borderRadius: '4px', margin: '20px auto' } },
-									_react2.default.createElement(
-										'h2',
-										null,
-										'stock amount: ',
-										this.state.num
-									)
-								)
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', style: { float: 'left' }, type: 'danger', onClick: this.removeStock.bind(this) },
-									_react2.default.createElement(_E.Glyph, { icon: 'dash' }),
-									'Remove ',
-									this.state.num,
-									' Items'
-								)
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', style: { float: 'right' }, type: 'success', onClick: this.addStock.bind(this) },
-									_react2.default.createElement(_E.Glyph, { icon: 'plus' }),
-									'Add ',
-									this.state.num,
-									' Items'
-								)
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } }),
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '1/2', md: '1/2', lg: '1/2' },
-								_react2.default.createElement(
-									_E.Button,
-									{ size: 'lg', type: 'primary', onClick: this.fillCoil.bind(this), style: { margin: '0 auto', display: 'block' } },
-									'Fill Slot To Par'
-								)
-							),
-							_react2.default.createElement(_E.Col, { sm: '1/4', md: '1/4', lg: '1/4', style: { textAlign: 'center' } })
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								'p',
-								null,
-								' '
-							)
-						),
-						_react2.default.createElement(
-							_E.Row,
-							null,
-							_react2.default.createElement(
-								_E.Col,
-								{ sm: '100%', md: '100%', lg: '100%' },
-								_react2.default.createElement(
-									'p',
-									{ style: { textAlign: 'center' } },
-									'Coil: ',
-									_react2.default.createElement(
-										'strong',
-										null,
-										this.state.coilNumber
-									),
-									' Current Stock Count: ',
-									_react2.default.createElement(
-										'strong',
-										null,
-										this.state.verifiedProductData.inventoryCount
-									)
+									'strong',
+									null,
+									this.state.coilNumber
 								),
+								_react2.default.createElement('br', null),
+								'Current Stock Count: ',
 								_react2.default.createElement(
-									'h3',
-									{ style: { textAlign: 'center' } },
-									this.state.verifiedProductData.name || this.state.verifiedProductData.productName
-								),
-								this.renderProductImage()
+									'strong',
+									null,
+									this.state.verifiedProductData.inventoryCount
+								)
 							)
 						)
-					);
-				}
-				return null;
+					),
+					_react2.default.createElement(
+						'div',
+						{ style: { maxWidth: '60%', margin: '0 auto 1em', padding: '1em 1em 2em', border: '1px solid #dfdfdf', borderRadius: '6px', backgroundColor: '#fff' } },
+						this.renderKeypad()
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							'p',
+							null,
+							' '
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', type: 'warning', onClick: this.clear.bind(this) },
+								'Clear'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							' '
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', type: 'primary', onClick: this.cancelSlot.bind(this) },
+								_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
+								'Cancel'
+							)
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							'p',
+							null,
+							' '
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							null,
+							_react2.default.createElement(
+								'div',
+								{ style: { textAlign: 'center', border: '1px solid #dfdfdf', backgroundColor: '#fff', borderRadius: '4px', margin: '20px auto' } },
+								_react2.default.createElement(
+									'h2',
+									null,
+									'change quantity: ',
+									this.state.slotProductCount
+								)
+							)
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							'p',
+							null,
+							' '
+						)
+					),
+					_react2.default.createElement(
+						_E.Row,
+						null,
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', style: { float: 'left' }, type: 'danger', onClick: this.removeStock.bind(this) },
+								_react2.default.createElement(_E.Glyph, { icon: 'dash' }),
+								'Remove ',
+								this.state.slotProductCount,
+								' Items'
+							)
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+							_react2.default.createElement(
+								_E.Button,
+								{ size: 'lg', style: { float: 'right' }, type: 'success', onClick: this.addStock.bind(this) },
+								_react2.default.createElement(_E.Glyph, { icon: 'plus' }),
+								'Add ',
+								this.state.slotProductCount,
+								' Items'
+							)
+						)
+					)
+				);
 			}
 		}, {
 			key: 'renderProductImage',
-			value: function renderProductImage() {
+			value: function renderProductImage(images) {
 				/*
 	     {this.state.verifiedProductData.imagePath ? 
 	   	(<p style={{textAlign:'center'}}><img src={this.state.verifiedProductData.imagePath} className="boxShadowed" style={{maxHeight:'10em'}} /></p>)
 	   	: (<p style={{textTransform:'uppercase',textAlign:'center'}}>no<br />product<br />image<br />found</p>)
 	   	}
 	   */
-				if (this.state.productImages && this.state.productImages.length) {
+				images = images || this.state.productImages;
+				if (images && images.length) {
 					return _react2.default.createElement(
 						'p',
 						{ style: { textAlign: 'center' } },
@@ -59837,7 +59867,7 @@
 				}
 				return _react2.default.createElement(
 					'p',
-					{ style: { textTransform: 'uppercase', textAlign: 'center' } },
+					{ className: 'boxShadowed', style: { textTransform: 'uppercase', textAlign: 'center' } },
 					'no',
 					_react2.default.createElement('br', null),
 					'product',
@@ -60006,6 +60036,28 @@
 						)
 					)
 				);
+			}
+		}, {
+			key: 'clear',
+			value: function clear() {
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+				this.setState({
+					slotProductCount: "0"
+				});
+			}
+		}, {
+			key: 'press',
+			value: function press(digit) {
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+				var slotProductCount = this.state.slotProductCount;
+				slotProductCount = parseInt(slotProductCount + digit);
+				if (slotProductCount > this.state.maxInSlot) {
+					slotProductCount = this.state.maxInSlot;
+				}
+
+				this.setState({
+					slotProductCount: slotProductCount.toString()
+				});
 			}
 		}]);
 
