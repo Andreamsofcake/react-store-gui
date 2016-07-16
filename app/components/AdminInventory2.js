@@ -130,6 +130,7 @@ class AdminInventory2 extends Component {
 					ISM.map.forEach( M => {
 						if (M.slot == this.state.coilNumber) {
 							M.inventoryCount += parseInt(this.state.slotProductCount);
+							//M.stockCount += parseInt(this.state.slotProductCount);
 						}
 					});
 
@@ -177,6 +178,8 @@ class AdminInventory2 extends Component {
 						if (M.slot == this.state.coilNumber) {
 							M.inventoryCount -= parseInt(this.state.slotProductCount);
 							if (M.inventoryCount < 0) { M.inventoryCount = 0; }
+							//M.stockCount -= parseInt(this.state.slotProductCount);
+							//if (M.stockCount < 0) { M.stockCount = 0; }
 						}
 					});
 

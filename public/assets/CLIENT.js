@@ -59452,6 +59452,7 @@
 							ISM.map.forEach(function (M) {
 								if (M.slot == _this2.state.coilNumber) {
 									M.inventoryCount += parseInt(_this2.state.slotProductCount);
+									//M.stockCount += parseInt(this.state.slotProductCount);
 								}
 							});
 
@@ -59504,6 +59505,8 @@
 									if (M.inventoryCount < 0) {
 										M.inventoryCount = 0;
 									}
+									//M.stockCount -= parseInt(this.state.slotProductCount);
+									//if (M.stockCount < 0) { M.stockCount = 0; }
 								}
 							});
 
