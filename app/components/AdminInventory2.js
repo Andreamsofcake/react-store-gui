@@ -311,7 +311,7 @@ class AdminInventory2 extends Component {
 							<_E.Col key={idx} sm="1/3" md="1/3" lg="1/3">
 								<p style={{textAlign: 'center', marginBottom: '2em'}}>
 									<_E.Button style={{margin:'0 auto',display:'block'}} size="lg" type="primary" onClick={this.manageSlot.bind(this, S)}>Manage Slot {S.slot}</_E.Button>
-									<strong><em>current count: {S.inventoryCount}</em></strong>
+									<strong><em>current count: {S.inventoryCount} <span style={{fontSize: '0.5em'}}>({S.stockCount})</span></em></strong>
 								</p>
 							</_E.Col>
 							

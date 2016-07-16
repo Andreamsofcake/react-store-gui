@@ -59705,7 +59705,15 @@
 											'em',
 											null,
 											'current count: ',
-											S.inventoryCount
+											S.inventoryCount,
+											' ',
+											_react2.default.createElement(
+												'span',
+												{ style: { fontSize: '0.5em' } },
+												'(',
+												S.stockCount,
+												')'
+											)
 										)
 									)
 								)
