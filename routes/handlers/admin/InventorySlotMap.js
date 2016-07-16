@@ -31,9 +31,9 @@ module.exports = function(request, reply) {
 		}
 		
 		if (currentSlotNumber === maxSlots) {
-			fs.writeFileSync('./inventory-slot-map-data.json', JSON.stringify({ slotMap: map, errmap, configData: ConfigData() }));
+			fs.writeFileSync('./inventory-slot-map-data.json', JSON.stringify({ map, errmap }));
 			return reply({ status: 'ok', msg: 'inventory map created', data:
-				{ slotMap: map, errmap, configData: ConfigData() }
+				{ map, errmap }
 			}).code(200);
 		} else {
 			FlashapiCall(['adminValidateProductByCoil', currentSlotNumber += 1], saveMapData);

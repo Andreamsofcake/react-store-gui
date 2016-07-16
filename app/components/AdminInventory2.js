@@ -70,12 +70,14 @@ class AdminInventory2 extends Component {
 	}
 	
 	_onAdminStoreChange(event) {
-		Big.log('_onAdminStoreChange');
+		Big.log('_onAdminStoreChange');	
 		Big.log(event);
 		if (event.type === appConstants.INVENTORY_SLOTMAP_RECEVIED) {
 			this.setState({
-				slotMap: AdminStore.getInventorySlotmap()
+				inventorySlotMap: AdminStore.getInventorySlotmap()
 			});
+		} else {
+			Big.error('why you no get '+appConstants.INVENTORY_SLOTMAP_RECEVIED);
 		}
 	}
 
@@ -149,7 +151,8 @@ class AdminInventory2 extends Component {
 
 	render() {
 
-		if (!this.state.slotMap || !this.state.slotMap.length) {
+		let ISM = this.state.inventorySlotMap;
+		if (!ISM || !ISM.map.length || !ISM.map) {
 			return (
 				<h3>Loading inventory map, one moment please...</h3>
 			);
@@ -173,10 +176,11 @@ class AdminInventory2 extends Component {
 	}
   
 	renderSlotMap() {
+		let ISM = this.state.inventorySlotMap;
 		return (
 			<div>
 			<p>SLOT MAP!</p>
-			<pre>{JSON.stringify(this.state.slotMap, null, 4)}</pre>
+			<pre>{JSON.stringify(ISM.map, null, 4)}</pre>
 			</div>
 		);
 	}

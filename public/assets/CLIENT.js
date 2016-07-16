@@ -59400,8 +59400,10 @@
 				Big.log(event);
 				if (event.type === _appConstants2.default.INVENTORY_SLOTMAP_RECEVIED) {
 					this.setState({
-						slotMap: _AdminStore2.default.getInventorySlotmap()
+						inventorySlotMap: _AdminStore2.default.getInventorySlotmap()
 					});
+				} else {
+					Big.error('why you no get ' + _appConstants2.default.INVENTORY_SLOTMAP_RECEVIED);
 				}
 			}
 		}, {
@@ -59482,7 +59484,8 @@
 			key: 'render',
 			value: function render() {
 
-				if (!this.state.slotMap || !this.state.slotMap.length) {
+				var ISM = this.state.inventorySlotMap;
+				if (!ISM || !ISM.map.length || !ISM.map) {
 					return _react2.default.createElement(
 						'h3',
 						null,
@@ -59513,6 +59516,7 @@
 		}, {
 			key: 'renderSlotMap',
 			value: function renderSlotMap() {
+				var ISM = this.state.inventorySlotMap;
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -59524,7 +59528,7 @@
 					_react2.default.createElement(
 						'pre',
 						null,
-						JSON.stringify(this.state.slotMap, null, 4)
+						JSON.stringify(ISM.map, null, 4)
 					)
 				);
 			}
