@@ -59451,8 +59451,8 @@
 							var ISM = _this2.state.inventorySlotMap;
 							ISM.map.forEach(function (M) {
 								if (M.slot == _this2.state.coilNumber) {
-									M.inventoryCount += parseInt(_this2.state.slotProductCount);
-									//M.stockCount += parseInt(this.state.slotProductCount);
+									//M.inventoryCount += parseInt(this.state.slotProductCount);
+									M.stockCount += parseInt(_this2.state.slotProductCount);
 								}
 							});
 
@@ -59491,8 +59491,8 @@
 	      this.setState({
 	        verifiedProductData: data2,
 	        productImages: StorefrontStore.getImagesForProduct(data2),
-	        // just reference it direct if you need... verifiedProductData.inventoryCount
-	        //stockCount: "Stock Count: " + data.inventoryCount,
+	        // just reference it direct if you need... verifiedProductData.stockCount
+	        //stockCount: "Stock Count: " + data.stockCount,
 	        slotProductCount: ""
 	      });
 	      */
@@ -59501,12 +59501,12 @@
 							var ISM = _this3.state.inventorySlotMap;
 							ISM.map.forEach(function (M) {
 								if (M.slot == _this3.state.coilNumber) {
-									M.inventoryCount -= parseInt(_this3.state.slotProductCount);
-									if (M.inventoryCount < 0) {
-										M.inventoryCount = 0;
+									//M.inventoryCount -= parseInt(this.state.slotProductCount);
+									//if (M.inventoryCount < 0) { M.inventoryCount = 0; }
+									M.stockCount -= parseInt(_this3.state.slotProductCount);
+									if (M.stockCount < 0) {
+										M.stockCount = 0;
 									}
-									//M.stockCount -= parseInt(this.state.slotProductCount);
-									//if (M.stockCount < 0) { M.stockCount = 0; }
 								}
 							});
 
@@ -59626,12 +59626,22 @@
 									_react2.default.createElement(
 										'p',
 										{ style: { textAlign: 'center', fontWeight: 'bold' } },
-										'Total in machine: ',
+										'Total stock in machine:',
 										function () {
 											var i = 0;ISM[M].map(function (foo) {
-												i += foo.inventoryCount;
+												i += foo.stockCount;
 											});return i;
-										}()
+										}(),
+										_react2.default.createElement(
+											'span',
+											{ style: { fontSize: '0.65em' } },
+											'inv: ',
+											function () {
+												var i = 0;ISM[M].map(function (foo) {
+													i += foo.inventoryCount;
+												});return i;
+											}()
+										)
 									),
 									_this4.renderProductImage(pImages)
 								),
@@ -59683,7 +59693,7 @@
 						slots.map(function (S, idx) {
 							/*
 	      <_E.Col key={idx} sm="1/3" md="1/3" lg="1/3">
-	      	<p className="text-center">slot: {S.slot}, current quantity: {S.inventoryCount}</p>
+	      	<p className="text-center">slot: {S.slot}, current quantity: {S.stockCount}</p>
 	      </_E.Col>
 	      */
 							return _react2.default.createElement(
@@ -59705,13 +59715,13 @@
 											'em',
 											null,
 											'current count: ',
-											S.inventoryCount,
+											S.stockCount,
 											' ',
 											_react2.default.createElement(
 												'span',
-												{ style: { fontSize: '0.5em' } },
-												'(',
-												S.stockCount,
+												{ style: { fontSize: '0.65em' } },
+												'(inv: ',
+												S.inventoryCount,
 												')'
 											)
 										)
@@ -59776,7 +59786,7 @@
 								_react2.default.createElement(
 									'strong',
 									null,
-									this.state.verifiedProductData.inventoryCount
+									this.state.verifiedProductData.stockCount
 								)
 							)
 						)

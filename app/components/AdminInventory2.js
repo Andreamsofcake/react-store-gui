@@ -129,8 +129,8 @@ class AdminInventory2 extends Component {
 					let ISM = this.state.inventorySlotMap;
 					ISM.map.forEach( M => {
 						if (M.slot == this.state.coilNumber) {
-							M.inventoryCount += parseInt(this.state.slotProductCount);
-							//M.stockCount += parseInt(this.state.slotProductCount);
+							//M.inventoryCount += parseInt(this.state.slotProductCount);
+							M.stockCount += parseInt(this.state.slotProductCount);
 						}
 					});
 
@@ -166,8 +166,8 @@ class AdminInventory2 extends Component {
 					this.setState({
 					  verifiedProductData: data2,
 					  productImages: StorefrontStore.getImagesForProduct(data2),
-					  // just reference it direct if you need... verifiedProductData.inventoryCount
-					  //stockCount: "Stock Count: " + data.inventoryCount,
+					  // just reference it direct if you need... verifiedProductData.stockCount
+					  //stockCount: "Stock Count: " + data.stockCount,
 					  slotProductCount: ""
 					});
 					*/
@@ -176,10 +176,10 @@ class AdminInventory2 extends Component {
 					let ISM = this.state.inventorySlotMap;
 					ISM.map.forEach( M => {
 						if (M.slot == this.state.coilNumber) {
-							M.inventoryCount -= parseInt(this.state.slotProductCount);
-							if (M.inventoryCount < 0) { M.inventoryCount = 0; }
-							//M.stockCount -= parseInt(this.state.slotProductCount);
-							//if (M.stockCount < 0) { M.stockCount = 0; }
+							//M.inventoryCount -= parseInt(this.state.slotProductCount);
+							//if (M.inventoryCount < 0) { M.inventoryCount = 0; }
+							M.stockCount -= parseInt(this.state.slotProductCount);
+							if (M.stockCount < 0) { M.stockCount = 0; }
 						}
 					});
 
@@ -269,7 +269,10 @@ class AdminInventory2 extends Component {
 						<_E.Row>
 							<_E.Col sm="1" md="1/3" lg="1/3">
 								<h3 style={{textAlign:'center'}}>{(pData.name || pData.productName)}</h3>
-								<p style={{textAlign:'center', fontWeight: 'bold'}}>Total in machine: {( () => { var i = 0; ISM[M].map( foo => { i += foo.inventoryCount }); return i; } )()}</p>
+								<p style={{textAlign:'center', fontWeight: 'bold'}}>Total stock in machine:
+									{( () => { var i = 0; ISM[M].map( foo => { i += foo.stockCount }); return i; } )()}
+									<span style={{fontSize: '0.65em'}}>inv: {( () => { var i = 0; ISM[M].map( foo => { i += foo.inventoryCount }); return i; } )()}</span>
+								</p>
 								{this.renderProductImage(pImages)}
 							</_E.Col>
 							<_E.Col sm="1" md="2/3" lg="2/3">
@@ -304,14 +307,14 @@ class AdminInventory2 extends Component {
 					{slots.map( (S, idx) => {
 							/*
 							<_E.Col key={idx} sm="1/3" md="1/3" lg="1/3">
-								<p className="text-center">slot: {S.slot}, current quantity: {S.inventoryCount}</p>
+								<p className="text-center">slot: {S.slot}, current quantity: {S.stockCount}</p>
 							</_E.Col>
 							*/
 						return (
 							<_E.Col key={idx} sm="1/3" md="1/3" lg="1/3">
 								<p style={{textAlign: 'center', marginBottom: '2em'}}>
 									<_E.Button style={{margin:'0 auto',display:'block'}} size="lg" type="primary" onClick={this.manageSlot.bind(this, S)}>Manage Slot {S.slot}</_E.Button>
-									<strong><em>current count: {S.inventoryCount} <span style={{fontSize: '0.5em'}}>({S.stockCount})</span></em></strong>
+									<strong><em>current count: {S.stockCount} <span style={{fontSize: '0.65em'}}>(inv: {S.inventoryCount})</span></em></strong>
 								</p>
 							</_E.Col>
 							
@@ -341,7 +344,7 @@ class AdminInventory2 extends Component {
 			  </_E.Col>
 			  <_E.Col sm="1" md="2/3" lg="2/3">
 				  <h2 style={{marginTop: 0}}>{(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)}</h2>
-				  <p style={{fontSize:'1.5em'}}>Slot: <strong>{this.state.coilNumber}</strong><br />Current Stock Count: <strong>{this.state.verifiedProductData.inventoryCount}</strong></p>
+				  <p style={{fontSize:'1.5em'}}>Slot: <strong>{this.state.coilNumber}</strong><br />Current Stock Count: <strong>{this.state.verifiedProductData.stockCount}</strong></p>
 			  </_E.Col>
 			</_E.Row>
 
