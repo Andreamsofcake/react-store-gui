@@ -8649,7 +8649,7 @@
 						if (_this2.getPrintUserID(CU) === _this2.getPrintUserID(_this2.currentClientUser)) {
 							// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
 							// this is generally what it looks like in the DB:
-							CU.prints_registered.push({
+							CU.biometric_records.push({
 								ts: Date.now(),
 								type: 'fingerprint',
 								location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
@@ -8666,16 +8666,17 @@
 		}, {
 			key: 'printRegistrationFinished',
 			value: function printRegistrationFinished(apiResponses) {
-
-				_AdminActions2.default.addBiometricRecord({
-					token: this.state.token,
-					clientUser: this.state.currentClientUser,
-					apiResponses: apiResponses,
-					type: 'fingerprint'
-				});
+				var _this3 = this;
 
 				this.setState({
 					printRegisterResponses: apiResponses
+				}, function () {
+					_AdminActions2.default.addBiometricRecord({
+						token: _this3.state.token,
+						clientUser: _this3.state.currentClientUser,
+						apiResponses: apiResponses,
+						type: 'fingerprint'
+					});
 				});
 			}
 		}, {
@@ -8725,7 +8726,7 @@
 		}, {
 			key: 'renderGuiState',
 			value: function renderGuiState() {
-				var _this3 = this;
+				var _this4 = this;
 
 				if (this.state.currentClientUser) {
 					return this.renderCapturePrint();
@@ -8796,7 +8797,7 @@
 										{ sm: '25%', md: '25%', lg: '25%' },
 										_react2.default.createElement(
 											_E.Button,
-											{ type: 'primary', onClick: _this3.selectClientUser.bind(_this3, CU) },
+											{ type: 'primary', onClick: _this4.selectClientUser.bind(_this4, CU) },
 											'Register Fingerprint'
 										)
 									)
@@ -16994,7 +16995,8 @@
 			}).catch(function (error) {
 				Big.error('failed to add ' + me + ', call chain error probably check component tree');
 				Big.log(error);
-				Big.throw(error);
+				//Big.throw(error);
+				throw error;
 			});
 		},
 		registerPrint: function registerPrint(config) {

@@ -152,7 +152,8 @@ var AdminActions = {
 		.catch(error => {
 			Big.error('failed to add '+me+', call chain error probably check component tree');
 			Big.log(error);
-			Big.throw(error);
+			//Big.throw(error);
+			throw error;
 		})
 	},
 	

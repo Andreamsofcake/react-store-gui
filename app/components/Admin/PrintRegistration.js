@@ -70,7 +70,7 @@ class Admin_PrintRegistration extends Component {
 				if (this.getPrintUserID(CU) === this.getPrintUserID(this.currentClientUser)) {
 					// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
 					// this is generally what it looks like in the DB:
-					CU.prints_registered.push({
+					CU.biometric_records.push({
 						ts: Date.now(),
 						type: 'fingerprint',
 						location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
@@ -88,15 +88,15 @@ class Admin_PrintRegistration extends Component {
 
 	printRegistrationFinished(apiResponses) {
 
-		AdminActions.addBiometricRecord({
-			token: this.state.token,
-			clientUser: this.state.currentClientUser,
-			apiResponses: apiResponses,
-			type: 'fingerprint'
-		});
-		
 		this.setState({
 			printRegisterResponses: apiResponses
+		}, () => {
+			AdminActions.addBiometricRecord({
+				token: this.state.token,
+				clientUser: this.state.currentClientUser,
+				apiResponses: apiResponses,
+				type: 'fingerprint'
+			});
 		});
 
 	}
