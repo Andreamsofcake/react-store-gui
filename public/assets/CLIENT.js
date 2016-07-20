@@ -18239,6 +18239,11 @@
 				this.setState(this.getDefaultState(obj));
 			}
 		}, {
+			key: 'tryAgain',
+			value: function tryAgain() {
+				this.reset({ user: this.state.user, token: this.state.token });
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 
@@ -18248,7 +18253,7 @@
 						{ type: 'danger' },
 						_react2.default.createElement(
 							'span',
-							{ style: { fontSize: '1.65em' } },
+							{ style: { fontSize: '1.65em', marginTop: '1em' } },
 							'Misconfiguration, this component needs a user and token.'
 						)
 					);
@@ -18273,7 +18278,7 @@
 							null,
 							_react2.default.createElement(
 								_E.Button,
-								{ type: 'primary', size: 'lg', onClick: this.reset.bind(this) },
+								{ type: 'primary', size: 'lg', onClick: this.tryAgain.bind(this) },
 								'Try Again'
 							)
 						)
@@ -23640,8 +23645,13 @@
 
 	var _events = __webpack_require__(143);
 
+	var _BigLogger = __webpack_require__(1);
+
+	var _BigLogger2 = _interopRequireDefault(_BigLogger);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var Big = new _BigLogger2.default('PrintReaderStore');
 	//import muDB from '../../lib/muDB'
 
 	//import * as Translate from '../../lib/Translate'
@@ -23712,10 +23722,12 @@
 
 			case _appConstants2.default.PRINT_MATCHED:
 			case _appConstants2.default.PRINT_NOT_MATCHED:
+				Big.log('match or not match? ' + action.actionType);
 				if (action.data && action.data.apiResponse) {
 					_store.apiResponses.push(action.data.apiResponse);
 				}
 				if (action.data.matchedUser) {
+					Big.log('last matched user: ' + action.data.matchedUser);
 					_store.lastMatchedUser = action.data.matchedUser;
 				}
 				PrintReaderStore.emitChange({ type: action.actionType, token: action.data.token, matchedUser: action.data.matchedUser || null });

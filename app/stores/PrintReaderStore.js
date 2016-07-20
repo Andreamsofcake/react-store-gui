@@ -6,6 +6,9 @@ import objectAssign from 'react/lib/Object.assign'
 import { EventEmitter } from 'events'
 //import muDB from '../../lib/muDB'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('PrintReaderStore');
+
 var CHANGE_EVENT = 'change'
 
 // example state vars:
@@ -71,10 +74,12 @@ PrintReaderStore.dispatch = AppDispatcher.register(function(payload){
 
 		case appConstants.PRINT_MATCHED:
 		case appConstants.PRINT_NOT_MATCHED:
+			Big.log('match or not match? ' + action.actionType);
 			if (action.data && action.data.apiResponse) {
 				_store.apiResponses.push(action.data.apiResponse);
 			}
 			if (action.data.matchedUser) {
+				Big.log('last matched user: ' + action.data.matchedUser);
 				_store.lastMatchedUser = action.data.matchedUser;
 			}
 			PrintReaderStore.emitChange({ type: action.actionType, token: action.data.token, matchedUser: action.data.matchedUser || null });

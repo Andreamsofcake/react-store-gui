@@ -141,12 +141,16 @@ class PrintRegister extends Component {
 		PrintReaderActions.clearApiResponses();
 		this.setState( this.getDefaultState(obj) );
 	}
+	
+	tryAgain() {
+		this.reset({ user: this.state.user, token: this.state.token });
+	}
 
 	render() {
 		
 		if (!this.state.user || !this.state.token) {
 			return (
-				<_E.Alert type="danger"><span style={{fontSize:'1.65em'}}>Misconfiguration, this component needs a user and token.</span></_E.Alert>
+				<_E.Alert type="danger"><span style={{fontSize:'1.65em', marginTop: '1em'}}>Misconfiguration, this component needs a user and token.</span></_E.Alert>
 			);
 		}
 		
@@ -156,7 +160,7 @@ class PrintRegister extends Component {
 					<h1>Hey now, it looks like you have already registered that print for yourself.</h1>
 					<p>You don't need to re-register the same finger or thumb, please use another.</p>
 					
-					<p><_E.Button type="primary" size="lg" onClick={this.reset.bind(this)}>Try Again</_E.Button></p>
+					<p><_E.Button type="primary" size="lg" onClick={this.tryAgain.bind(this)}>Try Again</_E.Button></p>
 				</div>
 			);
 		}
