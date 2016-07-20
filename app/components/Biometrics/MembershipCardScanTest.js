@@ -94,7 +94,7 @@ class MembershipCardScanTest extends Component {
 				state.cardScanned = true;
 			} else {
 				state.status_msg = '';
-				state.error_msg = 'Scan fail';
+				state.error_msg = lastResponse || 'Scan fail';
 				state.cardScanned = false;
 			}
 			

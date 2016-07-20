@@ -158,7 +158,7 @@ class Storefront extends Component {
 		  <_E.Row >
 			<_E.Col style={{textAlign: 'center'}}>
 			  <h1 style={{marginTop: '10em', textAlign: 'center'}}>You must login before you can shop</h1>
-			  <p style={{fontSize: '1.3em', textAlign: 'center'}}>Click the login button at the top to get started.</p>
+			  <p style={{fontSize: '1.3em', textAlign: 'center'}}><_E.Button size="lg" type="success" onClick={() => {browserHistory.push('/CustomerMembershipAccess')}}>Customer Login</_E.Button></p>
 			</_E.Col>
 		  </_E.Row>
     	</div>

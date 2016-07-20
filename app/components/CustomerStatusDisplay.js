@@ -136,8 +136,11 @@ class CustomerStatusDisplay extends Component {
 				{this.props.testing ? (
 					<_E.Button size="xs" type="success" onClick={() => {browserHistory.push('/CustomerLoginTest')}}>Test Customer Login</_E.Button>
 				) : null }
+				{' '}<_E.Button size="xs" type="success" onClick={() => {browserHistory.push('/CustomerMembershipAccess')}}>Customer Login</_E.Button>
+				{/*
 				{' '}<_E.Button size="xs" type="success" onClick={() => {browserHistory.push('/CustomerLogin')}}>Login</_E.Button>
 				{' '}<_E.Button size="xs" type="success" onClick={() => {browserHistory.push('/CustomerSignup')}}>Register</_E.Button>
+				*/}
 			</p>
 		);
 	}

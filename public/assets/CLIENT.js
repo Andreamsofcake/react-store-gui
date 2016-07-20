@@ -11046,7 +11046,13 @@
 	            _react2.default.createElement(
 	              'p',
 	              { style: { fontSize: '1.3em', textAlign: 'center' } },
-	              'Click the login button at the top to get started.'
+	              _react2.default.createElement(
+	                _E.Button,
+	                { size: 'lg', type: 'success', onClick: function onClick() {
+	                    _reactRouter.browserHistory.push('/CustomerMembershipAccess');
+	                  } },
+	                'Customer Login'
+	              )
 	            )
 	          )
 	        )
@@ -13391,17 +13397,9 @@
 					_react2.default.createElement(
 						_E.Button,
 						{ size: 'xs', type: 'success', onClick: function onClick() {
-								_reactRouter.browserHistory.push('/CustomerLogin');
+								_reactRouter.browserHistory.push('/CustomerMembershipAccess');
 							} },
-						'Login'
-					),
-					' ',
-					_react2.default.createElement(
-						_E.Button,
-						{ size: 'xs', type: 'success', onClick: function onClick() {
-								_reactRouter.browserHistory.push('/CustomerSignup');
-							} },
-						'Register'
+						'Customer Login'
 					)
 				);
 			}
@@ -59330,10 +59328,9 @@
 
 					var lastResponse = _CardReaderStore2.default.lastApiResponse();
 
-					state.membership_id = event.membership_id;
-
 					//if (lastResponse && lastResponse.scanOK === true) {
-					if (lastResponse && lastResponse.indexOf('Scan OK') > -1) {
+					if (event.membership_id || lastResponse && lastResponse.indexOf('Scan OK') > -1) {
+						state.membership_id = event.membership_id;
 						state.status_msg = 'Card scanned';
 						state.error_msg = '';
 						state.cardScanned = true;
@@ -61291,7 +61288,7 @@
 						state.cardScanned = true;
 					} else {
 						state.status_msg = '';
-						state.error_msg = 'Scan fail';
+						state.error_msg = lastResponse || 'Scan fail';
 						state.cardScanned = false;
 					}
 
