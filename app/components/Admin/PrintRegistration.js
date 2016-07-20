@@ -80,7 +80,7 @@ class Admin_PrintRegistration extends Component {
 					ts: Date.now(),
 					type: 'fingerprint',
 					location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
-					apiResponses: RESPONSES
+					apiResponses
 				});
 			}
 		});
