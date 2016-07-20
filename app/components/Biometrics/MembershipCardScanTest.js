@@ -112,8 +112,7 @@ class MembershipCardScanTest extends Component {
 	}
 	
 	scanCard() {
-		if (!this.state.cardScanned
-			&& !this.state.scanInProcess) {
+		if (!this.state.scanInProcess) {
 		
 			this.setState({
 				scanInProcess: true,
@@ -194,7 +193,7 @@ class MembershipCardScanTest extends Component {
 			// regular start button:
 			(!this.state.scannedOnce && !this.props.autostart)
 			// after at least one scan and no match:
-			|| (this.state.scannedOnce && this.props.canRetry && !this.state.scanInProcess && !this.state.matchInProcess && !this.state.isMatched)
+			|| (this.state.scannedOnce && this.props.canRetry && !this.state.scanInProcess)
 		
 			) {
 
