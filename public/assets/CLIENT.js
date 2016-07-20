@@ -8645,7 +8645,7 @@
 
 				_AdminActions2.default.addBiometricRecord({
 					token: this.state.token,
-					clientUser: this.currentClientUser,
+					clientUser: this.state.currentClientUser,
 					apiResponses: apiResponses,
 					type: 'fingerprint'
 				});
@@ -8657,6 +8657,7 @@
 						// this is generally what it looks like in the DB:
 						cus.prints_registered.push({
 							ts: Date.now(),
+							type: 'fingerprint',
 							location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
 							apiResponses: RESPONSES
 						});
@@ -18234,6 +18235,7 @@
 
 				// print successfully registered, finish and callback
 				if (event.type === _appConstants2.default.PRINT_REGISTERED) {
+
 					if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
 						this.props.registrationCallback(state.apiResponses);
 					}

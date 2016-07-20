@@ -130,6 +130,7 @@ class PrintRegister extends Component {
 
 		// print successfully registered, finish and callback
 		if (event.type === appConstants.PRINT_REGISTERED) {
+
 			if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
 				this.props.registrationCallback(state.apiResponses);
 			}

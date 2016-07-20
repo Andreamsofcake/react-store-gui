@@ -65,7 +65,7 @@ class Admin_PrintRegistration extends Component {
 	printRegistrationFinished(apiResponses) {
 		AdminActions.addBiometricRecord({
 			token: this.state.token,
-			clientUser: this.currentClientUser,
+			clientUser: this.state.currentClientUser,
 			apiResponses: apiResponses,
 			type: 'fingerprint'
 		});
@@ -77,6 +77,7 @@ class Admin_PrintRegistration extends Component {
 				// this is generally what it looks like in the DB:
 				cus.prints_registered.push({
 					ts: Date.now(),
+					type: 'fingerprint',
 					location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
 					apiResponses: RESPONSES
 				});
