@@ -65,9 +65,11 @@ module.exports = function(request, reply) {
 
 			var { matchProps, token } = request.payload;
 			
-			if (!matchProps || !token) {
-				return reply({ status: 'err', apiResponses: ['register-print requires matchProps and a token'] }).code(500);
+			if (!matchProps || !matchProps.user || !token) {
+				return reply({ status: 'err', apiResponses: ['register-print requires matchProps with a user, and a token'] }).code(500);
 			}
+			
+			let matchUser = matchProps.user;
 			
 			function match(matchUser, cb) {
 
