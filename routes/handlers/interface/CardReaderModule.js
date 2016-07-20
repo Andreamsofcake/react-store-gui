@@ -24,19 +24,27 @@ module.exports = function(request, reply) {
 	switch (request.params.action) {
 
 		case 'scan-membership-card':
-			//curl -s -H "Content-Type: application/json" -X POST -d "{}" http://127.0.0.1:8001/api/v1/bio/eseek/m280/grabcard
+//curl -s -H "Content-Type: application/json" -X POST -d "{}" http://127.0.0.1:8001/api/v1/bio/eseek/m280/grabcard
+//curl.exe -s -H "Content-Type: application/json" -X POST -d "{}" http://127.0.0.1:8001/api/v1/bio/eseek/m280/grabcard
 
 			var { token } = request.payload;
 
 			if (!token) {
 				return reply({ status: 'err', apiResponses: ['scan-membership-card requires a token'] }).code(500);
 			}
+			
+			debug('start /grabcard');
 
 			RQ.post({
 				url: 'http://localhost:8001/api/v1/bio/eseek/m280/grabcard',
 				body: {}, // type === SDK member card?
 				json: true
 			}, (err, response, body) => {
+				
+				debug('/grabcard returned.... err then body');
+				debug(err);
+				debug(body);
+				
 				if (err) return reply({ status: 'err', err: err }).code(500);
 		
 				if (body && body.status === 'ok' && body.data) {

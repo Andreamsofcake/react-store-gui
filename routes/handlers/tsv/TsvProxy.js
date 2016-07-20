@@ -205,7 +205,7 @@ function multieventProxyPing(io) {
 						}		
 					});
 				}
-
+				isPingingMultievent = false;
 
 			}
 			

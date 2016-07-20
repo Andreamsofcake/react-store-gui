@@ -17,17 +17,6 @@ var fsplit = __filename.split(path.sep)
 	clientUser: this.currentClientUser,
 	apiResponses: apiResponses,
 	type: 'fingerprint'
-
-OOPS, BAD REQUEST:
-apiResponses
-	"scan good: captured print 1 [Scan OK]"
-	"scan good: captured print 2 [Scan OK]"
-	"print enrollment good: captured print 3 and created template [Scan OK]"
-	"database enrollment good: null"
-token
-	"29673"
-type
-	"fingerprint"
 */
 
 module.exports = function(request, reply) {

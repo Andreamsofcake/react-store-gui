@@ -59325,7 +59325,7 @@
 				    stateCB = null;
 
 				// handle inbound
-				if (event.type === appConstants.MEMBERSHIP_CARD_SCANNED) {
+				if (event.type === _appConstants2.default.MEMBERSHIP_CARD_SCANNED) {
 					// scan completed
 
 					var lastResponse = _CardReaderStore2.default.lastApiResponse();
@@ -59355,12 +59355,12 @@
 				}
 
 				// register the print with the current user_id
-				if (event.type === appConstants.MEMBERSHIP_CARD_MATCHED || event.type === appConstants.MEMBERSHIP_CARD_NOT_MATCHED) {
+				if (event.type === _appConstants2.default.MEMBERSHIP_CARD_MATCHED || event.type === _appConstants2.default.MEMBERSHIP_CARD_NOT_MATCHED) {
 
 					var RESPONSES = _CardReaderStore2.default.getApiResponses();
 					state.matchedUser = _CardReaderStore2.default.lastMatchedMembershipUser();
 
-					if (event.type === appConstants.MEMBERSHIP_CARD_MATCHED) {
+					if (event.type === _appConstants2.default.MEMBERSHIP_CARD_MATCHED) {
 						state.status_msg = 'Card matched';
 						state.error_msg = '';
 						state.isMatched = true;
@@ -59371,7 +59371,7 @@
 					}
 
 					if (this.props.matchCallback) {
-						this.props.matchCallback(!!(event.type === appConstants.MEMBERSHIP_CARD_MATCHED), RESPONSES, state.matchedUser, state.membership_id);
+						this.props.matchCallback(!!(event.type === _appConstants2.default.MEMBERSHIP_CARD_MATCHED), RESPONSES, state.matchedUser, state.membership_id);
 					}
 
 					state.matchingIsFinished = true;
@@ -61269,7 +61269,7 @@
 				    stateCB = null;
 
 				// handle inbound
-				if (event.type === appConstants.MEMBERSHIP_CARD_SCANNED) {
+				if (event.type === _appConstants2.default.MEMBERSHIP_CARD_SCANNED) {
 					// scan completed
 
 					var lastResponse = _CardReaderStore2.default.lastApiResponse();
