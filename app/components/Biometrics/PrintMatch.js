@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import appC from '../../constants/appConstants'
+import appConstants from '../../constants/appConstants'
 //import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 

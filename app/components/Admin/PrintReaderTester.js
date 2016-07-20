@@ -3,7 +3,7 @@ import * as Translate from '../../../lib/Translate'
 
 import AdminActions from '../../actions/AdminActions'
 import AdminStore from '../../stores/AdminStore'
-import appC from '../../constants/appConstants'
+import appConstants from '../../constants/appConstants'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
@@ -50,7 +50,7 @@ class Admin_Print_Reader_Tester extends Component {
   	startGeneralIdleTimer(this.props.location.pathname);
   	Big.log('PRINT READER event');
   	Big.log(event);
-  	//if (event.type == appC.TEST_REGISTER_PRINT) {
+  	//if (event.type == appConstants.TEST_REGISTER_PRINT) {
   		this.setState({
   			apiResponse: AdminStore.getApiResponses()
   		});

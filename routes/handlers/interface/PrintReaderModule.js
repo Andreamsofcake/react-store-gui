@@ -98,7 +98,7 @@ module.exports = function(request, reply) {
 
 					if (!body || body.status !== 'ok') { 
 						if (cb) return cb(true, M);
-						return reply({ token, status: 'err', apiResponse: M }).code(500);
+						return reply({ token, status: 'err', apiResponse: M }).code(404);
 					}
 				
 					if (cb) return cb(null, M);
@@ -119,7 +119,7 @@ module.exports = function(request, reply) {
 						match(matchUser.pop(), matchLoop);
 					} else {
 						// on multiple match attempts, will pass back the last err, or the last apiResponse
-						return reply({ token, status: 'err', apiResponse: err || apiResponse || 'unknown fail' }).code(500);
+						return reply({ token, status: 'err', apiResponse: err || apiResponse || 'unknown fail' }).code(404);
 					}
 
 				} else {

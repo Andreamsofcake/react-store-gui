@@ -5741,7 +5741,7 @@
 	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 	      Big.log('PRINT READER event');
 	      Big.log(event);
-	      //if (event.type == appC.TEST_REGISTER_PRINT) {
+	      //if (event.type == appConstants.TEST_REGISTER_PRINT) {
 	      this.setState({
 	        apiResponse: _AdminStore2.default.getApiResponses()
 	      });
@@ -18113,7 +18113,7 @@
 			key: 'getDefaultState',
 			value: function getDefaultState(obj) {
 				var def = {
-					apiResponse: [], // reset API messages
+					apiResponses: [], // reset API messages
 					user: null,
 					token: null,
 					num_scans: 0,
@@ -18173,7 +18173,7 @@
 				// we will be building up state here...
 				var state = this.state;
 
-				state.responses = _PrintReaderStore2.default.getApiResponses();
+				state.apiResponses = _PrintReaderStore2.default.getApiResponses();
 
 				if (event.type === _appConstants2.default.PRINT_MATCHED) {
 					// uh oh, we have already registered this print with this user!
@@ -18222,7 +18222,7 @@
 				// print successfully registered, finish and callback
 				if (event.type === _appConstants2.default.PRINT_REGISTERED) {
 					if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
-						this.props.registrationCallback(state.responses);
+						this.props.registrationCallback(state.apiResponses);
 					}
 
 					state.registrationIsFinished = true;
@@ -18302,7 +18302,7 @@
 						_react2.default.createElement(
 							'pre',
 							{ style: { fontSize: '1em', padding: '1em' } },
-							this.state.apiResponses.join("\n")
+							this.state.apiResponses ? this.state.apiResponses.join("\n") : 'no responses yet'
 						)
 					);
 				}
@@ -59865,7 +59865,7 @@
 				    stateCB = null;
 
 				// handle inbound
-				if (event.type === appConstants.PRINT_SCANNED_1) {
+				if (event.type === _appConstants2.default.PRINT_SCANNED_1) {
 					// scan completed
 
 					var lastResponse = _PrintReaderStore2.default.lastApiResponse();
@@ -59895,10 +59895,10 @@
 				}
 
 				// register the print with the current user_id
-				if (event.type === appConstants.PRINT_MATCHED || event.type === appConstants.PRINT_NOT_MATCHED) {
+				if (event.type === _appConstants2.default.PRINT_MATCHED || event.type === _appConstants2.default.PRINT_NOT_MATCHED) {
 
 					var RESPONSES = _PrintReaderStore2.default.getApiResponses();
-					if (event.type === appConstants.PRINT_MATCHED) {
+					if (event.type === _appConstants2.default.PRINT_MATCHED) {
 						state.status_msg = 'Print matched';
 						state.error_msg = '';
 						state.isMatched = true;
@@ -59909,7 +59909,7 @@
 					}
 
 					if (this.props.matchCallback) {
-						this.props.matchCallback(!!(event.type === appConstants.PRINT_MATCHED), RESPONSES);
+						this.props.matchCallback(!!(event.type === _appConstants2.default.PRINT_MATCHED), RESPONSES);
 					}
 
 					state.matchingIsFinished = true;
@@ -61007,15 +61007,6 @@
 	                _reactRouter.Link,
 	                { to: '/Admin/Home' },
 	                Translate.translate('AdminHome', 'Home')
-	              ) })
-	          ),
-	          _react2.default.createElement(
-	            _E.Col,
-	            { style: { textAlign: 'center' } },
-	            _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
-	                _reactRouter.Link,
-	                { to: '/Admin/Home' },
-	                'Admin Home'
 	              ) })
 	          )
 	        )

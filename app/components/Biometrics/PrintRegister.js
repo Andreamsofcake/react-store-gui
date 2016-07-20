@@ -27,7 +27,7 @@ class PrintRegister extends Component {
 
 	getDefaultState(obj) {
 		let def = {
-			apiResponse: [], // reset API messages
+			apiResponses: [], // reset API messages
 			user: null,
 			token: null,
 			num_scans: 0,
@@ -75,7 +75,7 @@ class PrintRegister extends Component {
 		// we will be building up state here...
 		let state = this.state;
 		
-		state.responses = PrintReaderStore.getApiResponses();
+		state.apiResponses = PrintReaderStore.getApiResponses();
 		
 		if (event.type === appConstants.PRINT_MATCHED) {
 			// uh oh, we have already registered this print with this user!
@@ -126,7 +126,7 @@ class PrintRegister extends Component {
 		// print successfully registered, finish and callback
 		if (event.type === appConstants.PRINT_REGISTERED) {
 			if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
-				this.props.registrationCallback(state.responses);
+				this.props.registrationCallback(state.apiResponses);
 			}
 			
 			state.registrationIsFinished = true;
@@ -175,7 +175,7 @@ class PrintRegister extends Component {
 				<div style={{margin: '2em 10em', backgroundColor:'rgba(255,255,255,0.75)', color:'#333', padding: '1.2em', border: '1px solid #aaa'}}>
 					<h4 style={{color:'#333'}}>System messages:</h4>
 					<pre style={{fontSize: '1em', padding: '1em'}}>
-						{this.state.apiResponses.join("\n")}
+						{this.state.apiResponses ? this.state.apiResponses.join("\n") : 'no responses yet'}
 					</pre>
 				</div>
 			);

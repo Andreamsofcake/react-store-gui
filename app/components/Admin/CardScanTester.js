@@ -4,7 +4,7 @@ import * as Translate from '../../../lib/Translate'
 //import AdminActions from '../../actions/AdminActions'
 //import AdminStore from '../../stores/AdminStore'
 
-import appC from '../../constants/appConstants'
+import appConstants from '../../constants/appConstants'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
@@ -136,9 +136,6 @@ class Admin_CardScanTester extends Component {
 			</_E.Col>
 			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign: 'center'}}>
 				<_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
-			</_E.Col>
-			<_E.Col style={{textAlign: 'center'}}>
-				<_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">Admin Home</Link>)} />
 			</_E.Col>
   		</_E.Row>
   		</div>

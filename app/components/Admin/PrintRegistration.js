@@ -3,7 +3,7 @@ import * as Translate from '../../../lib/Translate'
 
 import AdminActions from '../../actions/AdminActions'
 import AdminStore from '../../stores/AdminStore'
-import appC from '../../constants/appConstants'
+import appConstants from '../../constants/appConstants'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
@@ -54,7 +54,7 @@ class Admin_PrintRegistration extends Component {
 	_onAdminStoreChange(event) {
 		Big.log('_onAdminStoreChange(event)');
 		Big.log(event);
-		if (event.type == appC.CLIENT_USERS_RECEIVED) {
+		if (event.type == appConstants.CLIENT_USERS_RECEIVED) {
 			Big.log('received client users');
 			this.setState({
 				clientUsers: AdminStore.getClientUsers()
