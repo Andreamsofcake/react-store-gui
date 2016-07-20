@@ -8652,10 +8652,11 @@
 
 				var cus = this.state.clientUsers;
 				cus.forEach(function (CU) {
-					if (cus._id === _this2.currentClientUser._id) {
+					var checkID = cus;
+					if (_this2.getPrintUserID(CU) === _this2.getPrintUserID(_this2.currentClientUser)) {
 						// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
 						// this is generally what it looks like in the DB:
-						cus.prints_registered.push({
+						CU.prints_registered.push({
 							ts: Date.now(),
 							type: 'fingerprint',
 							location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
@@ -8884,6 +8885,9 @@
 					return null;
 				}
 
+				Big.log('this.getPrintUserID()');
+				Big.log(this.getPrintUserID());
+
 				return _react2.default.createElement(_PrintRegister2.default, {
 					user: this.getPrintUserID(),
 					token: this.state.token,
@@ -8892,9 +8896,10 @@
 			}
 		}, {
 			key: 'getPrintUserID',
-			value: function getPrintUserID() {
-				if (this.state.currentClientUser) {
-					return 'admin-' + this.state.currentClientUser._id;
+			value: function getPrintUserID(user) {
+				user = user || this.state.currentClientUser;
+				if (user) {
+					return 'admin-' + user._id;
 				}
 				return null;
 			}

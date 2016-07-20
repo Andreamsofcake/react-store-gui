@@ -72,10 +72,11 @@ class Admin_PrintRegistration extends Component {
 
 		let cus = this.state.clientUsers;
 		cus.forEach( CU => {
-			if (cus._id === this.currentClientUser._id) {
+			let checkID = cus
+			if (this.getPrintUserID(CU) === this.getPrintUserID(this.currentClientUser)) {
 				// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
 				// this is generally what it looks like in the DB:
-				cus.prints_registered.push({
+				CU.prints_registered.push({
 					ts: Date.now(),
 					type: 'fingerprint',
 					location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
@@ -214,6 +215,9 @@ class Admin_PrintRegistration extends Component {
 		if (!this.state.registrationInProcess) {
 			return null;
 		}
+		
+		Big.log('this.getPrintUserID()');
+		Big.log(this.getPrintUserID());
 
 		return (
 			<BiometricsPrintRegister
@@ -224,9 +228,10 @@ class Admin_PrintRegistration extends Component {
 		);
 	}
 	
-	getPrintUserID() {
-		if (this.state.currentClientUser) {
-			return 'admin-' + this.state.currentClientUser._id;
+	getPrintUserID(user) {
+		user = user || this.state.currentClientUser;
+		if (user) {
+			return 'admin-' + user._id;
 		}
 		return null;
 	}
