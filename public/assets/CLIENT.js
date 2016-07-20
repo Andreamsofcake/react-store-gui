@@ -8884,10 +8884,18 @@
 				}
 
 				return _react2.default.createElement(_PrintRegister2.default, {
-					user: this.state.currentClientUser,
+					user: this.getPrintUserID(),
 					token: this.state.token,
 					registrationCallback: this.printRegistrationFinished.bind(this)
 				});
+			}
+		}, {
+			key: 'getPrintUserID',
+			value: function getPrintUserID() {
+				if (this.state.currentClientUser) {
+					return 'admin-' + this.state.currentClientUser._id;
+				}
+				return null;
 			}
 		}, {
 			key: 'startRegisterPrint',
@@ -18206,7 +18214,12 @@
 				if (event.type === _appConstants2.default.PRINT_SCANNED_1 && state.num_scans === 1) {
 					_PrintReaderActions2.default.matchPrint({
 						token: this.state.token,
-						matchUser: this.state.user
+						matchProps: {
+							user: this.state.user,
+							client: this.props.client,
+							location: this.props.location,
+							machine: this.props.machine
+						}
 					});
 				}
 
@@ -59940,7 +59953,7 @@
 					}
 
 					if (this.props.matchCallback) {
-						this.props.matchCallback(!!(event.type === _appConstants2.default.PRINT_MATCHED), RESPONSES);
+						this.props.matchCallback(!!(event.type === _appConstants2.default.PRINT_MATCHED), RESPONSES, event.matchedUser);
 					}
 
 					state.matchingIsFinished = true;
@@ -59970,8 +59983,14 @@
 
 					_PrintReaderActions2.default.matchPrint({
 						token: this.props.token,
-						matchUser: this.props.user
+						matchProps: {
+							user: this.state.user,
+							client: this.props.client,
+							location: this.props.location,
+							machine: this.props.machine
+						}
 					});
+
 					/*} else {
 	    	this.setState({
 	    		error_msg: 'Cannot start matching?',
@@ -60327,6 +60346,10 @@
 
 	var _BigLogger2 = _interopRequireDefault(_BigLogger);
 
+	var _PrintMatchAdmin = __webpack_require__(453);
+
+	var _PrintMatchAdmin2 = _interopRequireDefault(_PrintMatchAdmin);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -60363,6 +60386,11 @@
 			key: 'getDefaultState',
 			value: function getDefaultState(obj) {
 				var def = {
+					adminBeginMatched: false,
+					adminEndMatched: false,
+					adminBeginResponses: [],
+					adminEndResponses: [],
+					adminEndUser: null,
 					token: (0, _utils.uniq)(),
 					matchedUser: null,
 					membership_id: null,
@@ -60408,6 +60436,38 @@
 	   	});	
 	   }
 	   */
+			}
+		}, {
+			key: 'adminPrintMatchCallback',
+			value: function adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+				switch (beginOrEnd) {
+					case 'begin':
+						if (matched) {
+							this.setState({
+								adminBeginMatched: true
+							});
+						} else {
+							this.setState({
+								adminBeginMatched: false,
+								adminBeginResponses: responses
+							});
+						}
+						break;
+
+					case 'end':
+						if (matched) {
+							this.setState({
+								adminEndMatched: true,
+								adminEndUser: user
+							});
+						} else {
+							this.setState({
+								adminEndMatched: false,
+								adminEndResponses: responses
+							});
+						}
+						break;
+				}
 			}
 		}, {
 			key: '_onCLStoreChange',
@@ -60481,6 +60541,22 @@
 		}, {
 			key: 'render',
 			value: function render() {
+
+				if (!this.state.adminBeginMatched) {
+					return _react2.default.createElement(
+						'div',
+						null,
+						_react2.default.createElement(
+							'h1',
+							null,
+							'OK before we get started, let\'s verify an admin is with you.'
+						),
+						_react2.default.createElement(_PrintMatchAdmin2.default, {
+							token: this.state.token,
+							matchCallback: this.adminPrintMatchCallback.bind(this)
+						})
+					);
+				}
 
 				return _react2.default.createElement(
 					'div',
@@ -61552,6 +61628,68 @@
 	}(_react.Component);
 
 	exports.default = MembershipCardScanTest;
+
+/***/ },
+/* 453 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(8);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _PrintMatch = __webpack_require__(447);
+
+	var _PrintMatch2 = _interopRequireDefault(_PrintMatch);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PrintMatchAdmin = function (_Component) {
+		_inherits(PrintMatchAdmin, _Component);
+
+		function PrintMatchAdmin(props, context) {
+			_classCallCheck(this, PrintMatchAdmin);
+
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PrintMatchAdmin).call(this, props, context));
+			// MUST call super() before any this.*
+
+
+			_this.state = _this.getDefaultState({ user: _this.props.user, token: _this.props.token });
+			_this._onPrintReaderStoreChange = _this._onPrintReaderStoreChange.bind(_this);
+			return _this;
+		}
+
+		_createClass(PrintMatchAdmin, [{
+			key: 'render',
+			value: function render() {
+				return _react2.default.createElement(_PrintMatch2.default, {
+					autostart: true,
+					canRetry: true,
+					showMessages: false,
+					user: 'admin-',
+					token: this.props.token,
+					matchCallback: this.props.matchCallback
+				});
+			}
+		}]);
+
+		return PrintMatchAdmin;
+	}(_react.Component);
+
+	exports.default = _PrintMatch2.default;
 
 /***/ }
 /******/ ]);

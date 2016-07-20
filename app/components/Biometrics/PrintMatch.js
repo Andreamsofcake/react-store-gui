@@ -143,7 +143,7 @@ class PrintMatch extends Component {
 			}
 
 			if (this.props.matchCallback) {
-				this.props.matchCallback( !!(event.type === appConstants.PRINT_MATCHED), RESPONSES );
+				this.props.matchCallback( !!(event.type === appConstants.PRINT_MATCHED), RESPONSES, event.matchedUser );
 			}
 
 			state.matchingIsFinished = true;
@@ -171,11 +171,17 @@ class PrintMatch extends Component {
 			this.setState({
 				matchingInProcess: true
 			});
-
+			
 			PrintReaderActions.matchPrint({
 				token: this.props.token,
-				matchUser: this.props.user
+				matchProps: {
+					user: this.state.user,
+					client: this.props.client,
+					location: this.props.location,
+					machine: this.props.machine
+				}
 			});
+
 		/*} else {
 			this.setState({
 				error_msg: 'Cannot start matching?',

@@ -110,7 +110,12 @@ class PrintRegister extends Component {
 		if (event.type === appConstants.PRINT_SCANNED_1 && state.num_scans === 1) {
 			PrintReaderActions.matchPrint({
 				token: this.state.token,
-				matchUser: this.state.user
+				matchProps: {
+					user: this.state.user,
+					client: this.props.client,
+					location: this.props.location,
+					machine: this.props.machine
+				}
 			});
 		}
 

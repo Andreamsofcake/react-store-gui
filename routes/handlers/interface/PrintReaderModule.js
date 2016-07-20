@@ -63,18 +63,18 @@ module.exports = function(request, reply) {
 
 		case 'match-print':
 
-			var { matchUser, token } = request.payload;
+			var { matchProps, token } = request.payload;
 			
-			if (!matchUser || !token) {
-				return reply({ status: 'err', apiResponses: ['register-print requires a matchUser and a token'] }).code(500);
+			if (!matchProps || !token) {
+				return reply({ status: 'err', apiResponses: ['register-print requires matchProps and a token'] }).code(500);
 			}
 			
 			function match(matchUser, cb) {
 
-				if (typeof matchUser === 'object') {
+				if (matchUser && typeof matchUser === 'object') {
 					matchUser = matchUser._id;
 				}
-
+				
 				RQ.post({
 					url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/matchprint',
 					json: true,
@@ -89,8 +89,8 @@ module.exports = function(request, reply) {
 					debug('match print response:');
 					debug(body);
 					if (err) {
-						if (cb) return cb(err);
-						return reply({ token, status: 'err', apiResponse: err }).code(500);
+						/*if (cb) */return cb(err);
+						//return reply({ token, status: 'err', apiResponse: err }).code(500);
 					}
 
 					let M = body.data || '';
@@ -103,33 +103,41 @@ module.exports = function(request, reply) {
 					}
 
 					if (!body || body.status !== 'ok') { 
-						if (cb) return cb(true, M);
-						return reply({ token, status: 'err', apiResponse: M }).code(404);
+						/*if (cb) */return cb(true, M);
+						//return reply({ token, status: 'err', apiResponse: M }).code(404);
 					}
 				
-					if (cb) return cb(null, M);
-					return reply({ token, status: 'ok', matchedUser, apiResponse: M }).code(200);
+					/*if (cb) */return cb(null, M, matchedUser);
+					//return reply({ token, status: 'ok', matchedUser, apiResponse: M }).code(200);
 				});
 			}
 			
-			function matchLoop(err, apiResponse) {
+			function matchLoop(err, apiResponse, matchedUser) {
 				
 				// positive match!
-				if (!err && apiResponse) {
-					return reply({ token, status: 'ok', apiResponse: M }).code(200);
+				if (!err && apiResponse && matchedUser) {
+					return reply({ token, status: 'ok', matchedUser, apiResponse: M }).code(200);
 				}
 			
 				if (matchUser instanceof Array) {
 
 					if (matchUser.length) {
 						match(matchUser.pop(), matchLoop);
+
 					} else {
 						// on multiple match attempts, will pass back the last err, or the last apiResponse
 						return reply({ token, status: 'err', apiResponse: err || apiResponse || 'unknown fail' }).code(404);
 					}
 
 				} else {
-					match(matchUser);
+					match(matchUser, (err, apiResponse, matchedUser) => {
+						if (err && !apiResponse) {
+							return reply({ token, status: 'err', apiResponse: err }).code(500);
+						} else if (err && apiResponse) {
+							return reply({ token, status: 'err', apiResponse }).code(404);
+						}
+						return reply({ token, status: 'ok', matchedUser, apiResponse }).code(200);
+					});
 				}
 			}
 			

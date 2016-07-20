@@ -21,6 +21,8 @@ import {
 import Log from '../../utils/BigLogger'
 var Big = new Log('Customer_MembershipAccess');
 
+import PrintMatchAdmin from '../Biometrics/PrintMatchAdmin'
+
 class Customer_MembershipAccess extends Component {
 
 	constructor(props, context) {
@@ -37,6 +39,11 @@ class Customer_MembershipAccess extends Component {
 	
 	getDefaultState(obj) {
 		let def = {
+			adminBeginMatched: false,
+			adminEndMatched: false,
+			adminBeginResponses: [],
+			adminEndResponses: [],
+			adminEndUser: null,
 			token: uniq(),
 			matchedUser: null,
 			membership_id: null,
@@ -73,6 +80,37 @@ class Customer_MembershipAccess extends Component {
 			});	
 		}
 		*/
+	}
+	
+	adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+		switch (beginOrEnd) {
+			case 'begin':
+				if (matched) {
+					this.setState({
+						adminBeginMatched: true
+					});
+				} else {
+					this.setState({
+						adminBeginMatched: false,
+						adminBeginResponses: responses
+					});
+				}
+				break;
+
+			case 'end':
+				if (matched) {
+					this.setState({
+						adminEndMatched: true,
+						adminEndUser: user,
+					});
+				} else {
+					this.setState({
+						adminEndMatched: false,
+						adminEndResponses: responses
+					});
+				}
+				break;
+		}
 	}
 
 	_onCLStoreChange(event) {
@@ -136,6 +174,18 @@ class Customer_MembershipAccess extends Component {
 
 	render() {
 
+		if (!this.state.adminBeginMatched) {
+			return (
+				<div>
+					<h1>OK before we get started, let's verify an admin is with you.</h1>
+					<PrintMatchAdmin
+						token={this.state.token}
+						matchCallback={this.adminPrintMatchCallback.bind(this)}
+						/>
+				</div>
+			);
+		}
+		
 		return (
 			<div>
 				<p>found user, but is not admin-verified! must capture prints etc</p>
