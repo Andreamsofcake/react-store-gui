@@ -34,6 +34,7 @@ class PrintRegister extends Component {
 			scanStep: 0,
 			scanInProcess: false,
 			registrationIsFinished: false,
+			alreadyRegisteredPrint: false,
 			error_msg: '',
 			status_msg: '',
 		}
@@ -73,6 +74,13 @@ class PrintRegister extends Component {
 
 		// we will be building up state here...
 		let state = this.state;
+		
+		state.responses = PrintReaderStore.getApiResponses();
+		
+		if (event.type === appConstants.PRINT_MATCHED) {
+			// uh oh, we have already registered this print with this user!
+			state.alreadyRegisteredPrint = true;
+		}
 
 		// handle inbound
 		if (event.type === appConstants.PRINT_SCANNED_1
@@ -97,6 +105,14 @@ class PrintRegister extends Component {
 			state.scanInProcess = false;
 
 		}
+		
+		// let's see if this print is already registered with this user...
+		if (event.type === appConstants.PRINT_SCANNED_1 && state.num_scans === 1) {
+			PrintReaderActions.matchPrint({
+				token: this.state.token,
+				matchUser: this.state.user
+			});
+		}
 
 		// register the print with the current user_id
 		if (event.type === appConstants.PRINT_SCANNED_3) {
@@ -109,18 +125,12 @@ class PrintRegister extends Component {
 
 		// print successfully registered, finish and callback
 		if (event.type === appConstants.PRINT_REGISTERED) {
-			
 			if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
-			
-				let RESPONSES = PrintReaderStore.getApiResponses();
-				this.props.registrationCallback(RESPONSES);
+				this.props.registrationCallback(state.responses);
 			}
 			
 			state.registrationIsFinished = true;
-			
 			PrintReaderActions.clearApiResponses();
-			
-
 		}
 
 		// finally, set state
@@ -128,6 +138,7 @@ class PrintRegister extends Component {
 	}
 	
 	reset(obj) {
+		PrintReaderActions.clearApiResponses();
 		this.setState( this.getDefaultState(obj) );
 	}
 
@@ -136,6 +147,17 @@ class PrintRegister extends Component {
 		if (!this.state.user || !this.state.token) {
 			return (
 				<_E.Alert type="danger"><span style={{fontSize:'1.65em'}}>Misconfiguration, this component needs a user and token.</span></_E.Alert>
+			);
+		}
+		
+		if (this.state.alreadyRegisteredPrint) {
+			return (
+				<div style={{textAlign:'center'}}>
+					<h1>Hey now, it looks like you have already registered that print for yourself.</h1>
+					<p>You don't need to re-register the same finger or thumb, please use another.</p>
+					
+					<p><_E.Button type="primary" size="lg" onClick={this.reset.bind(this)}>Try Again</_E.Button></p>
+				</div>
 			);
 		}
 		
@@ -153,7 +175,7 @@ class PrintRegister extends Component {
 				<div style={{margin: '2em 10em', backgroundColor:'rgba(255,255,255,0.75)', color:'#333', padding: '1.2em', border: '1px solid #aaa'}}>
 					<h4 style={{color:'#333'}}>System messages:</h4>
 					<pre style={{fontSize: '1em', padding: '1em'}}>
-						{this.state.apiResponse.join("\n")}
+						{this.state.apiResponses.join("\n")}
 					</pre>
 				</div>
 			);
@@ -246,7 +268,7 @@ class PrintRegister extends Component {
 
 	renderPrintTracker(whichOne) {
 		var RESULT;
-		if (this.state.num_scans == whichOne) {
+		if (this.state.num_scans >= whichOne) {
 			RESULT = (
 				<div style={{textAlign:'center'}}>
 					<_E.Button type="success"><_E.Glyph icon="check" /></_E.Button>
@@ -286,7 +308,7 @@ class PrintRegister extends Component {
 			token: this.state.token
 		});
 	}
-
+/*
 	____startRegisterPrint() {
 		this.setState({
 			scanInProcess: false,
@@ -295,7 +317,7 @@ class PrintRegister extends Component {
 			num_scans: 0
 		});
 	}
-
+*/
 }
 
 export default PrintRegister

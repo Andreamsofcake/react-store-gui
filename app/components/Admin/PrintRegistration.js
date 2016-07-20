@@ -13,11 +13,11 @@ import {
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
-var Big = new Log('Admin_Print_Registration');
+var Big = new Log('Admin_PrintRegistration');
 
 import BiometricsPrintRegister from '../Biometrics/PrintRegister'
 
-class Admin_Print_Registration extends Component {
+class Admin_PrintRegistration extends Component {
 
 	constructor(props, context) {
 		// MUST call super() before any this.*
@@ -235,4 +235,4 @@ class Admin_Print_Registration extends Component {
 
 }
 
-export default Admin_Print_Registration
+export default Admin_PrintRegistration

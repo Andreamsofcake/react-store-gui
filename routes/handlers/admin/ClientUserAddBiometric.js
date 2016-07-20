@@ -17,6 +17,17 @@ var fsplit = __filename.split(path.sep)
 	clientUser: this.currentClientUser,
 	apiResponses: apiResponses,
 	type: 'fingerprint'
+
+OOPS, BAD REQUEST:
+apiResponses
+	"scan good: captured print 1 [Scan OK]"
+	"scan good: captured print 2 [Scan OK]"
+	"print enrollment good: captured print 3 and created template [Scan OK]"
+	"database enrollment good: null"
+token
+	"29673"
+type
+	"fingerprint"
 */
 
 module.exports = function(request, reply) {
@@ -26,7 +37,7 @@ module.exports = function(request, reply) {
 		;
 	
 	if (!token || !clientUser || !apiResponses || !type) {
-		if (err) return reply({ status: 'err', error: 'missing required params' }).code(500);
+		return reply({ status: 'err', error: 'missing required params' }).code(500);
 	}
 	
 	if (MI && MI.registrationData && MI.registrationData.client) {

@@ -8576,15 +8576,15 @@
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-	var Big = new _BigLogger2.default('Admin_Print_Registration');
+	var Big = new _BigLogger2.default('Admin_PrintRegistration');
 
-	var Admin_Print_Registration = function (_Component) {
-		_inherits(Admin_Print_Registration, _Component);
+	var Admin_PrintRegistration = function (_Component) {
+		_inherits(Admin_PrintRegistration, _Component);
 
-		function Admin_Print_Registration(props, context) {
-			_classCallCheck(this, Admin_Print_Registration);
+		function Admin_PrintRegistration(props, context) {
+			_classCallCheck(this, Admin_PrintRegistration);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Admin_Print_Registration).call(this, props, context));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Admin_PrintRegistration).call(this, props, context));
 			// MUST call super() before any this.*
 
 
@@ -8593,7 +8593,7 @@
 			return _this;
 		}
 
-		_createClass(Admin_Print_Registration, [{
+		_createClass(Admin_PrintRegistration, [{
 			key: 'getDefaultState',
 			value: function getDefaultState(obj) {
 				var def = {
@@ -8902,10 +8902,10 @@
 			}
 		}]);
 
-		return Admin_Print_Registration;
+		return Admin_PrintRegistration;
 	}(_react.Component);
 
-	exports.default = Admin_Print_Registration;
+	exports.default = Admin_PrintRegistration;
 
 /***/ },
 /* 34 */
@@ -18122,6 +18122,7 @@
 					scanStep: 0,
 					scanInProcess: false,
 					registrationIsFinished: false,
+					alreadyRegisteredPrint: false,
 					error_msg: '',
 					status_msg: ''
 				};
@@ -18174,6 +18175,13 @@
 				// we will be building up state here...
 				var state = this.state;
 
+				state.responses = _PrintReaderStore2.default.getApiResponses();
+
+				if (event.type === _appConstants2.default.PRINT_MATCHED) {
+					// uh oh, we have already registered this print with this user!
+					state.alreadyRegisteredPrint = true;
+				}
+
 				// handle inbound
 				if (event.type === _appConstants2.default.PRINT_SCANNED_1 || event.type === _appConstants2.default.PRINT_SCANNED_2 || event.type === _appConstants2.default.PRINT_SCANNED_3) {
 					// scans completed
@@ -18196,6 +18204,14 @@
 					state.scanInProcess = false;
 				}
 
+				// let's see if this print is already registered with this user...
+				if (event.type === _appConstants2.default.PRINT_SCANNED_1 && state.num_scans === 1) {
+					_PrintReaderActions2.default.matchPrint({
+						token: this.state.token,
+						matchUser: this.state.user
+					});
+				}
+
 				// register the print with the current user_id
 				if (event.type === _appConstants2.default.PRINT_SCANNED_3) {
 					state.status_msg = 'Print sampled successfully. Processing, one moment please...';
@@ -18207,15 +18223,11 @@
 
 				// print successfully registered, finish and callback
 				if (event.type === _appConstants2.default.PRINT_REGISTERED) {
-
 					if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
-
-						var RESPONSES = _PrintReaderStore2.default.getApiResponses();
-						this.props.registrationCallback(RESPONSES);
+						this.props.registrationCallback(state.responses);
 					}
 
 					state.registrationIsFinished = true;
-
 					_PrintReaderActions2.default.clearApiResponses();
 				}
 
@@ -18225,6 +18237,7 @@
 		}, {
 			key: 'reset',
 			value: function reset(obj) {
+				_PrintReaderActions2.default.clearApiResponses();
 				this.setState(this.getDefaultState(obj));
 			}
 		}, {
@@ -18239,6 +18252,32 @@
 							'span',
 							{ style: { fontSize: '1.65em' } },
 							'Misconfiguration, this component needs a user and token.'
+						)
+					);
+				}
+
+				if (this.state.alreadyRegisteredPrint) {
+					return _react2.default.createElement(
+						'div',
+						{ style: { textAlign: 'center' } },
+						_react2.default.createElement(
+							'h1',
+							null,
+							'Hey now, it looks like you have already registered that print for yourself.'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							'You don\'t need to re-register the same finger or thumb, please use another.'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							_react2.default.createElement(
+								_E.Button,
+								{ type: 'primary', size: 'lg', onClick: this.reset.bind(this) },
+								'Try Again'
+							)
 						)
 					);
 				}
@@ -18265,7 +18304,7 @@
 						_react2.default.createElement(
 							'pre',
 							{ style: { fontSize: '1em', padding: '1em' } },
-							this.state.apiResponse.join("\n")
+							this.state.apiResponses.join("\n")
 						)
 					);
 				}
@@ -18405,7 +18444,7 @@
 			key: 'renderPrintTracker',
 			value: function renderPrintTracker(whichOne) {
 				var RESULT;
-				if (this.state.num_scans == whichOne) {
+				if (this.state.num_scans >= whichOne) {
 					RESULT = _react2.default.createElement(
 						'div',
 						{ style: { textAlign: 'center' } },
@@ -18469,16 +18508,17 @@
 					token: this.state.token
 				});
 			}
-		}, {
-			key: '____startRegisterPrint',
-			value: function ____startRegisterPrint() {
-				this.setState({
-					scanInProcess: false,
-					error_msg: '',
-					status_msg: 'Start print registration process....',
-					num_scans: 0
-				});
-			}
+			/*
+	  	____startRegisterPrint() {
+	  		this.setState({
+	  			scanInProcess: false,
+	  			error_msg: '',
+	  			status_msg: 'Start print registration process....',
+	  			num_scans: 0
+	  		});
+	  	}
+	  */
+
 		}]);
 
 		return PrintRegister;
