@@ -59,7 +59,7 @@ PrintReaderStore.dispatch = AppDispatcher.register(function(payload){
 		case appConstants.PRINT_REGISTERED:
 		case appConstants.PRINT_MATCHED:
 		case appConstants.PRINT_NOT_MATCHED:
-			if (action.data && action.data.apiResponses) {
+			if (action.data && action.data.apiResponse) {
 				_store.apiResponses.push(action.data.apiResponse);
 			}
 			PrintReaderStore.emitChange({ type: action.actionType, token: action.data.token });

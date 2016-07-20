@@ -23662,7 +23662,7 @@
 			case _appConstants2.default.PRINT_REGISTERED:
 			case _appConstants2.default.PRINT_MATCHED:
 			case _appConstants2.default.PRINT_NOT_MATCHED:
-				if (action.data && action.data.apiResponses) {
+				if (action.data && action.data.apiResponse) {
 					_store.apiResponses.push(action.data.apiResponse);
 				}
 				PrintReaderStore.emitChange({ type: action.actionType, token: action.data.token });
