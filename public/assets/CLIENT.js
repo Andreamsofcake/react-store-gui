@@ -8600,7 +8600,6 @@
 					apiResponse: [], // reset API messages
 					currentClientUser: null,
 					registrationInProcess: false,
-					printRegisterResponses: [],
 					token: (0, _utils.uniq)()
 				};
 				if (obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object') {
@@ -8630,8 +8629,6 @@
 		}, {
 			key: '_onAdminStoreChange',
 			value: function _onAdminStoreChange(event) {
-				var _this2 = this;
-
 				Big.log('_onAdminStoreChange(event)');
 				Big.log(event);
 				if (event.type == _appConstants2.default.CLIENT_USERS_RECEIVED) {
@@ -8643,41 +8640,40 @@
 
 				if (event.type == _appConstants2.default.CLIENTUSER_BIOMETRIC_RECORD_ADDED) {
 					Big.log('biometric record saved!');
-
-					var cus = this.state.clientUsers;
-					cus.forEach(function (CU) {
-						if (_this2.getPrintUserID(CU) === _this2.getPrintUserID(_this2.currentClientUser)) {
-							// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
-							// this is generally what it looks like in the DB:
-							CU.biometric_records.push({
-								ts: Date.now(),
-								type: 'fingerprint',
-								location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
-								apiResponses: _this2.state.printRegisterResponses
-							});
-						}
-					});
-
-					this.setState({
-						clientUsers: cus
-					});
 				}
 			}
 		}, {
 			key: 'printRegistrationFinished',
 			value: function printRegistrationFinished(apiResponses) {
-				var _this3 = this;
+				var _this2 = this;
+
+				var cus = this.state.clientUsers;
+				cus.forEach(function (CU) {
+					if (_this2.getPrintUserID(CU) === _this2.getPrintUserID(_this2.currentClientUser)) {
+						// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
+						// this is generally what it looks like in the DB:
+						CU.biometric_records.push({
+							ts: Date.now(),
+							type: 'fingerprint',
+							location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
+							apiResponses: apiResponses
+						});
+					}
+				});
 
 				this.setState({
-					printRegisterResponses: apiResponses
-				}, function () {
+					clientUsers: cus
+				});
+
+				// INVARIANTS!!!!!!!!!!!!! DAAAAAAMMMMMNNNNN YOOOOUUUUUUU
+				setTimeout(function () {
 					_AdminActions2.default.addBiometricRecord({
-						token: _this3.state.token,
-						clientUser: _this3.state.currentClientUser,
+						token: _this2.state.token,
+						clientUser: _this2.state.currentClientUser,
 						apiResponses: apiResponses,
 						type: 'fingerprint'
 					});
-				});
+				}, 250);
 			}
 		}, {
 			key: 'reset',
@@ -8726,7 +8722,7 @@
 		}, {
 			key: 'renderGuiState',
 			value: function renderGuiState() {
-				var _this4 = this;
+				var _this3 = this;
 
 				if (this.state.currentClientUser) {
 					return this.renderCapturePrint();
@@ -8797,7 +8793,7 @@
 										{ sm: '25%', md: '25%', lg: '25%' },
 										_react2.default.createElement(
 											_E.Button,
-											{ type: 'primary', onClick: _this4.selectClientUser.bind(_this4, CU) },
+											{ type: 'primary', onClick: _this3.selectClientUser.bind(_this3, CU) },
 											'Register Fingerprint'
 										)
 									)
