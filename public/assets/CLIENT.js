@@ -23604,7 +23604,8 @@
 			}).catch(function (error) {
 				Big.error('failed to register print, call chain error probably check component tree');
 				Big.log(error);
-				Big.throw(error);
+				//Big.throw(error);
+				throw error; // Big.* loses the call stack :(
 			});
 		},
 		matchPrint: function matchPrint(config) {
