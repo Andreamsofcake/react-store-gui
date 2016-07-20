@@ -32,6 +32,7 @@ class Admin_PrintRegistration extends Component {
 			apiResponse: [], // reset API messages
 			currentClientUser: null,
 			registrationInProcess: false,
+			printRegisterResponses: [],
 			token: uniq(),
 		}
 		if (obj && typeof obj === 'object') {
@@ -60,33 +61,44 @@ class Admin_PrintRegistration extends Component {
 				clientUsers: AdminStore.getClientUsers()
 			});
 		}
+
+		if (event.type == appConstants.CLIENTUSER_BIOMETRIC_RECORD_ADDED) {
+			Big.log('biometric record saved!');
+
+			let cus = this.state.clientUsers;
+			cus.forEach( CU => {
+				if (this.getPrintUserID(CU) === this.getPrintUserID(this.currentClientUser)) {
+					// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
+					// this is generally what it looks like in the DB:
+					CU.prints_registered.push({
+						ts: Date.now(),
+						type: 'fingerprint',
+						location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
+						apiResponses: this.state.printRegisterResponses
+					});
+				}
+			});
+
+			this.setState({
+				clientUsers: cus
+			});
+
+		}
 	}
 
 	printRegistrationFinished(apiResponses) {
+
 		AdminActions.addBiometricRecord({
 			token: this.state.token,
 			clientUser: this.state.currentClientUser,
 			apiResponses: apiResponses,
 			type: 'fingerprint'
 		});
-
-		let cus = this.state.clientUsers;
-		cus.forEach( CU => {
-			let checkID = cus
-			if (this.getPrintUserID(CU) === this.getPrintUserID(this.currentClientUser)) {
-				// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
-				// this is generally what it looks like in the DB:
-				CU.prints_registered.push({
-					ts: Date.now(),
-					type: 'fingerprint',
-					location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
-					apiResponses
-				});
-			}
-		});
+		
 		this.setState({
-			clientUsers: cus
+			printRegisterResponses: apiResponses
 		});
+
 	}
 
 	reset() {

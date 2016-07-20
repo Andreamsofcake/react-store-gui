@@ -8600,6 +8600,7 @@
 					apiResponse: [], // reset API messages
 					currentClientUser: null,
 					registrationInProcess: false,
+					printRegisterResponses: [],
 					token: (0, _utils.uniq)()
 				};
 				if (obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object') {
@@ -8629,6 +8630,8 @@
 		}, {
 			key: '_onAdminStoreChange',
 			value: function _onAdminStoreChange(event) {
+				var _this2 = this;
+
 				Big.log('_onAdminStoreChange(event)');
 				Big.log(event);
 				if (event.type == _appConstants2.default.CLIENT_USERS_RECEIVED) {
@@ -8637,11 +8640,32 @@
 						clientUsers: _AdminStore2.default.getClientUsers()
 					});
 				}
+
+				if (event.type == _appConstants2.default.CLIENTUSER_BIOMETRIC_RECORD_ADDED) {
+					Big.log('biometric record saved!');
+
+					var cus = this.state.clientUsers;
+					cus.forEach(function (CU) {
+						if (_this2.getPrintUserID(CU) === _this2.getPrintUserID(_this2.currentClientUser)) {
+							// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
+							// this is generally what it looks like in the DB:
+							CU.prints_registered.push({
+								ts: Date.now(),
+								type: 'fingerprint',
+								location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
+								apiResponses: _this2.state.printRegisterResponses
+							});
+						}
+					});
+
+					this.setState({
+						clientUsers: cus
+					});
+				}
 			}
 		}, {
 			key: 'printRegistrationFinished',
 			value: function printRegistrationFinished(apiResponses) {
-				var _this2 = this;
 
 				_AdminActions2.default.addBiometricRecord({
 					token: this.state.token,
@@ -8650,22 +8674,8 @@
 					type: 'fingerprint'
 				});
 
-				var cus = this.state.clientUsers;
-				cus.forEach(function (CU) {
-					var checkID = cus;
-					if (_this2.getPrintUserID(CU) === _this2.getPrintUserID(_this2.currentClientUser)) {
-						// artificially inflate the prints_registered so there's a visual record of the action (count) in the list of users
-						// this is generally what it looks like in the DB:
-						CU.prints_registered.push({
-							ts: Date.now(),
-							type: 'fingerprint',
-							location_data: { location: null, machine: null }, // could get from config somewhere I'm sure
-							apiResponses: apiResponses
-						});
-					}
-				});
 				this.setState({
-					clientUsers: cus
+					printRegisterResponses: apiResponses
 				});
 			}
 		}, {
@@ -17163,6 +17173,10 @@
 				AdminStore.emitChange({ type: action.actionType });
 				break;
 
+			case _appConstants2.default.CLIENTUSER_BIOMETRIC_RECORD_ADDED:
+				AdminStore.emitChange({ type: action.actionType });
+				break;
+
 			case _appConstants2.default.INVENTORY_SLOTMAP_CLEAR:
 				_store.inventorySlotMap = [];
 				AdminStore.emitChange({ type: action.actionType });
@@ -18282,7 +18296,7 @@
 				if (this.state.alreadyRegisteredPrint) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', marginTop: '1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,

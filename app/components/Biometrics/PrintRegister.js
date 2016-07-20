@@ -162,7 +162,7 @@ class PrintRegister extends Component {
 		
 		if (this.state.alreadyRegisteredPrint) {
 			return (
-				<div style={{textAlign:'center'}}>
+				<div style={{textAlign:'center', marginTop: '1em'}}>
 					<h1>Hey now, it looks like you have already registered that print for yourself.</h1>
 					<p>You don't need to re-register the same finger or thumb, please use another.</p>
 					
