@@ -18175,7 +18175,7 @@
 				var state = this.state;
 
 				// handle inbound
-				if (event.type === appConstants.PRINT_SCANNED_1 || event.type === appConstants.PRINT_SCANNED_2 || event.type === appConstants.PRINT_SCANNED_3) {
+				if (event.type === _appConstants2.default.PRINT_SCANNED_1 || event.type === _appConstants2.default.PRINT_SCANNED_2 || event.type === _appConstants2.default.PRINT_SCANNED_3) {
 					// scans completed
 
 					var lastResponse = _PrintReaderStore2.default.lastApiResponse();
@@ -18195,7 +18195,7 @@
 				}
 
 				// register the print with the current user_id
-				if (event.type === appConstants.PRINT_SCANNED_3) {
+				if (event.type === _appConstants2.default.PRINT_SCANNED_3) {
 					state.status_msg = 'Print sampled successfully. Processing, one moment please...';
 					_PrintReaderActions2.default.registerPrint({
 						token: this.state.token,
@@ -18204,7 +18204,7 @@
 				}
 
 				// print successfully registered, finish and callback
-				if (event.type === appConstants.PRINT_REGISTERED) {
+				if (event.type === _appConstants2.default.PRINT_REGISTERED) {
 
 					if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
 
@@ -60898,76 +60898,81 @@
 	      }
 
 	      return _react2.default.createElement(
-	        _E.Row,
+	        'div',
 	        null,
 	        _react2.default.createElement(
-	          _E.Col,
-	          { sm: '100%', md: '100%', lg: '100%' },
+	          _E.Row,
+	          { style: { width: '50%', margin: '0 auto' } },
 	          _react2.default.createElement(
-	            'h4',
+	            _E.Col,
+	            { sm: '100%', md: '100%', lg: '100%' },
+	            _react2.default.createElement(
+	              'h3',
+	              null,
+	              'what are we doing?'
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Col,
+	            { sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { size: 'lg', type: 'primary', onClick: this.startMembershipCardScan.bind(this) },
+	              ' Membership Card '
+	            )
+	          ),
+	          _react2.default.createElement(
+	            _E.Col,
+	            { sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { size: 'lg', type: 'primary', onClick: this.startIdCardScan.bind(this) },
+	              ' ID / License Card '
+	            )
+	          )
+	        ),
+	        _react2.default.createElement(
+	          _E.Row,
+	          null,
+	          _react2.default.createElement(
+	            'p',
 	            null,
-	            'what are we doing?'
+	            ' '
 	          )
 	        ),
 	        _react2.default.createElement(
-	          _E.Col,
-	          { sm: '1/4', md: '1/4', lg: '1/4' },
+	          _E.Row,
+	          { style: { width: '50%', margin: '0 auto' } },
 	          _react2.default.createElement(
-	            _E.Button,
-	            { size: 'lg', type: 'primary', onClick: this.startMembershipCardScan.bind(this) },
-	            ' Membership Card '
-	          )
-	        ),
-	        _react2.default.createElement(
-	          _E.Col,
-	          { sm: '1/4', md: '1/4', lg: '1/4' },
+	            _E.Col,
+	            { sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { size: 'lg', type: 'primary', onClick: this.startCreditCardScan.bind(this) },
+	              ' Credit Card '
+	            )
+	          ),
 	          _react2.default.createElement(
-	            _E.Button,
-	            { size: 'lg', type: 'primary', onClick: this.startIdCardScan.bind(this) },
-	            ' ID / License Card '
-	          )
-	        ),
-	        _react2.default.createElement(
-	          _E.Col,
-	          { sm: '1/4', md: '1/4', lg: '1/4' },
+	            _E.Col,
+	            { sm: '1/2', md: '1/2', lg: '1/2', style: { textAlign: 'center' } },
+	            _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/Admin/Home' },
+	                Translate.translate('AdminHome', 'Home')
+	              ) })
+	          ),
 	          _react2.default.createElement(
-	            _E.Button,
-	            { size: 'lg', type: 'primary', onClick: this.startCreditCardScan.bind(this) },
-	            ' Credit Card '
+	            _E.Col,
+	            { style: { textAlign: 'center' } },
+	            _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
+	                _reactRouter.Link,
+	                { to: '/Admin/Home' },
+	                'Admin Home'
+	              ) })
 	          )
-	        ),
-	        _react2.default.createElement(
-	          _E.Col,
-	          { sm: '1/4', md: '1/4', lg: '1/4' },
-	          _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: '/Admin/Home' },
-	              Translate.translate('AdminHome', 'Home')
-	            ) })
 	        )
 	      );
 	    }
-	  }, {
-	    key: 'updateState',
-	    value: function updateState(what, e) {
-	      (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-	      //Big.warn('updateState(what, e)');
-	      //Big.log(what);
-	      //Big.log(e.target.value);
-	      var state = {};
-	      state[what] = e.target.value;
-	      //Big.log(state);
-	      this.setState(state);
-	    }
-
-	    /*********
-	    
-	    		BIG OL DEV NOTE: we are setting onChange as well as onKeyUp because:
-	    		- react screams loudly if there's no onChange or readOnly
-	    		- chrome virtual keyboard extension does not fire onChange, thus we need onKeyup
-	    
-	    *********/
-
 	  }, {
 	    key: 'membershipCardScan',
 	    value: function membershipCardScan() {
@@ -60977,6 +60982,15 @@
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { style: { float: 'right' } },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { size: 'lg', type: 'primary', onClick: this.reset.bind(this) },
+	              'Cancel, back to list'
+	            )
+	          ),
 	          _react2.default.createElement(
 	            'h4',
 	            null,
@@ -61006,6 +61020,15 @@
 	          _E.Col,
 	          null,
 	          _react2.default.createElement(
+	            'div',
+	            { style: { float: 'right' } },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { size: 'lg', type: 'primary', onClick: this.reset.bind(this) },
+	              'Cancel, back to list'
+	            )
+	          ),
+	          _react2.default.createElement(
 	            'h4',
 	            null,
 	            'ID / License Card Scan Test'
@@ -61031,6 +61054,15 @@
 	        _react2.default.createElement(
 	          _E.Col,
 	          null,
+	          _react2.default.createElement(
+	            'div',
+	            { style: { float: 'right' } },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { size: 'lg', type: 'primary', onClick: this.reset.bind(this) },
+	              'Cancel, back to list'
+	            )
+	          ),
 	          _react2.default.createElement(
 	            'h4',
 	            null,

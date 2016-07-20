@@ -117,49 +117,39 @@ class Admin_CardScanTester extends Component {
   	}
 
   	return (
-  		<_E.Row>
+  		<div>
+  		<_E.Row style={{width: '50%', margin: '0 auto'}}>
 			<_E.Col sm="100%" md="100%" lg="100%">
-				<h4>what are we doing?</h4>
+				<h3>what are we doing?</h3>
 			</_E.Col>
-			<_E.Col sm="1/4" md="1/4" lg="1/4">
+			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign: 'center'}}>
 				<_E.Button size="lg" type="primary" onClick={this.startMembershipCardScan.bind(this)}> Membership Card </_E.Button>
 			</_E.Col>
-			<_E.Col sm="1/4" md="1/4" lg="1/4">
+			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign: 'center'}}>
 				<_E.Button size="lg" type="primary" onClick={this.startIdCardScan.bind(this)}> ID / License Card </_E.Button>
 			</_E.Col>
-			<_E.Col sm="1/4" md="1/4" lg="1/4">
+  		</_E.Row>
+    	<_E.Row><p>{' '}</p></_E.Row>
+  		<_E.Row style={{width: '50%', margin: '0 auto'}}>
+			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign: 'center'}}>
 				<_E.Button size="lg" type="primary" onClick={this.startCreditCardScan.bind(this)}> Credit Card </_E.Button>
 			</_E.Col>
-			<_E.Col sm="1/4" md="1/4" lg="1/4">
+			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign: 'center'}}>
 				<_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
 			</_E.Col>
+			<_E.Col style={{textAlign: 'center'}}>
+				<_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">Admin Home</Link>)} />
+			</_E.Col>
   		</_E.Row>
+  		</div>
   	);
   }
-  
-  updateState(what, e) {
-  	startGeneralIdleTimer(this.props.location.pathname);
-  	//Big.warn('updateState(what, e)');
-  	//Big.log(what);
-  	//Big.log(e.target.value);
-  	let state = {};
-  	state[what] = e.target.value;
-  	//Big.log(state);
-  	this.setState(state);
-  }
-
-/*********
-
-		BIG OL DEV NOTE: we are setting onChange as well as onKeyUp because:
-		- react screams loudly if there's no onChange or readOnly
-		- chrome virtual keyboard extension does not fire onChange, thus we need onKeyup
-
-*********/
-  
+    
   membershipCardScan() {
   	return (
   		<_E.Row style={{maxWidth:'65%',margin: '0 auto'}}>
 			<_E.Col>
+				<div style={{float: 'right'}}><_E.Button size="lg" type="primary" onClick={this.reset.bind(this)}>Cancel, back to list</_E.Button></div>
 	  			<h4>Membership Card Scan Test</h4>
 	  		</_E.Col>
   			<_E.Col>
@@ -179,6 +169,7 @@ class Admin_CardScanTester extends Component {
   	return (
   		<_E.Row style={{maxWidth:'65%',margin: '0 auto'}}>
 			<_E.Col>
+				<div style={{float: 'right'}}><_E.Button size="lg" type="primary" onClick={this.reset.bind(this)}>Cancel, back to list</_E.Button></div>
 	  			<h4>ID / License Card Scan Test</h4>
 	  		</_E.Col>
   			<_E.Col>
@@ -192,6 +183,7 @@ class Admin_CardScanTester extends Component {
   	return (
   		<_E.Row style={{maxWidth:'65%',margin: '0 auto'}}>
 			<_E.Col>
+				<div style={{float: 'right'}}><_E.Button size="lg" type="primary" onClick={this.reset.bind(this)}>Cancel, back to list</_E.Button></div>
 	  			<h4>Credit Card Scan Test</h4>
 	  		</_E.Col>
   			<_E.Col>

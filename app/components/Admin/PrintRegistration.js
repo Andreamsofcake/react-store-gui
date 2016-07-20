@@ -109,8 +109,6 @@ class Admin_Print_Registration extends Component {
 
 			  <div style={{float: 'right'}}><_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">Admin Home</Link>)} /></div>
 			  <h1>Manage Employee Fingerprints</h1>
-			  
-
 			  {this.renderGuiState()}
 
 			</_E.Col>
