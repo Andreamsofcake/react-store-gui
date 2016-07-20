@@ -94,7 +94,13 @@ module.exports = function(request, reply) {
 					}
 
 					let M = body.data || '';
-					if (body.msg) M += ': ' + (typeof body.msg == 'object' ? JSON.stringify(body.msg) : body.msg);
+					let matchedUser;
+					if (body.msg) {
+						M += ': ' + (typeof body.msg == 'object' ? JSON.stringify(body.msg) : body.msg);
+						if (typeof body.msg == 'object') {
+							matchedUser = body.msg;
+						}
+					}
 
 					if (!body || body.status !== 'ok') { 
 						if (cb) return cb(true, M);
@@ -102,7 +108,7 @@ module.exports = function(request, reply) {
 					}
 				
 					if (cb) return cb(null, M);
-					return reply({ token, status: 'ok', apiResponse: M }).code(200);
+					return reply({ token, status: 'ok', matchedUser, apiResponse: M }).code(200);
 				});
 			}
 			

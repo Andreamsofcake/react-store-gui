@@ -47,6 +47,10 @@ var PrintReaderStore = objectAssign({}, EventEmitter.prototype, {
 		return null;
 	},
 	
+	lastMatchedUser: function() {
+		return _store.lastMatchedUser;
+	},
+	
 });
 
 PrintReaderStore.dispatch = AppDispatcher.register(function(payload){
@@ -63,6 +67,21 @@ PrintReaderStore.dispatch = AppDispatcher.register(function(payload){
 				_store.apiResponses.push(action.data.apiResponse);
 			}
 			PrintReaderStore.emitChange({ type: action.actionType, token: action.data.token });
+			break;
+
+		case appConstants.PRINT_MATCHED:
+		case appConstants.PRINT_NOT_MATCHED:
+			if (action.data && action.data.apiResponse) {
+				_store.apiResponses.push(action.data.apiResponse);
+			}
+			if (action.data.matchedUser) {
+				_store.lastMatchedUser = action.data.matchedUser;
+			}
+			PrintReaderStore.emitChange({ type: action.actionType, token: action.data.token, matchedUser: action.data.matchedUser || null });
+			break;
+
+		case appConstants.CLEAR_PRINT_MODULE_DATA:
+			_store.lastMatchedUser = null;
 			break;
 
 		case appConstants.CLEAR_PRINT_MODULE_API_RESPONSES:

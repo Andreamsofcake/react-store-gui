@@ -73,7 +73,7 @@ var PrintReaderActions = {
 			// uh, daaaaaable check?
 			if (response.data && response.data.status && response.data.status == 'ok') {
 				AppDispatcher.handleServerAction({
-					actionType: response.data.matched ? appConstants.PRINT_MATCHED : appConstants.PRINT_NOT_MATCHED,
+					actionType: response.data.matchedUser ? appConstants.PRINT_MATCHED : appConstants.PRINT_NOT_MATCHED,
 					data: response.data
 				});
 			} else {

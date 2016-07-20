@@ -58,8 +58,8 @@ var appConstants = keyMirror({
 	PRINT_REGISTERED: null,
 	PRINT_MATCHED: null,
 	PRINT_NOT_MATCHED: null,
-	CLEAR_PRINTREGISTER_API_RESPONSES: null,
 	CLEAR_PRINT_MODULE_API_RESPONSES: null,
+	CLEAR_PRINT_MODULE_DATA: null,
 
 	// REAL card scan/match actions:
 	MEMBERSHIP_CARD_SCANNED: null,

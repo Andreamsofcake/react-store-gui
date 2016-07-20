@@ -16565,8 +16565,8 @@
 		PRINT_REGISTERED: null,
 		PRINT_MATCHED: null,
 		PRINT_NOT_MATCHED: null,
-		CLEAR_PRINTREGISTER_API_RESPONSES: null,
 		CLEAR_PRINT_MODULE_API_RESPONSES: null,
+		CLEAR_PRINT_MODULE_DATA: null,
 
 		// REAL card scan/match actions:
 		MEMBERSHIP_CARD_SCANNED: null,
@@ -23593,7 +23593,7 @@
 				// uh, daaaaaable check?
 				if (response.data && response.data.status && response.data.status == 'ok') {
 					_AppDispatcher2.default.handleServerAction({
-						actionType: response.data.matched ? _appConstants2.default.PRINT_MATCHED : _appConstants2.default.PRINT_NOT_MATCHED,
+						actionType: response.data.matchedUser ? _appConstants2.default.PRINT_MATCHED : _appConstants2.default.PRINT_NOT_MATCHED,
 						data: response.data
 					});
 				} else {
@@ -23686,6 +23686,10 @@
 				return _store.apiResponses[_store.apiResponses.length - 1];
 			}
 			return null;
+		},
+
+		lastMatchedUser: function lastMatchedUser() {
+			return _store.lastMatchedUser;
 		}
 
 	});
@@ -23704,6 +23708,21 @@
 					_store.apiResponses.push(action.data.apiResponse);
 				}
 				PrintReaderStore.emitChange({ type: action.actionType, token: action.data.token });
+				break;
+
+			case _appConstants2.default.PRINT_MATCHED:
+			case _appConstants2.default.PRINT_NOT_MATCHED:
+				if (action.data && action.data.apiResponse) {
+					_store.apiResponses.push(action.data.apiResponse);
+				}
+				if (action.data.matchedUser) {
+					_store.lastMatchedUser = action.data.matchedUser;
+				}
+				PrintReaderStore.emitChange({ type: action.actionType, token: action.data.token, matchedUser: action.data.matchedUser || null });
+				break;
+
+			case _appConstants2.default.CLEAR_PRINT_MODULE_DATA:
+				_store.lastMatchedUser = null;
 				break;
 
 			case _appConstants2.default.CLEAR_PRINT_MODULE_API_RESPONSES:
