@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
-//import TsvService from '../../lib/TsvService'
-import * as Translate from '../../lib/Translate'
+import * as Translate from '../../../lib/Translate'
 
-import TsvSettingsStore from '../stores/TsvSettingsStore'
+import TsvSettingsStore from '../../stores/TsvSettingsStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
-import TsvActions from '../actions/TsvActions'
+import TsvActions from '../../actions/TsvActions'
 import {
 	emptyCart,
 	gotoDefaultIdlePage,
 	startGeneralIdleTimer,
-} from '../utils/TsvUtils'
+} from '../../utils/TsvUtils'
 
-import Log from '../utils/BigLogger'
+import Log from '../../utils/BigLogger'
 var Big = new Log('AdminLogin');
 
 class AdminLogin extends Component {

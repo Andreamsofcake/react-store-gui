@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import * as _E from 'elemental'
-//import TsvService from '../../lib/TsvService'
 import StorefrontStore from '../stores/StorefrontStore'
 
 import { currencyFilter } from '../utils/TsvUtils'

@@ -1,23 +1,22 @@
 import React, { Component } from 'react'
-//import TsvService from '../../lib/TsvService'
-import * as Translate from '../../lib/Translate'
+import * as Translate from '../../../lib/Translate'
 
-import TsvSettingsStore from '../stores/TsvSettingsStore'
+import TsvSettingsStore from '../../stores/TsvSettingsStore'
 import { Link, browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
-import appConstants from '../constants/appConstants'
+import appConstants from '../../constants/appConstants'
 
-import AdminActions from '../actions/AdminActions'
-import AdminStore from '../stores/AdminStore'
-import StorefrontStore from '../stores/StorefrontStore'
+import AdminActions from '../../actions/AdminActions'
+import AdminStore from '../../stores/AdminStore'
+import StorefrontStore from '../../stores/StorefrontStore'
 
-import TsvActions from '../actions/TsvActions'
+import TsvActions from '../../actions/TsvActions'
 import {
 	startGeneralIdleTimer,
-} from '../utils/TsvUtils'
+} from '../../utils/TsvUtils'
 
-import Log from '../utils/BigLogger'
+import Log from '../../utils/BigLogger'
 var Big = new Log('AdminInventory2');
 
 class AdminInventory2 extends Component {
@@ -200,7 +199,7 @@ class AdminInventory2 extends Component {
 	render() {
 
 		let ISM = this.state.inventorySlotMap;
-		if (!ISM || !ISM.map.length || !ISM.map) {
+		if (!ISM || !ISM.map || !ISM.map.length) {
 			return (
 				<_E.Row className="inventory" style={{maxWidth:'80%',margin: '1em auto'}}>
 					<_E.Col>

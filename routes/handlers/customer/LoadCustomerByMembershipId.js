@@ -24,6 +24,8 @@ module.exports = function(request, reply) {
 	if (MI && MI.registrationData && MI.registrationData.client) {
 		if (membership_id) {
 	
+			/*
+			// old way, single membership_id per customer. BAD!
 			ProxyCall('clientGetCustomers', {
 				filter: { membership_id },
 				client: MI.registrationData.client
@@ -41,6 +43,23 @@ module.exports = function(request, reply) {
 				}
 				
 				var customer = response.data.items[0];
+			*/
+
+			// new way, can load a single customer by different membership IDs
+			// eventually should ComboCall this in the Proxy!
+			ProxyCall('customerGetByClientMembership', {
+				membership_id,
+				client: MI.registrationData.client
+
+			}, (err, response) => {
+		
+				if (err) return reply({ status: 'err', error: err }).code(500);
+
+				if (!response || !response.data || !response.data.item) {
+					return reply({ status: 'ok', msg: 'no user found' }).code(404);
+				}
+				
+				var customer = response.data.item;
 				
 				// ok, let's get credit for the customer:
 				// (eventually should ComboCall this in the Proxy)

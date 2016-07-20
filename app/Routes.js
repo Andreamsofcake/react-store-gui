@@ -8,30 +8,33 @@ import View2 from './components/View2'
 import PageIdle from './components/PageIdle'
 
 // admin modules
-import AdminActivate from './components/Activate'
-import AdminAutoMap from './components/AdminAutoMap'
-import AdminBillAcceptor from './components/AdminBillAcceptor'
-import AdminCheckFaults from './components/AdminCheckFaults'
-import AdminComponentControl from './components/AdminComponentControl'
-import AdminHome from './components/AdminHome'
-import AdminInventory from './components/AdminInventory'
-import AdminInventory2 from './components/AdminInventory2'
-import AdminJofemarExerciser from './components/AdminJofemarExerciser'
-import AdminLogin from './components/AdminLogin'
-import AdminPrintReaderTester from './components/AdminPrintReaderTester'
-import AdminSettings from './components/AdminSettings'
-import AdminStorefrontData from './components/AdminStorefrontData'
-import AdminSystemInfo from './components/AdminSystemInfo'
-import AdminVms from './components/AdminVms'
+import AdminActivate from './components/Admin/Activate'
+import AdminAutoMap from './components/Admin/AutoMap'
+import AdminBillAcceptor from './components/Admin/BillAcceptor'
+import AdminCardScanTest from './components/Admin/CardScanTester'
+import AdminCheckFaults from './components/Admin/CheckFaults'
+import AdminComponentControl from './components/Admin/ComponentControl'
+import AdminHome from './components/Admin/Home'
+import AdminInventory from './components/Admin/Inventory'
+import AdminInventory2 from './components/Admin/Inventory2'
+import AdminJofemarExerciser from './components/Admin/JofemarExerciser'
+import AdminLogin from './components/Admin/Login'
+import AdminPrintReaderTester from './components/Admin/PrintReaderTester'
+import AdminPrintRegistration from './components/Admin/PrintRegistration'
+import AdminSettings from './components/Admin/Settings'
+import AdminStorefrontData from './components/Admin/StorefrontData'
+import AdminSystemInfo from './components/Admin/SystemInfo'
+import AdminVms from './components/Admin/Vms'
 
 // store modules
 import CardVending from './components/CardVending'
 import CashVending from './components/CashVending'
 import ChooseCashCard from './components/ChooseCashCard'
 import CustomerCreditVending from './components/CustomerCreditVending'
-import CustomerLogin from './components/CustomerLogin'
-import CustomerSignup from './components/CustomerSignup'
+//import CustomerLogin from './components/CustomerLogin'
+//import CustomerSignup from './components/CustomerSignup'
 import CustomerLoginTest from './components/CustomerLoginTest'
+import CustomerMembershipAccess from './components/Customer/MembershipAccess'
 import ProductDetail from './components/ProductDetail'
 import ShoppingCart from './components/ShoppingCart'
 import Storefront from './components/Storefront'
@@ -57,6 +60,7 @@ export default (
 			<Route path='Activate' component={AdminActivate} />
 			<Route path='AutoMap' component={AdminAutoMap} />
 			<Route path='BillAcceptor' component={AdminBillAcceptor} />
+			<Route path='CardScanTest' component={AdminCardScanTest} />
 			<Route path='CheckFaults' component={AdminCheckFaults} />
 			<Route path='ComponentControl' component={AdminComponentControl} />
 			<Route path='Home' component={AdminHome} />
@@ -65,21 +69,24 @@ export default (
 			<Route path='JofemarExerciser' component={AdminJofemarExerciser} />
 			<Route path='Login' component={AdminLogin} />
 			<Route path='PrintReaderTest' component={AdminPrintReaderTester} />
+			<Route path='PrintRegistry' component={AdminPrintRegistration} />
 			<Route path='Settings' component={AdminSettings} />
 			<Route path='StorefrontData' component={AdminStorefrontData} />
 			<Route path='SystemInfo' component={AdminSystemInfo} />
 			<Route path='Vms' component={AdminVms} />
 
 		</Route>
-
+{/*
 		<Route path='CustomerSignup' component={CustomerSignup} />
 		<Route path='CustomerSignup/:step' component={CustomerSignup} />
 
 		<Route path='CustomerLogin' component={CustomerLogin} />
 		<Route path='CustomerLogin/:step' component={CustomerLogin} />
-		
+*/}
 		<Route path='CustomerLoginTest' component={CustomerLoginTest} />
 		<Route path='CustomerLoginTest/:step' component={CustomerLoginTest} />
+
+		<Route path='CustomerMembershipAccess' component={CustomerMembershipAccess} />
 
 		{/*<Route path='Storefront_Static' component={StorefrontStatic} />*/}
 		<Route path='Storefront' component={Storefront} />

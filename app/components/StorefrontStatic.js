@@ -1,6 +1,5 @@
 
 import React, { Component } from 'react'
-//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 
 import TsvSettingsStore from '../stores/TsvSettingsStore'

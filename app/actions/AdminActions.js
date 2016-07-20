@@ -10,8 +10,12 @@ var Big = new Log('AdminActions');
 var AdminActions = {
 	
 	getClientUsers() {
+		let me = 'client users';
 		axios.get('/api/get-client-users')
 		.then(response => {
+			
+			Big.log('getClientUsers() returned...');
+			
 			// uh, daaaaaable check?
 			if (response.data && response.data.status && response.data.status == 'ok') {
 				AppDispatcher.handleServerAction({
@@ -20,16 +24,16 @@ var AdminActions = {
 				});
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to get client users, error:');
+					Big.error('failed to get '+me+', error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to get client users, no data returned. full response:');
+					Big.error('failed to get '+me+', no data returned. full response:');
 					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			Big.error('failed to get client users, call chain error probably check component tree');
+			Big.error('failed to get '+me+', call chain error probably check component tree');
 			Big.log(error);
 			//Big.throw(error);
 		})
@@ -97,6 +101,7 @@ var AdminActions = {
 	},
 	
 	refreshStorefrontData() {
+		let me = 'storefront data';
 		axios.get('/api/refresh-storefront-data')
 		.then(response => {
 			// uh, daaaaaable check?
@@ -107,53 +112,50 @@ var AdminActions = {
 				});
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to refresh store data, error:');
+					Big.error('failed to get '+me+', error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to refresh store data, no data returned. full response:');
+					Big.error('failed to get '+me+', no data returned. full response:');
 					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			Big.error('failed to refresh store data, call chain error probably check component tree');
+			Big.error('failed to get '+me+', call chain error probably check component tree');
 			Big.log(error);
 			Big.throw(error);
 		})
 	},
 	
-	registerClientUserPrintComplete( config ) {
-		axios.post('/api/register-client-user-print-complete', 
+	addBiometricRecord( config ) {
+		let me = 'biometric record';
+		axios.post('/api/client-user-add-biometric',
 			config  // .post() expects and passes this as a json object
 		)
 		.then(response => {
-			// fire and forget this one
-			if (response.data && response.data.status) {
-				/*
+			// uh, daaaaaable check?
+			if (response.data && response.data.status && response.data.status == 'ok') {
 				AppDispatcher.handleServerAction({
-					actionType: config.ACTION || appConstants.TEST_REGISTER_PRINT,
+					actionType: config.ACTION || appConstants.CLIENTUSER_BIOMETRIC_RECORD_ADDED,
 					data: response.data
 				});
-				*/
-				Big.log('Client User print registration complete');
-				Big.log(response.data);
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to register print, error:');
+					Big.error('failed to add '+me+', error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to register print, no data returned. full response:');
+					Big.error('failed to add '+me+', no data returned. full response:');
 					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			Big.error('failed to register print, call chain error probably check component tree');
+			Big.error('failed to add '+me+', call chain error probably check component tree');
 			Big.log(error);
-			//Big.throw(error);
+			Big.throw(error);
 		})
 	},
-
+	
 	registerPrint( config ) {
 		axios.post('/api/print-reader/grab-and-register-print', 
 			config  // .post() expects and passes this as a json object
@@ -183,7 +185,7 @@ var AdminActions = {
 	},
 
 	matchPrint( config ) {
-		axios.post('/api/print-reader/match-print', 
+		axios.post('/api/print-reader/grab-match-print', 
 			config // .post() expects and passes this as a json object
 		)
 		.then(response => {
@@ -212,7 +214,7 @@ var AdminActions = {
 	
 	clearApiResponses() {
 		AppDispatcher.handleServerAction({
-			actionType: appConstants.CLEAR_API_RESPONSES
+			actionType: appConstants.CLEAR_TEST_PRINT_API_RESPONSES
 		});
 	}
 

@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
-//import TsvService from '../../lib/TsvService'
-import * as Translate from '../../lib/Translate'
+import * as Translate from '../../../lib/Translate'
 
-import AdminActions from '../actions/AdminActions'
-import AdminStore from '../stores/AdminStore'
-import appC from '../constants/appConstants'
+import AdminActions from '../../actions/AdminActions'
+import AdminStore from '../../stores/AdminStore'
+import appC from '../../constants/appConstants'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
-import { uniq } from '../utils'
+import { uniq } from '../../utils'
 import {
 	startGeneralIdleTimer,
-} from '../utils/TsvUtils'
+} from '../../utils/TsvUtils'
 
-import Log from '../utils/BigLogger'
+import Log from '../../utils/BigLogger'
 var Big = new Log('Admin_Print_Reader_Tester');
 
 class Admin_Print_Reader_Tester extends Component {

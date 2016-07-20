@@ -1,11 +1,13 @@
 import AppDispatcher from '../dispatcher/AppDispatcher'
 import appConstants from '../constants/appConstants'
-//import TsvService from '../../lib/TsvService'
 //import * as Translate from '../../lib/Translate'
 
 import objectAssign from 'react/lib/Object.assign'
 import { EventEmitter } from 'events'
 //import muDB from '../../lib/muDB'
+
+import Log from '../utils/BigLogger'
+var Big = new Log('AdminStore');
 
 var CHANGE_EVENT = 'change'
 
@@ -51,8 +53,8 @@ var AdminStore = objectAssign({}, EventEmitter.prototype, {
 	
 	getInventorySlotmap: function() {
 		return _store.inventorySlotMap;
-	}
-
+	},
+	
 });
 
 AdminStore.dispatch = AppDispatcher.register(function(payload){
@@ -69,6 +71,8 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 			break;
 			
 		case appConstants.CLIENT_USERS_RECEIVED:
+			Big.log('CLIENT_USERS_RECEIVED');
+			Big.log(action);
 			_store.clientUsers = action.data.data;
 			AdminStore.emitChange({ type: action.actionType });
 			break;
@@ -83,7 +87,7 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 			AdminStore.emitChange({ type: action.actionType });
 			break;
 
-		case appConstants.CLEAR_API_RESPONSES:
+		case appConstants.CLEAR_TEST_PRINT_API_RESPONSES:
 			_store.apiResponses = [];
 			break;
 		

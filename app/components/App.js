@@ -4,7 +4,6 @@ import { Link } from 'react-router'
 
 import { isClient } from '../utils'
 
-//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import * as _E from 'elemental'
 
@@ -13,7 +12,7 @@ import TsvSettingsStore from '../stores/TsvSettingsStore'
 import ComEmulator from './ComEmulator'
 import MachineIdTag from './MachineIdTag'
 import CustomerStatusDisplay from './CustomerStatusDisplay'
-import AdminLoginButton from './AdminLoginButton'
+import AdminLoginButton from './Admin/LoginButton'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'

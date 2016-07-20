@@ -10,12 +10,176 @@ var fsplit = __filename.split(path.sep)
 	, debug = require('debug')('vending-app-gui:routes:' + ACTION)
 	;
 
+import { CheckRegistration } from '../../../lib/Bootup'
+
 module.exports = function(request, reply) {
 	
-	var { user_id, client_id, location_id, machine_id, token } = request.payload;
+	var MI = CheckRegistration(true);
+	if (MI && MI.registrationData && MI.registrationData) { MI = MI.registrationData; }
 
 	switch (request.params.action) {
+
+/***** main print match/grab methods ******/
+
+		case 'grab-print':
+			
+			var { sequence, token } = request.payload;
+			sequence = parseInt(sequence);
+
+			if (!sequence || !token) {
+				return reply({ status: 'err', apiResponses: ['grab-print requires a sequence and a token'] }).code(500);
+			}
+			
+			if (sequence < 1 || sequence > 3) {
+				return reply({ status: 'err', apiResponses: ['grab-print requires a sequence between 1 and 3'] }).code(500);
+			}
+
+			RQ.post({
+				url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/grabprint' + sequence,
+				json: true,
+				body: {}
+
+			}, (err, response, body) => {
+				debug('grab print sequence "'+sequence+'" response:');
+				debug(body);
+				if (err) {
+					return reply({ token, status: 'err', apiResponse: err }).code(500);
+				}
+
+				let M = body.data || '';
+				if (body.msg) M += ': ' + (typeof body.msg == 'object' ? JSON.stringify(body.msg) : body.msg);
+
+				if (!body || body.status !== 'ok') { 
+					return reply({ token, status: 'err', apiResponse: M }).code(500);
+				}
+				
+				M += ' [Scan OK]';
+				
+				return reply({ token, status: 'ok', apiResponse: M }).code(200);
+			});
+
+			break;
+
+
+		case 'match-print':
+
+			var { matchUser, token } = request.payload;
+			
+			if (!matchUser || !token) {
+				return reply({ status: 'err', apiResponses: ['register-print requires a matchUser and a token'] }).code(500);
+			}
+			
+			function match(matchUser, cb) {
+
+				if (typeof matchUser === 'object') {
+					matchUser = matchUser._id;
+				}
+
+				RQ.post({
+					url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/matchprint',
+					json: true,
+					body: {
+						userid: matchUser,
+						clientid: MI.client,
+						locationid: null,
+						machineid: null,
+					}
+
+				}, (err, response, body) => {
+					debug('match print response:');
+					debug(body);
+					if (err) {
+						if (cb) return cb(err);
+						return reply({ token, status: 'err', apiResponse: err }).code(500);
+					}
+
+					let M = body.data || '';
+					if (body.msg) M += ': ' + (typeof body.msg == 'object' ? JSON.stringify(body.msg) : body.msg);
+
+					if (!body || body.status !== 'ok') { 
+						if (cb) return cb(true, M);
+						return reply({ token, status: 'err', apiResponse: M }).code(500);
+					}
+				
+					if (cb) return cb(null, M);
+					return reply({ token, status: 'ok', apiResponse: M }).code(200);
+				});
+			}
+			
+			function matchLoop(err, apiResponse) {
+				
+				// positive match!
+				if (!err && apiResponse) {
+					return reply({ token, status: 'ok', apiResponse: M }).code(200);
+				}
+			
+				if (matchUser instanceof Array) {
+
+					if (matchUser.length) {
+						match(matchUser.pop(), matchLoop);
+					} else {
+						// on multiple match attempts, will pass back the last err, or the last apiResponse
+						return reply({ token, status: 'err', apiResponse: err || apiResponse || 'unknown fail' }).code(500);
+					}
+
+				} else {
+					match(matchUser);
+				}
+			}
+			
+			matchLoop();
+
+			break;
+
+
+		case 'register-print':
+
+			var { registerUser, token } = request.payload;
+			
+			if (!registerUser || !token) {
+				return reply({ status: 'err', apiResponses: ['register-print requires a registerUser and a token'] }).code(500);
+			}
+
+			if (typeof registerUser === 'object') {
+				registerUser = registerUser._id;
+			}
+
+			RQ.post({
+				url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/addprint',
+				json: true,
+				body: {
+					userid: registerUser,
+					clientid: MI.client,
+					locationid: MI.location,
+					machineid: MI._id,
+				}
+
+			}, (err, response, body) => {
+				debug('add (register) print response:');
+				debug(body);
+				if (err) {
+					return reply({ token, status: 'err', apiResponse: err }).code(500);
+				}
+
+				let M = body.data || '';
+				if (body.msg) M += ': ' + (typeof body.msg == 'object' ? JSON.stringify(body.msg) : body.msg);
+
+				if (!body || body.status !== 'ok') { 
+					return reply({ token, status: 'err', apiResponse: M }).code(500);
+				}
+				
+				return reply({ token, status: 'ok', apiResponse: M }).code(200);
+			});
+
+			break;
+
+
+/***** admin/test functions below here ******/
+
 		case 'grab-and-register-print':
+			
+			var { user_id, client_id, location_id, machine_id, token } = request.payload;
+			
 			// probably ONLY used by admin, but we shall see...
 			// depends on what I can do to generate a user_id before print scanning,
 			// maybe doable as we can scan the license / card first
@@ -109,7 +273,10 @@ module.exports = function(request, reply) {
 			});
 			break;
 
-		case 'match-print':
+		case 'grab-match-print':
+
+			var { user_id, client_id, location_id, machine_id, token } = request.payload;
+
 			var msgs = [];
 			RQ.post({
 				url: 'http://127.0.0.1:8000/api/v1/bio/ib/ecurve/grabprint1',
@@ -182,6 +349,10 @@ msgs.push(foo);
 					return reply({ status: 'ok', apiResponses: msgs }).code(200);
 				});
 			});
+			break;
+
+		default:
+			return reply({ status: 'err', err: 'unknown action: ' + request.params.action }).code(500);
 			break;
 	}
 	

@@ -5,7 +5,6 @@ import axios from 'axios'
 import { browserHistory } from 'react-router'
 import TsvActionList from './TsvActionList'
 
-//import TsvService from '../../lib/TsvService'
 //import * as Translate from '../../lib/Translate'
 
 import Log from '../utils/BigLogger'

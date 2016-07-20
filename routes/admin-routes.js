@@ -4,6 +4,7 @@ var GetClientUsers = require('./handlers/admin/GetClientUsers')
 	, GetTestCustomers = require('./handlers/admin/GetTestCustomers')
 	, RefreshStorefrontData = require('./handlers/admin/RefreshStorefrontData')
 	, InventorySlotMap = require('./handlers/admin/InventorySlotMap')
+	, ClientUserAddBiometric = require('./handlers/admin/ClientUserAddBiometric')
 	;
 
 module.exports = [
@@ -30,5 +31,11 @@ module.exports = [
 		path: '/api/inventory-slot-map',
 		handler: InventorySlotMap,
 	},
+	
+	{
+		method: 'post',
+		path: '/api/client-user-add-biometric',
+		handler: ClientUserAddBiometric
+	}
 	
 ]

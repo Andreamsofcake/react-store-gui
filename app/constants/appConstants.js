@@ -36,10 +36,13 @@ var appConstants = keyMirror({
 	CUSTOMER_RESET_LOGIN: null,
 
 	LICENSE_SCANNED_SIGNUP: null,
+///// >> need a lot of action name clean up here! a lot of testing crap laying around
+/*
 //	PRINT_SCANNED_SIGNUP: null,
 	PRINT_1SCANNED_SIGNUP: null,
 	PRINT_2SCANNED_SIGNUP: null,
 	PRINT_3SCANNED_SIGNUP: null,
+*/
 	MOBILE_NUMBER_CAPTURED_SIGNUP: null,
 	EMAIL_CAPTURED_SIGNUP: null,
 	PHOTO_TAKEN_SIGNUP: null,
@@ -47,6 +50,27 @@ var appConstants = keyMirror({
 	CUSTOMER_RESET_SIGNUP: null,
 	CUSTOMER_REFRESH: null,
 	ADMIN_VERIFIED_SIGNUP: null,
+	
+	// REAL print scan/match actions:
+	PRINT_SCANNED_1: null,
+	PRINT_SCANNED_2: null,
+	PRINT_SCANNED_3: null,
+	PRINT_REGISTERED: null,
+	PRINT_MATCHED: null,
+	PRINT_NOT_MATCHED: null,
+	CLEAR_PRINTREGISTER_API_RESPONSES: null,
+	CLEAR_PRINT_MODULE_API_RESPONSES: null,
+
+	// REAL card scan/match actions:
+	MEMBERSHIP_CARD_SCANNED: null,
+	MEMBERSHIP_CARD_MATCHED: null,
+	MEMBERSHIP_CARD_NOT_MATCHED: null,
+	ID_CARD_SCANNED: null,
+	ID_CARD_MATCHED: null,
+	ID_CARD_NOT_MATCHED: null,
+	CREDIT_CARD_SCANNED: null,
+	CLEAR_CARD_MODULE_BUFFER: null,
+	CLEAR_CARD_MODULE_API_RESPONSES: null,
 	
 	CUSTOMER_LOADED: null, // "load by membership id"
 	CREDIT_PURCHASE_COMPLETED: null,
@@ -59,12 +83,13 @@ var appConstants = keyMirror({
 // Admin panel:
 	TEST_REGISTER_PRINT: null,
 	TEST_MATCH_PRINT: null,
-	CLEAR_API_RESPONSES: null,
+	CLEAR_TEST_PRINT_API_RESPONSES: null,
 	MACHINE_INFO: null,
 	REGISTER_CLIENT_USER_PRINT: null,
 	CLIENT_USERS_RECEIVED: null,
 	STOREFRONT_DATA_REFRESHED: null,
 	INVENTORY_SLOTMAP_RECEVIED: null,
+	CLIENTUSER_BIOMETRIC_RECORD_ADDED: null,
 
 // Session
 	SESSION_CREATED: null,

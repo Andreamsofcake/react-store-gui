@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
-//import TsvService from '../../lib/TsvService'
-import * as Translate from '../../lib/Translate'
+import * as Translate from '../../../lib/Translate'
 
-import TsvSettingsStore from '../stores/TsvSettingsStore'
+import TsvSettingsStore from '../../stores/TsvSettingsStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
-import TsvStore from '../stores/TsvStore'
-import TsvActions from '../actions/TsvActions'
+import TsvStore from '../../stores/TsvStore'
+import TsvActions from '../../actions/TsvActions'
 import {
 	emptyCart,
 	startGeneralIdleTimer,
-} from '../utils/TsvUtils'
+} from '../../utils/TsvUtils'
 
-import Log from '../utils/BigLogger'
+import Log from '../../utils/BigLogger'
 var Big = new Log('AdminJofemarExerciser');
 
 class AdminJofemarExerciser extends Component {
@@ -112,15 +111,13 @@ class AdminJofemarExerciser extends Component {
       <_E.Row className="AdminJofemarExerciser" style={{width: '50%', margin: '1em auto'}}>
         <_E.Col>
 
-        	<h1 style={{fontWeight:300}}>Jofemar Exerciser</h1>
+        	<h1 style={{fontWeight:300}}>{/*Jofemar Exerciser*/}Test Vending</h1>
+        	
+        	<p>Select a row to test vend from using the keypad.</p>
 
           <div>
 
           { TsvSettingsStore.getCache('machineList').length > 1 ? (<_E.FormSelect name="selectMachine" value={this.state.machineID} options={this.getMachineSelectOptions()} />) : null }
-          <_E.Row>
-			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOn.bind(this)}>{Translate.translate('AdminJofemarExerciser', 'LightOn')}</_E.Button></_E.Col>
-			<_E.Col sm="1/2" md="1/2" lg="1/2" style={{textAlign:'center'}}><_E.Button size="lg"   onClick={this.lightOff.bind(this)}>{Translate.translate('AdminJofemarExerciser','LightOff')}</_E.Button></_E.Col>
-          </_E.Row>
 
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
@@ -152,9 +149,16 @@ class AdminJofemarExerciser extends Component {
 
           <_E.Row><p>{' '}</p></_E.Row>
           <_E.Row>
-            <_E.Col><div style={{textAlign:'center', border:'1px solid #dfdfdf',borderRadius:'4px',margin: '20px auto'}}><h2>selection: {this.state.num}</h2></div></_E.Col>
+            <_E.Col><div style={{textAlign:'center',backgroundColor:'#fff', border:'1px solid #dfdfdf',borderRadius:'4px',margin: '20px auto'}}><h2>selection: {this.state.num}</h2></div></_E.Col>
           </_E.Row>
           </div>
+
+          <_E.Row><p>{' '}</p></_E.Row>
+          <_E.Row>
+			<_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'right'}}><_E.Button size="lg" onClick={this.lightOn.bind(this)}>{Translate.translate('AdminJofemarExerciser', 'LightOn')}</_E.Button></_E.Col>
+			<_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} /></_E.Col>
+			<_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'left'}}><_E.Button size="lg" onClick={this.lightOff.bind(this)}>{Translate.translate('AdminJofemarExerciser','LightOff')}</_E.Button></_E.Col>
+          </_E.Row>
           
           <p>{this.state.vmsStatus.map( T => {
           	return (
@@ -162,7 +166,7 @@ class AdminJofemarExerciser extends Component {
           	);
           })}</p>
 
-          <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
+          
           </_E.Col>
 
       </_E.Row>

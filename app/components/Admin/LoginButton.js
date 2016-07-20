@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-//import TsvService from '../../lib/TsvService'
-import * as Translate from '../../lib/Translate'
+import * as Translate from '../../../lib/Translate'
 
-import TsvSettingsStore from '../stores/TsvSettingsStore'
+import TsvSettingsStore from '../../stores/TsvSettingsStore'
 import { Link, browserHistory } from 'react-router'
 
 class Activate extends Component {

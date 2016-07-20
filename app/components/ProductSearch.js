@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 //import RootscopeActions from '../actions/RootscopeActions'
 //import RootscopeStore from '../stores/RootscopeStore'
-//import TsvService from '../../lib/TsvService'
 import * as Translate from '../../lib/Translate'
 import ProductListItem from './ProductListItem'
 

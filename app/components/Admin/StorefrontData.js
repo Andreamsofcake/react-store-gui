@@ -1,21 +1,20 @@
 import React, { Component } from 'react'
-//import TsvService from '../../lib/TsvService'
-import * as Translate from '../../lib/Translate'
+import * as Translate from '../../../lib/Translate'
 
-import TsvSettingsStore from '../stores/TsvSettingsStore'
+import TsvSettingsStore from '../../stores/TsvSettingsStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
-import appConstants from '../constants/appConstants'
+import appConstants from '../../constants/appConstants'
 
-import AdminStore from '../stores/AdminStore'
-import AdminActions from '../actions/AdminActions'
-import StorefrontActions from '../actions/StorefrontActions'
+import AdminStore from '../../stores/AdminStore'
+import AdminActions from '../../actions/AdminActions'
+import StorefrontActions from '../../actions/StorefrontActions'
 
 import {
 	emptyCart,
 	startGeneralIdleTimer,
-} from '../utils/TsvUtils'
+} from '../../utils/TsvUtils'
 
 class AdminStorefrontData extends Component {
 

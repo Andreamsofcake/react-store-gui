@@ -9,6 +9,7 @@ var fsplit = __filename.split(path.sep)
 	
 	, ActivateModule = require('./handlers/interface/ActivateModule')
 	, PrintReaderModule = require('./handlers/interface/PrintReaderModule')
+	, CardReaderModule = require('./handlers/interface/CardReaderModule')
 
 	;
 
@@ -37,6 +38,8 @@ module.exports = [
 		method: 'post',
 		path: '/api/print-reader/{action}',
 		handler: PrintReaderModule,
+		/*
+		// no websocket logic for this (yet)
 		config: {
 			plugins: {
 				'hapi-io': {
@@ -51,6 +54,30 @@ module.exports = [
 				}
 			}
 		}
+		*/
+	},
+
+	{
+		method: 'post',
+		path: '/api/card-reader/{action}',
+		handler: CardReaderModule,
+		/*
+		// no websocket logic for this (yet)
+		config: {
+			plugins: {
+				'hapi-io': {
+					event: 'api-print-reader' // optional, currently only used by ajax in the client
+					, mapping: {
+
+					},
+					post: (ctx, next) => {
+						ctx.socket.emit(ctx.event, ctx.result);
+						next();
+					}
+				}
+			}
+		}
+		*/
 	},
 ]
 
