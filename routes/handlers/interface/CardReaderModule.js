@@ -48,6 +48,9 @@ module.exports = function(request, reply) {
 				if (err) return reply({ status: 'err', err: err }).code(500);
 		
 				if (body && body.status === 'ok' && body.data) {
+
+					// normalizing for GUI:
+					if (body.msg === 'scan good') { body.msg = 'Scan OK'; }
 					reply({ token, status: 'ok', apiResponse: body.msg || 'valid card', membership_id: body.data }).code(200);
 			
 				} else {

@@ -61274,10 +61274,9 @@
 
 					var lastResponse = _CardReaderStore2.default.lastApiResponse();
 
-					state.membership_id = event.membership_id;
-
 					//if (lastResponse && lastResponse.scanOK === true) {
-					if (lastResponse && lastResponse.indexOf('Scan OK') > -1) {
+					if (event.membership_id || lastResponse && lastResponse.indexOf('Scan OK') > -1) {
+						state.membership_id = event.membership_id;
 						state.status_msg = 'Card scanned';
 						state.error_msg = '';
 						state.cardScanned = true;
