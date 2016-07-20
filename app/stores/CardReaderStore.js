@@ -71,7 +71,7 @@ CardReaderStore.dispatch = AppDispatcher.register(function(payload){
 	switch(action.actionType) {
 
 		case appConstants.MEMBERSHIP_CARD_SCANNED:
-			if (action.data && action.data.apiResponses) {
+			if (action.data && action.data.apiResponse) {
 				_store.apiResponses.push(action.data.apiResponse);
 			}
 			_store.lastMembershipCardScanned = action.data.membership_id;
@@ -79,7 +79,7 @@ CardReaderStore.dispatch = AppDispatcher.register(function(payload){
 			break;
 
 		case appConstants.MEMBERSHIP_CARD_MATCHED:
-			if (action.data && action.data.apiResponses) {
+			if (action.data && action.data.apiResponse) {
 				_store.apiResponses.push(action.data.apiResponse);
 			}
 			_store.lastMatchedUser = action.data.data;
