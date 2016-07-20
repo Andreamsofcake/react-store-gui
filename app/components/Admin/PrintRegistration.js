@@ -217,7 +217,7 @@ class Admin_Print_Registration extends Component {
 		return (
 			<BiometricsPrintRegister
 				user={this.state.currentClientUser}
-				token
+				token={this.state.token}
 				registrationCallback={this.printRegistrationFinished.bind(this)}
 				/>
 		);

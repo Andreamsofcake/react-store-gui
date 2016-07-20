@@ -91,6 +91,8 @@ class PrintRegister extends Component {
 				state.error_msg = 'The scan was not ok, please try again.';
 			}
 			
+			Big.log('lastResponse: ' + lastResponse);
+			
 			state.scanStep = 0;
 			state.scanInProcess = false;
 
