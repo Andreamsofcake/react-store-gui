@@ -14,10 +14,14 @@ class PrintMatchAdmin extends Component {
 	
 	componentWillReceiveProps(nextprops) {
 		if (nextprops) {
+			/*
 			var state = this.state;
 			Object.keys(nextprops).forEach( K => {
 				state[K] = nextprops[K];
 			});
+			this.setState(state);
+			*/
+			this.setState(nextprops);
 		}
 	}
 
