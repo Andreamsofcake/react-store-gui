@@ -34,6 +34,8 @@ class PrintMatch extends Component {
 
 		this.state = this.getDefaultState({ user: this.props.user, token: this.props.token });
 		this._onPrintReaderStoreChange = this._onPrintReaderStoreChange.bind(this);
+		
+		this._isMounted = false;
 	}
 
 	getDefaultState(obj) {
@@ -56,8 +58,17 @@ class PrintMatch extends Component {
 		return def;
 	}
 	
+	// what's this for you ask? getting some instances that are ghost-mounted somehow.
+	// this wrapper will make sure we don't setState on unmounted component
+	_setState(state, cb) {
+		if (this._isMounted) {
+			return this.setState(state, cb);
+		}
+	}
+
 // Add change listeners to stores
 	componentDidMount() {
+		this._isMounted = true;
 		PrintReaderStore.addChangeListener(this._onPrintReaderStoreChange);
 		if (this.props.autostart) {
 			this.scanPrint();
@@ -69,6 +80,7 @@ class PrintMatch extends Component {
 
   // Remove change listers from stores
 	componentWillUnmount() {
+		this._isMounted = false;
 		PrintReaderStore.removeChangeListener(this._onPrintReaderStoreChange);
 	}
 
@@ -88,7 +100,7 @@ class PrintMatch extends Component {
 				cb = this.startMatchingProcess.bind(this);
 			}
 			
-			this.setState(state, cb);
+			this._setState(state, cb);
 		}
 	}
 
@@ -173,11 +185,11 @@ class PrintMatch extends Component {
 		}
 
 		// finally, set state
-		this.setState(state, stateCB);
+		this._setState(state, stateCB);
 	}
 	
 	reset(obj) {
-		this.setState( this.getDefaultState(obj) );
+		this._setState( this.getDefaultState(obj) );
 	}
 	
 	startMatchingProcess() {
@@ -187,7 +199,7 @@ class PrintMatch extends Component {
 			&& !this.state.matchingInProcess
 			&& !this.state.matchingIsFinished) {
 		
-			this.setState({
+			this._setState({
 				matchingInProcess: true
 			});
 			
@@ -203,7 +215,7 @@ class PrintMatch extends Component {
 			});
 
 		/*} else {
-			this.setState({
+			this._setState({
 				error_msg: 'Cannot start matching?',
 				status_msg: ''
 			});*/
@@ -215,7 +227,7 @@ class PrintMatch extends Component {
 			&& !this.state.scanInProcess
 			&& !this.state.matchingInProcess) {
 		
-			this.setState({
+			this._setState({
 				scanInProcess: true,
 				matchingInProcess: false,
 				matchingIsFinished: false,
@@ -229,7 +241,7 @@ class PrintMatch extends Component {
 				token: this.state.token
 			});
 		/*} else {
-			this.setState({
+			this._setState({
 				error_msg: 'Cannot start scanning?',
 				status_msg: ''
 			});*/

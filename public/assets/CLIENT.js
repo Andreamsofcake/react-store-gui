@@ -20367,6 +20367,8 @@
 
 			_this.state = _this.getDefaultState({ user: _this.props.user, token: _this.props.token });
 			_this._onPrintReaderStoreChange = _this._onPrintReaderStoreChange.bind(_this);
+
+			_this._isMounted = false;
 			return _this;
 		}
 
@@ -20394,11 +20396,23 @@
 				return def;
 			}
 
+			// what's this for you ask? getting some instances that are ghost-mounted somehow.
+			// this wrapper will make sure we don't setState on unmounted component
+
+		}, {
+			key: '_setState',
+			value: function _setState(state, cb) {
+				if (this._isMounted) {
+					return this.setState(state, cb);
+				}
+			}
+
 			// Add change listeners to stores
 
 		}, {
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				this._isMounted = true;
 				_PrintReaderStore2.default.addChangeListener(this._onPrintReaderStoreChange);
 				if (this.props.autostart) {
 					this.scanPrint();
@@ -20413,6 +20427,7 @@
 		}, {
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
+				this._isMounted = false;
 				_PrintReaderStore2.default.removeChangeListener(this._onPrintReaderStoreChange);
 			}
 		}, {
@@ -20433,7 +20448,7 @@
 						cb = this.startMatchingProcess.bind(this);
 					}
 
-					this.setState(state, cb);
+					this._setState(state, cb);
 				}
 			}
 
@@ -20520,12 +20535,12 @@
 				}
 
 				// finally, set state
-				this.setState(state, stateCB);
+				this._setState(state, stateCB);
 			}
 		}, {
 			key: 'reset',
 			value: function reset(obj) {
-				this.setState(this.getDefaultState(obj));
+				this._setState(this.getDefaultState(obj));
 			}
 		}, {
 			key: 'startMatchingProcess',
@@ -20533,7 +20548,7 @@
 
 				if (this.state.printScanned && !this.state.scanInProcess && !this.state.matchingInProcess && !this.state.matchingIsFinished) {
 
-					this.setState({
+					this._setState({
 						matchingInProcess: true
 					});
 
@@ -20549,7 +20564,7 @@
 					});
 
 					/*} else {
-	    	this.setState({
+	    	this._setState({
 	    		error_msg: 'Cannot start matching?',
 	    		status_msg: ''
 	    	});*/
@@ -20560,7 +20575,7 @@
 			value: function scanPrint() {
 				if (!this.state.printScanned && !this.state.scanInProcess && !this.state.matchingInProcess) {
 
-					this.setState({
+					this._setState({
 						scanInProcess: true,
 						matchingInProcess: false,
 						matchingIsFinished: false,
@@ -20574,7 +20589,7 @@
 						token: this.state.token
 					});
 					/*} else {
-	    	this.setState({
+	    	this._setState({
 	    		error_msg: 'Cannot start scanning?',
 	    		status_msg: ''
 	    	});*/
