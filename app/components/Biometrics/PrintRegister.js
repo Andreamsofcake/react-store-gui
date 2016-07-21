@@ -46,6 +46,9 @@ class PrintRegister extends Component {
 	
 // Add change listeners to stores
 	componentDidMount() {
+		// dump any existing data:
+		PrintReaderActions.clearApiResponses();
+		PrintReaderActions.clearDataBuffer();
 		PrintReaderStore.addChangeListener(this._onPrintReaderStoreChange);
 	}
 
@@ -137,6 +140,7 @@ class PrintRegister extends Component {
 			
 			state.registrationIsFinished = true;
 			PrintReaderActions.clearApiResponses();
+			PrintReaderActions.clearDataBuffer();
 		}
 
 		// finally, set state
@@ -145,6 +149,7 @@ class PrintRegister extends Component {
 	
 	reset(obj) {
 		PrintReaderActions.clearApiResponses();
+		PrintReaderActions.clearDataBuffer();
 		this.setState( this.getDefaultState(obj) );
 	}
 	

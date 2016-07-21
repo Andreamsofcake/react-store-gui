@@ -15,6 +15,11 @@ import {
 import Log from '../../utils/BigLogger'
 var Big = new Log('AdminLogin');
 
+import { uniq } from '../../utils'
+import PrintMatchAdmin from '../Biometrics/AdminPrintMatch'
+
+Big.log('name? '+PrintMatchAdmin.name);
+
 class AdminLogin extends Component {
 
   constructor(props, context) {
@@ -22,9 +27,10 @@ class AdminLogin extends Component {
     super(props, context);
 
     this.state = {
-      num: "",
-      maxChars: 6,
-      instructionMessage: Translate.translate('AdminLogin','LoginMsg')
+    	token: uniq(),
+		num: "",
+		maxChars: 6,
+		instructionMessage: Translate.translate('AdminLogin','LoginMsg')
     };
   }
 
@@ -94,6 +100,19 @@ class AdminLogin extends Component {
   componentWillUnmount() {
   }
 
+	adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+		if (matched) {
+			this.setState({
+				adminBeginMatched: true
+			});
+		} else {
+			this.setState({
+				adminBeginMatched: false,
+				adminBeginResponses: responses
+			});
+		}
+	}
+
   render() {
     return (
       <_E.Row className="AdminLogin" >
@@ -101,7 +120,7 @@ class AdminLogin extends Component {
 
           <div style={{width:'60%',margin: '0 auto'}}>
 
-          <h2 id="instruction">{ this.state.instructionMessage }</h2>
+			  <h2 id="instruction">{ this.state.instructionMessage }</h2>
 
 			  <_E.Row><p>{' '}</p></_E.Row>
 			  <_E.Row>
@@ -144,6 +163,21 @@ class AdminLogin extends Component {
 				  </_E.Col>
 				  <_E.Col sm="1/3" md="1/3" lg="1/3" style={{textAlign:'center'}}><_E.Button size="lg" type="primary" onClick={this.enter.bind(this)}>Enter</_E.Button></_E.Col>
 			  </_E.Row>
+
+			  <_E.Row><p>{' '}</p></_E.Row>
+			  <_E.Row><p>{' '}</p></_E.Row>
+	          <h2>Existing admin users, login with your fingerprint:</h2>
+
+			  <_E.Row><p>{' '}</p></_E.Row>
+			  <_E.Row>
+				  <_E.Col>
+					<PrintMatchAdmin
+						token={this.state.token}
+						matchCallback={this.adminPrintMatchCallback.bind(this)}
+						/>
+				  </_E.Col>
+			  </_E.Row>
+
 
           </div>
 

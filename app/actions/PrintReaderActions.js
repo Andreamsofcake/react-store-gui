@@ -98,6 +98,12 @@ var PrintReaderActions = {
 		AppDispatcher.handleServerAction({
 			actionType: appConstants.CLEAR_PRINT_MODULE_API_RESPONSES
 		});
+	},
+	
+	clearDataBuffer() {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.CLEAR_PRINT_MODULE_DATA
+		});
 	}
 
 };

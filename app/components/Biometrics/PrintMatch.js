@@ -61,6 +61,9 @@ class PrintMatch extends Component {
 		PrintReaderStore.addChangeListener(this._onPrintReaderStoreChange);
 		if (this.props.autostart) {
 			this.scanPrint();
+		} else {
+			Big.error('what, no autostart???');
+			Big.log(this.props);
 		}
 	}
 
@@ -226,7 +229,7 @@ class PrintMatch extends Component {
 		
 		if (this.state.matchingInProcess) {
 			return (
-				<div>
+				<div style={{textAlign: 'center'}}>
 					<h4>Matching</h4>
 					<_E.Spinner size="md" type="primary" />
 				</div>
@@ -235,7 +238,7 @@ class PrintMatch extends Component {
 		
 		if (this.state.scanInProcess) {
 			return (
-				<div>
+				<div style={{textAlign: 'center'}}>
 					<h4>Scanning</h4>
 					<_E.Spinner size="md" type="primary" />
 				</div>

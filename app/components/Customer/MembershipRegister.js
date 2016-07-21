@@ -21,7 +21,7 @@ import {
 import Log from '../../utils/BigLogger'
 var Big = new Log('Customer_MembershipAccess');
 
-import PrintMatchAdmin from '../Biometrics/PrintMatchAdmin'
+import PrintMatchAdmin from '../Biometrics/AdminPrintMatch'
 
 class Customer_MembershipAccess extends Component {
 
@@ -180,7 +180,7 @@ class Customer_MembershipAccess extends Component {
 					<h1>OK before we get started, let's verify an admin is with you.</h1>
 					<PrintMatchAdmin
 						token={this.state.token}
-						matchCallback={this.adminPrintMatchCallback.bind(this)}
+						matchCallback={this.adminPrintMatchCallback.bind(this, 'begin')}
 						/>
 				</div>
 			);
