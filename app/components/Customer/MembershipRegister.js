@@ -35,7 +35,6 @@ class Customer_MembershipRegister extends Component {
 			machineInfo: TsvStore.getMachineInfo()
 		});
 
-		this.printMatchCallback = this.printMatchCallback.bind(this);
 		this.cardMatchCallback = this.cardMatchCallback.bind(this);
 		this._onCLStoreChange = this._onCLStoreChange.bind(this);
 		this.tryAgain = this.tryAgain.bind(this);
@@ -70,7 +69,7 @@ class Customer_MembershipRegister extends Component {
 
 	// Add change listeners to stores
 	componentDidMount() {
-		//CL_Store.addChangeListener( this._onCLStoreChange );
+		CL_Store.addChangeListener( this._onCLStoreChange );
 		//CL_Actions.customerLogout(); // make sure we dump any session!
 		let state = this.setupMatchedUserData();
 		this.setState( this.getDefaultState(state) );
@@ -90,7 +89,7 @@ class Customer_MembershipRegister extends Component {
 
 	// Remove change listers from stores
 	componentWillUnmount() {
-		//CL_Store.removeChangeListener( this._onCLStoreChange );
+		CL_Store.removeChangeListener( this._onCLStoreChange );
 	}
 
 	componentWillReceiveProps(nextProps) {

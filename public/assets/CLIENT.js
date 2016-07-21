@@ -20955,7 +20955,6 @@
 				machineInfo: _TsvStore2.default.getMachineInfo()
 			});
 
-			_this.printMatchCallback = _this.printMatchCallback.bind(_this);
 			_this.cardMatchCallback = _this.cardMatchCallback.bind(_this);
 			_this._onCLStoreChange = _this._onCLStoreChange.bind(_this);
 			_this.tryAgain = _this.tryAgain.bind(_this);
@@ -20998,7 +20997,7 @@
 		}, {
 			key: 'componentDidMount',
 			value: function componentDidMount() {
-				//CL_Store.addChangeListener( this._onCLStoreChange );
+				_CustomerStore2.default.addChangeListener(this._onCLStoreChange);
 				//CL_Actions.customerLogout(); // make sure we dump any session!
 				var state = this.setupMatchedUserData();
 				this.setState(this.getDefaultState(state));
@@ -21026,7 +21025,7 @@
 		}, {
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
-				//CL_Store.removeChangeListener( this._onCLStoreChange );
+				_CustomerStore2.default.removeChangeListener(this._onCLStoreChange);
 			}
 		}, {
 			key: 'componentWillReceiveProps',
