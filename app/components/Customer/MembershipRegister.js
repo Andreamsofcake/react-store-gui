@@ -42,7 +42,7 @@ class Customer_MembershipRegister extends Component {
 	
 	getDefaultState(obj) {
 		let def = {
-			machineInfo: TsvStore.getMachineInfo()
+			machineInfo: TsvStore.getMachineInfo(),
 			matchedUser: null,
 			adminBeginMatched: false,
 			adminEndMatched: false,
