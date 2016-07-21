@@ -18378,7 +18378,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _PrintReaderActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../actions/PrintReaderActions\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _PrintReaderActions = __webpack_require__(133);
 
 	var _PrintReaderActions2 = _interopRequireDefault(_PrintReaderActions);
 
@@ -20386,7 +20386,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _PrintReaderActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../actions/PrintReaderActions\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _PrintReaderActions = __webpack_require__(133);
 
 	var _PrintReaderActions2 = _interopRequireDefault(_PrintReaderActions);
 
@@ -26211,7 +26211,149 @@
 	}
 
 /***/ },
-/* 133 */,
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _AppDispatcher = __webpack_require__(127);
+
+	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
+
+	var _appConstants = __webpack_require__(81);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
+	var _axios = __webpack_require__(48);
+
+	var _axios2 = _interopRequireDefault(_axios);
+
+	var _BigLogger = __webpack_require__(1);
+
+	var _BigLogger2 = _interopRequireDefault(_BigLogger);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	//import SocketAPI from '../utils/SocketAPI'
+
+	var Big = new _BigLogger2.default('PrintReaderActions');
+	//import { browserHistory } from 'react-router'
+
+	var PrintReaderActions = {
+		grabPrint: function grabPrint(config) {
+			_axios2.default.post('/api/print-reader/grab-print', config).then(function (response) {
+				// uh, daaaaaable check?
+				if (response.data && response.data.status && response.data.status == 'ok') {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default['PRINT_SCANNED_' + config.sequence],
+						data: response.data
+					});
+				} else {
+					if (response.data && response.data.error) {
+						Big.error('failed to register print, error:');
+						Big.log(response.data.error);
+					} else {
+						Big.error('failed to register print, no data returned. full response:');
+						Big.log(response);
+					}
+				}
+			}).catch(function (error) {
+				if (error.data && error.data.apiResponse.indexOf('retry scan') > -1) {
+
+					Big.warn('PRINT_SCAN_FAILED');
+					Big.log(error.data);
+
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.PRINT_SCAN_FAILED,
+						data: error.data
+					});
+				} else if (error.data && error.data.apiResponse.indexOf('retry from start') > -1) {
+
+					Big.warn('PRINT_SCAN_ENROLLENT_FAILED');
+					Big.log(error.data);
+
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.PRINT_SCAN_ENROLLENT_FAILED,
+						data: error.data
+					});
+				} else {
+					Big.error('failed to register print, call chain error probably check component tree');
+					Big.log(error);
+					Big.throw(error);
+				}
+			});
+		},
+		registerPrint: function registerPrint(config) {
+			_axios2.default.post('/api/print-reader/register-print', config // .post() expects and passes this as a json object
+			).then(function (response) {
+				// uh, daaaaaable check?
+				if (response.data && response.data.status && response.data.status == 'ok') {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: config.ACTION || _appConstants2.default.PRINT_REGISTERED,
+						data: response.data
+					});
+				} else {
+					if (response.data && response.data.error) {
+						Big.error('failed to register print, error:');
+						Big.log(response.data.error);
+					} else {
+						Big.error('failed to register print, no data returned. full response:');
+						Big.log(response);
+					}
+				}
+			}).catch(function (error) {
+				Big.error('failed to register print, call chain error probably check component tree');
+				Big.log(error);
+				//Big.throw(error);
+				throw error; // Big.* loses the call stack :(
+			});
+		},
+		matchPrint: function matchPrint(config) {
+			_axios2.default.post('/api/print-reader/match-print', config // .post() expects and passes this as a json object
+			).then(function (response) {
+				// uh, daaaaaable check?
+				if (response.data && response.data.status && response.data.status == 'ok') {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: response.data.matchedUser ? _appConstants2.default.PRINT_MATCHED : _appConstants2.default.PRINT_NOT_MATCHED,
+						data: response.data
+					});
+				} else {
+					if (response.data && response.data.error) {
+						Big.error('failed to match print, error:');
+						Big.log(response.data.error);
+					} else {
+						Big.error('failed to match print, no data returned. full response:');
+						Big.log(response);
+					}
+				}
+			}).catch(function (error) {
+				if (error.data && error.data.apiResponse) {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.PRINT_NOT_MATCHED,
+						data: error.data
+					});
+				} else {
+					Big.error('failed to match print, call chain error probably check component tree');
+					Big.log(error);
+					//Big.throw(error);
+				}
+			});
+		},
+		clearApiResponses: function clearApiResponses() {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.CLEAR_PRINT_MODULE_API_RESPONSES
+			});
+		},
+		clearDataBuffer: function clearDataBuffer() {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.CLEAR_PRINT_MODULE_DATA
+			});
+		}
+	};
+
+	module.exports = PrintReaderActions;
+
+/***/ },
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 

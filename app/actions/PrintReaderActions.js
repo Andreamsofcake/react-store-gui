@@ -41,7 +41,7 @@ var PrintReaderActions = {
 					data: error.data
 				});
 
-			if (error.data && error.data.apiResponse.indexOf('retry from start') > -1) {
+			} else if (error.data && error.data.apiResponse.indexOf('retry from start') > -1) {
 
 				Big.warn('PRINT_SCAN_ENROLLENT_FAILED');
 				Big.log(error.data);
