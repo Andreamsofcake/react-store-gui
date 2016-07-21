@@ -21082,6 +21082,7 @@
 
 					_PrintReaderActions2.default.matchPrint({
 						token: this.props.token,
+						isAdminMatch: this.props.isAdminMatch,
 						matchProps: {
 							user: this.state.user,
 							client: this.props.client,
@@ -21382,6 +21383,24 @@
 
 		return PrintMatch;
 	}(_react.Component);
+
+	PrintMatch.defaultProps = {
+		autostart: true,
+		canRetry: true,
+		showMessages: false,
+		isAdminMatch: false,
+		user: 'admin-' };
+
+	// just a prefix!
+	PrintMatch.propTypes = {
+		autostart: _react2.default.PropTypes.bool.isRequired,
+		canRetry: _react2.default.PropTypes.bool.isRequired,
+		showMessages: _react2.default.PropTypes.bool.isRequired,
+		isAdminMatch: _react2.default.PropTypes.bool,
+		user: _react2.default.PropTypes.string.isRequired,
+		token: _react2.default.PropTypes.string.isRequired,
+		matchCallback: _react2.default.PropTypes.func
+	};
 
 	exports.default = PrintMatch;
 
@@ -61783,6 +61802,7 @@
 				Big.log(this.props);
 
 				return _react2.default.createElement(_PrintMatch2.default, {
+					isAdminMatch: true,
 					autostart: this.props.autostart,
 					canRetry: this.props.canRetry,
 					showMessages: this.props.showMessages,

@@ -177,6 +177,7 @@ class PrintMatch extends Component {
 			
 			PrintReaderActions.matchPrint({
 				token: this.props.token,
+				isAdminMatch: this.props.isAdminMatch,
 				matchProps: {
 					user: this.state.user,
 					client: this.props.client,
@@ -393,5 +394,23 @@ class PrintMatch extends Component {
 	}
 
 }
+
+PrintMatch.defaultProps = {
+	autostart: true,
+	canRetry: true,
+	showMessages: false,
+	isAdminMatch: false,
+	user: 'admin-', // just a prefix!
+};
+
+PrintMatch.propTypes = {
+	autostart: React.PropTypes.bool.isRequired,
+	canRetry: React.PropTypes.bool.isRequired,
+	showMessages: React.PropTypes.bool.isRequired,
+	isAdminMatch: React.PropTypes.bool,
+	user: React.PropTypes.string.isRequired,
+	token: React.PropTypes.string.isRequired,
+	matchCallback: React.PropTypes.func
+};
 
 export default PrintMatch

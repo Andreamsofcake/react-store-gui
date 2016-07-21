@@ -21,6 +21,7 @@ class PrintMatchAdmin extends Component {
 
 		return (
 			<PrintMatch
+				isAdminMatch={true}
 				autostart={this.props.autostart}
 				canRetry={this.props.canRetry}
 				showMessages={this.props.showMessages}

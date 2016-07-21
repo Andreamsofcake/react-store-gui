@@ -67,7 +67,7 @@ module.exports = function(request, reply) {
 			}
 
 			ProxyCall('customerGetByClientMembership', {
-				client: MI.registrationData.client, // need to get client here....
+				client: MI.client, // need to get client here....
 				membership_id: membership_id
 
 			}, (err, response) => {
