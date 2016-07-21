@@ -10845,7 +10845,9 @@
 							// serious issue! not sure what to do.
 						}
 					})();
-				}
+				} else {
+						// non-recognized card, or membership with a different client (or clients)!
+					}
 			}
 		}, {
 			key: 'checkForCustomerLoad',
@@ -20989,9 +20991,9 @@
 				_PrintReaderStore2.default.addChangeListener(this._onPrintReaderStoreChange);
 				if (this.props.autostart) {
 					this.scanPrint();
-				} else {
-					Big.error('what, no autostart???');
-					Big.log(this.props);
+					//} else {
+					//Big.error('what, no autostart???');
+					//Big.log(this.props);
 				}
 			}
 
@@ -21005,18 +21007,29 @@
 		}, {
 			key: 'componentWillReceiveProps',
 			value: function componentWillReceiveProps(nextprops) {
+				var _this2 = this;
+
+				Big.log('componentWillReceiveProps');
+				Big.log(nextprops);
+				Big.log(this.state);
+
 				if (nextprops && nextprops.user) {
-					var cb = void 0,
-					    state = {
-						user: nextprops.user,
-						token: nextprops.token
-					};
+					(function () {
+						var cb = void 0,
+						    state = {
+							user: nextprops.user,
+							token: nextprops.token
+						};
 
-					if (this.state.printScanned && !this.state.matchingIsFinished) {
-						cb = this.startMatchingProcess.bind(this);
-					}
+						if (_this2.state.printScanned && !_this2.state.matchingIsFinished) {
+							cb = _this2.startMatchingProcess.bind(_this2);
+						}
 
-					this.setState(state, cb);
+						_this2.setState(state, function () {
+							Big.log(' .... SET STATE CALLBACK from componentWillReceiveProps .....');
+							cb();
+						});
+					})();
 				}
 			}
 

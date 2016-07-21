@@ -61,9 +61,9 @@ class PrintMatch extends Component {
 		PrintReaderStore.addChangeListener(this._onPrintReaderStoreChange);
 		if (this.props.autostart) {
 			this.scanPrint();
-		} else {
-			Big.error('what, no autostart???');
-			Big.log(this.props);
+		//} else {
+			//Big.error('what, no autostart???');
+			//Big.log(this.props);
 		}
 	}
 
@@ -73,6 +73,10 @@ class PrintMatch extends Component {
 	}
 
 	componentWillReceiveProps(nextprops) {
+		Big.log('componentWillReceiveProps');
+		Big.log(nextprops);
+		Big.log(this.state);
+
 		if (nextprops && nextprops.user) {
 			let cb
 				, state = {
@@ -84,7 +88,10 @@ class PrintMatch extends Component {
 				cb = this.startMatchingProcess.bind(this);
 			}
 			
-			this.setState(state, cb);
+			this.setState(state, () => {
+				Big.log(' .... SET STATE CALLBACK from componentWillReceiveProps .....');
+				cb();
+			});
 		}
 	}
 

@@ -146,6 +146,8 @@ class Customer_MembershipAccess extends Component {
 			//} else {
 				// serious issue! not sure what to do.
 			}
+		} else {
+			// non-recognized card, or membership with a different client (or clients)!
 		}
 	}
 	
