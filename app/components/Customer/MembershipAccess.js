@@ -155,9 +155,13 @@ class Customer_MembershipAccess extends Component {
 	}
 	
 	checkForCustomerLoad(state) {
+		Big.log('checkForCustomerLoad');
 		if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
 			state.loadingUser = true;
+			Big.log('OK! loading customer!');
 			CL_Actions.loadCustomerByMembershipId(this.state.membership_id);
+		} else {
+			Big.log('boo, not loading customer');
 		}
 		this.setState(state);
 	}

@@ -10854,9 +10854,13 @@
 		}, {
 			key: 'checkForCustomerLoad',
 			value: function checkForCustomerLoad(state) {
+				Big.log('checkForCustomerLoad');
 				if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
 					state.loadingUser = true;
+					Big.log('OK! loading customer!');
 					_CustomerLoginActions2.default.loadCustomerByMembershipId(this.state.membership_id);
+				} else {
+					Big.log('boo, not loading customer');
 				}
 				this.setState(state);
 			}
