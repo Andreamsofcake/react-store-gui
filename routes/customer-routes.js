@@ -4,6 +4,7 @@ var CustomerRegisterModule = require('./handlers/customer/CustomerRegisterModule
 	, CustomerMatchLogin = require('./handlers/customer/CustomerMatchLogin')
 	, LoadCustomerByMembershipId = require('./handlers/customer/LoadCustomerByMembershipId')
 	, CustomerSpendCredits = require('./handlers/customer/CustomerSpendCredits')
+	, AdminVerifyLoadCustomerByMembershipId = require('./handlers/customer/AdminVerifyLoadCustomerByMembershipId')
 	;
 
 module.exports = [
