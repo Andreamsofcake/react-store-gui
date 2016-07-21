@@ -144,8 +144,10 @@ class Customer_MembershipAccess extends Component {
 				
 				this.checkForCustomerLoad(state);
 
-			//} else {
+			} else {
 				// serious issue! not sure what to do.
+				Big.error('uh, no client????? machine info:');
+				Big.log( TsvStore.getMachineInfo() );
 			}
 		} else {
 			// non-recognized card, or membership with a different client (or clients)!

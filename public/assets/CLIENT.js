@@ -10841,14 +10841,15 @@
 							state.isUserVerified = state.isUserVerified && state.isUserVerified.length ? true : false;
 
 							_this2.checkForCustomerLoad(state);
-
-							//} else {
+						} else {
 							// serious issue! not sure what to do.
+							Big.error('uh, no client????? machine info:');
+							Big.log(_TsvStore2.default.getMachineInfo());
 						}
 					})();
 				} else {
-						// non-recognized card, or membership with a different client (or clients)!
-					}
+					// non-recognized card, or membership with a different client (or clients)!
+				}
 			}
 		}, {
 			key: 'checkForCustomerLoad',
