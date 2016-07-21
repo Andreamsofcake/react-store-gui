@@ -20996,6 +20996,8 @@
 				//CL_Actions.customerLogout(); // make sure we dump any session!
 				var state = this.setupMatchedUserData();
 				this.setState(this.getDefaultState(state));
+				Big.log('try to start idle timer.... props.location?');
+				Big.log(this.props);
 				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 			}
 		}, {
@@ -21045,32 +21047,28 @@
 		}, {
 			key: 'adminPrintMatchCallback',
 			value: function adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+				var state = this.state;
 				switch (beginOrEnd) {
 					case 'begin':
 						if (matched) {
-							this.setState({
-								adminBeginMatched: true
-							});
+							state.adminBeginMatched = true;
 						} else {
-							this.setState({
-								adminBeginMatched: false,
-								adminBeginResponses: responses
-							});
+							state.adminBeginMatched = false;
+							state.adminBeginResponses = responses;
 						}
+						this.setState(state);
 						break;
 
 					case 'end':
 						if (matched) {
-							var state = this.state;
 							state.isUserVerified = true;
 							state.adminEndMatched = true;
 							state.adminEndUser = user;
 							this.checkForCustomerLoad(state);
 						} else {
-							this.setState({
-								adminEndMatched: false,
-								adminEndResponses: responses
-							});
+							state.adminEndMatched = false;
+							state.adminEndResponses = responses;
+							this.setState(state);
 						}
 						break;
 				}

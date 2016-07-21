@@ -75,6 +75,8 @@ class Customer_MembershipRegister extends Component {
 		//CL_Actions.customerLogout(); // make sure we dump any session!
 		let state = this.setupMatchedUserData();
 		this.setState( this.getDefaultState(state) );
+		Big.log('try to start idle timer.... props.location?');
+		Big.log(this.props);
 		startGeneralIdleTimer(this.props.location.pathname);
 	}
 	
@@ -113,32 +115,28 @@ class Customer_MembershipRegister extends Component {
 	}
 
 	adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+		let state = this.state;
 		switch (beginOrEnd) {
 			case 'begin':
 				if (matched) {
-					this.setState({
-						adminBeginMatched: true
-					});
+					state.adminBeginMatched = true;
 				} else {
-					this.setState({
-						adminBeginMatched: false,
-						adminBeginResponses: responses
-					});
+					state.adminBeginMatched = false
+					state.adminBeginResponses = responses;
 				}
+				this.setState(state);
 				break;
 
-			case 'end':
+			case 'end':				
 				if (matched) {
-					let state = this.state;
 					state.isUserVerified = true;
 					state.adminEndMatched = true;
 					state.adminEndUser = user;
 					this.checkForCustomerLoad(state);
 				} else {
-					this.setState({
-						adminEndMatched: false,
-						adminEndResponses: responses
-					});
+					state.adminEndMatched = false;
+					state.adminEndResponses = responses;
+					this.setState(state);
 				}
 				break;
 		}
