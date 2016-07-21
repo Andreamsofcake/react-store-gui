@@ -80,7 +80,8 @@ var CardReaderActions = {
 			} else {
 				Big.error('failed to match membership card, call chain error probably check component tree');
 				Big.log(error);
-				Big.throw(error);
+				//Big.throw(error);
+				throw error;
 			}
 		})
 	},

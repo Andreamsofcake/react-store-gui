@@ -140,6 +140,9 @@ class Customer_MembershipAccess extends Component {
 				state.membership_id = membership_id;
 				state.loadingUser = false;
 
+				Big.log('alright lettuce check for customer Load.... first, state: [client='+client+']');
+				Big.log(state);
+				
 				state.isUserVerified = state.isUserVerified && state.isUserVerified.length ? true : false;
 				
 				this.checkForCustomerLoad(state);

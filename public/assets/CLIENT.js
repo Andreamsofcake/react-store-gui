@@ -10838,6 +10838,9 @@
 							state.membership_id = membership_id;
 							state.loadingUser = false;
 
+							Big.log('alright lettuce check for customer Load.... first, state: [client=' + client + ']');
+							Big.log(state);
+
 							state.isUserVerified = state.isUserVerified && state.isUserVerified.length ? true : false;
 
 							_this2.checkForCustomerLoad(state);
@@ -26069,7 +26072,8 @@
 				} else {
 					Big.error('failed to match membership card, call chain error probably check component tree');
 					Big.log(error);
-					Big.throw(error);
+					//Big.throw(error);
+					throw error;
 				}
 			});
 		},
