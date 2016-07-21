@@ -26031,7 +26031,7 @@
 				} else {
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.MEMBERSHIP_CARD_NOT_MATCHED,
-						data: null
+						data: response.data
 					});
 
 					Big.error('call failed for match membership card, full response:');
@@ -26042,7 +26042,7 @@
 				if (error && error.data && error.data.msg === 'no user matched') {
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.MEMBERSHIP_CARD_NOT_MATCHED,
-						data: null
+						data: error.data
 					});
 				} else {
 					Big.error('failed to match membership card, call chain error probably check component tree');

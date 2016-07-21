@@ -78,16 +78,16 @@ module.exports = function(request, reply) {
 					debug(response);
 					// for some reason, the 404 passed from API is turned into a 500 on the way here....
 					if (err.error && err.error === 'customer not found') {
-						return reply({ status: 'err', msg: 'no user matched' }).code(404);
+						return reply({ token, status: 'err', msg: 'no user matched' }).code(404);
 					}
-					return reply({ status: 'err', error: err }).code(500);
+					return reply({ token, status: 'err', error: err }).code(500);
 				}
 
 				if (!response || !response.data || !response.data.item) {
-					return reply({ status: 'err', msg: 'no user matched' }).code(404);
+					return reply({ token, status: 'err', msg: 'no user matched' }).code(404);
 				}
 			
-				reply({ status: 'ok', msg: 'user matched', data: response.data.item }).code(200);
+				reply({ token, status: 'ok', msg: 'user matched', data: response.data.item }).code(200);
 		
 			});
 

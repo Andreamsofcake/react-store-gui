@@ -63,7 +63,7 @@ var CardReaderActions = {
 			} else {
 				AppDispatcher.handleServerAction({
 					actionType: appConstants.MEMBERSHIP_CARD_NOT_MATCHED,
-					data: null
+					data: response.data
 				});
 
 				Big.error('call failed for match membership card, full response:');
@@ -75,7 +75,7 @@ var CardReaderActions = {
 			if (error && error.data && error.data.msg === 'no user matched') {
 				AppDispatcher.handleServerAction({
 					actionType: appConstants.MEMBERSHIP_CARD_NOT_MATCHED,
-					data: null
+					data: error.data
 				});
 			} else {
 				Big.error('failed to match membership card, call chain error probably check component tree');
