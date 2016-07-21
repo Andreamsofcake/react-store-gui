@@ -33,6 +33,7 @@ var appConstants = keyMirror({
 	CUSTOMER_LOGOUT: null,
 
 ///// >> need a lot of action name clean up here! a lot of testing crap laying around
+/*
 	LICENSE_SCANNED_LOGIN: null,
 	PRINT_SCANNED_LOGIN: null,
 	CUSTOMER_MATCHED_LOGIN: null,
@@ -40,12 +41,10 @@ var appConstants = keyMirror({
 	MEMBERSHIP_CARD_SCANNED_LOGIN: null,
 
 	LICENSE_SCANNED_SIGNUP: null,
-/*
 //	PRINT_SCANNED_SIGNUP: null,
 	PRINT_1SCANNED_SIGNUP: null,
 	PRINT_2SCANNED_SIGNUP: null,
 	PRINT_3SCANNED_SIGNUP: null,
-*/
 	MOBILE_NUMBER_CAPTURED_SIGNUP: null,
 	EMAIL_CAPTURED_SIGNUP: null,
 	PHOTO_TAKEN_SIGNUP: null,
@@ -53,6 +52,7 @@ var appConstants = keyMirror({
 	CUSTOMER_RESET_SIGNUP: null,
 	CUSTOMER_REFRESH: null,
 	ADMIN_VERIFIED_SIGNUP: null,
+*/
 	
 // REAL print scan/match actions:
 	PRINT_SCANNED_1: null,
@@ -101,6 +101,7 @@ var appConstants = keyMirror({
 	CLIENT_USERS_RECEIVED: null,
 	STOREFRONT_DATA_REFRESHED: null,
 	INVENTORY_SLOTMAP_RECEVIED: null,
+	INVENTORY_SLOTMAP_CLEAR: null,
 	CLIENTUSER_BIOMETRIC_RECORD_ADDED: null,
 
 // TSV:
