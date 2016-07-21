@@ -55,6 +55,7 @@ var appConstants = keyMirror({
 	PRINT_SCANNED_1: null,
 	PRINT_SCANNED_2: null,
 	PRINT_SCANNED_3: null,
+	PRINT_SCAN_FAILED: null,
 	PRINT_REGISTERED: null,
 	PRINT_MATCHED: null,
 	PRINT_NOT_MATCHED: null,

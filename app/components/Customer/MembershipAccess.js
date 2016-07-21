@@ -190,11 +190,11 @@ class Customer_MembershipAccess extends Component {
 		}
 
 		return (
-			<div>
+			<div style={{maxWidth:'50%',margin: '1em auto'}}>
 			  <_E.Row >
 				<_E.Col>
-				  <h2>Customer Access</h2>
-				  <p>Before you can pick products and check out, we need to know who you are. :-)</p>
+				  <h1>Customer Access</h1>
+				  <h3>Before you can pick products and check out, we need to know who you are. :-)</h3>
 				</_E.Col>
 			  </_E.Row>
 			  <_E.Row >

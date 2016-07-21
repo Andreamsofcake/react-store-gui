@@ -10912,7 +10912,7 @@
 
 				return _react2.default.createElement(
 					'div',
-					null,
+					{ style: { maxWidth: '50%', margin: '1em auto' } },
 					_react2.default.createElement(
 						_E.Row,
 						null,
@@ -10920,12 +10920,12 @@
 							_E.Col,
 							null,
 							_react2.default.createElement(
-								'h2',
+								'h1',
 								null,
 								'Customer Access'
 							),
 							_react2.default.createElement(
-								'p',
+								'h3',
 								null,
 								'Before you can pick products and check out, we need to know who you are. :-)'
 							)
@@ -17350,6 +17350,7 @@
 		PRINT_SCANNED_1: null,
 		PRINT_SCANNED_2: null,
 		PRINT_SCANNED_3: null,
+		PRINT_SCAN_FAILED: null,
 		PRINT_REGISTERED: null,
 		PRINT_MATCHED: null,
 		PRINT_NOT_MATCHED: null,
@@ -18510,7 +18511,7 @@
 						state.error_msg = '';
 					} else {
 						state.status_msg = '';
-						state.error_msg = 'The scan was not ok, please try again.';
+						state.error_msg = 'Scan failed, try again.';
 					}
 
 					Big.log('lastResponse: ' + lastResponse);
@@ -18539,6 +18540,12 @@
 						token: this.state.token,
 						registerUser: this.state.user
 					});
+				}
+
+				if (event.type === _appConstants2.default.PRINT_SCAN_FAILED) {
+					state.scanInProcess = false;
+					state.status_msg = '';
+					state.error_msg = 'Scan failed, try again.';
 				}
 
 				// print successfully registered, finish and callback
@@ -21027,7 +21034,7 @@
 					state.scanInProcess = false;
 					state.scannedOnce = true;
 
-					// reset matching flags on scan attempt
+					// reset matching flags on any scan attempt
 					state.matchingIsFinished = false;
 					state.matchingInProcess = false;
 					state.isMatched = false;
@@ -21035,6 +21042,18 @@
 					if (this.state.user && this.state.token) {
 						stateCB = this.startMatchingProcess.bind(this);
 					}
+				}
+
+				if (event.type === _appConstants2.default.PRINT_SCAN_FAILED) {
+					state.scanInProcess = false;
+					state.scannedOnce = true;
+					// reset matching flags on any scan attempt
+					state.matchingIsFinished = false;
+					state.matchingInProcess = false;
+					state.isMatched = false;
+					state.status_msg = '';
+					state.error_msg = 'Scan fail';
+					state.printScanned = false;
 				}
 
 				// register the print with the current user_id
@@ -26462,9 +26481,16 @@
 					}
 				}
 			}).catch(function (error) {
-				Big.error('failed to register print, call chain error probably check component tree');
-				Big.log(error);
-				Big.throw(error);
+				if (error.data && error.data.apiResponse.indexOf('retry scan') > -1) {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.PRINT_SCAN_FAILED,
+						data: response.data
+					});
+				} else {
+					Big.error('failed to register print, call chain error probably check component tree');
+					Big.log(error);
+					Big.throw(error);
+				}
 			});
 		},
 		registerPrint: function registerPrint(config) {
@@ -26624,7 +26650,7 @@
 			case _appConstants2.default.PRINT_SCANNED_2:
 			case _appConstants2.default.PRINT_SCANNED_3:
 			case _appConstants2.default.PRINT_REGISTERED:
-			case _appConstants2.default.PRINT_MATCHED:
+			case _appConstants2.default.PRINT_SCAN_FAILED:
 			case _appConstants2.default.PRINT_NOT_MATCHED:
 				if (action.data && action.data.apiResponse) {
 					_store.apiResponses.push(action.data.apiResponse);
@@ -26633,8 +26659,6 @@
 				break;
 
 			case _appConstants2.default.PRINT_MATCHED:
-			case _appConstants2.default.PRINT_NOT_MATCHED:
-				Big.log('match or not match? ' + action.actionType);
 				if (action.data && action.data.apiResponse) {
 					_store.apiResponses.push(action.data.apiResponse);
 				}

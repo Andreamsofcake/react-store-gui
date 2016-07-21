@@ -99,7 +99,7 @@ class PrintRegister extends Component {
 				state.error_msg = '';
 			} else {
 				state.status_msg = '';
-				state.error_msg = 'The scan was not ok, please try again.';
+				state.error_msg = 'Scan failed, try again.';
 			}
 			
 			Big.log('lastResponse: ' + lastResponse);
@@ -129,6 +129,12 @@ class PrintRegister extends Component {
 				token: this.state.token,
 				registerUser: this.state.user
 			});
+		}
+
+		if (event.type === appConstants.PRINT_SCAN_FAILED) {
+			state.scanInProcess = false;
+			state.status_msg = '';
+			state.error_msg = 'Scan failed, try again.';
 		}
 
 		// print successfully registered, finish and callback

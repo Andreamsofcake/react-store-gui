@@ -31,9 +31,16 @@ var PrintReaderActions = {
 			}
 		})
 		.catch(error => {
-			Big.error('failed to register print, call chain error probably check component tree');
-			Big.log(error);
-			Big.throw(error);
+			if (error.data && error.data.apiResponse.indexOf('retry scan') > -1) {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.PRINT_SCAN_FAILED,
+					data: response.data
+				});
+			} else {
+				Big.error('failed to register print, call chain error probably check component tree');
+				Big.log(error);
+				Big.throw(error);
+			}
 		})
 	},
 

@@ -64,7 +64,7 @@ PrintReaderStore.dispatch = AppDispatcher.register(function(payload){
 		case appConstants.PRINT_SCANNED_2:
 		case appConstants.PRINT_SCANNED_3:
 		case appConstants.PRINT_REGISTERED:
-		case appConstants.PRINT_MATCHED:
+		case appConstants.PRINT_SCAN_FAILED:
 		case appConstants.PRINT_NOT_MATCHED:
 			if (action.data && action.data.apiResponse) {
 				_store.apiResponses.push(action.data.apiResponse);
@@ -73,8 +73,6 @@ PrintReaderStore.dispatch = AppDispatcher.register(function(payload){
 			break;
 
 		case appConstants.PRINT_MATCHED:
-		case appConstants.PRINT_NOT_MATCHED:
-			Big.log('match or not match? ' + action.actionType);
 			if (action.data && action.data.apiResponse) {
 				_store.apiResponses.push(action.data.apiResponse);
 			}

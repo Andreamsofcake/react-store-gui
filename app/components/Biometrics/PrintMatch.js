@@ -120,7 +120,7 @@ class PrintMatch extends Component {
 			state.scanInProcess = false;
 			state.scannedOnce = true;
 
-			// reset matching flags on scan attempt
+			// reset matching flags on any scan attempt
 			state.matchingIsFinished = false;
 			state.matchingInProcess = false;
 			state.isMatched = false;
@@ -129,6 +129,18 @@ class PrintMatch extends Component {
 				stateCB = this.startMatchingProcess.bind(this);
 			}
 
+		}
+		
+		if (event.type === appConstants.PRINT_SCAN_FAILED) {
+			state.scanInProcess = false;
+			state.scannedOnce = true;
+			// reset matching flags on any scan attempt
+			state.matchingIsFinished = false;
+			state.matchingInProcess = false;
+			state.isMatched = false;
+			state.status_msg = '';
+			state.error_msg = 'Scan fail';
+			state.printScanned = false;
 		}
 
 		// register the print with the current user_id
