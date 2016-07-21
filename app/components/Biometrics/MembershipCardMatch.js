@@ -155,8 +155,11 @@ class MembershipCardMatch extends Component {
 			state.matchingInProcess = false;
 			state.cardScanned = false; // tells interface that we are done trying to match that card
 			
-			CardReaderActions.clearApiResponses();
-			CardReaderActions.clearDataBuffer(); // dumps any saved card data
+			// INVARIANT!
+			setTimeout( () => {
+				CardReaderActions.clearApiResponses();
+				CardReaderActions.clearDataBuffer(); // dumps any saved card data
+			}, 250);
 		}
 
 		// finally, set state

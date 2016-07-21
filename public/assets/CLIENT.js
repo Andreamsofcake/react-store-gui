@@ -20540,8 +20540,11 @@
 					state.matchingInProcess = false;
 					state.cardScanned = false; // tells interface that we are done trying to match that card
 
-					_CardReaderActions2.default.clearApiResponses();
-					_CardReaderActions2.default.clearDataBuffer(); // dumps any saved card data
+					// INVARIANT!
+					setTimeout(function () {
+						_CardReaderActions2.default.clearApiResponses();
+						_CardReaderActions2.default.clearDataBuffer(); // dumps any saved card data
+					}, 250);
 				}
 
 				// finally, set state
