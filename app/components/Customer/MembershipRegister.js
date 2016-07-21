@@ -80,7 +80,7 @@ class Customer_MembershipRegister extends Component {
 	setupMatchedUserData() {
 		var obj = {};
 		if (this.state.matchedUser && this.state.machineInfo && !this.state.membership_id) {
-			let matched = this.state.matchedUser.__.filter( X => return X.client == this.state.machineInfo.client );
+			let matched = this.state.matchedUser.client_membership_ids.filter( X => { return X.client == this.state.machineInfo.client });
 			if (matched && matched.length) {
 				obj.membership_id = matched[0].id;
 			}
@@ -229,7 +229,8 @@ class Customer_MembershipRegister extends Component {
 						canRetry={true}
 						showMessages={true}
 						token={this.state.token}
-						matchCallback={this.cardMatchCallback}
+						matchCallback={this.cardMatchCallback.bind(this)}
+						/>
 				</div>
 			);
 		}

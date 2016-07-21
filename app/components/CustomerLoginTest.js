@@ -9,10 +9,6 @@ import CL_Store from '../stores/CustomerStore'
 import A_Actions from '../actions/AdminActions'
 import A_Store from '../stores/AdminStore'
 
-import Step1 from './CustomerLogin/Step1'
-import Step2 from './CustomerLogin/Step2'
-import Matching from './CustomerLogin/Matching'
-
 import appConstants from '../constants/appConstants'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
@@ -39,7 +35,6 @@ class CustomerLoginTest extends Component {
 
     this._onAStoreChange = this._onAStoreChange.bind(this);
     this._onCLStoreChange = this._onCLStoreChange.bind(this);
-    this.tryAgain = this.tryAgain.bind(this);
     this.loadTestCustomer = this.loadTestCustomer.bind(this);
   };
 
@@ -110,44 +105,7 @@ class CustomerLoginTest extends Component {
   				this.loadTestCustomer({ membership_id: event.membership_id });
   			}
   			break;
-
-  		case appConstants.LICENSE_SCANNED_LOGIN:
-			if (event.status === 'ok') {
-				// go to next login step:
-				browserHistory.push('/CustomerLogin/Step2');
-			}
-  			break;
-
-  		case appConstants.PRINT_SCANNED_LOGIN:
-			if (event.status === 'ok') {
-				// go to next login step:
-				browserHistory.push('/CustomerLogin/Matching');
-			}
-  			break;
-
-  		case appConstants.CUSTOMER_MATCHED_LOGIN:
-			if (event.status === 'ok') {
-				// yay we are logged in!
-				let customer = CL_Store.getCustomer();
-				if (customer) {
-					// FIXME: calling this action in sequence results in Invariant Violation: Dispatch.dispatch(...): Cannot dispatch in the middle of a dispatch.
-					// moved to componentWillUnmount:
-					/*
-					setTimeout(() => {
-						CL_Actions.clearSteps();
-					}, 100);
-					*/
-					return browserHistory.push('/Storefront');
-				}
-			}
-			browserHistory.push('/CustomerLogin/FAIL');
-  			break;
   	}
-  }
-  
-  tryAgain() {
-  	CL_Actions.customerLogout();
-  	browserHistory.push('/CustomerLogin/Step1');
   }
   
   render() {
@@ -196,64 +154,6 @@ class CustomerLoginTest extends Component {
   	);
   }
   
-  renderStep() {
-
-  	let WhatStep;
-
-  	switch (this.state.params.step) {
-  		
-  		case 'FAIL':
-  			return (
-  				<div>
-	  				<_E.Alert type="danger">Sorry, we couldn't find your account.</_E.Alert>
-	  				<p>&nbsp;</p>
-					<_E.Button type="primary" onClick={this.tryAgain}>{Translate.translate('Customer','TryAgainButtonText')}</_E.Button>
-					{this.renderSimulator()}
-	  			</div>
-  			);
-  			break;
-  		
-  		case 'Matching':
-		  	WhatStep = Matching;
-  			break;
-
-  		case 'Step2': // finger / thumb print scan
-		  	WhatStep = Step2;
-  			break;
-
-  		case 'Step1': // ID scan
-  		default:
-		  	WhatStep = Step1;
-  			break;
-  	}
-
-  	if (WhatStep) {
-  		return (
-  			<WhatStep
-  				loginToken={this.state.loginToken}
-  				testing={this.props.appTesting}
-  				/>
-  		);
-  	}
-
-  	Big.warn('renderStep() ... unknown step requested: ' + this.state.params.step);
-  	return null;
-  }
-
-  renderSimulator() {
-  	if (this.props.appTesting) {
-  		return (
-		  <_E.Row style={{ border: '1px solid #666', borderRadius: '4px', backgroundColor: '#ccc', maxWidth: '85%', margin: '3em auto', paddingTop: '0.4em' }}>
-			<_E.Col>
-			  <h4 style={{fontWeight: 'normal'}}>SIMULATOR</h4>
-			  <p style={{fontSize: '0.75em'}}>login token: <strong>{this.props.loginToken}</strong></p>
-			</_E.Col>
-		  </_E.Row>
-		);
-  	}
-  	return null;
-  }
-
 }
 
 export default CustomerLoginTest
