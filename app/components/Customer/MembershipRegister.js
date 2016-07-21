@@ -220,20 +220,6 @@ class Customer_MembershipRegister extends Component {
 			);
 		}
 		
-		if (!this.state.adminBeginMatched) {
-			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>OK before we get started, let's verify an admin is with you.</h1>
-					<PrintMatchAdmin
-						token={this.state.token}
-						matchCallback={this.adminPrintMatchCallback.bind(this, 'begin')}
-						/>
-					<p>state: {this.state.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
-					<p>props: {this.props.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
-				</div>
-			);
-		}
-
 		if (!this.state.matchedUser) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
@@ -249,6 +235,22 @@ class Customer_MembershipRegister extends Component {
 			);
 		}
 		
+		if (!this.state.adminBeginMatched) {
+			return (
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
+					<h1>Hello, {this.state.matchedUser.firstname}!
+						<br />Let's get your biometrics registered properly.</h1>
+					<h3>OK before we get started, let's verify an admin is with you.</h3>
+					<PrintMatchAdmin
+						token={this.state.token}
+						matchCallback={this.adminPrintMatchCallback.bind(this, 'begin')}
+						/>
+					<p>state: {this.state.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
+					<p>props: {this.props.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
+				</div>
+			);
+		}
+
 		if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>

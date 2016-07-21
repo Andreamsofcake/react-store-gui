@@ -21258,12 +21258,40 @@
 					);
 				}
 
+				if (!this.state.matchedUser) {
+					return _react2.default.createElement(
+						'div',
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
+						_react2.default.createElement(
+							'h1',
+							null,
+							'Please swipe your membership card to get started.'
+						),
+						_react2.default.createElement(_MembershipCardMatch2.default, {
+							autostart: true,
+							canRetry: true,
+							showMessages: true,
+							token: this.state.token,
+							matchCallback: this.cardMatchCallback.bind(this)
+						})
+					);
+				}
+
 				if (!this.state.adminBeginMatched) {
 					return _react2.default.createElement(
 						'div',
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
+							null,
+							'Hello, ',
+							this.state.matchedUser.firstname,
+							'!',
+							_react2.default.createElement('br', null),
+							'Let\'s get your biometrics registered properly.'
+						),
+						_react2.default.createElement(
+							'h3',
 							null,
 							'OK before we get started, let\'s verify an admin is with you.'
 						),
@@ -21283,25 +21311,6 @@
 							'props: ',
 							this.props.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'
 						)
-					);
-				}
-
-				if (!this.state.matchedUser) {
-					return _react2.default.createElement(
-						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
-						_react2.default.createElement(
-							'h1',
-							null,
-							'Please swipe your membership card to get started.'
-						),
-						_react2.default.createElement(_MembershipCardMatch2.default, {
-							autostart: true,
-							canRetry: true,
-							showMessages: true,
-							token: this.state.token,
-							matchCallback: this.cardMatchCallback.bind(this)
-						})
 					);
 				}
 
