@@ -21201,34 +21201,6 @@
 			key: 'render',
 			value: function render() {
 
-				// should never ever get here.... but just in case!
-				// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
-				if (!this.state.loadCustomerCheckFailed && this.state.matchedUser && this.state.isUserVerified) {
-					return _react2.default.createElement(
-						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
-						_react2.default.createElement(
-							'h1',
-							null,
-							'You\'re already registered!'
-						),
-						_react2.default.createElement(
-							'h3',
-							null,
-							'It appears you have already completed this process and you can access the store.'
-						),
-						_react2.default.createElement(
-							'p',
-							null,
-							_react2.default.createElement(_E.Button, { type: 'success', size: 'lg', component: _react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/Storefront' },
-									'Let\'s go Shopping!'
-								) })
-						)
-					);
-				}
-
 				if (!this.state.machineInfo) {
 					return _react2.default.createElement(
 						'div',
@@ -21355,6 +21327,39 @@
 									{ to: '/Storefront' },
 									'Let\'s go Shopping!'
 								) })
+						)
+					);
+				}
+
+				// should never ever get here.... but just in case!
+				// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
+				if (!this.state.loadCustomerCheckFailed && this.state.matchedUser && this.state.isUserVerified) {
+					return _react2.default.createElement(
+						'div',
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
+						_react2.default.createElement(
+							'h1',
+							null,
+							'You\'re already registered!'
+						),
+						_react2.default.createElement(
+							'h3',
+							null,
+							'It appears you have already completed this process and you can access the store.'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							_react2.default.createElement(_E.Button, { type: 'success', size: 'lg', component: _react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/Storefront' },
+									'Let\'s go Shopping!'
+								) })
+						),
+						_react2.default.createElement(
+							'pre',
+							{ style: { fontSize: '0.85em' } },
+							JSON.stringify(this.state, null, 4)
 						)
 					);
 				}
