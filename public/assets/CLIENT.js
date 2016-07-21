@@ -10718,6 +10718,8 @@
 
 	var Big = new _BigLogger2.default('Customer_MembershipAccess');
 
+	var timesLoaded = 0;
+
 	var Customer_MembershipAccess = function (_Component) {
 		_inherits(Customer_MembershipAccess, _Component);
 
@@ -10729,6 +10731,9 @@
 
 
 			_this.state = _this.getDefaultState();
+
+			timesLoaded += 1;
+			Big.log('I am loading! times: ' + timesLoaded);
 
 			_this.printMatchCallback = _this.printMatchCallback.bind(_this);
 			_this.cardMatchCallback = _this.cardMatchCallback.bind(_this);
