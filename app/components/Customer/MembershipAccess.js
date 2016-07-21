@@ -44,8 +44,6 @@ import {
 import Log from '../../utils/BigLogger'
 var Big = new Log('Customer_MembershipAccess');
 
-var timesLoaded = 0;
-
 class Customer_MembershipAccess extends Component {
 
 	constructor(props, context) {
@@ -54,9 +52,6 @@ class Customer_MembershipAccess extends Component {
 
 		this.state = this.getDefaultState();
 		
-		timesLoaded += 1;
-		Big.log('I am loading! times: '+timesLoaded);
-
 		this.printMatchCallback = this.printMatchCallback.bind(this);
 		this.cardMatchCallback = this.cardMatchCallback.bind(this);
 		this._onCLStoreChange = this._onCLStoreChange.bind(this);

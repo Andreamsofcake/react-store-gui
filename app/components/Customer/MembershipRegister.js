@@ -19,17 +19,17 @@ import {
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
-var Big = new Log('Customer_MembershipAccess');
+var Big = new Log('Customer_MembershipRegister');
 
 import PrintMatchAdmin from '../Biometrics/AdminPrintMatch'
 
-class Customer_MembershipAccess extends Component {
+class Customer_MembershipRegister extends Component {
 
 	constructor(props, context) {
 		// MUST call super() before any this.*
 		super(props, context);
 
-		this.state = this.getDefaultState();
+		this.state = this.getDefaultState({ matchedUser: this.props.matchedUser });
 
 		this.printMatchCallback = this.printMatchCallback.bind(this);
 		this.cardMatchCallback = this.cardMatchCallback.bind(this);
@@ -82,6 +82,10 @@ class Customer_MembershipAccess extends Component {
 		*/
 	}
 	
+	tryAgain() {
+		this.setState( this.getDefaultState() );
+	}
+
 	adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
 		switch (beginOrEnd) {
 			case 'begin':
@@ -243,4 +247,4 @@ class Customer_MembershipAccess extends Component {
 
 }
 
-export default Customer_MembershipAccess
+export default Customer_MembershipRegister

@@ -10718,8 +10718,6 @@
 
 	var Big = new _BigLogger2.default('Customer_MembershipAccess');
 
-	var timesLoaded = 0;
-
 	var Customer_MembershipAccess = function (_Component) {
 		_inherits(Customer_MembershipAccess, _Component);
 
@@ -10731,9 +10729,6 @@
 
 
 			_this.state = _this.getDefaultState();
-
-			timesLoaded += 1;
-			Big.log('I am loading! times: ' + timesLoaded);
 
 			_this.printMatchCallback = _this.printMatchCallback.bind(_this);
 			_this.cardMatchCallback = _this.cardMatchCallback.bind(_this);
@@ -21546,19 +21541,19 @@
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // for logout() call
 	// for retrieving machine config
 
-	var Big = new _BigLogger2.default('Customer_MembershipAccess');
+	var Big = new _BigLogger2.default('Customer_MembershipRegister');
 
-	var Customer_MembershipAccess = function (_Component) {
-		_inherits(Customer_MembershipAccess, _Component);
+	var Customer_MembershipRegister = function (_Component) {
+		_inherits(Customer_MembershipRegister, _Component);
 
-		function Customer_MembershipAccess(props, context) {
-			_classCallCheck(this, Customer_MembershipAccess);
+		function Customer_MembershipRegister(props, context) {
+			_classCallCheck(this, Customer_MembershipRegister);
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_MembershipAccess).call(this, props, context));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Customer_MembershipRegister).call(this, props, context));
 			// MUST call super() before any this.*
 
 
-			_this.state = _this.getDefaultState();
+			_this.state = _this.getDefaultState({ matchedUser: _this.props.matchedUser });
 
 			_this.printMatchCallback = _this.printMatchCallback.bind(_this);
 			_this.cardMatchCallback = _this.cardMatchCallback.bind(_this);
@@ -21567,7 +21562,7 @@
 			return _this;
 		}
 
-		_createClass(Customer_MembershipAccess, [{
+		_createClass(Customer_MembershipRegister, [{
 			key: 'getDefaultState',
 			value: function getDefaultState(obj) {
 				var def = {
@@ -21621,6 +21616,11 @@
 	   	});	
 	   }
 	   */
+			}
+		}, {
+			key: 'tryAgain',
+			value: function tryAgain() {
+				this.setState(this.getDefaultState());
 			}
 		}, {
 			key: 'adminPrintMatchCallback',
@@ -21825,10 +21825,10 @@
 			}
 		}]);
 
-		return Customer_MembershipAccess;
+		return Customer_MembershipRegister;
 	}(_react.Component);
 
-	exports.default = Customer_MembershipAccess;
+	exports.default = Customer_MembershipRegister;
 
 /***/ },
 /* 99 */
