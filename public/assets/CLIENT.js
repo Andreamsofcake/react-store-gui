@@ -10768,7 +10768,7 @@
 					}
 					return _react2.default.createElement(
 						'div',
-						null,
+						{ style: { maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,

@@ -196,7 +196,7 @@ class Customer_MembershipAccess extends Component {
 				);
 			}
 			return (
-				<div>
+				<div style={{maxWidth:'60%',margin: '10em auto 1em'}}>
 					<h1>Welcome back {this.state.matchedUser.firstname}</h1>
 					<p style={{textAlign: 'center'}}><_E.Button type="success" component={(<Link to="/Storefront">Let's go shopping!</Link>)} /></p>
 				</div>
