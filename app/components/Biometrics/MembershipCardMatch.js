@@ -233,7 +233,7 @@ class MembershipCardMatch extends Component {
 		
 		if (this.state.matchingInProcess) {
 			return (
-				<div>
+				<div style={{textAlign: 'center'}}>
 					<h4>Matching</h4>
 					<_E.Spinner size="md" type="primary" />
 				</div>
@@ -242,7 +242,7 @@ class MembershipCardMatch extends Component {
 		
 		if (this.state.scanInProcess) {
 			return (
-				<div>
+				<div style={{textAlign: 'center'}}>
 					<h4>Scanning</h4>
 					<_E.Spinner size="md" type="primary" />
 				</div>
@@ -250,7 +250,7 @@ class MembershipCardMatch extends Component {
 		}
 		
 		return (
-			<div>
+			<div style={{textAlign: 'center'}}>
 				{this.renderScanGUI()}
 				{this.renderScanSystemMessages()}
 			</div>

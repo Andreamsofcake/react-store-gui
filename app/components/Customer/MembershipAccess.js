@@ -190,7 +190,7 @@ class Customer_MembershipAccess extends Component {
 		}
 
 		return (
-			<div style={{maxWidth:'50%',margin: '1em auto'}}>
+			<div style={{maxWidth:'60%',margin: '10em auto 1em'}}>
 			  <_E.Row >
 				<_E.Col>
 				  <h1>Customer Access</h1>
@@ -199,6 +199,8 @@ class Customer_MembershipAccess extends Component {
 			  </_E.Row>
 			  <_E.Row >
 				<_E.Col md="1/2" lg="1/2">
+					<div className="interfaceBox" style={{marginTop: '1em'}}>
+					<h3 style={{textAlign: 'center', marginBottom: '2em'}}>Scan your Membership Card</h3>
 				  <CardMatch
 					autostart={true}
 					canRetry={true}
@@ -206,8 +208,11 @@ class Customer_MembershipAccess extends Component {
 					token={this.state.token}
 					matchCallback={this.cardMatchCallback}
 				  	/>
+				  	</div>
 				</_E.Col>
 				<_E.Col md="1/2" lg="1/2">
+					<div className="interfaceBox" style={{marginTop: '1em'}}>
+					<h3 style={{textAlign: 'center', marginBottom: '2em'}}>Scan your fingerprint</h3>
 				  <PrintMatch
 					autostart={true}
 					canRetry={true}
@@ -216,6 +221,7 @@ class Customer_MembershipAccess extends Component {
 					token={this.state.token}
 					matchCallback={this.printMatchCallback}
 				  	/>
+				  	</div>
 				</_E.Col>
 			  </_E.Row>
 			</div>

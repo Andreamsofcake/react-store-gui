@@ -10912,7 +10912,7 @@
 
 				return _react2.default.createElement(
 					'div',
-					{ style: { maxWidth: '50%', margin: '1em auto' } },
+					{ style: { maxWidth: '60%', margin: '10em auto 1em' } },
 					_react2.default.createElement(
 						_E.Row,
 						null,
@@ -10937,25 +10937,43 @@
 						_react2.default.createElement(
 							_E.Col,
 							{ md: '1/2', lg: '1/2' },
-							_react2.default.createElement(_MembershipCardMatch2.default, {
-								autostart: true,
-								canRetry: true,
-								showMessages: true,
-								token: this.state.token,
-								matchCallback: this.cardMatchCallback
-							})
+							_react2.default.createElement(
+								'div',
+								{ className: 'interfaceBox', style: { marginTop: '1em' } },
+								_react2.default.createElement(
+									'h3',
+									{ style: { textAlign: 'center', marginBottom: '2em' } },
+									'Scan your Membership Card'
+								),
+								_react2.default.createElement(_MembershipCardMatch2.default, {
+									autostart: true,
+									canRetry: true,
+									showMessages: true,
+									token: this.state.token,
+									matchCallback: this.cardMatchCallback
+								})
+							)
 						),
 						_react2.default.createElement(
 							_E.Col,
 							{ md: '1/2', lg: '1/2' },
-							_react2.default.createElement(_PrintMatch2.default, {
-								autostart: true,
-								canRetry: true,
-								showMessages: true,
-								user: this.state.matchedUser,
-								token: this.state.token,
-								matchCallback: this.printMatchCallback
-							})
+							_react2.default.createElement(
+								'div',
+								{ className: 'interfaceBox', style: { marginTop: '1em' } },
+								_react2.default.createElement(
+									'h3',
+									{ style: { textAlign: 'center', marginBottom: '2em' } },
+									'Scan your fingerprint'
+								),
+								_react2.default.createElement(_PrintMatch2.default, {
+									autostart: true,
+									canRetry: true,
+									showMessages: true,
+									user: this.state.matchedUser,
+									token: this.state.token,
+									matchCallback: this.printMatchCallback
+								})
+							)
 						)
 					)
 				);
@@ -20605,7 +20623,7 @@
 				if (this.state.matchingInProcess) {
 					return _react2.default.createElement(
 						'div',
-						null,
+						{ style: { textAlign: 'center' } },
 						_react2.default.createElement(
 							'h4',
 							null,
@@ -20618,7 +20636,7 @@
 				if (this.state.scanInProcess) {
 					return _react2.default.createElement(
 						'div',
-						null,
+						{ style: { textAlign: 'center' } },
 						_react2.default.createElement(
 							'h4',
 							null,
@@ -20630,7 +20648,7 @@
 
 				return _react2.default.createElement(
 					'div',
-					null,
+					{ style: { textAlign: 'center' } },
 					this.renderScanGUI(),
 					this.renderScanSystemMessages()
 				);
@@ -21186,7 +21204,7 @@
 
 				return _react2.default.createElement(
 					'div',
-					null,
+					{ style: { textAlign: 'center' } },
 					this.renderScanGUI(),
 					this.renderScanSystemMessages()
 				);

@@ -259,7 +259,7 @@ class PrintMatch extends Component {
 		}
 		
 		return (
-			<div>
+			<div style={{textAlign: 'center'}}>
 				{this.renderScanGUI()}
 				{this.renderScanSystemMessages()}
 			</div>
