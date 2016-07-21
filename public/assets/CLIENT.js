@@ -25986,7 +25986,7 @@
 				Big.log('matchMembershipCard response');
 				Big.log(response);
 
-				if (response.data && response.data.status && response.data.status == 'ok' && response.data.data) {
+				if (response.data && response.data.status && response.data.status == 'ok') {
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.MEMBERSHIP_CARD_MATCHED,
 						data: response.data
@@ -26001,9 +26001,17 @@
 					Big.log(response);
 				}
 			}).catch(function (error) {
-				Big.error('failed to match membership card, call chain error probably check component tree');
-				Big.log(error);
-				Big.throw(error);
+				// 404 is falling down here. boo.
+				if (error && error.data && error.data.msg === 'no user matched') {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.MEMBERSHIP_CARD_NOT_MATCHED,
+						data: null
+					});
+				} else {
+					Big.error('failed to match membership card, call chain error probably check component tree');
+					Big.log(error);
+					Big.throw(error);
+				}
 			});
 		},
 		clearApiResponses: function clearApiResponses() {
