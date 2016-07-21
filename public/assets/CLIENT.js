@@ -20910,9 +20910,9 @@
 
 	var _MembershipCardMatch2 = _interopRequireDefault(_MembershipCardMatch);
 
-	var _PrintMatch = __webpack_require__(94);
+	var _AdminPrintMatch = __webpack_require__(86);
 
-	var _PrintMatch2 = _interopRequireDefault(_PrintMatch);
+	var _AdminPrintMatch2 = _interopRequireDefault(_AdminPrintMatch);
 
 	var _PrintRegister = __webpack_require__(87);
 
@@ -20939,10 +20939,6 @@
 	var _BigLogger = __webpack_require__(1);
 
 	var _BigLogger2 = _interopRequireDefault(_BigLogger);
-
-	var _AdminPrintMatch = __webpack_require__(86);
-
-	var _AdminPrintMatch2 = _interopRequireDefault(_AdminPrintMatch);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21424,7 +21420,7 @@
 					return null;
 				}
 
-				return _react2.default.createElement(BiometricsPrintRegister, {
+				return _react2.default.createElement(_PrintRegister2.default, {
 					user: this.state.matchedUser,
 					token: this.state.token,
 					registrationCallback: this.printRegistrationFinished.bind(this, this.state.numPrintsCaptured + 1)

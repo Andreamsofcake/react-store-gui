@@ -5,7 +5,7 @@ import CL_Store from '../../stores/CustomerStore'
 import TsvStore from '../../stores/TsvStore' // for retrieving machine config
 
 import CardMatch from '../Biometrics/MembershipCardMatch'
-import PrintMatch from '../Biometrics/PrintMatch'
+import PrintMatchAdmin from '../Biometrics/AdminPrintMatch'
 import PrintRegister from '../Biometrics/PrintRegister'
 import MembershipRegister from './MembershipRegister'
 
@@ -21,8 +21,6 @@ import {
 
 import Log from '../../utils/BigLogger'
 var Big = new Log('Customer_MembershipRegister');
-
-import PrintMatchAdmin from '../Biometrics/AdminPrintMatch'
 
 class Customer_MembershipRegister extends Component {
 
@@ -362,7 +360,7 @@ class Customer_MembershipRegister extends Component {
 		}
 		
 		return (
-			<BiometricsPrintRegister
+			<PrintRegister
 				user={this.state.matchedUser}
 				token={this.state.token}
 				registrationCallback={this.printRegistrationFinished.bind(this, this.state.numPrintsCaptured + 1)}
