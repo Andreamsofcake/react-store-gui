@@ -117,6 +117,7 @@ class Customer_MembershipRegister extends Component {
 	}
 
 	adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+		startGeneralIdleTimer(this.props.location.pathname);
 		let state = this.state;
 		switch (beginOrEnd) {
 			case 'begin':
@@ -163,6 +164,7 @@ class Customer_MembershipRegister extends Component {
 	}
   
 	checkForCustomerLoad(state) {
+		startGeneralIdleTimer(this.props.location.pathname);
 		if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
 			state.loadingUser = true;
 			CL_Actions.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
@@ -171,6 +173,7 @@ class Customer_MembershipRegister extends Component {
 	}
 
 	cardMatchCallback(result, api, matchedUser, membership_id) {
+		startGeneralIdleTimer(this.props.location.pathname);
 		Big.log('cardMatchCallback');
 		Big.log({result, api, matchedUser, membership_id});
 		if (result) {
@@ -317,6 +320,7 @@ class Customer_MembershipRegister extends Component {
 	// this allows for a partial registration to return to finish...
 	// each "captured" print that is already registered will just skip to the next step
 	printAlreadyRegistered(result) {
+		startGeneralIdleTimer(this.props.location.pathname);
 		if (result) {
 			let state = this.state;
 			state.numPrintsCaptured += 1;
@@ -330,6 +334,7 @@ class Customer_MembershipRegister extends Component {
 /**** below here, methods imported from Admin/PrintRegistration *****/
 
 	printRegistrationFinished(sequence, apiResponses) {
+		startGeneralIdleTimer(this.props.location.pathname);
 		let state = this.state;
 		state['printRegistered' + sequence] = true;
 		state.numPrintsCaptured += 1;
@@ -378,11 +383,13 @@ class Customer_MembershipRegister extends Component {
 				token={this.state.token}
 				registrationCallback={this.printRegistrationFinished.bind(this, this.state.numPrintsCaptured + 1)}
 				alreadyRegisteredCallback={this.printAlreadyRegistered.bind(this)}
+				location={this.props.location}
 				/>
 		);
 	}
 	
 	startRegisterPrint() {
+		startGeneralIdleTimer(this.props.location.pathname);
 		this.setState({
 			registrationInProcess: true,
 			scanInProcess: false,

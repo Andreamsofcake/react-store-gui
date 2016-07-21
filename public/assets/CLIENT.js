@@ -18435,6 +18435,7 @@
 		}, {
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				if (this.props.location) (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				// dump any existing data:
 				_PrintReaderActions2.default.clearApiResponses();
 				_PrintReaderActions2.default.clearDataBuffer();
@@ -18470,6 +18471,8 @@
 		}, {
 			key: '_onPrintReaderStoreChange',
 			value: function _onPrintReaderStoreChange(event) {
+
+				if (this.props.location) (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 
 				// we will be building up state here...
 				var state = this.state;
@@ -18552,6 +18555,9 @@
 		}, {
 			key: 'reset',
 			value: function reset(obj) {
+
+				if (this.props.location) (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+
 				/// INVARIANT!!!!!!
 				setTimeout(function () {
 					_PrintReaderActions2.default.clearApiResponses();
@@ -18562,6 +18568,9 @@
 		}, {
 			key: 'tryAgain',
 			value: function tryAgain() {
+
+				if (this.props.location) (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+
 				this.reset({ user: this.state.user, token: this.state.token });
 			}
 		}, {
@@ -18819,6 +18828,9 @@
 		}, {
 			key: 'scanPrint',
 			value: function scanPrint() {
+
+				if (this.props.location) (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
+
 				var scanStep = this.state.num_scans + 1,
 				    statusMsg = 'Please ' + (scanStep > 1 ? 'reposition the same' : 'place your') + ' thumb or finger on the scanner to the right.';
 				this.setState({
@@ -21071,6 +21083,7 @@
 		}, {
 			key: 'adminPrintMatchCallback',
 			value: function adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				var state = this.state;
 				switch (beginOrEnd) {
 					case 'begin':
@@ -21119,6 +21132,7 @@
 		}, {
 			key: 'checkForCustomerLoad',
 			value: function checkForCustomerLoad(state) {
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
 					state.loadingUser = true;
 					_CustomerLoginActions2.default.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
@@ -21130,6 +21144,7 @@
 			value: function cardMatchCallback(result, api, matchedUser, membership_id) {
 				var _this3 = this;
 
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				Big.log('cardMatchCallback');
 				Big.log({ result: result, api: api, matchedUser: matchedUser, membership_id: membership_id });
 				if (result) {
@@ -21358,6 +21373,7 @@
 		}, {
 			key: 'printAlreadyRegistered',
 			value: function printAlreadyRegistered(result) {
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				if (result) {
 					var state = this.state;
 					state.numPrintsCaptured += 1;
@@ -21373,6 +21389,7 @@
 		}, {
 			key: 'printRegistrationFinished',
 			value: function printRegistrationFinished(sequence, apiResponses) {
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				var state = this.state;
 				state['printRegistered' + sequence] = true;
 				state.numPrintsCaptured += 1;
@@ -21446,12 +21463,14 @@
 					user: this.state.matchedUser,
 					token: this.state.token,
 					registrationCallback: this.printRegistrationFinished.bind(this, this.state.numPrintsCaptured + 1),
-					alreadyRegisteredCallback: this.printAlreadyRegistered.bind(this)
+					alreadyRegisteredCallback: this.printAlreadyRegistered.bind(this),
+					location: this.props.location
 				});
 			}
 		}, {
 			key: 'startRegisterPrint',
 			value: function startRegisterPrint() {
+				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 				this.setState({
 					registrationInProcess: true,
 					scanInProcess: false,

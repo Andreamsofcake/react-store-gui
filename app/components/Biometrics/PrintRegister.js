@@ -46,6 +46,7 @@ class PrintRegister extends Component {
 	
 // Add change listeners to stores
 	componentDidMount() {
+		if (this.props.location) startGeneralIdleTimer(this.props.location.pathname);
 		// dump any existing data:
 		PrintReaderActions.clearApiResponses();
 		PrintReaderActions.clearDataBuffer();
@@ -74,6 +75,8 @@ class PrintRegister extends Component {
 	CLEAR_PRINT_MODULE_API_RESPONSES: null,
 */
 	_onPrintReaderStoreChange(event) {
+		
+		if (this.props.location) startGeneralIdleTimer(this.props.location.pathname);
 
 		// we will be building up state here...
 		let state = this.state;
@@ -157,6 +160,9 @@ class PrintRegister extends Component {
 	}
 	
 	reset(obj) {
+		
+		if (this.props.location) startGeneralIdleTimer(this.props.location.pathname);
+		
 		/// INVARIANT!!!!!!
 		setTimeout(() => {
 			PrintReaderActions.clearApiResponses();
@@ -166,6 +172,9 @@ class PrintRegister extends Component {
 	}
 	
 	tryAgain() {
+
+		if (this.props.location) startGeneralIdleTimer(this.props.location.pathname);
+
 		this.reset({ user: this.state.user, token: this.state.token });
 	}
 
@@ -321,6 +330,9 @@ class PrintRegister extends Component {
 	}
 
 	scanPrint() {
+		
+		if (this.props.location) startGeneralIdleTimer(this.props.location.pathname);
+		
 		var scanStep = this.state.num_scans + 1
 			, statusMsg = 'Please ' + (scanStep > 1 ? 'reposition the same' : 'place your') + ' thumb or finger on the scanner to the right.'
 			;
