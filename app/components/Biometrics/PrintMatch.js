@@ -153,7 +153,7 @@ class PrintMatch extends Component {
 			state.matchingInProcess = false;
 			state.printScanned = false; // tells interface that we are done trying to match that print
 			
-			PrintReaderActions.clearApiResponses();
+			setTimeout( PrintReaderActions.clearApiResponses, 250 );
 		}
 
 		// finally, set state

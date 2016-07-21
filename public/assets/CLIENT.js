@@ -21059,7 +21059,7 @@
 					state.matchingInProcess = false;
 					state.printScanned = false; // tells interface that we are done trying to match that print
 
-					_PrintReaderActions2.default.clearApiResponses();
+					setTimeout(_PrintReaderActions2.default.clearApiResponses, 250);
 				}
 
 				// finally, set state
