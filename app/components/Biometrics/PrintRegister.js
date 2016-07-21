@@ -151,8 +151,10 @@ class PrintRegister extends Component {
 			}
 			
 			state.registrationIsFinished = true;
-			PrintReaderActions.clearApiResponses();
-			PrintReaderActions.clearDataBuffer();
+			setTimeout( () => {
+				PrintReaderActions.clearApiResponses();
+				PrintReaderActions.clearDataBuffer();
+			}, 250);
 		}
 
 		// finally, set state

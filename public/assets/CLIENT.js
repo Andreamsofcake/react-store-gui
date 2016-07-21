@@ -18545,8 +18545,10 @@
 					}
 
 					state.registrationIsFinished = true;
-					_PrintReaderActions2.default.clearApiResponses();
-					_PrintReaderActions2.default.clearDataBuffer();
+					setTimeout(function () {
+						_PrintReaderActions2.default.clearApiResponses();
+						_PrintReaderActions2.default.clearDataBuffer();
+					}, 250);
 				}
 
 				// finally, set state
