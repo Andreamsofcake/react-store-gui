@@ -177,9 +177,11 @@ class Customer_MembershipAccess extends Component {
 		
 		// FIXME: someday, this should be a switch, whether or not we need to verify-by-admin or not
 		if (this.state.matchedUser && !this.state.isUserVerified) {
+			// BELOW: have to pass props.location here, because Access is wrapping Register instead of it being loaded by Router.
 			return (
 				<MembershipRegister
 					matchedUser={this.state.matchedUser}
+					location={this.props.location}
 					/>
 			);
 		}
