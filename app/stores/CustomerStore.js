@@ -194,6 +194,7 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
 			break;
 		
+		case appConstants.CUSTOMER_VERIFIED_AND_LOADED: // admin register verify step, returns the same data structure
 		case appConstants.CUSTOMER_LOADED:
 			if (action.data.status === 'ok' && action.data.customer) {
 				clearSteps('login');

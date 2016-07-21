@@ -19374,6 +19374,7 @@
 				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_MATCHED_LOGIN, status: action.data.status });
 				break;
 
+			case _appConstants2.default.CUSTOMER_VERIFIED_AND_LOADED: // admin register verify step, returns the same data structure
 			case _appConstants2.default.CUSTOMER_LOADED:
 				if (action.data.status === 'ok' && action.data.customer) {
 					clearSteps('login');
@@ -21134,9 +21135,9 @@
 				switch (event.type) {
 					case _appConstants2.default.CUSTOMER_VERIFIED_AND_LOADED:
 						if (event.status === 'ok') {
-							//console.warn(appConstants.CUSTOMER_LOADED + ': customer then credit');
-							//console.log(CL_Store.getCustomer());
-							//console.log(CL_Store.getCustomerCredit());
+							Big.warn(_appConstants2.default.CUSTOMER_VERIFIED_AND_LOADED + ': customer then credit');
+							Big.log(_CustomerStore2.default.getCustomer());
+							Big.log(_CustomerStore2.default.getCustomerCredit());
 							//browserHistory.push('/Storefront');
 							this.setState({
 								loadingUser: false,

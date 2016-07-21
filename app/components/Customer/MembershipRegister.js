@@ -152,9 +152,9 @@ class Customer_MembershipRegister extends Component {
 		switch (event.type) {
 			case appConstants.CUSTOMER_VERIFIED_AND_LOADED:
 				if (event.status === 'ok') {
-					//console.warn(appConstants.CUSTOMER_LOADED + ': customer then credit');
-					//console.log(CL_Store.getCustomer());
-					//console.log(CL_Store.getCustomerCredit());
+					Big.warn(appConstants.CUSTOMER_VERIFIED_AND_LOADED + ': customer then credit');
+					Big.log(CL_Store.getCustomer());
+					Big.log(CL_Store.getCustomerCredit());
 					//browserHistory.push('/Storefront');
 					this.setState({
 						loadingUser: false,
