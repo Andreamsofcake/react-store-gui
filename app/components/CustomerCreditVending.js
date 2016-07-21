@@ -252,6 +252,9 @@ class CashVending extends Component {
 				Big.log(event);
 				return;
 			}
+			Big.log('_onTsvChange');
+			Big.log(event);
+
 			switch (event.method) {
 				case 'payFullWithCustomerCredit':
 					var state = {
@@ -307,8 +310,7 @@ class CashVending extends Component {
 					break;
 				
 				case 'notifyVendingItem':
-					//Big.log('vendingItem');
-					//Big.log(event.data[0]);
+					Big.log('vendingItem');
 					var data = event.data[0]
 						, productImages;
 					if (data) {

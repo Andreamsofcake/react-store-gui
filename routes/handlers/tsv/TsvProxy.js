@@ -193,22 +193,26 @@ function multieventProxyPing(io) {
 				
 				var MI = CheckRegistration(true);
 				
-				if (MI && MI.registrationData && MI.registrationData._id) {
-					ProxyCall('machineEventNew', {
-						machine: MI.registrationData._id,
-						event: body
+				if (body && body[0] && body[0][0] && body[0][0] !== 'notifyTSVReady') {
+				
+					if (MI && MI.registrationData && MI.registrationData._id) {
+						ProxyCall('machineEventNew', {
+							machine: MI.registrationData._id,
+							event: body
 
-					}, (err, response) => {
+						}, (err, response) => {
 		
-						if (err) {
-							debug('ProxyCall Event recording FAIL!');
-							debug(err);
-						} else {
-							debug('ProxyCall Event recording success');
-						}		
-					});
+							if (err) {
+								debug('ProxyCall Event recording FAIL!');
+								debug(err);
+							} else {
+								debug('ProxyCall Event recording success');
+							}		
+						});
+					}
 				}
-				isPingingMultievent = false;
+
+				isPingingMultievent = true;
 
 			}
 			
