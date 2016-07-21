@@ -32,6 +32,10 @@ var PrintReaderActions = {
 		})
 		.catch(error => {
 			if (error.data && error.data.apiResponse.indexOf('retry scan') > -1) {
+
+				Big.warn('PRINT_SCAN_FAILED');
+				Big.log(error.data);
+
 				AppDispatcher.handleServerAction({
 					actionType: appConstants.PRINT_SCAN_FAILED,
 					data: error.data

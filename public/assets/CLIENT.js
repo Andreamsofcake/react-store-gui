@@ -21135,9 +21135,12 @@
 			key: 'checkForCustomerLoad',
 			value: function checkForCustomerLoad(state) {
 				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
+				if (state.isUserVerified && state.isPrintVerified && state.membership_id && state.adminEndMatched) {
+					Big.warn('checkForCustomerLoad ... load the user!');
 					state.loadingUser = true;
 					_CustomerLoginActions2.default.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
+				} else {
+					Big.warn('checkForCustomerLoad ... DO NOT load the user????');
 				}
 				this.setState(state);
 			}
@@ -21184,7 +21187,7 @@
 				if (!this.state.machineInfo) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21197,7 +21200,7 @@
 				if (!this.state.adminBeginMatched) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21225,7 +21228,7 @@
 				if (!this.state.matchedUser) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21241,38 +21244,10 @@
 					);
 				}
 
-				// should never ever get here.... but just in case!
-				// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
-				if (this.state.matchedUser && this.state.isUserVerified) {
-					return _react2.default.createElement(
-						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
-						_react2.default.createElement(
-							'h1',
-							null,
-							'You\'re already registered!'
-						),
-						_react2.default.createElement(
-							'h3',
-							null,
-							'It appears you have already completed this process and you can access the store.'
-						),
-						_react2.default.createElement(
-							'p',
-							null,
-							_react2.default.createElement(_E.Button, { type: 'success', size: 'lg', component: _react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/Storefront' },
-									'Let\'s go Shopping!'
-								) })
-						)
-					);
-				}
-
 				if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21287,7 +21262,7 @@
 				if (!this.state.adminEndMatched) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21303,7 +21278,7 @@
 				if (this.state.loadingUser) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21315,7 +21290,7 @@
 				if (this.state.registrationFinished) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21325,6 +21300,34 @@
 							'h3',
 							null,
 							'Your registration is complete'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							_react2.default.createElement(_E.Button, { type: 'success', size: 'lg', component: _react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/Storefront' },
+									'Let\'s go Shopping!'
+								) })
+						)
+					);
+				}
+
+				// should never ever get here.... but just in case!
+				// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
+				if (this.state.matchedUser && this.state.isUserVerified) {
+					return _react2.default.createElement(
+						'div',
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
+						_react2.default.createElement(
+							'h1',
+							null,
+							'You\'re already registered!'
+						),
+						_react2.default.createElement(
+							'h3',
+							null,
+							'It appears you have already completed this process and you can access the store.'
 						),
 						_react2.default.createElement(
 							'p',
@@ -26189,6 +26192,10 @@
 				}
 			}).catch(function (error) {
 				if (error.data && error.data.apiResponse.indexOf('retry scan') > -1) {
+
+					Big.warn('PRINT_SCAN_FAILED');
+					Big.log(error.data);
+
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.PRINT_SCAN_FAILED,
 						data: error.data

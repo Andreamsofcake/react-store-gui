@@ -57,8 +57,6 @@ class Customer_MembershipRegister extends Component {
 			numPrintsCaptured: 0,
 			registrationInProcess: false,
 			registrationFinished: false,
-			//isPrintVerified: false,
-			//isUserVerified: false,
 			loadingUser: false
 		}
 		if (obj && typeof obj === 'object') {
@@ -165,9 +163,12 @@ class Customer_MembershipRegister extends Component {
   
 	checkForCustomerLoad(state) {
 		startGeneralIdleTimer(this.props.location.pathname);
-		if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
+		if (state.isUserVerified && state.isPrintVerified && state.membership_id && state.adminEndMatched) {
+			Big.warn('checkForCustomerLoad ... load the user!');
 			state.loadingUser = true;
 			CL_Actions.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
+		} else {
+			Big.warn('checkForCustomerLoad ... DO NOT load the user????');
 		}
 		this.setState(state);
 	}
@@ -206,7 +207,7 @@ class Customer_MembershipRegister extends Component {
 
 		if (!this.state.machineInfo) {
 			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
 					<h1>Loading machine info, one moment please...</h1>
 					<_E.Spinner size="lg" />
 				</div>
@@ -215,7 +216,7 @@ class Customer_MembershipRegister extends Component {
 		
 		if (!this.state.adminBeginMatched) {
 			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
 					<h1>OK before we get started, let's verify an admin is with you.</h1>
 					<PrintMatchAdmin
 						token={this.state.token}
@@ -229,7 +230,7 @@ class Customer_MembershipRegister extends Component {
 
 		if (!this.state.matchedUser) {
 			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
 					<h1>Please swipe your membership card to get started.</h1>
 					  <CardMatch
 						autostart={true}
@@ -242,21 +243,9 @@ class Customer_MembershipRegister extends Component {
 			);
 		}
 		
-		// should never ever get here.... but just in case!
-		// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
-		if (this.state.matchedUser && this.state.isUserVerified) {
-			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
-					<h1>You're already registered!</h1>
-					<h3>It appears you have already completed this process and you can access the store.</h3>
-					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
-				</div>
-			);
-		}
-		
 		if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {
 			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
 					<h1>Let's record your finger prints. This is finger (or thumb) #{this.state.numPrintsCaptured + 1}.</h1>
 					{this.renderCapturePrint()}
 				</div>
@@ -265,7 +254,7 @@ class Customer_MembershipRegister extends Component {
 		
 		if (!this.state.adminEndMatched) {
 			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
 					<h1>OK we're done recording your prints, let's verify an admin is still with you.</h1>
 					<PrintMatchAdmin
 						token={this.state.token}
@@ -277,7 +266,7 @@ class Customer_MembershipRegister extends Component {
 		
 		if (this.state.loadingUser) {
 			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
 					<h1>Processing your registration, one moment please...</h1>
 				</div>
 			);
@@ -285,7 +274,7 @@ class Customer_MembershipRegister extends Component {
 
 		if (this.state.registrationFinished) {
 			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
 					<h1>All done!</h1>
 					<h3>Your registration is complete</h3>
 					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
@@ -293,6 +282,18 @@ class Customer_MembershipRegister extends Component {
 			);
 		}
 
+		// should never ever get here.... but just in case!
+		// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
+		if (this.state.matchedUser && this.state.isUserVerified) {
+			return (
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
+					<h1>You're already registered!</h1>
+					<h3>It appears you have already completed this process and you can access the store.</h3>
+					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
+				</div>
+			);
+		}
+		
 		return (
 			<div>
 				<p>something funny happened, we should not get to here!</p>
