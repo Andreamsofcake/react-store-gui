@@ -42,7 +42,7 @@ module.exports = function(request, reply) {
 				customer: user,
 				verificationData: {
 					client: MI.registrationData.client,
-					verified_id: adminPrintUser.userid.replace('admin-') // machine GUI tags admin user ids in the bio-graph with admin-*
+					verified_id: adminPrintUser.userid.replace('admin-', '') // machine GUI tags admin user ids in the bio-graph with admin-*
 				}
 				
 			}, (err, response) => {
