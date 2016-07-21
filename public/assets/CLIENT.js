@@ -10753,15 +10753,15 @@
 					if (this.state.loadingUser) {
 						return _react2.default.createElement(
 							'div',
-							null,
+							{ style: { maxWidth: '60%', margin: '10em auto 1em', textAlign: 'center' } },
 							_react2.default.createElement(
 								'h1',
 								null,
 								'One Moment Please....'
 							),
 							_react2.default.createElement(
-								'p',
-								{ style: { textAlign: 'center' } },
+								'div',
+								null,
 								_react2.default.createElement(_E.Spinner, { size: 'lg' })
 							)
 						);

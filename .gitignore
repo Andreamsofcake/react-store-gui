@@ -44,3 +44,4 @@ mysql-tool
 mysql-tool/*
 *_map.txt
 bootup-data-retrieval.json
+app/components/Customer/OLD/*

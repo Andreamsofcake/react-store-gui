@@ -189,9 +189,9 @@ class Customer_MembershipAccess extends Component {
 		if (this.state.matchedUser && this.state.isUserVerified && this.state.isPrintVerified) {
 			if (this.state.loadingUser) {
 				return (
-					<div>
+					<div style={{maxWidth:'60%',margin: '10em auto 1em', textAlign: 'center'}}>
 						<h1>One Moment Please....</h1>
-						<p style={{textAlign: 'center'}}><_E.Spinner size="lg" /></p>
+						<div><_E.Spinner size="lg" /></div>
 					</div>
 				);
 			}
