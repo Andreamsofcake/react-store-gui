@@ -10822,6 +10822,7 @@
 				var _this2 = this;
 
 				Big.log('cardMatchCallback');
+				Big.log({ result: result, api: api, matchedUser: matchedUser, membership_id: membership_id });
 				if (result) {
 					(function () {
 

@@ -127,6 +127,7 @@ class Customer_MembershipAccess extends Component {
 
 	cardMatchCallback(result, api, matchedUser, membership_id) {
 		Big.log('cardMatchCallback');
+		Big.log({result, api, matchedUser, membership_id});
 		if (result) {
 			
 			let client = TsvStore.getMachineInfo().client;
