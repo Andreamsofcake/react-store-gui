@@ -33,6 +33,7 @@ class PrintRegister extends Component {
 			num_scans: 0,
 			scanStep: 0,
 			scanInProcess: false,
+			enrollmentFailed: false,
 			registrationIsFinished: false,
 			alreadyRegisteredPrint: false,
 			error_msg: '',
@@ -79,7 +80,9 @@ class PrintRegister extends Component {
 		if (this.props.location) startGeneralIdleTimer(this.props.location.pathname);
 
 		// we will be building up state here...
-		let state = this.state;
+		let state = this.state
+			, state_cb
+			;
 		
 		state.apiResponses = PrintReaderStore.getApiResponses();
 		
@@ -142,6 +145,13 @@ class PrintRegister extends Component {
 			state.status_msg = '';
 			state.error_msg = 'Scan failed, try again.';
 		}
+		
+		if (event.type === appConstants.PRINT_SCAN_ENROLLENT_FAILED) {
+			state.scanInProcess = false;
+			state.enrollmentFailed = true;
+			state.status_msg = '';
+			state.error_msg = 'Print register process failed, please try again.';
+		}
 
 		// print successfully registered, finish and callback
 		if (event.type === appConstants.PRINT_REGISTERED) {
@@ -185,6 +195,17 @@ class PrintRegister extends Component {
 		if (!this.state.user || !this.state.token) {
 			return (
 				<_E.Alert type="danger"><span style={{fontSize:'1.65em', marginTop: '1em'}}>Misconfiguration, this component needs a user and token.</span></_E.Alert>
+			);
+		}
+		
+		if (this.state.enrollmentFailed) {
+			return (
+				<div style={{textAlign:'center', marginTop: '1em'}}>
+					<h1>Sorry, we have a problem.</h1>
+					<p>Let's start over with that same finger (or thumb).</p>
+					
+					<p><_E.Button type="primary" size="lg" onClick={this.tryAgain.bind(this)}>Try Again</_E.Button></p>
+				</div>
 			);
 		}
 		

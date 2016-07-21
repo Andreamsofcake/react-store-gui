@@ -17247,6 +17247,7 @@
 		PRINT_SCANNED_2: null,
 		PRINT_SCANNED_3: null,
 		PRINT_SCAN_FAILED: null,
+		PRINT_SCAN_ENROLLENT_FAILED: null,
 		PRINT_REGISTERED: null,
 		PRINT_MATCHED: null,
 		PRINT_NOT_MATCHED: null,
@@ -18377,7 +18378,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _PrintReaderActions = __webpack_require__(133);
+	var _PrintReaderActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../actions/PrintReaderActions\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var _PrintReaderActions2 = _interopRequireDefault(_PrintReaderActions);
 
@@ -18432,6 +18433,7 @@
 					num_scans: 0,
 					scanStep: 0,
 					scanInProcess: false,
+					enrollmentFailed: false,
 					registrationIsFinished: false,
 					alreadyRegisteredPrint: false,
 					error_msg: '',
@@ -18490,7 +18492,8 @@
 				if (this.props.location) (0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
 
 				// we will be building up state here...
-				var state = this.state;
+				var state = this.state,
+				    state_cb = void 0;
 
 				state.apiResponses = _PrintReaderStore2.default.getApiResponses();
 
@@ -18552,6 +18555,13 @@
 					state.error_msg = 'Scan failed, try again.';
 				}
 
+				if (event.type === _appConstants2.default.PRINT_SCAN_ENROLLENT_FAILED) {
+					state.scanInProcess = false;
+					state.enrollmentFailed = true;
+					state.status_msg = '';
+					state.error_msg = 'Print register process failed, please try again.';
+				}
+
 				// print successfully registered, finish and callback
 				if (event.type === _appConstants2.default.PRINT_REGISTERED) {
 
@@ -18602,6 +18612,32 @@
 							'span',
 							{ style: { fontSize: '1.65em', marginTop: '1em' } },
 							'Misconfiguration, this component needs a user and token.'
+						)
+					);
+				}
+
+				if (this.state.enrollmentFailed) {
+					return _react2.default.createElement(
+						'div',
+						{ style: { textAlign: 'center', marginTop: '1em' } },
+						_react2.default.createElement(
+							'h1',
+							null,
+							'Sorry, we have a problem.'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							'Let\'s start over with that same finger (or thumb).'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							_react2.default.createElement(
+								_E.Button,
+								{ type: 'primary', size: 'lg', onClick: this.tryAgain.bind(this) },
+								'Try Again'
+							)
 						)
 					);
 				}
@@ -20350,7 +20386,7 @@
 
 	var _E = _interopRequireWildcard(_elemental);
 
-	var _PrintReaderActions = __webpack_require__(133);
+	var _PrintReaderActions = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../../actions/PrintReaderActions\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 
 	var _PrintReaderActions2 = _interopRequireDefault(_PrintReaderActions);
 
@@ -26175,140 +26211,7 @@
 	}
 
 /***/ },
-/* 133 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	var _AppDispatcher = __webpack_require__(127);
-
-	var _AppDispatcher2 = _interopRequireDefault(_AppDispatcher);
-
-	var _appConstants = __webpack_require__(81);
-
-	var _appConstants2 = _interopRequireDefault(_appConstants);
-
-	var _axios = __webpack_require__(48);
-
-	var _axios2 = _interopRequireDefault(_axios);
-
-	var _BigLogger = __webpack_require__(1);
-
-	var _BigLogger2 = _interopRequireDefault(_BigLogger);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	//import SocketAPI from '../utils/SocketAPI'
-
-	var Big = new _BigLogger2.default('PrintReaderActions');
-	//import { browserHistory } from 'react-router'
-
-	var PrintReaderActions = {
-		grabPrint: function grabPrint(config) {
-			_axios2.default.post('/api/print-reader/grab-print', config).then(function (response) {
-				// uh, daaaaaable check?
-				if (response.data && response.data.status && response.data.status == 'ok') {
-					_AppDispatcher2.default.handleServerAction({
-						actionType: _appConstants2.default['PRINT_SCANNED_' + config.sequence],
-						data: response.data
-					});
-				} else {
-					if (response.data && response.data.error) {
-						Big.error('failed to register print, error:');
-						Big.log(response.data.error);
-					} else {
-						Big.error('failed to register print, no data returned. full response:');
-						Big.log(response);
-					}
-				}
-			}).catch(function (error) {
-				if (error.data && error.data.apiResponse.indexOf('retry scan') > -1) {
-
-					Big.warn('PRINT_SCAN_FAILED');
-					Big.log(error.data);
-
-					_AppDispatcher2.default.handleServerAction({
-						actionType: _appConstants2.default.PRINT_SCAN_FAILED,
-						data: error.data
-					});
-				} else {
-					Big.error('failed to register print, call chain error probably check component tree');
-					Big.log(error);
-					Big.throw(error);
-				}
-			});
-		},
-		registerPrint: function registerPrint(config) {
-			_axios2.default.post('/api/print-reader/register-print', config // .post() expects and passes this as a json object
-			).then(function (response) {
-				// uh, daaaaaable check?
-				if (response.data && response.data.status && response.data.status == 'ok') {
-					_AppDispatcher2.default.handleServerAction({
-						actionType: config.ACTION || _appConstants2.default.PRINT_REGISTERED,
-						data: response.data
-					});
-				} else {
-					if (response.data && response.data.error) {
-						Big.error('failed to register print, error:');
-						Big.log(response.data.error);
-					} else {
-						Big.error('failed to register print, no data returned. full response:');
-						Big.log(response);
-					}
-				}
-			}).catch(function (error) {
-				Big.error('failed to register print, call chain error probably check component tree');
-				Big.log(error);
-				//Big.throw(error);
-				throw error; // Big.* loses the call stack :(
-			});
-		},
-		matchPrint: function matchPrint(config) {
-			_axios2.default.post('/api/print-reader/match-print', config // .post() expects and passes this as a json object
-			).then(function (response) {
-				// uh, daaaaaable check?
-				if (response.data && response.data.status && response.data.status == 'ok') {
-					_AppDispatcher2.default.handleServerAction({
-						actionType: response.data.matchedUser ? _appConstants2.default.PRINT_MATCHED : _appConstants2.default.PRINT_NOT_MATCHED,
-						data: response.data
-					});
-				} else {
-					if (response.data && response.data.error) {
-						Big.error('failed to match print, error:');
-						Big.log(response.data.error);
-					} else {
-						Big.error('failed to match print, no data returned. full response:');
-						Big.log(response);
-					}
-				}
-			}).catch(function (error) {
-				if (error.data && error.data.apiResponse) {
-					_AppDispatcher2.default.handleServerAction({
-						actionType: _appConstants2.default.PRINT_NOT_MATCHED,
-						data: error.data
-					});
-				} else {
-					Big.error('failed to match print, call chain error probably check component tree');
-					Big.log(error);
-					//Big.throw(error);
-				}
-			});
-		},
-		clearApiResponses: function clearApiResponses() {
-			_AppDispatcher2.default.handleServerAction({
-				actionType: _appConstants2.default.CLEAR_PRINT_MODULE_API_RESPONSES
-			});
-		},
-		clearDataBuffer: function clearDataBuffer() {
-			_AppDispatcher2.default.handleServerAction({
-				actionType: _appConstants2.default.CLEAR_PRINT_MODULE_DATA
-			});
-		}
-	};
-
-	module.exports = PrintReaderActions;
-
-/***/ },
+/* 133 */,
 /* 134 */
 /***/ function(module, exports, __webpack_require__) {
 

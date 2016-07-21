@@ -40,6 +40,17 @@ var PrintReaderActions = {
 					actionType: appConstants.PRINT_SCAN_FAILED,
 					data: error.data
 				});
+
+			if (error.data && error.data.apiResponse.indexOf('retry from start') > -1) {
+
+				Big.warn('PRINT_SCAN_ENROLLENT_FAILED');
+				Big.log(error.data);
+
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.PRINT_SCAN_ENROLLENT_FAILED,
+					data: error.data
+				});
+
 			} else {
 				Big.error('failed to register print, call chain error probably check component tree');
 				Big.log(error);
