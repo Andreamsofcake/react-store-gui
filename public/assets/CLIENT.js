@@ -10961,7 +10961,7 @@
 									canRetry: true,
 									showMessages: true,
 									token: this.state.token,
-									matchCallback: this.cardMatchCallback
+									matchCallback: this.cardMatchCallback.bind(this)
 								})
 							)
 						),
@@ -10982,7 +10982,7 @@
 									showMessages: true,
 									user: this.state.matchedUser,
 									token: this.state.token,
-									matchCallback: this.printMatchCallback
+									matchCallback: this.printMatchCallback.bind(this)
 								})
 							)
 						)
