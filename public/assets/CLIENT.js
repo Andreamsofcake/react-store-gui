@@ -18291,17 +18291,11 @@
 
 			// MUST call super() before any this.*
 			return _possibleConstructorReturn(this, Object.getPrototypeOf(PrintMatchAdmin).call(this, props, context));
-
-			//this.state = this.getDefaultState({ user: this.props.user, token: this.props.token });
-			//this._onPrintReaderStoreChange = this._onPrintReaderStoreChange.bind(this);
 		}
 
 		_createClass(PrintMatchAdmin, [{
 			key: 'render',
 			value: function render() {
-
-				Big.log('props?');
-				Big.log(this.props);
 
 				return _react2.default.createElement(_PrintMatch2.default, {
 					isAdminMatch: true,
