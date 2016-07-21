@@ -88,9 +88,16 @@ var PrintReaderActions = {
 			}
 		})
 		.catch(error => {
-			Big.error('failed to match print, call chain error probably check component tree');
-			Big.log(error);
-			//Big.throw(error);
+			if (error.data && error.data.apiResponse) {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.PRINT_NOT_MATCHED,
+					data: error.data
+				});
+			} else {
+				Big.error('failed to match print, call chain error probably check component tree');
+				Big.log(error);
+				//Big.throw(error);
+			}
 		})
 	},
 	
