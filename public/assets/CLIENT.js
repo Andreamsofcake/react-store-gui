@@ -26520,7 +26520,7 @@
 				if (error.data && error.data.apiResponse.indexOf('retry scan') > -1) {
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.PRINT_SCAN_FAILED,
-						data: response.data
+						data: error.data
 					});
 				} else {
 					Big.error('failed to register print, call chain error probably check component tree');

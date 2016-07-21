@@ -30,9 +30,11 @@ module.exports = function(request, reply) {
 	var MI = CheckRegistration(true);
 	MI = MI && MI.registrationData ? MI.registrationData : false;
 	if (MI) {
-		data.vendor_id = MI.vendor_id;
-		data._id = MI._id;
+		//data.vendor_id = MI.vendor_id;
+		//data._id = MI._id;
 		//data.MI = MI;
+		// pass it ALL man.... come on. thththtptptpttphtpthpt
+		data = MI;
 	}
 	return reply({ status: 'ok', data }).code(200);
 	
