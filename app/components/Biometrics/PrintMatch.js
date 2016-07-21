@@ -32,7 +32,7 @@ class PrintMatch extends Component {
 		// MUST call super() before any this.*
 		super(props, context);
 
-		this.state = this.getDefaultState({ user: this.props.user, token: this.props.token });
+		this.state = this.getDefaultState({ user: this.props.user, token: this.props.token, autostart: this.props.autostart });
 		this._onPrintReaderStoreChange = this._onPrintReaderStoreChange.bind(this);
 		
 		this._isMounted = false;
@@ -95,6 +95,10 @@ class PrintMatch extends Component {
 				user: nextprops.user,
 				token: nextprops.token
 			};
+
+			if (nextprops.hasOwnProperty('autostart')) {
+				state.autostart = nextprops.autostart;
+			}
 			
 			if (this.state.printScanned && !this.state.matchingIsFinished) {
 				cb = this.startMatchingProcess.bind(this);
@@ -316,7 +320,7 @@ class PrintMatch extends Component {
 		
 		if (
 			// regular start button:
-			(!this.state.scannedOnce && !this.props.autostart)
+			(!this.state.scannedOnce && !this.state.autostart)
 			// after at least one scan and no match:
 			|| (this.state.scannedOnce && this.props.canRetry && !this.state.scanInProcess && !this.state.matchInProcess && !this.state.isMatched)
 		

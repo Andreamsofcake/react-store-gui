@@ -18289,22 +18289,36 @@
 		function PrintMatchAdmin(props, context) {
 			_classCallCheck(this, PrintMatchAdmin);
 
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PrintMatchAdmin).call(this, props, context));
 			// MUST call super() before any this.*
-			return _possibleConstructorReturn(this, Object.getPrototypeOf(PrintMatchAdmin).call(this, props, context));
+
+
+			_this.state = _this.props;
+			return _this;
 		}
 
 		_createClass(PrintMatchAdmin, [{
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(nextprops) {
+				if (nextprops) {
+					var state = this.state;
+					Object.keys(nextprops).forEach(function (K) {
+						state[K] = nextprops[K];
+					});
+				}
+			}
+		}, {
 			key: 'render',
 			value: function render() {
 
 				return _react2.default.createElement(_PrintMatch2.default, {
 					isAdminMatch: true,
-					autostart: this.props.autostart,
-					canRetry: this.props.canRetry,
-					showMessages: this.props.showMessages,
-					user: this.props.user,
-					token: this.props.token,
-					matchCallback: this.props.matchCallback
+					autostart: this.state.autostart,
+					canRetry: this.state.canRetry,
+					showMessages: this.state.showMessages,
+					user: this.state.user,
+					token: this.state.token,
+					matchCallback: this.state.matchCallback
 				});
 			}
 		}]);
@@ -20379,7 +20393,7 @@
 			// MUST call super() before any this.*
 
 
-			_this.state = _this.getDefaultState({ user: _this.props.user, token: _this.props.token });
+			_this.state = _this.getDefaultState({ user: _this.props.user, token: _this.props.token, autostart: _this.props.autostart });
 			_this._onPrintReaderStoreChange = _this._onPrintReaderStoreChange.bind(_this);
 
 			_this._isMounted = false;
@@ -20457,6 +20471,10 @@
 						user: nextprops.user,
 						token: nextprops.token
 					};
+
+					if (nextprops.hasOwnProperty('autostart')) {
+						state.autostart = nextprops.autostart;
+					}
 
 					if (this.state.printScanned && !this.state.matchingIsFinished) {
 						cb = this.startMatchingProcess.bind(this);
@@ -20700,7 +20718,7 @@
 
 				if (
 				// regular start button:
-				!this.state.scannedOnce && !this.props.autostart ||
+				!this.state.scannedOnce && !this.state.autostart ||
 				// after at least one scan and no match:
 				this.state.scannedOnce && this.props.canRetry && !this.state.scanInProcess && !this.state.matchInProcess && !this.state.isMatched) {
 
@@ -21297,6 +21315,7 @@
 						),
 						_react2.default.createElement(_AdminPrintMatch2.default, {
 							token: this.state.token,
+							autostart: false,
 							matchCallback: this.adminPrintMatchCallback.bind(this, 'end')
 						})
 					);

@@ -276,6 +276,7 @@ class Customer_MembershipRegister extends Component {
 					<h1>OK we're done recording your prints, let's verify an admin is still with you.</h1>
 					<PrintMatchAdmin
 						token={this.state.token}
+						autostart={false}
 						matchCallback={this.adminPrintMatchCallback.bind(this, 'end')}
 						/>
 				</div>

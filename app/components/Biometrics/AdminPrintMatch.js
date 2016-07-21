@@ -9,6 +9,16 @@ class PrintMatchAdmin extends Component {
 	constructor(props, context) {
 		// MUST call super() before any this.*
 		super(props, context);
+		this.state = this.props;
+	}
+	
+	componentWillReceiveProps(nextprops) {
+		if (nextprops) {
+			var state = this.state;
+			Object.keys(nextprops).forEach( K => {
+				state[K] = nextprops[K];
+			});
+		}
 	}
 
 	render() {
@@ -16,12 +26,12 @@ class PrintMatchAdmin extends Component {
 		return (
 			<PrintMatch
 				isAdminMatch={true}
-				autostart={this.props.autostart}
-				canRetry={this.props.canRetry}
-				showMessages={this.props.showMessages}
-				user={this.props.user}
-				token={this.props.token}
-				matchCallback={this.props.matchCallback}
+				autostart={this.state.autostart}
+				canRetry={this.state.canRetry}
+				showMessages={this.state.showMessages}
+				user={this.state.user}
+				token={this.state.token}
+				matchCallback={this.state.matchCallback}
 				/>
 		);
 	}
