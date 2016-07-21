@@ -21047,6 +21047,11 @@
 				this.setState(this.getDefaultState(state));
 			}
 		}, {
+			key: 'cancel',
+			value: function cancel() {
+				_reactRouter.browserHistory.push('/Storefront');
+			}
+		}, {
 			key: 'adminPrintMatchCallback',
 			value: function adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
 				var state = this.state;
@@ -21145,7 +21150,7 @@
 				if (!this.state.machineInfo) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21158,7 +21163,7 @@
 				if (!this.state.adminBeginMatched) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21186,7 +21191,7 @@
 				if (!this.state.matchedUser) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21207,7 +21212,7 @@
 				if (this.state.matchedUser && this.state.isUserVerified) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21233,7 +21238,7 @@
 				if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21241,14 +21246,14 @@
 							this.state.numPrintsCaptured + 1,
 							'.'
 						),
-						this.renderScanRoot()
+						this.renderCapturePrint()
 					);
 				}
 
 				if (!this.state.adminEndMatched) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21264,7 +21269,7 @@
 				if (this.state.loadingUser) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21276,7 +21281,7 @@
 				if (this.state.registrationFinished) {
 					return _react2.default.createElement(
 						'div',
-						{ style: { textAlign: 'center' } },
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
 							null,
@@ -21358,7 +21363,7 @@
 							null,
 							'"Start"'
 						),
-						' button when you are ready to begin.'
+						' button when you are ready to scan your fingerprint.'
 					),
 					_react2.default.createElement(
 						'p',
@@ -21369,7 +21374,7 @@
 							null,
 							'"Cancel"'
 						),
-						' button to cancel and return to the employee list.'
+						' button to cancel registration.'
 					),
 					_react2.default.createElement(
 						'div',
@@ -21386,18 +21391,17 @@
 						' ',
 						!this.state.registrationIsFinished ? _react2.default.createElement(
 							_E.Button,
-							{ size: 'lg', type: 'danger', onClick: this.reset.bind(this) },
+							{ size: 'lg', type: 'danger', onClick: this.cancel.bind(this) },
 							_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
 							'Cancel'
-						) : _react2.default.createElement(
-							_E.Button,
-							{ size: 'lg', type: 'primary', onClick: this.reset.bind(this) },
-							'Home'
-						)
+						) : null
 					),
 					this.renderScanRoot()
 				);
 			}
+
+			// this extra function allows hiding of BiometricsPrintRegister until "start" is pressed each time.
+
 		}, {
 			key: 'renderScanRoot',
 			value: function renderScanRoot() {

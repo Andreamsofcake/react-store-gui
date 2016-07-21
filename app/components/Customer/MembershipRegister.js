@@ -113,6 +113,10 @@ class Customer_MembershipRegister extends Component {
 		let state = this.setupMatchedUserData();
 		this.setState( this.getDefaultState(state) );
 	}
+	
+	cancel() {
+		browserHistory.push('/Storefront');
+	}
 
 	adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
 		let state = this.state;
@@ -201,7 +205,7 @@ class Customer_MembershipRegister extends Component {
 
 		if (!this.state.machineInfo) {
 			return (
-				<div style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
 					<h1>Loading machine info, one moment please...</h1>
 					<_E.Spinner size="lg" />
 				</div>
@@ -210,7 +214,7 @@ class Customer_MembershipRegister extends Component {
 		
 		if (!this.state.adminBeginMatched) {
 			return (
-				<div style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
 					<h1>OK before we get started, let's verify an admin is with you.</h1>
 					<PrintMatchAdmin
 						token={this.state.token}
@@ -224,7 +228,7 @@ class Customer_MembershipRegister extends Component {
 
 		if (!this.state.matchedUser) {
 			return (
-				<div style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
 					<h1>Please swipe your membership card to get started.</h1>
 					  <CardMatch
 						autostart={true}
@@ -241,7 +245,7 @@ class Customer_MembershipRegister extends Component {
 		// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
 		if (this.state.matchedUser && this.state.isUserVerified) {
 			return (
-				<div style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
 					<h1>You're already registered!</h1>
 					<h3>It appears you have already completed this process and you can access the store.</h3>
 					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
@@ -251,16 +255,16 @@ class Customer_MembershipRegister extends Component {
 		
 		if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {
 			return (
-				<div style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
 					<h1>Let's record your finger prints. This is finger (or thumb) #{this.state.numPrintsCaptured + 1}.</h1>
-					{this.renderScanRoot()}
+					{this.renderCapturePrint()}
 				</div>
 			);
 		}
 		
 		if (!this.state.adminEndMatched) {
 			return (
-				<div style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
 					<h1>OK we're done recording your prints, let's verify an admin is still with you.</h1>
 					<PrintMatchAdmin
 						token={this.state.token}
@@ -272,7 +276,7 @@ class Customer_MembershipRegister extends Component {
 		
 		if (this.state.loadingUser) {
 			return (
-				<div style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
 					<h1>Processing your registration, one moment please...</h1>
 				</div>
 			);
@@ -280,7 +284,7 @@ class Customer_MembershipRegister extends Component {
 
 		if (this.state.registrationFinished) {
 			return (
-				<div style={{textAlign: 'center'}}>
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '10em auto 1em'}}>
 					<h1>All done!</h1>
 					<h3>Your registration is complete</h3>
 					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
@@ -328,8 +332,8 @@ class Customer_MembershipRegister extends Component {
 		return (
 			<div style={{marginTop: '2em'}}>
 			
-				<p style={{fontSize: '1.35em'}}>Press the <strong>"Start"</strong> button when you are ready to begin.</p>
-				<p style={{fontSize: '1.35em'}}>Click the <strong>"Cancel"</strong> button to cancel and return to the employee list.</p>
+				<p style={{fontSize: '1.35em'}}>Press the <strong>"Start"</strong> button when you are ready to scan your fingerprint.</p>
+				<p style={{fontSize: '1.35em'}}>Click the <strong>"Cancel"</strong> button to cancel registration.</p>
 			
 				<div>
 
@@ -340,10 +344,8 @@ class Customer_MembershipRegister extends Component {
 					{' '}
 
 					{!this.state.registrationIsFinished ? (
-						<_E.Button size="lg" type="danger" onClick={this.reset.bind(this)}><_E.Glyph icon="circle-slash" />Cancel</_E.Button>
-					) : (
-						<_E.Button size="lg" type="primary" onClick={this.reset.bind(this)}>Home</_E.Button>
-					)}
+						<_E.Button size="lg" type="danger" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />Cancel</_E.Button>
+					) : null}
 
 				</div>
 				
@@ -353,6 +355,7 @@ class Customer_MembershipRegister extends Component {
 		);
 	}
 	
+	// this extra function allows hiding of BiometricsPrintRegister until "start" is pressed each time.
 	renderScanRoot() {
 		if (!this.state.registrationInProcess) {
 			return null;
