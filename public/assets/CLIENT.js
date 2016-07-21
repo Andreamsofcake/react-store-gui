@@ -21005,7 +21005,7 @@
 					adminEndUser: null,
 					isUserVerified: false,
 					token: (0, _utils.uniq)()
-				}, _defineProperty(_def, 'matchedUser', null), _defineProperty(_def, 'membership_id', null), _defineProperty(_def, 'printRegistered1', false), _defineProperty(_def, 'printRegistered2', false), _defineProperty(_def, 'printRegistered3', false), _defineProperty(_def, 'numPrintsCaptured', 0), _defineProperty(_def, 'registrationInProcess', false), _defineProperty(_def, 'registrationFinished', false), _defineProperty(_def, 'loadingUser', false), _def);
+				}, _defineProperty(_def, 'matchedUser', null), _defineProperty(_def, 'membership_id', null), _defineProperty(_def, 'printRegistered1', false), _defineProperty(_def, 'printRegistered2', false), _defineProperty(_def, 'printRegistered3', false), _defineProperty(_def, 'numPrintsCaptured', 0), _defineProperty(_def, 'loadCustomerCheckFailed', false), _defineProperty(_def, 'registrationInProcess', false), _defineProperty(_def, 'registrationFinished', false), _defineProperty(_def, 'loadingUser', false), _def);
 				if (obj && (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object') {
 					Object.keys(obj).forEach(function (K) {
 						def[K] = obj[K];
@@ -21093,7 +21093,10 @@
 						break;
 
 					case 'end':
+						Big.warn('adminPrintMatchCallback END');
 						if (matched) {
+							Big.log('admin matched! lettuce check for customer load. matched admin user details:');
+							Big.log(user);
 							state.isUserVerified = true;
 							state.adminEndMatched = true;
 							state.adminEndUser = user;
@@ -21129,11 +21132,13 @@
 			key: 'checkForCustomerLoad',
 			value: function checkForCustomerLoad(state) {
 				(0, _TsvUtils.startGeneralIdleTimer)(this.props.location.pathname);
-				if (state.isUserVerified && state.isPrintVerified && state.membership_id && state.adminEndMatched) {
+				if (state.isUserVerified && state.membership_id && state.adminEndMatched) {
 					Big.warn('checkForCustomerLoad ... load the user!');
 					state.loadingUser = true;
 					_CustomerLoginActions2.default.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
 				} else {
+					state.loadingUser = false;
+					state.loadCustomerCheckFailed = true;
 					Big.warn('checkForCustomerLoad ... DO NOT load the user????');
 				}
 				this.setState(state);
@@ -21177,6 +21182,34 @@
 		}, {
 			key: 'render',
 			value: function render() {
+
+				// should never ever get here.... but just in case!
+				// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
+				if (!this.state.loadCustomerCheckFailed && this.state.matchedUser && this.state.isUserVerified) {
+					return _react2.default.createElement(
+						'div',
+						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
+						_react2.default.createElement(
+							'h1',
+							null,
+							'You\'re already registered!'
+						),
+						_react2.default.createElement(
+							'h3',
+							null,
+							'It appears you have already completed this process and you can access the store.'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							_react2.default.createElement(_E.Button, { type: 'success', size: 'lg', component: _react2.default.createElement(
+									_reactRouter.Link,
+									{ to: '/Storefront' },
+									'Let\'s go Shopping!'
+								) })
+						)
+					);
+				}
 
 				if (!this.state.machineInfo) {
 					return _react2.default.createElement(
@@ -21294,34 +21327,6 @@
 							'h3',
 							null,
 							'Your registration is complete'
-						),
-						_react2.default.createElement(
-							'p',
-							null,
-							_react2.default.createElement(_E.Button, { type: 'success', size: 'lg', component: _react2.default.createElement(
-									_reactRouter.Link,
-									{ to: '/Storefront' },
-									'Let\'s go Shopping!'
-								) })
-						)
-					);
-				}
-
-				// should never ever get here.... but just in case!
-				// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
-				if (this.state.matchedUser && this.state.isUserVerified) {
-					return _react2.default.createElement(
-						'div',
-						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
-						_react2.default.createElement(
-							'h1',
-							null,
-							'You\'re already registered!'
-						),
-						_react2.default.createElement(
-							'h3',
-							null,
-							'It appears you have already completed this process and you can access the store.'
 						),
 						_react2.default.createElement(
 							'p',

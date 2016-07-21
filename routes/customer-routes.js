@@ -52,7 +52,13 @@ module.exports = [
 		path: '/api/load-customer-by-membership-id',
 		handler: LoadCustomerByMembershipId
 	},
-
+	
+	{
+		method: 'post',
+		path: '/api/admin-verify-and-load-customer-by-membership-id',
+		handler: AdminVerifyLoadCustomerByMembershipId
+	},
+	
 	{
 		method: 'post',
 		path: '/api/spend-customer-credit',

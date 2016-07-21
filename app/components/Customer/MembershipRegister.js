@@ -55,6 +55,7 @@ class Customer_MembershipRegister extends Component {
 			printRegistered2: false,
 			printRegistered3: false,
 			numPrintsCaptured: 0,
+			loadCustomerCheckFailed: false,
 			registrationInProcess: false,
 			registrationFinished: false,
 			loadingUser: false
@@ -128,8 +129,11 @@ class Customer_MembershipRegister extends Component {
 				this.setState(state);
 				break;
 
-			case 'end':				
+			case 'end':
+				Big.warn('adminPrintMatchCallback END');
 				if (matched) {
+					Big.log('admin matched! lettuce check for customer load. matched admin user details:');
+					Big.log(user);
 					state.isUserVerified = true;
 					state.adminEndMatched = true;
 					state.adminEndUser = user;
@@ -163,11 +167,13 @@ class Customer_MembershipRegister extends Component {
   
 	checkForCustomerLoad(state) {
 		startGeneralIdleTimer(this.props.location.pathname);
-		if (state.isUserVerified && state.isPrintVerified && state.membership_id && state.adminEndMatched) {
+		if (state.isUserVerified && state.membership_id && state.adminEndMatched) {
 			Big.warn('checkForCustomerLoad ... load the user!');
 			state.loadingUser = true;
 			CL_Actions.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
 		} else {
+			state.loadingUser = false;
+			state.loadCustomerCheckFailed = true;
 			Big.warn('checkForCustomerLoad ... DO NOT load the user????');
 		}
 		this.setState(state);
@@ -205,6 +211,18 @@ class Customer_MembershipRegister extends Component {
 	
 	render() {
 
+		// should never ever get here.... but just in case!
+		// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
+		if (!this.state.loadCustomerCheckFailed && this.state.matchedUser && this.state.isUserVerified) {
+			return (
+				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
+					<h1>You're already registered!</h1>
+					<h3>It appears you have already completed this process and you can access the store.</h3>
+					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
+				</div>
+			);
+		}
+		
 		if (!this.state.machineInfo) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
@@ -282,18 +300,6 @@ class Customer_MembershipRegister extends Component {
 			);
 		}
 
-		// should never ever get here.... but just in case!
-		// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
-		if (this.state.matchedUser && this.state.isUserVerified) {
-			return (
-				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>You're already registered!</h1>
-					<h3>It appears you have already completed this process and you can access the store.</h3>
-					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
-				</div>
-			);
-		}
-		
 		return (
 			<div>
 				<p>something funny happened, we should not get to here!</p>
