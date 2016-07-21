@@ -129,7 +129,7 @@ class PrintMatch extends Component {
 			state.matchingInProcess = false;
 			state.isMatched = false;
 			
-			if (this.state.user && this.state.token) {
+			if (this.state.user && this.state.token && state.printScanned) {
 				stateCB = this.startMatchingProcess.bind(this);
 			}
 

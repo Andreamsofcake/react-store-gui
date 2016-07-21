@@ -20475,7 +20475,7 @@
 					state.matchingInProcess = false;
 					state.isMatched = false;
 
-					if (this.state.user && this.state.token) {
+					if (this.state.user && this.state.token && state.printScanned) {
 						stateCB = this.startMatchingProcess.bind(this);
 					}
 				}
@@ -21171,7 +21171,19 @@
 						_react2.default.createElement(_AdminPrintMatch2.default, {
 							token: this.state.token,
 							matchCallback: this.adminPrintMatchCallback.bind(this, 'begin')
-						})
+						}),
+						_react2.default.createElement(
+							'p',
+							null,
+							'state: ',
+							this.state.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'
+						),
+						_react2.default.createElement(
+							'p',
+							null,
+							'props: ',
+							this.props.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'
+						)
 					);
 				}
 
