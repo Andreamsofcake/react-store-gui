@@ -83,6 +83,9 @@ class PrintRegister extends Component {
 		if (event.type === appConstants.PRINT_MATCHED) {
 			// uh oh, we have already registered this print with this user!
 			state.alreadyRegisteredPrint = true;
+			if (this.props.alreadyRegisteredCallback && typeof this.props.alreadyRegisteredCallback === 'function') {
+				this.props.alreadyRegisteredCallback(true);
+			}
 		}
 
 		// handle inbound
@@ -154,8 +157,11 @@ class PrintRegister extends Component {
 	}
 	
 	reset(obj) {
-		PrintReaderActions.clearApiResponses();
-		PrintReaderActions.clearDataBuffer();
+		/// INVARIANT!!!!!!
+		setTimeout(() => {
+			PrintReaderActions.clearApiResponses();
+			PrintReaderActions.clearDataBuffer();
+		}, 250);
 		this.setState( this.getDefaultState(obj) );
 	}
 	

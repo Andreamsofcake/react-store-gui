@@ -18479,6 +18479,9 @@
 				if (event.type === _appConstants2.default.PRINT_MATCHED) {
 					// uh oh, we have already registered this print with this user!
 					state.alreadyRegisteredPrint = true;
+					if (this.props.alreadyRegisteredCallback && typeof this.props.alreadyRegisteredCallback === 'function') {
+						this.props.alreadyRegisteredCallback(true);
+					}
 				}
 
 				// handle inbound
@@ -18549,8 +18552,11 @@
 		}, {
 			key: 'reset',
 			value: function reset(obj) {
-				_PrintReaderActions2.default.clearApiResponses();
-				_PrintReaderActions2.default.clearDataBuffer();
+				/// INVARIANT!!!!!!
+				setTimeout(function () {
+					_PrintReaderActions2.default.clearApiResponses();
+					_PrintReaderActions2.default.clearDataBuffer();
+				}, 250);
 				this.setState(this.getDefaultState(obj));
 			}
 		}, {
@@ -21346,6 +21352,22 @@
 	   */
 			}
 
+			// this allows for a partial registration to return to finish...
+			// each "captured" print that is already registered will just skip to the next step
+
+		}, {
+			key: 'printAlreadyRegistered',
+			value: function printAlreadyRegistered(result) {
+				if (result) {
+					var state = this.state;
+					state.numPrintsCaptured += 1;
+					state['printRegistered' + state.numPrintsCaptured] = true;
+					this.setState(state);
+				} else {
+					Big.warn('got a printAlreadyRegistered callback with false result. logic error.');
+				}
+			}
+
 			/**** below here, methods imported from Admin/PrintRegistration *****/
 
 		}, {
@@ -21423,7 +21445,8 @@
 				return _react2.default.createElement(_PrintRegister2.default, {
 					user: this.state.matchedUser,
 					token: this.state.token,
-					registrationCallback: this.printRegistrationFinished.bind(this, this.state.numPrintsCaptured + 1)
+					registrationCallback: this.printRegistrationFinished.bind(this, this.state.numPrintsCaptured + 1),
+					alreadyRegisteredCallback: this.printAlreadyRegistered.bind(this)
 				});
 			}
 		}, {

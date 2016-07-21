@@ -313,12 +313,25 @@ class Customer_MembershipRegister extends Component {
 */
 
 	}
+	
+	// this allows for a partial registration to return to finish...
+	// each "captured" print that is already registered will just skip to the next step
+	printAlreadyRegistered(result) {
+		if (result) {
+			let state = this.state;
+			state.numPrintsCaptured += 1;
+			state['printRegistered' + state.numPrintsCaptured] = true;
+			this.setState(state);
+		} else {
+			Big.warn('got a printAlreadyRegistered callback with false result. logic error.');
+		}
+	}
 
 /**** below here, methods imported from Admin/PrintRegistration *****/
 
 	printRegistrationFinished(sequence, apiResponses) {
 		let state = this.state;
-		state['printRegistered'+sequence] = true;
+		state['printRegistered' + sequence] = true;
 		state.numPrintsCaptured += 1;
 		//state.loadingUser = false;
 		//this.checkForCustomerLoad(state);
@@ -364,6 +377,7 @@ class Customer_MembershipRegister extends Component {
 				user={this.state.matchedUser}
 				token={this.state.token}
 				registrationCallback={this.printRegistrationFinished.bind(this, this.state.numPrintsCaptured + 1)}
+				alreadyRegisteredCallback={this.printAlreadyRegistered.bind(this)}
 				/>
 		);
 	}
