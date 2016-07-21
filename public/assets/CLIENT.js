@@ -25982,7 +25982,11 @@
 		matchMembershipCard: function matchMembershipCard(config) {
 			_axios2.default.post('/api/card-reader/match-membership-card', config).then(function (response) {
 				// uh, daaaaaable check?
-				if (response.data && response.data.status && response.data.status == 'ok') {
+
+				Big.log('matchMembershipCard response');
+				Big.log(response);
+
+				if (response.data && response.data.status && response.data.status == 'ok' && response.data.data) {
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.MEMBERSHIP_CARD_MATCHED,
 						data: response.data

@@ -51,7 +51,11 @@ var CardReaderActions = {
 		)
 		.then(response => {
 			// uh, daaaaaable check?
-			if (response.data && response.data.status && response.data.status == 'ok') {
+			
+			Big.log('matchMembershipCard response');
+			Big.log(response);
+			
+			if (response.data && response.data.status && response.data.status == 'ok' && response.data.data) {
 				AppDispatcher.handleServerAction({
 					actionType: appConstants.MEMBERSHIP_CARD_MATCHED,
 					data: response.data

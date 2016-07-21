@@ -67,12 +67,21 @@ module.exports = function(request, reply) {
 			}
 
 			ProxyCall('customerGetByClientMembership', {
-				client: MI.client, // need to get client here....
+				client: MI.client,
 				membership_id: membership_id
 
 			}, (err, response) => {
 		
-				if (err) return reply({ status: 'err', error: err }).code(500);
+				if (err) {
+					debug('customerGetByClientMembership error ....');
+					debug(err);
+					debug(response);
+					// for some reason, the 404 passed from API is turned into a 500 on the way here....
+					if (err.error && err.error === 'customer not found') {
+						return reply({ status: 'ok', msg: 'no user matched' }).code(404);
+					}
+					return reply({ status: 'err', error: err }).code(500);
+				}
 
 				if (!response || !response.data || !response.data.item) {
 					return reply({ status: 'ok', msg: 'no user matched' }).code(404);
