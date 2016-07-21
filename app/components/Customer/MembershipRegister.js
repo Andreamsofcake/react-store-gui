@@ -6,6 +6,7 @@ import TsvStore from '../../stores/TsvStore' // for retrieving machine config
 
 import CardMatch from '../Biometrics/MembershipCardMatch'
 import PrintMatch from '../Biometrics/PrintMatch'
+import PrintRegister from '../Biometrics/PrintRegister'
 import MembershipRegister from './MembershipRegister'
 
 import appConstants from '../../constants/appConstants'
@@ -29,7 +30,10 @@ class Customer_MembershipRegister extends Component {
 		// MUST call super() before any this.*
 		super(props, context);
 
-		this.state = this.getDefaultState({ matchedUser: this.props.matchedUser });
+		this.state = this.getDefaultState({
+			matchedUser: this.props.matchedUser,
+			machineInfo: TsvStore.getMachineInfo()
+		});
 
 		this.printMatchCallback = this.printMatchCallback.bind(this);
 		this.cardMatchCallback = this.cardMatchCallback.bind(this);
@@ -44,11 +48,18 @@ class Customer_MembershipRegister extends Component {
 			adminBeginResponses: [],
 			adminEndResponses: [],
 			adminEndUser: null,
+			isUserVerified: false,
 			token: uniq(),
 			matchedUser: null,
 			membership_id: null,
-			isPrintVerified: false,
-			isUserVerified: false,
+			printRegistered1: false,
+			printRegistered2: false,
+			printRegistered3: false,
+			numPrintsCaptured: 0,
+			registrationInProcess: false,
+			registrationFinished: false,
+			//isPrintVerified: false,
+			//isUserVerified: false,
 			loadingUser: false
 		}
 		if (obj && typeof obj === 'object') {
@@ -58,16 +69,28 @@ class Customer_MembershipRegister extends Component {
 	}
 
 	// Add change listeners to stores
-	__componentDidMount() {
-		CL_Store.addChangeListener( this._onCLStoreChange );
-		CL_Actions.customerLogout(); // make sure we dump any session!
-		this.setState(this.getDefaultState());
+	componentDidMount() {
+		//CL_Store.addChangeListener( this._onCLStoreChange );
+		//CL_Actions.customerLogout(); // make sure we dump any session!
+		let state = this.setupMatchedUserData();
+		this.setState( this.getDefaultState(state) );
 		startGeneralIdleTimer(this.props.location.pathname);
+	}
+	
+	setupMatchedUserData() {
+		var obj = {};
+		if (this.state.matchedUser && this.state.machineInfo && !this.state.membership_id) {
+			let matched = this.state.matchedUser.__.filter( X => return X.client == this.state.machineInfo.client );
+			if (matched && matched.length) {
+				obj.membership_id = matched[0].id;
+			}
+		}
+		return obj;
 	}
 
 	// Remove change listers from stores
-	__componentWillUnmount() {
-		CL_Store.removeChangeListener( this._onCLStoreChange );
+	componentWillUnmount() {
+		//CL_Store.removeChangeListener( this._onCLStoreChange );
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -83,7 +106,8 @@ class Customer_MembershipRegister extends Component {
 	}
 	
 	tryAgain() {
-		this.setState( this.getDefaultState() );
+		let state = this.setupMatchedUserData();
+		this.setState( this.getDefaultState(state) );
 	}
 
 	adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
@@ -103,10 +127,11 @@ class Customer_MembershipRegister extends Component {
 
 			case 'end':
 				if (matched) {
-					this.setState({
-						adminEndMatched: true,
-						adminEndUser: user,
-					});
+					let state = this.state;
+					state.isUserVerified = true;
+					state.adminEndMatched = true;
+					state.adminEndUser = user;
+					this.checkForCustomerLoad(state);
 				} else {
 					this.setState({
 						adminEndMatched: false,
@@ -120,32 +145,32 @@ class Customer_MembershipRegister extends Component {
 	_onCLStoreChange(event) {
 		startGeneralIdleTimer(this.props.location.pathname);
 		switch (event.type) {
-			case appConstants.CUSTOMER_LOADED:
+			case appConstants.CUSTOMER_VERIFIED_AND_LOADED:
 				if (event.status === 'ok') {
 					//console.warn(appConstants.CUSTOMER_LOADED + ': customer then credit');
 					//console.log(CL_Store.getCustomer());
 					//console.log(CL_Store.getCustomerCredit());
 					//browserHistory.push('/Storefront');
 					this.setState({
-						loadingUser: false
+						loadingUser: false,
+						registrationFinished: true
 					});
 				}
 				break;
 		}
 	}
   
-	printMatchCallback(result, api) {
-		Big.log('printMatchCallback');
-		if (result) {
-			let state = this.state;
-			state.isPrintVerified = true;
-			state.loadingUser = false;
-			this.checkForCustomerLoad(state);
+	checkForCustomerLoad(state) {
+		if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
+			state.loadingUser = true;
+			CL_Actions.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
 		}
+		this.setState(state);
 	}
 
 	cardMatchCallback(result, api, matchedUser, membership_id) {
 		Big.log('cardMatchCallback');
+		Big.log({result, api, matchedUser, membership_id});
 		if (result) {
 			
 			let client = TsvStore.getMachineInfo().client;
@@ -160,27 +185,32 @@ class Customer_MembershipRegister extends Component {
 
 				state.isUserVerified = state.isUserVerified && state.isUserVerified.length ? true : false;
 				
-				this.checkForCustomerLoad(state);
+				this.setState(state);
 
-			//} else {
+			} else {
 				// serious issue! not sure what to do.
+				Big.error('uh, no client????? machine info:');
+				Big.log( TsvStore.getMachineInfo() );
 			}
+		} else {
+			// non-recognized card, or membership with a different client (or clients)!
 		}
 	}
 	
-	checkForCustomerLoad(state) {
-		if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
-			state.loadingUser = true;
-			CL_Actions.loadCustomerByMembershipId(this.state.membership_id);
-		}
-		this.setState(state);
-	}
-
 	render() {
 
+		if (!this.state.machineInfo) {
+			return (
+				<div style={{textAlign: 'center'}}>
+					<h1>Loading machine info, one moment please...</h1>
+					<_E.Spinner size="lg" />
+				</div>
+			);
+		}
+		
 		if (!this.state.adminBeginMatched) {
 			return (
-				<div>
+				<div style={{textAlign: 'center'}}>
 					<h1>OK before we get started, let's verify an admin is with you.</h1>
 					<PrintMatchAdmin
 						token={this.state.token}
@@ -189,10 +219,75 @@ class Customer_MembershipRegister extends Component {
 				</div>
 			);
 		}
+
+		if (!this.state.matchedUser) {
+			return (
+				<div style={{textAlign: 'center'}}>
+					<h1>Please swipe your membership card to get started.</h1>
+					  <CardMatch
+						autostart={true}
+						canRetry={true}
+						showMessages={true}
+						token={this.state.token}
+						matchCallback={this.cardMatchCallback}
+				</div>
+			);
+		}
 		
+		// should never ever get here.... but just in case!
+		// (well, maybe, if by chance a known user accidentally manages to load MembershipRegister
+		if (this.state.matchedUser && this.state.isUserVerified) {
+			return (
+				<div style={{textAlign: 'center'}}>
+					<h1>You're already registered!</h1>
+					<h3>It appears you have already completed this process and you can access the store.</h3>
+					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
+				</div>
+			);
+		}
+		
+		if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {
+			return (
+				<div style={{textAlign: 'center'}}>
+					<h1>Let's record your finger prints. This is finger (or thumb) #{this.state.numPrintsCaptured + 1}.</h1>
+					{this.renderScanRoot()}
+				</div>
+			);
+		}
+		
+		if (!this.state.adminEndMatched) {
+			return (
+				<div style={{textAlign: 'center'}}>
+					<h1>OK we're done recording your prints, let's verify an admin is still with you.</h1>
+					<PrintMatchAdmin
+						token={this.state.token}
+						matchCallback={this.adminPrintMatchCallback.bind(this, 'end')}
+						/>
+				</div>
+			);
+		}
+		
+		if (this.state.loadingUser) {
+			return (
+				<div style={{textAlign: 'center'}}>
+					<h1>Processing your registration, one moment please...</h1>
+				</div>
+			);
+		}
+
+		if (this.state.registrationFinished) {
+			return (
+				<div style={{textAlign: 'center'}}>
+					<h1>All done!</h1>
+					<h3>Your registration is complete</h3>
+					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
+				</div>
+			);
+		}
+
 		return (
 			<div>
-				<p>found user, but is not admin-verified! must capture prints etc</p>
+				<p>something funny happened, we should not get to here!</p>
 				<pre>{JSON.stringify(this.state.matchedUser, null, 4)}</pre>
 			</div>
 		);
@@ -212,38 +307,73 @@ class Customer_MembershipRegister extends Component {
 
 */
 
+	}
+
+/**** below here, methods imported from Admin/PrintRegistration *****/
+
+	printRegistrationFinished(sequence, apiResponses) {
+		let state = this.state;
+		state['printRegistered'+sequence] = true;
+		state.numPrintsCaptured += 1;
+		//state.loadingUser = false;
+		//this.checkForCustomerLoad(state);
+		this.setState(state);
+	}
+
+	renderCapturePrint() {
+		
 		return (
-			<div>
-			  <_E.Row >
-				<_E.Col>
-				  <h2>Customer Access</h2>
-				  <p>Before you can pick products and check out, we need to know who you are. :-)</p>
-				</_E.Col>
-			  </_E.Row>
-			  <_E.Row >
-				<_E.Col md="1/2" lg="1/2">
-				  <CardMatch
-					autostart={true}
-					canRetry={true}
-					showMessages={true}
-					token={this.state.token}
-					matchCallback={this.cardMatchCallback}
-				  	/>
-				</_E.Col>
-				<_E.Col md="1/2" lg="1/2">
-				  <PrintMatch
-					autostart={true}
-					canRetry={true}
-					showMessages={true}
-					user={this.state.matchedUser}
-					token={this.state.token}
-					matchCallback={this.printMatchCallback}
-				  	/>
-				</_E.Col>
-			  </_E.Row>
+			<div style={{marginTop: '2em'}}>
+			
+				<p style={{fontSize: '1.35em'}}>Press the <strong>"Start"</strong> button when you are ready to begin.</p>
+				<p style={{fontSize: '1.35em'}}>Click the <strong>"Cancel"</strong> button to cancel and return to the employee list.</p>
+			
+				<div>
+
+					{!this.state.registrationInProcess ? (
+						<_E.Button size="lg" type="primary" onClick={this.startRegisterPrint.bind(this)}>Start</_E.Button>
+					) : (<span style={{fontSize: '1.35em'}}>Print registration in process ... </span>)}
+
+					{' '}
+
+					{!this.state.registrationIsFinished ? (
+						<_E.Button size="lg" type="danger" onClick={this.reset.bind(this)}><_E.Glyph icon="circle-slash" />Cancel</_E.Button>
+					) : (
+						<_E.Button size="lg" type="primary" onClick={this.reset.bind(this)}>Home</_E.Button>
+					)}
+
+				</div>
+				
+				{this.renderScanRoot()}
+			
 			</div>
 		);
 	}
+	
+	renderScanRoot() {
+		if (!this.state.registrationInProcess) {
+			return null;
+		}
+		
+		return (
+			<BiometricsPrintRegister
+				user={this.state.matchedUser}
+				token={this.state.token}
+				registrationCallback={this.printRegistrationFinished.bind(this, this.state.numPrintsCaptured + 1)}
+				/>
+		);
+	}
+	
+	startRegisterPrint() {
+		this.setState({
+			registrationInProcess: true,
+			scanInProcess: false,
+			error_msg: '',
+			status_msg: 'Start print registration process....',
+			num_scans: 0
+		});
+	}
+
 
 }
 

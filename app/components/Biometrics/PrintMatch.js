@@ -88,10 +88,7 @@ class PrintMatch extends Component {
 				cb = this.startMatchingProcess.bind(this);
 			}
 			
-			this.setState(state, () => {
-				Big.log(' .... SET STATE CALLBACK from componentWillReceiveProps .....');
-				cb();
-			});
+			this.setState(state, cb);
 		}
 	}
 

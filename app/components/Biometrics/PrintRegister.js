@@ -60,7 +60,7 @@ class PrintRegister extends Component {
 	componentWillReceiveProps(nextprops) {
 		if (nextprops && nextprops.user) {
 			// resetting on a new user object is a good thing
-			this.reset({ user: nextprops.user, token: nextprops.token });
+			this.reset({ user: nextprops.user, token: nextprops.token, registrationCallback: nextprops.registrationCallback });
 		}
 	}
 

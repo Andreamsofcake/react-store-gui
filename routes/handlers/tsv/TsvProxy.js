@@ -87,7 +87,8 @@ module.exports = {
 		RQ.post({
 			url: 'http://localhost:8085/tsv/flashapi',
 			body: apiAction, // ['fetchShoppingCart2']
-			json: true
+			json: true,
+			forever: true
 		}, function(err, response, body) {
 			if (err) {
 				debug('FlashapiCall Proxy error:');
@@ -128,7 +129,8 @@ function runTsvFlashApi(request, reply) {
 	RQ.post({
 		url: 'http://localhost:8085/tsv/flashapi',
 		body: payload,
-		json: true
+		json: true,
+		forever: true
 	}, function(err, response, body) {
 		if (err) {
 			debug('FLASHAPI Proxy error:');
@@ -160,7 +162,8 @@ function runTsvFlashApi(request, reply) {
 function multieventProxyPing(io) {
 	RQ.post({
 		url: 'http://localhost:8085/tsv/flashapi/multievent',
-		json: true
+		json: true,
+		forever: true
 	}, function(err, response, body) {
 		
 		if (err || !body) {

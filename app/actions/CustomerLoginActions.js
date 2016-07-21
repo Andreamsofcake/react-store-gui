@@ -38,6 +38,27 @@ var CustomerLoginActions = {
 			Big.log(error);
 		})
 	},
+	
+	adminVerifyAndLoadCustomerByMembershipId(user, adminPrintUser, membership_id) {
+		axios.post('/api/admin-verify-and-load-customer-by-membership-id', { user, adminPrintUser, membership_id })
+		.then(response => {
+			if (response.data && response.data.customer) {
+
+				/**** temporary call, due to session probs with IO ****/
+				setCurrentCustomer(response.data);
+				/**** END temporary call ****/
+
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.CUSTOMER_VERIFIED_AND_LOADED,
+					data: response.data
+				});
+			}
+		})
+		.catch(error => {
+			Big.error('failed to load customer by membership id???');
+			Big.log(error);
+		})
+	},
 
 	refreshCustomer() {
 		axios.get('/api/customer-refresh')

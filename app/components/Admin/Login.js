@@ -100,16 +100,17 @@ class AdminLogin extends Component {
   componentWillUnmount() {
   }
 
-	adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+	adminPrintMatchCallback(matched, responses, user) {
 		if (matched) {
-			this.setState({
-				adminBeginMatched: true
-			});
-		} else {
+			browserHistory.push("/Admin/Home");
+		//} else {
+			// nada for now
+			/*
 			this.setState({
 				adminBeginMatched: false,
 				adminBeginResponses: responses
 			});
+			*/
 		}
 	}
 

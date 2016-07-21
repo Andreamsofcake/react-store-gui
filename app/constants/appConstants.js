@@ -17,7 +17,7 @@ var keyMirror = function(obj) {
 // simply mirrors the key to the value, so you don't have to type doubles all the time... :)
 var appConstants = keyMirror({
 
-// Root section updaters:
+// Root section updaters: << deprecate eventually!
 	UPDATE_ROOT_CONFIG: null,
 	UPDATE_ROOT_CACHE: null,
 	UPDATE_ROOT_SESSION: null,
@@ -27,16 +27,19 @@ var appConstants = keyMirror({
 	CLEAR_CATEGORY_FILTER: null,
 	STOREFRONT_DATA_RECEIVED: null,
 	
-// Customer:
+// Customer loads and unloads and stuff
+	CUSTOMER_LOADED: null, // "load by membership id"
+	CUSTOMER_VERIFIED_AND_LOADED: null, // "admin verify and load by membership id"
 	CUSTOMER_LOGOUT: null,
 
+///// >> need a lot of action name clean up here! a lot of testing crap laying around
 	LICENSE_SCANNED_LOGIN: null,
 	PRINT_SCANNED_LOGIN: null,
 	CUSTOMER_MATCHED_LOGIN: null,
 	CUSTOMER_RESET_LOGIN: null,
+	MEMBERSHIP_CARD_SCANNED_LOGIN: null,
 
 	LICENSE_SCANNED_SIGNUP: null,
-///// >> need a lot of action name clean up here! a lot of testing crap laying around
 /*
 //	PRINT_SCANNED_SIGNUP: null,
 	PRINT_1SCANNED_SIGNUP: null,
@@ -51,7 +54,7 @@ var appConstants = keyMirror({
 	CUSTOMER_REFRESH: null,
 	ADMIN_VERIFIED_SIGNUP: null,
 	
-	// REAL print scan/match actions:
+// REAL print scan/match actions:
 	PRINT_SCANNED_1: null,
 	PRINT_SCANNED_2: null,
 	PRINT_SCANNED_3: null,
@@ -62,7 +65,7 @@ var appConstants = keyMirror({
 	CLEAR_PRINT_MODULE_API_RESPONSES: null,
 	CLEAR_PRINT_MODULE_DATA: null,
 
-	// REAL card scan/match actions:
+// REAL card scan/match actions:
 	MEMBERSHIP_CARD_SCANNED: null,
 	MEMBERSHIP_CARD_MATCHED: null,
 	MEMBERSHIP_CARD_NOT_MATCHED: null,
@@ -72,10 +75,18 @@ var appConstants = keyMirror({
 	CREDIT_CARD_SCANNED: null,
 	CLEAR_CARD_MODULE_BUFFER: null,
 	CLEAR_CARD_MODULE_API_RESPONSES: null,
+
+// Session
+	SESSION_CREATED: null,
+	SESSION_UPDATED: null,
+	ADDED_USER_TO_SESSION: null,
+	SESSION_CLOSED: null,
+	SESSION_DROPPED: null,
 	
-	CUSTOMER_LOADED: null, // "load by membership id"
+// Transactions
+	TRANSACTION_CREATED: null,
+	TRANSACTION_UPDATED: null,
 	CREDIT_PURCHASE_COMPLETED: null,
-	MEMBERSHIP_CARD_SCANNED_LOGIN: null,
 
 // Emulator / GUI testing:
 	TEST_EMULATOR_RESULT: null,
@@ -92,23 +103,9 @@ var appConstants = keyMirror({
 	INVENTORY_SLOTMAP_RECEVIED: null,
 	CLIENTUSER_BIOMETRIC_RECORD_ADDED: null,
 
-// Session
-	SESSION_CREATED: null,
-	SESSION_UPDATED: null,
-	ADDED_USER_TO_SESSION: null,
-	SESSION_CLOSED: null,
-	SESSION_DROPPED: null,
-	TRANSACTION_CREATED: null,
-	TRANSACTION_UPDATED: null,
-	
-	CREDIT_PURCHASE_COMPLETED: null,
-
 // TSV:
 	FLASH_API_MULTIEVENT: null,
 	FLASH_API: null,
-
-// Foo Section Describer (optional)
-	EXAMPLE_ACTION_CONSTANT: null,
 
 });
 

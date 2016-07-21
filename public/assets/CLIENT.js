@@ -6631,16 +6631,17 @@
 			value: function componentWillUnmount() {}
 		}, {
 			key: 'adminPrintMatchCallback',
-			value: function adminPrintMatchCallback(beginOrEnd, matched, responses, user) {
+			value: function adminPrintMatchCallback(matched, responses, user) {
 				if (matched) {
-					this.setState({
-						adminBeginMatched: true
-					});
+					_reactRouter.browserHistory.push("/Admin/Home");
 				} else {
-					this.setState({
-						adminBeginMatched: false,
-						adminBeginResponses: responses
-					});
+					// nada for now
+					/*
+	    this.setState({
+	    	adminBeginMatched: false,
+	    	adminBeginResponses: responses
+	    });
+	    */
 				}
 			}
 		}, {
