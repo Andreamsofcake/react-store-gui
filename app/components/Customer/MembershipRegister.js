@@ -42,6 +42,8 @@ class Customer_MembershipRegister extends Component {
 	
 	getDefaultState(obj) {
 		let def = {
+			machineInfo: TsvStore.getMachineInfo()
+			matchedUser: null,
 			adminBeginMatched: false,
 			adminEndMatched: false,
 			adminBeginResponses: [],
@@ -83,6 +85,7 @@ class Customer_MembershipRegister extends Component {
 			if (matched && matched.length) {
 				obj.membership_id = matched[0].id;
 			}
+			obj.matchedUser = this.state.matchedUser;
 		}
 		return obj;
 	}
