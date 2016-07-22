@@ -16630,6 +16630,9 @@
 
 			switch (processStatus) {
 				case "VEND_SUCCESS":
+
+					_TsvActions2.default.postVendInventoryCleanup(cart);
+
 					Big.log("Got event vendResponse(): " + processStatus);
 					//tsv.cache.productList = tsv.fetchProduct(); //Not In Use Right Now
 
@@ -16691,10 +16694,10 @@
 		    itemsVendSuccess = _TsvSettingsStore2.default.getCache('shoppingCart.summary.vendItemCount') - itemsVendFail;
 
 		if (itemsVendFail > 0) {
-			Big.log("is it a fullVendSuccess?(false)!success:(" + itemsVendSuccess + ")fail:(" + itemsVendFail + ")");
+			Big.log("is it a fullVendSuccess? (false) totalPaid: " + _TsvSettingsStore2.default.getCache('shoppingCart.summary.netTotalPrice') + ", counts: success:(" + itemsVendSuccess + ")fail:(" + itemsVendFail + ")");
 			return false;
 		}
-		Big.log("is it a fullVendSuccess?(true)success:(" + itemsVendSuccess + ")fail:(" + itemsVendFail + ")");
+		Big.log("is it a fullVendSuccess? (true) totalPaid: " + _TsvSettingsStore2.default.getCache('shoppingCart.summary.netTotalPrice') + ", counts: success:(" + itemsVendSuccess + ")fail:(" + itemsVendFail + ")");
 		return true;
 	}
 

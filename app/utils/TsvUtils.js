@@ -102,6 +102,9 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 
 		switch(processStatus){
 			case "VEND_SUCCESS":
+				
+				TsvActions.postVendInventoryCleanup( cart );
+				
 				Big.log("Got event vendResponse(): "+processStatus);
 				//tsv.cache.productList = tsv.fetchProduct(); //Not In Use Right Now
 
@@ -165,10 +168,10 @@ export function isFullSuccessVendResult() {
 		;
 
 	if (itemsVendFail > 0) {
-		Big.log("is it a fullVendSuccess?(false)!success:("+itemsVendSuccess+")fail:("+itemsVendFail+")");
+		Big.log("is it a fullVendSuccess? (false) totalPaid: "+TsvSettingsStore.getCache('shoppingCart.summary.netTotalPrice')+", counts: success:("+itemsVendSuccess+")fail:("+itemsVendFail+")");
 		return false;
 	}
-	Big.log("is it a fullVendSuccess?(true)success:("+itemsVendSuccess+")fail:("+itemsVendFail+")");
+	Big.log("is it a fullVendSuccess? (true) totalPaid: "+TsvSettingsStore.getCache('shoppingCart.summary.netTotalPrice')+", counts: success:("+itemsVendSuccess+")fail:("+itemsVendFail+")");
 	return true;
 }
 
