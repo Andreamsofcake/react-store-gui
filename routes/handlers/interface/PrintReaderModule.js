@@ -36,7 +36,7 @@ module.exports = function(request, reply) {
 				return reply({ status: 'err', apiResponses: ['grab-print requires a sequence between 1 and 3'] }).code(500);
 			}
 			
-			return FingerprintReader.grabPrint(reply, { sequence, token });
+			return FingerprintReader.grabPrint(reply, sequence, token);
 			break;
 
 
@@ -48,7 +48,7 @@ module.exports = function(request, reply) {
 				return reply({ status: 'err', apiResponses: ['register-print requires matchProps with a user, and a token'] }).code(500);
 			}
 			
-			return FingerprintReader.matchPrint(reply, { matchProps, token });
+			return FingerprintReader.matchPrint(reply, matchProps, token );
 			break;
 
 
@@ -64,7 +64,7 @@ module.exports = function(request, reply) {
 				registerUser = registerUser._id;
 			}
 			
-			return FingerprintReader.registerPrint(reply, { registerUser, token });
+			return FingerprintReader.registerPrint(reply, registerUser, token);
 			break;
 
 
