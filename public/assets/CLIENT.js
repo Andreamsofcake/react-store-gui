@@ -21298,20 +21298,10 @@
 						_react2.default.createElement(_AdminPrintMatch2.default, {
 							token: this.state.token,
 							matchCallback: this.adminPrintMatchCallback.bind(this, 'begin')
-						}),
-						_react2.default.createElement(
-							'p',
-							null,
-							'state: ',
-							this.state.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'
-						),
-						_react2.default.createElement(
-							'p',
-							null,
-							'props: ',
-							this.props.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'
-						)
+						})
 					);
+					//<p>state: {this.state.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
+					//<p>props: {this.props.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
 				}
 
 				if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {

@@ -245,10 +245,10 @@ class Customer_MembershipRegister extends Component {
 						token={this.state.token}
 						matchCallback={this.adminPrintMatchCallback.bind(this, 'begin')}
 						/>
-					<p>state: {this.state.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
-					<p>props: {this.props.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
 				</div>
 			);
+					//<p>state: {this.state.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
+					//<p>props: {this.props.matchedUser ? 'matchedUser present.' : 'NO PRE-MATCHED USER???'}</p>
 		}
 
 		if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {
