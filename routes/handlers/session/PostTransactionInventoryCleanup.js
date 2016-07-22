@@ -15,7 +15,7 @@ module.exports = function(request, reply) {
 	debug('HIT ... payload keys:');
 	debug( Object.keys(request.payload) );
 
-	let { cart } = request.payload.cart;
+	let { cart } = request.payload;
 	
 	if (!cart) {
 		return reply({ status: 'err', msg: 'missing cart data, cannot process.' }).code(500);
