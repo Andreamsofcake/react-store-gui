@@ -22,10 +22,13 @@ var PrintReaderActions = {
 				});
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to register print, error:');
+					Big.error('failed to grab print, error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to register print, no data returned. full response:');
+					if (response.data && response.data.requestFlushed) {
+						return;
+					}
+					Big.error('failed to grab print, no data returned. full response:');
 					Big.log(response);
 				}
 			}
@@ -52,7 +55,7 @@ var PrintReaderActions = {
 				});
 
 			} else {
-				Big.error('failed to register print, call chain error probably check component tree');
+				Big.error('failed to grab print, call chain error probably check component tree');
 				Big.log(error);
 				Big.throw(error);
 			}
