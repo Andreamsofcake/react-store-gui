@@ -9670,16 +9670,16 @@
 
 	var Big = new _BigLogger2.default('CustomerCreditVending');
 
-	var CashVending = function (_Component) {
-		_inherits(CashVending, _Component);
+	var CustomerCreditVending = function (_Component) {
+		_inherits(CustomerCreditVending, _Component);
 
-		function CashVending(props, context) {
-			_classCallCheck(this, CashVending);
+		function CustomerCreditVending(props, context) {
+			_classCallCheck(this, CustomerCreditVending);
 
 			//TsvSettingsStore.setSession('currentView', 'CashVending');
 			//TsvSettingsStore.setCache('currentLocation', '/CashVending');
 
-			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CashVending).call(this, props, context));
+			var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(CustomerCreditVending).call(this, props, context));
 			// MUST call super() before any this.*
 
 
@@ -9728,7 +9728,7 @@
 			return _this;
 		}
 
-		_createClass(CashVending, [{
+		_createClass(CustomerCreditVending, [{
 			key: 'cancel',
 			value: function cancel() {
 				// only in cash.js:
@@ -10209,10 +10209,10 @@
 			}
 		}]);
 
-		return CashVending;
+		return CustomerCreditVending;
 	}(_react.Component);
 
-	exports.default = CashVending;
+	exports.default = CustomerCreditVending;
 
 /***/ },
 /* 35 */
@@ -16278,6 +16278,22 @@
 				});
 			}).catch(function (error) {
 				Big.error('failed to logout customer???');
+				Big.log(error);
+			});
+		},
+		postVendInventoryCleanup: function postVendInventoryCleanup(cart) {
+			//emptyCart(); // << done in TsvUtils call
+			_axios2.default.post('/api/post-transaction-inventory-cleanup', { cart: cart }).then(function (response) {
+				// this is more administration, no need to bubble up to the GUI...
+				/*
+	   AppDispatcher.handleServerAction({
+	   	actionType: appConstants.CUSTOMER_LOGOUT
+	   });
+	   */
+				Big.log('postVendInventoryCleanup response');
+				Big.log(response);
+			}).catch(function (error) {
+				Big.error('failed to clean up inventory post-vend???');
 				Big.log(error);
 			});
 		}

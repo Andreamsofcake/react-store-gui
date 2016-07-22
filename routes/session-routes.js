@@ -2,6 +2,7 @@ import Joi from 'joi'
 
 var SessionHandler = require('./handlers/session/SessionHandler')
 	, TransactionHandler = require('./handlers/session/TransactionHandler')
+	, PostTransactionInventoryCleanup = require('./handlers/session/PostTransactionInventoryCleanup')
 	;
 
 module.exports = [
@@ -44,5 +45,12 @@ module.exports = [
 			}
 		}*/
 	},
+	
+	{
+		method: 'post',
+		path: '/api/post-transaction-inventory-cleanup',
+		handler: PostTransactionInventoryCleanup,
+	},
+	
 		
 ]

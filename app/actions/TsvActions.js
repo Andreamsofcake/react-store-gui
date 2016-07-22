@@ -176,7 +176,27 @@ var TsvActions = {
 			Big.error('failed to logout customer???');
 			Big.log(error);
 		})
+	},
+
+	postVendInventoryCleanup( cart ) {
+		//emptyCart(); // << done in TsvUtils call
+		axios.post('/api/post-transaction-inventory-cleanup', { cart })
+		.then(response => {
+			// this is more administration, no need to bubble up to the GUI...
+			/*
+			AppDispatcher.handleServerAction({
+				actionType: appConstants.CUSTOMER_LOGOUT
+			});
+			*/
+			Big.log('postVendInventoryCleanup response');
+			Big.log(response);
+		})
+		.catch(error => {
+			Big.error('failed to clean up inventory post-vend???');
+			Big.log(error);
+		})
 	}
+
 };
 
 module.exports = TsvActions;

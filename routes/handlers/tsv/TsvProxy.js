@@ -1,4 +1,4 @@
-//import SDK from 'sdk-core-lib'
+import fs from 'fs'
 import RQ from 'request'
 import * as CANDY from '../CannedRouteResponses/TsvProxy'
 import { ProxyCall, CheckRegistration } from '../../../lib/Bootup'
@@ -149,6 +149,8 @@ function runTsvFlashApi(request, reply) {
 				} else {
 					if (cart) {
 						body.shoppingCart = cart;
+						// temp, for testing:
+						fs.writeFileSync('current-cart-data.json', JSON.stringify(cart, null, 4) );
 					}
 				}
 				return reply( body ).code(200);

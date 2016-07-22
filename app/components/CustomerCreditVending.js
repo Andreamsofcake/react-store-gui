@@ -35,7 +35,7 @@ import {
 import Log from '../utils/BigLogger'
 var Big = new Log('CustomerCreditVending');
 
-class CashVending extends Component {
+class CustomerCreditVending extends Component {
 
   constructor(props, context) {
     // MUST call super() before any this.*
@@ -474,4 +474,4 @@ class CashVending extends Component {
 
 }
 
-export default CashVending
+export default CustomerCreditVending
