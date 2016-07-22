@@ -12,6 +12,9 @@ var fsplit = __filename.split(path.sep)
 module.exports = function(request, reply) {
 	
 	
+	debug('HIT ... payload keys:');
+	debug( Object.keys(request.payload) );
+
 	let { cart } = request.payload.cart;
 	
 	if (!cart) {
