@@ -88,20 +88,25 @@ class ThankYouMsg extends Component {
           <h1 style={{textAlign:'center'}}>Thanks for your business!</h1>
           <h2 style={{textAlign:'center'}}>Looking forward to seeing you again.....</h2>
           <p>{' '}</p>
-          <p style={{textAlign:'center', margin: '2em auto'}}>
+
           	{this.state.showPrintMatcher ? (
-			<PrintMatch
-				autostart={true}
-				canRetry={true}
-				showMessages={true}
-				user={this.state.customer}
-				token={this.state.token}
-				matchCallback={this.shopAgain.bind(this)}
-				/>
+			<div className="interfaceBox" style={{marginTop: '1em'}}>
+				<h3 style={{textAlign: 'center', marginBottom: '2em'}}>Please verify yourself with your fingerprint again, using the reader to the right.</h3>
+				<PrintMatch
+					autostart={true}
+					canRetry={true}
+					showMessages={true}
+					user={this.state.customer}
+					token={this.state.token}
+					matchCallback={this.shopAgain.bind(this)}
+					/>
+			</div>
           	) : (
-          	<_E.Button size="lg" type="success" onClick={this.shopAgainPrintCheck.bind(this)}>Shop Again</_E.Button>
+          	<p style={{textAlign:'center', margin: '2em auto'}}>
+	          	<_E.Button size="lg" type="success" onClick={this.shopAgainPrintCheck.bind(this)}>Shop Again</_E.Button>
+	          </p>
           	)}
-          </p>
+
           <p style={{textAlign:'center'}}>
           	<_E.Button size="lg" type="primary" onClick={CL_Actions.customerLogout}>Logout</_E.Button>
           </p>

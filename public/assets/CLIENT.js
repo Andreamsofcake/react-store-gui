@@ -12322,17 +12322,26 @@
 	            null,
 	            ' '
 	          ),
-	          _react2.default.createElement(
-	            'p',
-	            { style: { textAlign: 'center', margin: '2em auto' } },
-	            this.state.showPrintMatcher ? _react2.default.createElement(_PrintMatch2.default, {
+	          this.state.showPrintMatcher ? _react2.default.createElement(
+	            'div',
+	            { className: 'interfaceBox', style: { marginTop: '1em' } },
+	            _react2.default.createElement(
+	              'h3',
+	              { style: { textAlign: 'center', marginBottom: '2em' } },
+	              'Please verify yourself with your fingerprint again, using the reader to the right.'
+	            ),
+	            _react2.default.createElement(_PrintMatch2.default, {
 	              autostart: true,
 	              canRetry: true,
 	              showMessages: true,
 	              user: this.state.customer,
 	              token: this.state.token,
 	              matchCallback: this.shopAgain.bind(this)
-	            }) : _react2.default.createElement(
+	            })
+	          ) : _react2.default.createElement(
+	            'p',
+	            { style: { textAlign: 'center', margin: '2em auto' } },
+	            _react2.default.createElement(
 	              _E.Button,
 	              { size: 'lg', type: 'success', onClick: this.shopAgainPrintCheck.bind(this) },
 	              'Shop Again'
