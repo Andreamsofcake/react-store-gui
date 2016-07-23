@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import * as Translate from '../../../lib/Translate'
 
 import TsvSettingsStore from '../../stores/TsvSettingsStore'
+import TsvStore from '../../stores/TsvStore'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
@@ -30,14 +31,15 @@ class AdminLogin extends Component {
     this.state = {
     	token: uniq(),
 		num: "",
-		maxChars: 6,
+		maxChars: 10,
+		machineInfo: TsvStore.getMachineInfo(),
 		instructionMessage: Translate.translate('AdminLogin','LoginMsg')
     };
   }
 
   enter() {
   	GuiTimer();
-  	var localPass = TsvSettingsStore.getCache('machineSettings.AdminPassword')
+  	var localPass = this.state.machineInfo.access_PIN || TsvSettingsStore.getCache('machineSettings.AdminPassword')
   		, result = 'VALID'
   		;
   	  	

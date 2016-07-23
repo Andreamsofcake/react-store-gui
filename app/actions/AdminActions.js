@@ -92,7 +92,7 @@ var AdminActions = {
 			//Big.throw(error);
 		})
 	},
-
+	
 	clearInventorySlotmap() {
 		AppDispatcher.handleServerAction({
 			actionType: appConstants.INVENTORY_SLOTMAP_CLEAR,
@@ -100,6 +100,36 @@ var AdminActions = {
 		});
 	},
 	
+	saveSlotMap(config) {
+		let me = 'slot map';
+		axios.post('/api/save-slot-map',
+			config  // .post() expects and passes this as a json object
+		)
+		.then(response => {
+			// uh, daaaaaable check?
+			if (response.data && response.data.status && response.data.status == 'ok') {
+				AppDispatcher.handleServerAction({
+					actionType: config.ACTION || appConstants.MACHINE_SLOT_MAP_SAVED,
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to save '+me+', error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to save '+me+', no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to save '+me+', call chain error probably check component tree');
+			Big.log(error);
+			//Big.throw(error);
+			throw error;
+		})
+	},
+
 	refreshStorefrontData() {
 		let me = 'storefront data';
 		axios.get('/api/refresh-storefront-data')
@@ -126,6 +156,34 @@ var AdminActions = {
 			Big.throw(error);
 		})
 	},
+	
+	refreshCloudConfig() {
+		let me = 'storefront data';
+		axios.get('/api/refresh-cloud-config')
+		.then(response => {
+			// uh, daaaaaable check?
+			if (response.data && response.data.status && response.data.status == 'ok') {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.MACHINE_CLOUD_CONFIG_REFRESHED,
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to get '+me+', error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to get '+me+', no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to get '+me+', call chain error probably check component tree');
+			Big.log(error);
+			Big.throw(error);
+		})
+	},
+
 	
 	addBiometricRecord( config ) {
 		let me = 'biometric record';

@@ -99,7 +99,13 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 		case appConstants.CLIENTUSER_BIOMETRIC_RECORD_ADDED:
 			AdminStore.emitChange({ type: action.actionType });
 			break;
-		
+
+		case appConstants.MACHINE_CLOUD_CONFIG_REFRESHED:
+			Big.log('MACHINE_CLOUD_CONFIG_REFRESHED');
+			Big.log(action);
+			AdminStore.emitChange({ type: action.actionType });
+			break;
+
 		case appConstants.INVENTORY_SLOTMAP_CLEAR:
 			_store.inventorySlotMap = [];
 			AdminStore.emitChange({ type: action.actionType });

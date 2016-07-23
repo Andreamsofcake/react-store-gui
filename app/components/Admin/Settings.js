@@ -5,6 +5,10 @@ import TsvSettingsStore from '../../stores/TsvSettingsStore'
 import * as _E from 'elemental'
 import { Link, browserHistory } from 'react-router'
 
+import AdminStore from '../../stores/AdminStore'
+import AdminActions from '../../actions/AdminActions'
+import appConstants from '../../constants/appConstants'
+
 import TsvActions from '../../actions/TsvActions'
 import {
 	KillGuiTimer,
@@ -22,6 +26,7 @@ class AdminSettings extends Component {
     //TsvSettingsStore.setSession('currentView', 'AdminSettings');
     this.state = this.getStateSettings();
     this._onTsvSettingsChange = this._onTsvSettingsChange.bind(this);
+    this._onAdminStoreChange = this._onAdminStoreChange.bind(this);
   }
   
   getStateSettings() {
@@ -49,6 +54,23 @@ class AdminSettings extends Component {
     Big.log(state);
     return state;
   }
+  	
+  	refreshCloudConfig() {
+  		this.setState({
+  			cloudRefreshing: true
+  		});
+  		AdminActions.refreshCloudConfig();
+  	}
+  	
+  	_onAdminStoreChange(event) {
+  		Big.log('_onAdminStoreChange');
+  		Big.log(event);
+  		if (event.type === appConstants.MACHINE_CLOUD_CONFIG_REFRESHED) {
+  			this.setState({
+  				cloudRefreshing: false
+  			});
+  		}
+  	}
 
   save(e) {
   	
@@ -102,11 +124,13 @@ class AdminSettings extends Component {
   // Add change listeners to stores
   componentDidMount() {
   	TsvSettingsStore.addChangeListener(this._onTsvSettingsChange);
+  	AdminStore.addChangeListener(this._onAdminStoreChange);
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
   	TsvSettingsStore.removeChangeListener(this._onTsvSettingsChange);
+  	AdminStore.removeChangeListener(this._onAdminStoreChange);
   }
   
   _onTsvSettingsChange(event) {
@@ -210,12 +234,20 @@ class AdminSettings extends Component {
           </_E.Row>
 
           <_E.Row>
-          	<_E.Col sm="50%" md="50%" lg="50%" style={{textAlign:'center'}}>
+          	<_E.Col sm="33%" md="33%" lg="33%" style={{textAlign:'center'}}>
     	        <_E.Button size="lg" type="primary" onClick={this.save.bind(this)} >Save Changes</_E.Button>
     	    </_E.Col>
 
-          	<_E.Col sm="50%" md="50%" lg="50%" style={{textAlign:'center'}}>
+          	<_E.Col sm="33%" md="33%" lg="33%" style={{textAlign:'center'}}>
 	            <_E.Button size="lg" type="primary" component={(<Link to="/Admin/Home">{Translate.translate('AdminHome','Home')}</Link>)} />
+    	    </_E.Col>
+
+          	<_E.Col sm="33%" md="33%" lg="33%" style={{textAlign:'center'}}>
+          		{this.state.cloudRefreshing ? (
+          			<p>Cloud configuration refreshing, one momemnt....</p>
+          		) : (
+    	        <_E.Button size="lg" type="primary" onClick={this.refreshCloudConfig.bind(this)} >Refresh Cloud Config</_E.Button>
+    	        )}
     	    </_E.Col>
 
           </_E.Row>

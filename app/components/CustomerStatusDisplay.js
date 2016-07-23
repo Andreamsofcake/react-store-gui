@@ -12,6 +12,7 @@ import TsvStore from '../stores/TsvStore'
 import {
 	GuiTimer,
 	KillGuiTimer,
+	getTimer
 } from '../utils/TsvUtils'
 
 class CustomerStatusDisplay extends Component {

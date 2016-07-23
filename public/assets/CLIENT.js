@@ -2428,6 +2428,14 @@
 
 	var _TsvActions2 = _interopRequireDefault(_TsvActions);
 
+	var _AdminStore = __webpack_require__(84);
+
+	var _AdminStore2 = _interopRequireDefault(_AdminStore);
+
+	var _AdminActions = __webpack_require__(83);
+
+	var _AdminActions2 = _interopRequireDefault(_AdminActions);
+
 	var _TsvUtils = __webpack_require__(75);
 
 	var _BigLogger = __webpack_require__(1);
@@ -2459,7 +2467,8 @@
 	    _this.state = {
 	      bShowMachine2: false,
 	      status: "Idle",
-	      coilMap: []
+	      coilMap: [],
+	      forceMachine0Update: false
 	    };
 
 	    if (_TsvSettingsStore2.default.getCache('machineList').length > 1) {
@@ -2536,6 +2545,7 @@
 	            _TsvSettingsStore2.default.setSession('bRunningAutoMap', false);
 	            Big.warn('ok, should be pushing this coil map back out to the API!');
 	            Big.log(this.state.coilMap);
+	            _AdminActions2.default.saveSlotMap(this.state.coilMap);
 	            break;
 
 	          default:
@@ -2545,11 +2555,18 @@
 	      }
 	    }
 	  }, {
+	    key: 'handleCheckbox',
+	    value: function handleCheckbox(e) {
+	      this.setState({
+	        forceMachine0Update: !!e.target.checked
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'automap', style: { maxWidth: '50%', margin: '1em auto' } },
+	        { className: 'automap', style: { maxWidth: '70%', margin: '1em auto' } },
 	        _react2.default.createElement(
 	          'h1',
 	          { style: { fontWeight: 300 } },
@@ -2586,10 +2603,33 @@
 	            )
 	          ),
 	          _react2.default.createElement(
-	            'h2',
+	            _E.Row,
 	            null,
-	            'Map status: ',
-	            this.state.status
+	            _react2.default.createElement(_E.Col, { md: '33%', lg: '33%' }),
+	            _react2.default.createElement(
+	              _E.Col,
+	              { md: '33%', lg: '33%' },
+	              _react2.default.createElement(
+	                _E.FormField,
+	                null,
+	                _react2.default.createElement(_E.Checkbox, { label: 'Force Remote Config Update', onClick: this.handleCheckbox.bind(this), checked: this.state.forceMachine0Update })
+	              )
+	            ),
+	            _react2.default.createElement(_E.Col, { md: '33%', lg: '33%' })
+	          ),
+	          _react2.default.createElement(
+	            _E.Row,
+	            null,
+	            _react2.default.createElement(
+	              _E.Col,
+	              null,
+	              _react2.default.createElement(
+	                'h2',
+	                null,
+	                'Map status: ',
+	                this.state.status
+	              )
+	            )
 	          ),
 	          _react2.default.createElement(
 	            _E.Row,
@@ -2611,16 +2651,16 @@
 	            _E.Row,
 	            null,
 	            this.renderMapRows()
-	          ),
+	          )
+	        );
+	      } else if (this.state.status == 'Idle') {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
 	          _react2.default.createElement(
-	            'p',
-	            { style: { marginTop: '3em', clear: 'both' } },
-	            'Slots:'
-	          ),
-	          _react2.default.createElement(
-	            'pre',
+	            'h3',
 	            null,
-	            JSON.stringify(this.state.slots, null, 4)
+	            'Mapping Process Idle'
 	          )
 	        );
 	      } else if (this.state.status) {
@@ -6463,6 +6503,10 @@
 
 	var _TsvSettingsStore2 = _interopRequireDefault(_TsvSettingsStore);
 
+	var _TsvStore = __webpack_require__(73);
+
+	var _TsvStore2 = _interopRequireDefault(_TsvStore);
+
 	var _reactRouter = __webpack_require__(8);
 
 	var _elemental = __webpack_require__(114);
@@ -6512,7 +6556,8 @@
 			_this.state = {
 				token: (0, _utils.uniq)(),
 				num: "",
-				maxChars: 6,
+				maxChars: 10,
+				machineInfo: _TsvStore2.default.getMachineInfo(),
 				instructionMessage: Translate.translate('AdminLogin', 'LoginMsg')
 			};
 			return _this;
@@ -6522,7 +6567,7 @@
 			key: 'enter',
 			value: function enter() {
 				(0, _TsvUtils.GuiTimer)();
-				var localPass = _TsvSettingsStore2.default.getCache('machineSettings.AdminPassword'),
+				var localPass = this.state.machineInfo.access_PIN || _TsvSettingsStore2.default.getCache('machineSettings.AdminPassword'),
 				    result = 'VALID';
 
 				function handlePass(result) {
@@ -7758,6 +7803,18 @@
 
 	var _reactRouter = __webpack_require__(8);
 
+	var _AdminStore = __webpack_require__(84);
+
+	var _AdminStore2 = _interopRequireDefault(_AdminStore);
+
+	var _AdminActions = __webpack_require__(83);
+
+	var _AdminActions2 = _interopRequireDefault(_AdminActions);
+
+	var _appConstants = __webpack_require__(81);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
 	var _TsvActions = __webpack_require__(74);
 
 	var _TsvActions2 = _interopRequireDefault(_TsvActions);
@@ -7794,6 +7851,7 @@
 
 	    _this.state = _this.getStateSettings();
 	    _this._onTsvSettingsChange = _this._onTsvSettingsChange.bind(_this);
+	    _this._onAdminStoreChange = _this._onAdminStoreChange.bind(_this);
 	    return _this;
 	  }
 
@@ -7823,6 +7881,25 @@
 	      Big.log('getStateSettings()');
 	      Big.log(state);
 	      return state;
+	    }
+	  }, {
+	    key: 'refreshCloudConfig',
+	    value: function refreshCloudConfig() {
+	      this.setState({
+	        cloudRefreshing: true
+	      });
+	      _AdminActions2.default.refreshCloudConfig();
+	    }
+	  }, {
+	    key: '_onAdminStoreChange',
+	    value: function _onAdminStoreChange(event) {
+	      Big.log('_onAdminStoreChange');
+	      Big.log(event);
+	      if (event.type === _appConstants2.default.MACHINE_CLOUD_CONFIG_REFRESHED) {
+	        this.setState({
+	          cloudRefreshing: false
+	        });
+	      }
 	    }
 	  }, {
 	    key: 'save',
@@ -7879,6 +7956,7 @@
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
 	      _TsvSettingsStore2.default.addChangeListener(this._onTsvSettingsChange);
+	      _AdminStore2.default.addChangeListener(this._onAdminStoreChange);
 	    }
 
 	    // Remove change listers from stores
@@ -7887,6 +7965,7 @@
 	    key: 'componentWillUnmount',
 	    value: function componentWillUnmount() {
 	      _TsvSettingsStore2.default.removeChangeListener(this._onTsvSettingsChange);
+	      _AdminStore2.default.removeChangeListener(this._onAdminStoreChange);
 	    }
 	  }, {
 	    key: '_onTsvSettingsChange',
@@ -8017,7 +8096,7 @@
 	          null,
 	          _react2.default.createElement(
 	            _E.Col,
-	            { sm: '50%', md: '50%', lg: '50%', style: { textAlign: 'center' } },
+	            { sm: '33%', md: '33%', lg: '33%', style: { textAlign: 'center' } },
 	            _react2.default.createElement(
 	              _E.Button,
 	              { size: 'lg', type: 'primary', onClick: this.save.bind(this) },
@@ -8026,12 +8105,25 @@
 	          ),
 	          _react2.default.createElement(
 	            _E.Col,
-	            { sm: '50%', md: '50%', lg: '50%', style: { textAlign: 'center' } },
+	            { sm: '33%', md: '33%', lg: '33%', style: { textAlign: 'center' } },
 	            _react2.default.createElement(_E.Button, { size: 'lg', type: 'primary', component: _react2.default.createElement(
 	                _reactRouter.Link,
 	                { to: '/Admin/Home' },
 	                Translate.translate('AdminHome', 'Home')
 	              ) })
+	          ),
+	          _react2.default.createElement(
+	            _E.Col,
+	            { sm: '33%', md: '33%', lg: '33%', style: { textAlign: 'center' } },
+	            this.state.cloudRefreshing ? _react2.default.createElement(
+	              'p',
+	              null,
+	              'Cloud configuration refreshing, one momemnt....'
+	            ) : _react2.default.createElement(
+	              _E.Button,
+	              { size: 'lg', type: 'primary', onClick: this.refreshCloudConfig.bind(this) },
+	              'Refresh Cloud Config'
+	            )
 	          )
 	        )
 	      );
@@ -16030,7 +16122,7 @@
 	function onGeneralTimeout() {
 		Big.log("onGeneralTimeout() called");
 
-		killGeneralIdleTimer();
+		KillGuiTimer();
 
 		var gotoDef = false;
 
@@ -16112,9 +16204,11 @@
 				break;
 		}
 
-		startGeneralIdleTimer(currentPageView); //$location, $rootScope);//Ping added on 1016/2015
 		if (gotoDef) {
 			gotoDefaultIdlePage();
+		} else {
+			//startGeneralIdleTimer(currentPageView); //$location, $rootScope);//Ping added on 1016/2015
+			GuiTimer();
 		}
 	}
 
@@ -16353,7 +16447,7 @@
 				return;
 			} else {
 
-				return _reactRouter.browserHistory.push('PageIdle'); // ("/Storefront"); <<< this actually should be going to PageIdle
+				return _reactRouter.browserHistory.push('/PageIdle'); // ("/Storefront"); <<< this actually should be going to PageIdle
 				// there used to be more options here, look in old TsvService to see them
 			}
 		}
@@ -16910,7 +17004,7 @@
 		}, {
 			key: 'updateTimer',
 			value: function updateTimer() {
-				var T = getTimer('generalIdleTimer'),
+				var T = (0, _TsvUtils.getTimer)('generalIdleTimer'),
 				    timeLeft = T && T.getTimeLeft() ? T.getTimeLeft() : 0;
 
 				if (T) {
@@ -17461,6 +17555,8 @@
 		TEST_REGISTER_PRINT: null,
 		TEST_MATCH_PRINT: null,
 		CLEAR_TEST_PRINT_API_RESPONSES: null,
+		MACHINE_SLOT_MAP_SAVED: null,
+		MACHINE_CLOUD_CONFIG_REFRESHED: null,
 		MACHINE_INFO: null,
 		REGISTER_CLIENT_USER_PRINT: null,
 		CLIENT_USERS_RECEIVED: null,
@@ -17984,6 +18080,32 @@
 				data: null
 			});
 		},
+		saveSlotMap: function saveSlotMap(config) {
+			var me = 'slot map';
+			_axios2.default.post('/api/save-slot-map', config // .post() expects and passes this as a json object
+			).then(function (response) {
+				// uh, daaaaaable check?
+				if (response.data && response.data.status && response.data.status == 'ok') {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: config.ACTION || _appConstants2.default.MACHINE_SLOT_MAP_SAVED,
+						data: response.data
+					});
+				} else {
+					if (response.data && response.data.error) {
+						Big.error('failed to save ' + me + ', error:');
+						Big.log(response.data.error);
+					} else {
+						Big.error('failed to save ' + me + ', no data returned. full response:');
+						Big.log(response);
+					}
+				}
+			}).catch(function (error) {
+				Big.error('failed to save ' + me + ', call chain error probably check component tree');
+				Big.log(error);
+				//Big.throw(error);
+				throw error;
+			});
+		},
 		refreshStorefrontData: function refreshStorefrontData() {
 			var me = 'storefront data';
 			_axios2.default.get('/api/refresh-storefront-data').then(function (response) {
@@ -17991,6 +18113,30 @@
 				if (response.data && response.data.status && response.data.status == 'ok') {
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.STOREFRONT_DATA_REFRESHED,
+						data: response.data
+					});
+				} else {
+					if (response.data && response.data.error) {
+						Big.error('failed to get ' + me + ', error:');
+						Big.log(response.data.error);
+					} else {
+						Big.error('failed to get ' + me + ', no data returned. full response:');
+						Big.log(response);
+					}
+				}
+			}).catch(function (error) {
+				Big.error('failed to get ' + me + ', call chain error probably check component tree');
+				Big.log(error);
+				Big.throw(error);
+			});
+		},
+		refreshCloudConfig: function refreshCloudConfig() {
+			var me = 'storefront data';
+			_axios2.default.get('/api/refresh-cloud-config').then(function (response) {
+				// uh, daaaaaable check?
+				if (response.data && response.data.status && response.data.status == 'ok') {
+					_AppDispatcher2.default.handleServerAction({
+						actionType: _appConstants2.default.MACHINE_CLOUD_CONFIG_REFRESHED,
 						data: response.data
 					});
 				} else {
@@ -18211,6 +18357,12 @@
 				break;
 
 			case _appConstants2.default.CLIENTUSER_BIOMETRIC_RECORD_ADDED:
+				AdminStore.emitChange({ type: action.actionType });
+				break;
+
+			case _appConstants2.default.MACHINE_CLOUD_CONFIG_REFRESHED:
+				Big.log('MACHINE_CLOUD_CONFIG_REFRESHED');
+				Big.log(action);
 				AdminStore.emitChange({ type: action.actionType });
 				break;
 

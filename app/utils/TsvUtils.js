@@ -258,7 +258,7 @@ export function cardTransaction(level) {
 export function onGeneralTimeout() {
 	Big.log("onGeneralTimeout() called");
 	
-	killGeneralIdleTimer();
+	KillGuiTimer();
 	
 	let gotoDef = false;
 
@@ -340,9 +340,11 @@ export function onGeneralTimeout() {
 			break;
 	}
 
-	startGeneralIdleTimer(currentPageView); //$location, $rootScope);//Ping added on 1016/2015
 	if (gotoDef) {
 		gotoDefaultIdlePage();
+	} else {
+		//startGeneralIdleTimer(currentPageView); //$location, $rootScope);//Ping added on 1016/2015
+		GuiTimer();
 	}
 }
 
@@ -583,7 +585,7 @@ export function gotoDefaultIdlePage() { //$location, $rootScope){
 
 		} else {
 			
-			return browserHistory.push('PageIdle'); // ("/Storefront"); <<< this actually should be going to PageIdle
+			return browserHistory.push('/PageIdle'); // ("/Storefront"); <<< this actually should be going to PageIdle
 			// there used to be more options here, look in old TsvService to see them
 		}
 	}

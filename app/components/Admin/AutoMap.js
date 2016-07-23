@@ -8,6 +8,10 @@ import { Link, browserHistory } from 'react-router'
 
 import TsvStore from '../../stores/TsvStore'
 import TsvActions from '../../actions/TsvActions'
+
+import AdminStore from '../../stores/AdminStore'
+import AdminActions from '../../actions/AdminActions'
+
 import {
 	KillGuiTimer,
 } from '../../utils/TsvUtils'
@@ -24,7 +28,8 @@ class AdminAutoMap extends Component {
     this.state = {
       bShowMachine2 : false,
       status: "Idle",
-      coilMap:[]
+      coilMap:[],
+      forceMachine0Update: false
     }
 
     if(TsvSettingsStore.getCache('machineList').length > 1){
@@ -94,6 +99,7 @@ class AdminAutoMap extends Component {
 					TsvSettingsStore.setSession('bRunningAutoMap', false);
 					Big.warn('ok, should be pushing this coil map back out to the API!');
 					Big.log(this.state.coilMap);
+					AdminActions.saveSlotMap(this.state.coilMap);
 					break;
 
 				default:
@@ -102,10 +108,16 @@ class AdminAutoMap extends Component {
 			this.setState(state);
 		}
 	}
+	
+	handleCheckbox(e) {
+		this.setState({
+			forceMachine0Update: !!(e.target.checked)
+		});
+	}
 
   render() {
     return (
-      <_E.Row className="automap" style={{maxWidth:'50%',margin: '1em auto'}}>
+      <_E.Row className="automap" style={{maxWidth:'70%',margin: '1em auto'}}>
 
         	<h1 style={{fontWeight:300}}>Auto Map</h1>
 
@@ -117,7 +129,20 @@ class AdminAutoMap extends Component {
 			  <_E.Col md="33%" lg="33%">{ this.state.bShowMachine2 ? this.renderShowMachine2() : null }</_E.Col>
           </_E.Row>
 
-          <h2>Map status: {this.state.status}</h2>
+          <_E.Row>
+			  <_E.Col md="33%" lg="33%"></_E.Col>
+			  <_E.Col md="33%" lg="33%"><_E.FormField>
+											<_E.Checkbox label="Force Remote Config Update" onClick={this.handleCheckbox.bind(this)} checked={this.state.forceMachine0Update} />
+										</_E.FormField>
+										</_E.Col>
+			  <_E.Col md="33%" lg="33%"></_E.Col>
+          </_E.Row>
+
+          <_E.Row>
+          	<_E.Col>
+	          <h2>Map status: {this.state.status}</h2>
+          	</_E.Col>
+          </_E.Row>
 
           <_E.Row id="wrapper">
           	{this.renderMap()}
@@ -139,10 +164,19 @@ class AdminAutoMap extends Component {
 				{this.renderMapRows()}
 			</_E.Row>
 
-          	<p style={{marginTop:'3em',clear:'both'}}>Slots:</p>
-            <pre>{JSON.stringify(this.state.slots, null, 4)}</pre>
+          	{/*<p style={{marginTop:'3em',clear:'both'}}>Slots:</p>
+            <pre>{JSON.stringify(this.state.slots, null, 4)}
+            </pre>*/}
             </div>
   		);
+
+  	} else if (this.state.status == 'Idle') {
+  		return (
+  			<div>
+  				<h3>Mapping Process Idle</h3>
+  			</div>
+  		);
+
   	} else if (this.state.status) {
   		var rnd = parseInt(Math.random() * 10)
   			, dots = ''
@@ -157,6 +191,7 @@ class AdminAutoMap extends Component {
 			</_E.Row>
   			</div>
   		);
+
   	} else {
   		return (
   			<div>
