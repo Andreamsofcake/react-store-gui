@@ -13,7 +13,7 @@ var serviceIsStarted = false
 
 	// currentPageView: replacement for rootscope.currentLocation or whatever....
 	// still need to track it somehow, and this script will never get access to router.location.path
-	, currentPageView
+	, currentPageView = 'no-page-view'
 	, lastTimerSetBy
 	, globalTimers = {}
 	, generalTimeoutMs = 60000 // config me!!!
@@ -355,7 +355,7 @@ export function GuiTimer(ms, from, callback) {
 		callback = from;
 		from = null;
 	}
-	callback = callback || gotoDefaultIdlePage;
+	callback = callback || onGeneralTimeout;
 
     var T = new timer( callback, ms )
     	, lastBy = lastTimerSetBy
@@ -448,7 +448,7 @@ export function resetPaymentTimer() {
 	//Big.log("Hi Ping Debug reset the paymentTimer");
 	//killTimers('paymentTimer'); //TsvActions.stopPaymentTimer();
 	//startPaymentTimer();
-	return GuiTimer(TsvSettingsStore.getCache('custommachinesettings.paymentPageTimeout', 120000), fromPage);
+	return GuiTimer(TsvSettingsStore.getCache('custommachinesettings.paymentPageTimeout', 120000));
 }
 
 export function killAllTimers() {
