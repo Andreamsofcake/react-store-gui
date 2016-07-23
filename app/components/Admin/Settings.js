@@ -7,7 +7,7 @@ import { Link, browserHistory } from 'react-router'
 
 import TsvActions from '../../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -52,8 +52,6 @@ class AdminSettings extends Component {
 
   save(e) {
   	
-  	startGeneralIdleTimer(this.props.location.pathname);
-
   	if (e) { e.preventDefault(); }
 
   	let machineSettingsProps = [
@@ -104,7 +102,6 @@ class AdminSettings extends Component {
   // Add change listeners to stores
   componentDidMount() {
   	TsvSettingsStore.addChangeListener(this._onTsvSettingsChange);
-	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores
@@ -125,14 +122,12 @@ class AdminSettings extends Component {
   }
   
   textChange(e) {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	let state = {};
   	state[e.target.name] = e.target.value;
   	this.setState(state);
   }
   
   selectChange(what, e) {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	let state = {};
   	state[what] = e;
   	this.setState(state);

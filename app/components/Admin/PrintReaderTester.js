@@ -9,7 +9,7 @@ import * as _E from 'elemental'
 
 import { uniq } from '../../utils'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -38,7 +38,6 @@ class Admin_Print_Reader_Tester extends Component {
 // Add change listeners to stores
   componentDidMount() {
     AdminStore.addChangeListener(this._onStoreChange);
-	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores
@@ -47,7 +46,6 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   _onStoreChange(event) {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	Big.log('PRINT READER event');
   	Big.log(event);
   	//if (event.type == appConstants.TEST_REGISTER_PRINT) {
@@ -58,7 +56,6 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   startMatchPrint() {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.clearApiResponses();
   	this.setState({
   		interfaceFocus: 'match',
@@ -68,7 +65,6 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   startRegisterPrint() {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.clearApiResponses();
   	this.setState({
   		interfaceFocus: 'register',
@@ -78,7 +74,6 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   reset() {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	this.setState({
   		interfaceFocus: false,
   		apiResponse: [], // reset API messages
@@ -135,7 +130,6 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   updateState(what, e) {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	//Big.warn('updateState(what, e)');
   	//Big.log(what);
   	//Big.log(e.target.value);
@@ -241,12 +235,10 @@ class Admin_Print_Reader_Tester extends Component {
   }
   
   registerPrint() {
-  	//startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.registerPrint(this.state);
   }
 
   matchPrint() {
-  	//startGeneralIdleTimer(this.props.location.pathname);
   	AdminActions.matchPrint(this.state);
   }
 }

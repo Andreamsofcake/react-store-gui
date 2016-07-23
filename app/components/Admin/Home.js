@@ -10,7 +10,8 @@ import TsvStore from '../../stores/TsvStore'
 import TsvActions from '../../actions/TsvActions'
 import {
 	emptyCart,
-	startGeneralIdleTimer,
+	KillGuiTimer,
+	GuiTimer
 } from '../../utils/TsvUtils'
 
 class AdminHome extends Component {
@@ -39,7 +40,7 @@ class AdminHome extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-	startGeneralIdleTimer(this.props.location.pathname);
+	KillGuiTimer();
 	TsvStore.addChangeListener(this._onTsvStoreChange);
 	if (!this.state.machineInfo) {
 		TsvActions.getMachineInfo();

@@ -98,7 +98,7 @@ var StorefrontActions = {
 
   	let coil = product.coilNumber;
 
-  	Big.log('removeAllQty ///////');
+  	Big.log('addQty ///////');
   	Big.log(product, coil);
 
   	TsvActions.apiCall('addToCartByCoil', coil, (err, ok) => {
@@ -129,6 +129,23 @@ var StorefrontActions = {
 	},
 
   addToCart(product, e) {
+
+  	let cart = TsvSettingsStore.getCache('shoppingCart');
+
+  	Big.log('addToCart ///////');
+  	Big.log({ product, cart });
+  	
+  	if (cart && cart.detail && cart.detail.length) {
+  		let alreadyInCart = cart.detail.filter( P => { return P.productID === product.productID } );
+  		if (alreadyInCart && alreadyInCart.length) {
+			AppDispatcher.handleServerAction({
+				actionType: appConstants.SINGLE_PRODUCTS_ONLY,
+				data: null
+			});
+  			return;
+  		}
+  	}
+  	
     if(product.stockCount > 0){
       TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
         if (err) Big.throw(err);

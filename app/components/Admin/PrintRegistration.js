@@ -9,7 +9,7 @@ import * as _E from 'elemental'
 
 import { uniq } from '../../utils'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'

@@ -9,6 +9,8 @@ import CL_Store from '../stores/CustomerStore'
 import A_Actions from '../actions/AdminActions'
 import A_Store from '../stores/AdminStore'
 
+import TsvStore from '../stores/TsvStore'
+
 import appConstants from '../constants/appConstants'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
@@ -16,7 +18,7 @@ import * as _E from 'elemental'
 import { uniq } from '../utils'
 
 import {
-	startGeneralIdleTimer,
+	GuiTimer,
 } from '../utils/TsvUtils'
 
 import Log from '../utils/BigLogger'
@@ -30,7 +32,8 @@ class CustomerLoginTest extends Component {
     //TsvSettingsStore.setSession('currentView', 'CustomerLogin');
     this.state = {
     	params: this.props.params,
-    	loginToken: null
+    	loginToken: null,
+    	machineInfo: TsvStore.getMachineInfo()
     }
 
     this._onAStoreChange = this._onAStoreChange.bind(this);
@@ -48,7 +51,7 @@ class CustomerLoginTest extends Component {
   	this.setState({
   		loginToken: uniq()
   	});
-	startGeneralIdleTimer(this.props.location.pathname);
+	GuiTimer();
 
   }
 
@@ -72,7 +75,7 @@ class CustomerLoginTest extends Component {
   }
 
   _onAStoreChange(event) {
-	startGeneralIdleTimer(this.props.location.pathname);
+	GuiTimer();
   	switch (event.type) {
   		case appConstants.TEST_CUSTOMERS_RECEIVED:
   			this.setState({
@@ -85,11 +88,15 @@ class CustomerLoginTest extends Component {
 
   loadTestCustomer(C, e) {
   	if (e) e.preventDefault();
-  	CL_Actions.loadCustomerByMembershipId(C.membership_id);
+  	var id = C.client_membership_ids.filter( ID => { return ID.client === this.state.machineInfo.client });
+  	if (id && id.length) {
+	  	//CL_Actions.loadCustomerByMembershipId(C.membership_id);
+	  	CL_Actions.loadCustomerByMembershipId(id[0].id);
+	}
   }
   
   _onCLStoreChange(event) {
-	startGeneralIdleTimer(this.props.location.pathname);
+	GuiTimer();
   	switch (event.type) {
   		case appConstants.CUSTOMER_LOADED:
 			if (event.status === 'ok') {

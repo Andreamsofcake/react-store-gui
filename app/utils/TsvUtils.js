@@ -14,7 +14,9 @@ var serviceIsStarted = false
 	// currentPageView: replacement for rootscope.currentLocation or whatever....
 	// still need to track it somehow, and this script will never get access to router.location.path
 	, currentPageView
+	, lastTimerSetBy
 	, globalTimers = {}
+	, generalTimeoutMs = 60000 // config me!!!
 	;
 
 export function init() {
@@ -297,6 +299,7 @@ export function onGeneralTimeout() {
 */
 		case "/CashVending":
 		case "/CardVending":
+			// FIXME: this still needs addressed, have not looked at this since LO went to credits only purchase!
 			var T = getTimer('paymentTimer')
 			if (!T || (T && T.getTimeLeft() <= 0)) {
 				// but why are we emptying the cart here without going to DefaultIdlePage???
@@ -343,21 +346,58 @@ export function onGeneralTimeout() {
 	}
 }
 
+export function GuiTimer(ms, from, callback) {
+
+	KillGuiTimer();
+
+	ms = ms || generalTimeoutMs;
+	if (!callback && from && typeof from === 'function') {
+		callback = from;
+		from = null;
+	}
+	callback = callback || gotoDefaultIdlePage;
+
+    var T = new timer( callback, ms )
+    	, lastBy = lastTimerSetBy
+    	;
+    T.self(T);
+    setTimer('GuiTimer', T);
+    
+    if (from) {
+    	lastTimerSetBy = from;
+    }
+    
+    return lastBy || true;
+}
+
+export function KillGuiTimer() {
+	killTimers('GuiTimer');
+}
+
 export function thankYouTimer() {
+	return GuiTimer(TsvSettingsStore.getCache('custommachinesettings.thankyouPageTimeout', 10000));
+/*
     //var timer = setTimeout( gotoDefaultIdlePage, TsvSettingsStore.getCache('custommachinesettings.thankyouPageTimeout' ) );
     var T = new timer( gotoDefaultIdlePage, TsvSettingsStore.getCache('custommachinesettings.thankyouPageTimeout', 10000) );
     T.self(T);
     setTimer('thankyouTimer', T);
+*/
 }
 
 export function vendErrorTimer() {
+	return GuiTimer(TsvSettingsStore.getCache('custommachinesettings.VendErrorTimeout', 10000));
+/*
     //var timer = setTimeout( gotoDefaultIdlePage, TsvSettingsStore.getCache('custommachinesettings.VendErrorTimeout', 10000) );
     var T = new timer( gotoDefaultIdlePage, TsvSettingsStore.getCache('custommachinesettings.VendErrorTimeout', 10000) );
     T.self(T);
     setTimer('vendErrorTimer', T);
+*/
 }
 
 export function startGeneralIdleTimer(fromPage) {
+
+	return GuiTimer(TsvSettingsStore.getCache('custommachinesettings.generalPageTimeout', 120000), fromPage);
+/*
 	var T = getTimer('generalIdleTimer')
 	if (!T && /Admin/.test(fromPage)) {
 		//Big.warn('skipping startGeneralIdleTimer() because it looks like we are in admin land, and timer was cancelled');
@@ -371,18 +411,24 @@ export function startGeneralIdleTimer(fromPage) {
     	, T = new timer( onGeneralTimeout, ts );
     T.self(T);
 	setTimer('generalIdleTimer', T);
+*/
 }
 
 export function killGeneralIdleTimer() {
-	killTimers(['generalIdleTimer']);
+	return KillGuiTimer();
+	//killTimers(['generalIdleTimer']);
 }
 
 function setTimer(label, timer) {
+	if (label !== 'GuiTimer') {
+		throw new Error('who did dat? (setTimer called with non-GuiTimer label: '+label+')');
+	}
 	globalTimers[label] = timer;
 }
 
 export function getTimer(label) {
-	return globalTimers[label];
+	return globalTimers.GuiTimer;
+	//return globalTimers[label];
 }
 
 function getTimers() {
@@ -398,108 +444,11 @@ function dropTimer(label) {
 	}
 }
 
-export function isCartEmpty(cb) {
-	var cart = TsvSettingsStore.getCache('shoppingCart');
-	if (!cart) {
-
-		Big.warn('this may be out of sync, as we have to check with the TsvActions.apiCall(fetchShoppingCart2) thing for data');
-		TsvActions.apiCall('fetchShoppingCart2', function(err, data) {
-			if (err) {
-				Big.warn('error trying to fetchShoppingCart2!');
-				Big.warn(err);
-				cb(null, false);
-			}
-			TsvSettingsStore.setCache('shoppingCart', data);
-			cb(null, !(data.detail && data.detail.length));
-		})
-
-	} else if (!cart.detail) {
-		cb(null, true );
-	} else {
-		cb(null,  cart.detail.length == 0  );
-	}
-}
-
-var timesIdleCalled = 0;
-
-export function gotoDefaultIdlePage() { //$location, $rootScope){
-
-	// can't go to idle page until we get settings!
-	if (TsvSettingsStore.getCache('custommachinesettings', undefined) === undefined) {
-		window.location.reload();
-		return;
-	}
-	
-	function activated(setActivation) {
-		if (setActivation) {
-			// no need to constantly poke this thing:
-			TsvSettingsStore.setConfig('activated', true);
-		}
-
-		resetSelectedItem();
-		// need to log out any customer record at this point
-		//Big.warn('uh, are we stuck on soething here? CL_Actions no has method???');
-		//Big.log(Object.keys(CL_Actions));
-		//Big.log(CL_Actions);
-		//CL_Actions.customerLogout();
-		// moved into here to kill module load race condition:
-		TsvActions.customerLogout();
-		emptyCart();
-
-		if (TsvSettingsStore.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
-			browserHistory.push("/PageIdle");
-			return;
-
-		} else {
-			
-			return browserHistory.push("/Storefront");
-			// there used to be more options here, look in old TsvService to see them
-		}
-	}
-	
-	if (TsvSettingsStore.getConfig('activated')) {
-		activated(false)
-	} else {
-	
-		TsvActions.apiCall('checkActivation', (err, result) => {
-		
-			Big.warn('checkActivation: timesIdleCalled:'+timesIdleCalled);
-			Big.log(result);
-			timesIdleCalled += 1;
-		
-			if (!result || result.resultCode !== "SUCCESS") {
-				//Big.throw('WHY U NO ACTIVATE');
-				// FIXME (or not) temporarily disabling this, not sure what the deal is with TSV <=> AVT
-				//return browserHistory.push("/Admin/Activate");
-			}
-		
-			activated(true);
-		});
-	}
-}
-
-export function idleClicked() {
-	return browserHistory.push("/Storefront");	
-	// there used to be more options here, look in old TsvService to see them
-}
-
-export function resetSelectedItem() {
-	//Big.log("resetSelectedItem()!");
-	TsvSettingsStore.setSession({
-		bRunningClearFaults: false,
-		bRunningAutoMap: false,
-		cashMsg: Translate.translate("CashVending", "HintMessageInsertCash"),
-		vendErrorMsg1: '',
-		vendErrorMsg2: '',
-		vendSettleTotal: 0,
-		bVendedOldCredit: false
-	});
-}
-
 export function resetPaymentTimer() {
 	//Big.log("Hi Ping Debug reset the paymentTimer");
-	killTimers('paymentTimer'); //TsvActions.stopPaymentTimer();
-	startPaymentTimer();
+	//killTimers('paymentTimer'); //TsvActions.stopPaymentTimer();
+	//startPaymentTimer();
+	return GuiTimer(TsvSettingsStore.getCache('custommachinesettings.paymentPageTimeout', 120000), fromPage);
 }
 
 export function killAllTimers() {
@@ -580,7 +529,100 @@ export function startPaymentTimer( idlePage ){
 	setTimer('paymentTimer', T);
 }
 
+export function isCartEmpty(cb) {
+	var cart = TsvSettingsStore.getCache('shoppingCart');
+	if (!cart) {
 
+		Big.warn('this may be out of sync, as we have to check with the TsvActions.apiCall(fetchShoppingCart2) thing for data');
+		TsvActions.apiCall('fetchShoppingCart2', function(err, data) {
+			if (err) {
+				Big.warn('error trying to fetchShoppingCart2!');
+				Big.warn(err);
+				cb(null, false);
+			}
+			TsvSettingsStore.setCache('shoppingCart', data);
+			cb(null, !(data.detail && data.detail.length));
+		})
+
+	} else if (!cart.detail) {
+		cb(null, true );
+	} else {
+		cb(null,  cart.detail.length == 0  );
+	}
+}
+
+export function gotoDefaultIdlePage() { //$location, $rootScope){
+
+	// can't go to idle page until we get settings!
+	if (TsvSettingsStore.getCache('custommachinesettings', undefined) === undefined) {
+		window.location.reload();
+		return;
+	}
+	
+	function activated(setActivation) {
+		if (setActivation) {
+			// no need to constantly poke this thing:
+			TsvSettingsStore.setConfig('activated', true);
+		}
+
+		resetSelectedItem();
+		// need to log out any customer record at this point
+		//Big.warn('uh, are we stuck on soething here? CL_Actions no has method???');
+		//Big.log(Object.keys(CL_Actions));
+		//Big.log(CL_Actions);
+		//CL_Actions.customerLogout();
+		// moved into here to kill module load race condition:
+		TsvActions.customerLogout();
+		emptyCart();
+
+		if (TsvSettingsStore.getCache('custommachinesettings.txtIdleScene', 'coil_keypad').toLowerCase() == "page_idle"){
+			browserHistory.push("/PageIdle");
+			return;
+
+		} else {
+			
+			return browserHistory.push("/Storefront");
+			// there used to be more options here, look in old TsvService to see them
+		}
+	}
+	
+	if (TsvSettingsStore.getConfig('activated')) {
+		activated(false)
+	} else {
+	
+		TsvActions.apiCall('checkActivation', (err, result) => {
+		
+			Big.warn('checkActivation');
+			Big.log(result);
+		
+			if (!result || result.resultCode !== "SUCCESS") {
+				//Big.throw('WHY U NO ACTIVATE');
+				// FIXME (or not) temporarily disabling this, not sure what the deal is with TSV <=> AVT
+				//return browserHistory.push("/Admin/Activate");
+			}
+		
+			activated(true);
+		});
+	}
+}
+
+export function idleClicked() {
+	return browserHistory.push("/Storefront");	
+	// there used to be more options here, look in old TsvService to see them
+}
+
+export function resetSelectedItem() {
+	//Big.log("resetSelectedItem()!");
+	TsvSettingsStore.setSession({
+		bRunningClearFaults: false,
+		bRunningAutoMap: false,
+		cashMsg: Translate.translate("CashVending", "HintMessageInsertCash"),
+		vendErrorMsg1: '',
+		vendErrorMsg2: '',
+		vendSettleTotal: 0,
+		bVendedOldCredit: false
+	});
+}
 
 
 /******
@@ -650,7 +692,7 @@ export function gotoPayment(){
 	
 	var TotalPrice = TsvSettingsStore.getCache('shoppingCart.summary.TotalPrice', 0);
 	
-	// all payments for now with Living On are customer credits only
+	// all payments for now with Living On are customer credits only, we'll need to fix this later
 	var payLocation = '/CustomerCreditVending'; // '/ChooseCashCard'
 	return browserHistory.push(payLocation);
 

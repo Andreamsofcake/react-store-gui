@@ -10,23 +10,23 @@ var Big = new Log('ShoppingCartItem');
 
 import {
 	currencyFilter,
-	startGeneralIdleTimer,
+	GuiTimer,
 } from '../utils/TsvUtils'
 
 class ShoppingCartItem extends Component {
 
   minusQty() { // c
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	GuiTimer();
     StorefrontActions.minusQty( this.props.data ) // , prd.coilNumber
   }
 
   removeAllQty() { // c, q
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	GuiTimer();
     StorefrontActions.removeAllQty( this.props.data ) // , prd.coilNumber, prd.qtyInCart
   }
 
   addQty() { // c
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	GuiTimer();
     StorefrontActions.addQty( this.props.data ) // prd.coilNumber
   }
   

@@ -38,7 +38,8 @@ import * as _E from 'elemental'
 import { uniq } from '../../utils'
 
 import {
-	startGeneralIdleTimer,
+	GuiTimer,
+	KillGuiTimer
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -78,7 +79,7 @@ class Customer_MembershipAccess extends Component {
 		CL_Store.addChangeListener( this._onCLStoreChange );
 		CL_Actions.customerLogout(); // make sure we dump any session!
 		this.setState(this.getDefaultState());
-		startGeneralIdleTimer(this.props.location.pathname);
+		GuiTimer();
 	}
 
 	// Remove change listers from stores
@@ -99,7 +100,7 @@ class Customer_MembershipAccess extends Component {
 	}
 
 	_onCLStoreChange(event) {
-		startGeneralIdleTimer(this.props.location.pathname);
+		GuiTimer();
 		switch (event.type) {
 			case appConstants.CUSTOMER_LOADED:
 				if (event.status === 'ok') {

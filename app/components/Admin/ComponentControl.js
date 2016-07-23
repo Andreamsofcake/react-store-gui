@@ -7,7 +7,7 @@ import * as _E from 'elemental'
 
 import TsvActions from '../../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -38,7 +38,6 @@ class AdminComponentControl extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-	startGeneralIdleTimer(this.props.location.pathname);
 	TsvActions.apiCall('enumerateComponents', (err, data) => {
       if (err) Big.throw(err);
       Big.log('enumerateComponents called back.... data:');
@@ -51,7 +50,6 @@ class AdminComponentControl extends Component {
 
   lastHeartbeatTime(e) {
   	if (e) { e.preventDefault(); }
-  	startGeneralIdleTimer(this.props.location.pathname);
 	TsvActions.apiCall('lastHeartbeatTime', (err, lastBeat) => {
 		Big.log('lastHeartbeatTime ok, what does this look like?');
 		Big.log(lastBeat);

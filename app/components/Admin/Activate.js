@@ -7,9 +7,9 @@ import * as _E from 'elemental'
 
 import TsvStore from '../../stores/TsvStore'
 import TsvActions from '../../actions/TsvActions'
+
 import {
-	gotoDefaultIdlePage,
-	startGeneralIdleTimer,
+	KillGuiTimer
 } from '../../utils/TsvUtils'
 
 

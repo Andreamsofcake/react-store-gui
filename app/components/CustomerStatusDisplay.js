@@ -10,9 +10,8 @@ import CL_Store from '../stores/CustomerStore'
 //import TsvSettingsStore from '../stores/TsvSettingsStore'
 import TsvStore from '../stores/TsvStore'
 import {
-	startGeneralIdleTimer,
-	killGeneralIdleTimer,
-	getTimer,
+	GuiTimer,
+	KillGuiTimer,
 } from '../utils/TsvUtils'
 
 class CustomerStatusDisplay extends Component {
@@ -70,11 +69,11 @@ class CustomerStatusDisplay extends Component {
 	}
 	
 	resetGeneralIdleTimer() {
-		startGeneralIdleTimer(this.props.location.pathname);
+		GuiTimer();
 	}
 	
 	cancelGeneralIdleTimer() {
-		killGeneralIdleTimer();
+		KillGuiTimer();
 		this.setState({
 			generalTimeoutRemaining: 'timer cancelled'
 		});

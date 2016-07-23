@@ -9,7 +9,8 @@ import TsvActions from '../../actions/TsvActions'
 import {
 	emptyCart,
 	gotoDefaultIdlePage,
-	startGeneralIdleTimer,
+	GuiTimer,
+	KillGuiTimer
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -35,7 +36,7 @@ class AdminLogin extends Component {
   }
 
   enter() {
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	GuiTimer();
   	var localPass = TsvSettingsStore.getCache('machineSettings.AdminPassword')
   		, result = 'VALID'
   		;
@@ -72,7 +73,7 @@ class AdminLogin extends Component {
   }
 
   clear() {
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	GuiTimer();
     this.setState({
       instructionMessage : Translate.translate('AdminLogin', 'LoginMsg'),
       num: ""
@@ -80,7 +81,7 @@ class AdminLogin extends Component {
   }
 
   press(digit) {
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	GuiTimer();
     if(this.state.num.length < this.state.maxChars){
         this.setState({
           num: this.state.num + digit
@@ -93,7 +94,7 @@ class AdminLogin extends Component {
   }
     // Add change listeners to stores
   componentDidMount() {
-	startGeneralIdleTimer(this.props.location.pathname);
+	GuiTimer();
   }
 
   // Remove change listers from stores

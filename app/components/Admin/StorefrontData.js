@@ -13,7 +13,7 @@ import StorefrontActions from '../../actions/StorefrontActions'
 
 import {
 	emptyCart,
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 class AdminStorefrontData extends Component {
@@ -32,7 +32,6 @@ class AdminStorefrontData extends Component {
   
     // Add change listeners to stores
   componentDidMount() {
-	startGeneralIdleTimer(this.props.location.pathname);
   	AdminStore.addChangeListener(this._onAdminStoreChange);
   }
 

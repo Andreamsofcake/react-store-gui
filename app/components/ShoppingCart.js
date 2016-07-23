@@ -14,7 +14,8 @@ import {
 	gotoDefaultIdlePage,
 	cardTransaction,
 	updateCredit,
-	startGeneralIdleTimer,
+	GuiTimer,
+	KillGuiTimer,
 	emptyCart
 } from '../utils/TsvUtils'
 
@@ -71,7 +72,7 @@ class ShoppingCart extends Component {
 			if (err) Big.throw(err);
 			TsvSettingsStore.setCache('shoppingCart', data);
 		});
-		startGeneralIdleTimer(this.props.location.pathname);
+		GuiTimer();
 	}
 	
 	componentWillUnmount() {

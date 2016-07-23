@@ -8,7 +8,7 @@ import * as _E from 'elemental'
 import TsvActions from '../../actions/TsvActions'
 import TsvStore from '../../stores/TsvStore'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 class AdminCheckFaults extends Component {
@@ -33,7 +33,6 @@ class AdminCheckFaults extends Component {
   }
   
   getFaultCodes(machine_id) {
-  	startGeneralIdleTimer(this.props.location.pathname);
     TsvActions.apiCall('getFaultCodes', machine_id.toString(), (err, data) => {
       this.setState({
         faults: data
@@ -53,7 +52,6 @@ class AdminCheckFaults extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
-		startGeneralIdleTimer(this.props.location.pathname);
 		TsvSettingsStore.setSession('bRunningClearFaults', false);
 		this.getFaultCodes(this.state.machineID);
 		TsvStore.addChangeListener(this._onTsvChange);
@@ -65,7 +63,6 @@ class AdminCheckFaults extends Component {
 	}
 	
   _onTsvChange(event) {
-  	startGeneralIdleTimer(this.props.location.pathname);
 	if (event && event.method === 'notifyResetComplete') {
 		let machineID = event.data;
 

@@ -26,6 +26,7 @@ var appConstants = keyMirror({
 	TOGGLE_CATEGORY_ID_TO_FILTER: null,
 	CLEAR_CATEGORY_FILTER: null,
 	STOREFRONT_DATA_RECEIVED: null,
+	SINGLE_PRODUCTS_ONLY: null, // flag used by our temporary restriction on number of products a person can buy
 	
 // Customer loads and unloads and stuff
 	CUSTOMER_LOADED: null, // "load by membership id"

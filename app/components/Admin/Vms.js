@@ -7,7 +7,7 @@ import * as _E from 'elemental'
 
 import TsvActions from '../../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 class AdminVms extends Component {
@@ -19,7 +19,7 @@ class AdminVms extends Component {
   }
   
   componentDidMount() {
-	startGeneralIdleTimer(this.props.location.pathname);
+
   }
 
   render() {

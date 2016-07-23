@@ -13,7 +13,7 @@ import StorefrontStore from '../../stores/StorefrontStore'
 
 import TsvActions from '../../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -58,7 +58,6 @@ class AdminInventory2 extends Component {
 		});
 		*/
 
-		startGeneralIdleTimer(this.props.location.pathname);
 	}
 
 	// Remove change listers from stores
@@ -94,7 +93,6 @@ class AdminInventory2 extends Component {
 	}
 	
 	cancelSlot() {
-      	startGeneralIdleTimer(this.props.location.pathname);
         this.setState({
 			inventoryGuiState: 'selectSlot',
 			slotProductCount: "0",
@@ -104,7 +102,6 @@ class AdminInventory2 extends Component {
 	}
 
 	addStock() {
-		startGeneralIdleTimer(this.props.location.pathname);
 		if (this.state.coilNumber != "" && this.state.slotProductCount != ""){
 			this.setState({
 				instructionMessage: 'Adding '+this.state.slotProductCount+' '+(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)+' from stock count, one moment please.',
@@ -140,7 +137,7 @@ class AdminInventory2 extends Component {
 							inventoryGuiState: 'selectSlot',
 							slotProductCount: "0"
 						});
-					}, 2000);
+					}, 1000);
 				});
 			});
 		} else {
@@ -149,7 +146,6 @@ class AdminInventory2 extends Component {
 	}
 
 	removeStock() {
-		startGeneralIdleTimer(this.props.location.pathname);
 		if (this.state.coilNumber != "" && this.state.slotProductCount != ""){
 			this.setState({
 			  instructionMessage: 'Removing '+this.state.slotProductCount+' '+(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)+' from stock count, one moment please.',
@@ -188,7 +184,7 @@ class AdminInventory2 extends Component {
 						  inventoryGuiState: 'selectSlot',
 						  slotProductCount: "0"
 						});
-					}, 2000);
+					}, 1000);
 				  });
 			  });
 		} else {
@@ -436,14 +432,12 @@ class AdminInventory2 extends Component {
 	}
 
 	clear() {
-		startGeneralIdleTimer(this.props.location.pathname);
 		this.setState({
 			slotProductCount: "0"
 		})
 	}
 
 	press(digit) {
-		startGeneralIdleTimer(this.props.location.pathname);
 		let slotProductCount = this.state.slotProductCount;
 		slotProductCount = parseInt(slotProductCount + digit);
 		if (slotProductCount > this.state.maxInSlot) {

@@ -9,7 +9,6 @@ import TsvStore from '../../stores/TsvStore'
 import TsvActions from '../../actions/TsvActions'
 import {
 	emptyCart,
-	startGeneralIdleTimer,
 } from '../../utils/TsvUtils'
 
 class AdminBillAcceptor extends Component {
@@ -40,7 +39,6 @@ class AdminBillAcceptor extends Component {
   }
 
   billOn() {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	TsvActions.apiCall('enablePaymentDevice', "PAYMENT_TYPE_CASH");
   	this.setState({
   		acceptorState: 'on'
@@ -48,7 +46,6 @@ class AdminBillAcceptor extends Component {
   }
 
   billOff() {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	TsvActions.apiCall('disablePaymentDevice');
   	this.setState({
   		acceptorState: 'off'
@@ -75,7 +72,6 @@ class AdminBillAcceptor extends Component {
 
     // Add change listeners to stores
   componentDidMount() {
-	startGeneralIdleTimer(this.props.location.pathname);
   	TsvStore.addChangeListener(this._onTsvChange);
   }
 
@@ -85,7 +81,6 @@ class AdminBillAcceptor extends Component {
   }
   
     _onTsvChange(event) {
-    	startGeneralIdleTimer(this.props.location.pathname);
     	if (event && event.method == 'creditBalanceChanged') {
     		//var status = this.state.vmsStatus;
     		//status.push(eventArgs.eventType + ' (' + eventArgs.exceptionMessage + ')');

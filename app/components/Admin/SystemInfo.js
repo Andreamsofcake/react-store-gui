@@ -7,7 +7,7 @@ import * as _E from 'elemental'
 
 import TsvActions from '../../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -30,7 +30,6 @@ class System_Info extends Component {
     	Big.log(data);
        this.setState({ versionInfos: data })
     })
-	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores

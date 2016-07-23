@@ -12,12 +12,12 @@ import TsvActions from '../actions/TsvActions'
 import {
 	updateCredit,
 	resetPaymentTimer,
-	killTimers,
 	setVendingInProcessFlag,
 	emptyCart,
 	gotoDefaultIdlePage,
 	vendResponse,
-	startGeneralIdleTimer,
+	GuiTimer,
+	KillGuiTimer
 } from '../utils/TsvUtils'
 
 import { currencyFilter } from '../utils/TsvUtils'
@@ -96,7 +96,7 @@ class CardVending extends Component {
 	startVend() {
 		TsvActions.apiCall('disablePaymentDevice');
 		TsvActions.apiCall('startVend');
-		killTimers();
+		KillGuiTimer();
 		setVendingInProcessFlag();
 		TsvSettingsStore.setSession('cardMsg', Translate.translate("CardVending", "Vending", "Vending"));
 		//TsvActions.apiCall("Card Approved should vend...");
@@ -110,7 +110,7 @@ class CardVending extends Component {
 
 	cancel(){
 		TsvActions.apiCall('disablePaymentDevice');
-		killTimers('paymentTimer');
+		KillGuiTimer();
 		emptyCart();
 		gotoDefaultIdlePage();
 	}
@@ -118,7 +118,7 @@ class CardVending extends Component {
   // Add change listeners to stores
 	cardTransactionHandler(level) {
 
-		killTimers('cardErrorTimer');
+		KillGuiTimer();
 		var msg, showSpinner = false;
 
 		if (!TsvSettingsStore.getSession('bVendingInProcess')) {
@@ -176,7 +176,7 @@ class CardVending extends Component {
   }
 
 	componentDidMount() {
-		startGeneralIdleTimer(this.props.location.pathname);
+		GuiTimer();
 		TsvStore.addChangeListener(this._onTsvChange);
 	}
 
@@ -190,7 +190,7 @@ class CardVending extends Component {
 			switch (event.method) {
 				case 'vendResponse':
 					vendResponse(event.data); //processStatus);
-					killTimers('paymentTimer');
+					KillGuiTimer();
 					break;
 				case 'cardTransactionResponse':
 					this.cardTransactionHandler(event.data);

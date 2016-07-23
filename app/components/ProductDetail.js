@@ -12,7 +12,7 @@ var Big = new Log('ProductDetail');
 
 import {
 	currencyFilter,
-	startGeneralIdleTimer,
+	GuiTimer,
 } from '../utils/TsvUtils'
 
 class ProductDetail extends Component {
@@ -35,7 +35,7 @@ class ProductDetail extends Component {
      	loadedAtLeastOnce: true,
 		product: StorefrontStore.decorateProducts( StorefrontStore.getProductById(this.props.params.productID) )
      })
-     startGeneralIdleTimer(this.props.location.pathname);
+     GuiTimer();
    }
 
    // Remove change listers from stores
@@ -44,7 +44,7 @@ class ProductDetail extends Component {
    }
 
    addToCart(e) {
-   		startGeneralIdleTimer(this.props.location.pathname);
+   		GuiTimer();
 		if (this.state.product) {
 			StorefrontActions.addToCart(this.state.product);
 		}
@@ -55,7 +55,7 @@ class ProductDetail extends Component {
    }
    
    toggleModal() {
-   	startGeneralIdleTimer(this.props.location.pathname);
+   	GuiTimer();
 	this.setState({
 		modalIsOpen: !(this.state.modalIsOpen)
 	});

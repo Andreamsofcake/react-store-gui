@@ -8,7 +8,7 @@ import * as _E from 'elemental'
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	GuiTimer,
 	gotoDefaultIdlePage,
 } from '../utils/TsvUtils'
 
@@ -23,7 +23,6 @@ class View0 extends Component {
 
     //TsvSettingsStore.setSession('currentView', 'View0');
     //TsvSettingsStore.setCache('currentLocation', '/View0');
-    startGeneralIdleTimer();
     Big.error('<<<<        FIXME: need to attach events to click and mouseover globally to start/resetGeneralIdleTimer()        >>>>');
   };
 
@@ -33,6 +32,7 @@ class View0 extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
+	    GuiTimer();
 		TsvStore.addChangeListener(this._onTsvChange);
 	}
 	
@@ -43,13 +43,15 @@ class View0 extends Component {
 	_onTsvChange(event) {
 		if (event && event.method) {
 			switch (event.method) {
-				case 'noEvent':
-					gotoDefaultIdlePage();
-					break;
-				
 				case 'linkDown':
 					browserHistory.push('/View0');
 					break;
+
+				case 'noEvent':
+				default:
+					gotoDefaultIdlePage();
+					break;
+				
 			}
 		}
 	}

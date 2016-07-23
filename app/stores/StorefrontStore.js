@@ -142,17 +142,21 @@ StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 
 		case appConstants.TOGGLE_CATEGORY_ID_TO_FILTER:
 			toggleIDtoCategoryFilter(action.data);
-			StorefrontStore.emitChange();
+			StorefrontStore.emitChange({ type: action.actionType });
 			break;
 
 		case appConstants.CLEAR_CATEGORY_FILTER:
 			clearFilter();
-			StorefrontStore.emitChange();
+			StorefrontStore.emitChange({ type: action.actionType });
 			break;
 
 		case appConstants.STOREFRONT_DATA_RECEIVED:
 			setStorefrontData(action.data);
 			StorefrontStore.emitChange({ type: appConstants.STOREFRONT_DATA_RECEIVED });
+			break;
+
+		case appConstants.SINGLE_PRODUCTS_ONLY:
+			StorefrontStore.emitChange({ type: action.actionType });
 			break;
 
 		default:

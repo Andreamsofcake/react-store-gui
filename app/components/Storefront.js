@@ -11,6 +11,10 @@ import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
 import ShoppingCartMini from './ShoppingCartMini'
 
+import appConstants from '../constants/appConstants'
+
+import ModalCartMessageSingleProduct from './ModalCartMessageSingleProduct'
+
 import Log from '../utils/BigLogger'
 var Big = new Log('Storefront');
 /*
@@ -36,7 +40,8 @@ import CL_Store from '../stores/CustomerStore'
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	GuiTimer,
+	KillGuiTimer
 } from '../utils/TsvUtils'
 
 class Storefront extends Component {
@@ -64,8 +69,8 @@ class Storefront extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-  	//Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
+  	GuiTimer();
   	
   	var state = {}
 
@@ -133,14 +138,14 @@ class Storefront extends Component {
   	// }
   }
 
-  _onStoreFrontChange() {
-    this.setState({
-      categoryIdFilter: StorefrontStore.getCategoryFilter()
-    })
+  _onStoreFrontChange(event) {
+	this.setState({
+	  categoryIdFilter: StorefrontStore.getCategoryFilter()
+	})
   }
-
+  
   categoryClick(categoryID) {
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	GuiTimer();
     if (categoryID) {
       return StorefrontActions.toggleIDtoCategoryFilter(categoryID)
     }
@@ -148,7 +153,7 @@ class Storefront extends Component {
   }
 
   addToCart(product, e) {
-  	startGeneralIdleTimer(this.props.location.pathname);
+  	GuiTimer();
     StorefrontActions.addToCart(product, e)
   }
   
@@ -191,6 +196,9 @@ class Storefront extends Component {
                 	{this.renderProducts()}
               </div>
        </_E.Col>
+       
+       <ModalCartMessageSingleProduct />
+
       </_E.Row>
     );
   }

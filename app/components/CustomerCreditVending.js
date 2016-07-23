@@ -23,13 +23,13 @@ import TsvActions from '../actions/TsvActions'
 import {
 	resetPaymentTimer,
 	vendResponse,
-	killTimers,
 	startPaymentTimer,
 	gotoDefaultIdlePage,
 	cardTransaction,
 	updateCredit,
 	emptyCart,
-	startGeneralIdleTimer,
+	GuiTimer,
+	KillGuiTimer
 } from '../utils/TsvUtils'
 
 import Log from '../utils/BigLogger'
@@ -70,7 +70,7 @@ class CustomerCreditVending extends Component {
 
     if (TsvSettingsStore.getSession('bVendingInProcess')) {
 
-        killTimers('paymentTimer');
+        KillGuiTimer();
 
         this.state.showSpinner = true;
         this.state.hintMsg = Translate.translate('CashVending','HintMessageVending');
@@ -92,7 +92,7 @@ class CustomerCreditVending extends Component {
   	// only in cash.js:
     //TsvSettingsStore.setSession('insertedAmount', 0);
     TsvActions.apiCall('disablePaymentDevice');
-    killTimers('paymentTimer');
+    KillGuiTimer();
     emptyCart();
   	// only in cash.js:
     //browserHistory.push("/View1");
@@ -198,7 +198,7 @@ class CustomerCreditVending extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
-		startGeneralIdleTimer(this.props.location.pathname);
+		GuiTimer();
 		TsvStore.addChangeListener(this._onTsvChange);
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		SessionStore.addChangeListener(this._onSessionStoreChange);
@@ -306,7 +306,7 @@ class CustomerCreditVending extends Component {
 
 				case 'vendResponse':
 				  	vendResponse(event.data[0]);
-				  	killTimers('paymentTimer');
+				  	KillGuiTimer();
 					break;
 				
 				case 'notifyVendingItem':

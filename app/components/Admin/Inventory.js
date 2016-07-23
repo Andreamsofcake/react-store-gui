@@ -9,7 +9,7 @@ import StorefrontStore from '../../stores/StorefrontStore'
 
 import TsvActions from '../../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -47,7 +47,6 @@ class AdminInventory extends Component {
         }
       });
 
-	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores
@@ -56,7 +55,6 @@ class AdminInventory extends Component {
 
   fillMachine(){
 		if (this.state.machineID) {
-		  startGeneralIdleTimer(this.props.location.pathname);
 		  TsvActions.apiCall('fillMachine', this.state.machineID.toString());
 		} else {
 			alert('error, cannot fill the machine as there is no machineID');
@@ -64,7 +62,6 @@ class AdminInventory extends Component {
   }
 
   fillCoil(){
-  	startGeneralIdleTimer(this.props.location.pathname);
     if (this.state.coilNumber != "") {
 		TsvActions.apiCall('adminValidateProductByCoil', this.state.coilNumber, (err, data) => {
 			if (err) {
@@ -123,7 +120,6 @@ class AdminInventory extends Component {
   selectSlot() {
   	let num = parseInt(this.state.num);
   	if (num) {
-		startGeneralIdleTimer(this.props.location.pathname);
 		TsvActions.apiCall('adminValidateProductByCoil', this.state.num, (err, data) => {
 			if (err) {
 				Big.throw(err);
@@ -181,7 +177,6 @@ class AdminInventory extends Component {
   }
   
   cancelSlot() {
-      	startGeneralIdleTimer(this.props.location.pathname);
         this.setState({
           inventoryGuiState: 'selectSlot',
           num: "",
@@ -191,7 +186,6 @@ class AdminInventory extends Component {
   }
 
   addStock(){
-  	startGeneralIdleTimer(this.props.location.pathname);
       if (this.state.coilNumber != "" && this.state.num != ""){
 		  this.setState({
 		  	instructionMessage: 'Adding '+this.state.num+' '+(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)+' from stock count, one moment please.',
@@ -224,7 +218,6 @@ class AdminInventory extends Component {
   }
 
   removeStock(){
-  	startGeneralIdleTimer(this.props.location.pathname);
       if (this.state.coilNumber != "" && this.state.num != ""){
 		  this.setState({
 		  	instructionMessage: 'Removing '+this.state.num+' '+(this.state.verifiedProductData.name || this.state.verifiedProductData.productName)+' from stock count, one moment please.',
@@ -259,14 +252,12 @@ class AdminInventory extends Component {
   }
 
   clear() {
-  	startGeneralIdleTimer(this.props.location.pathname);
     this.setState({
       num: ""
     })
   }
 
   press(digit) {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	let num = this.state.num;
     if(num.length < this.state.maxChars){
     	num += digit;
@@ -277,7 +268,6 @@ class AdminInventory extends Component {
   }
 
   getMachineSelectOptions() {
-  	startGeneralIdleTimer(this.props.location.pathname);
     var options = [];
     TsvSettingsStore.getCache('machineList').forEach( MACHINE => {
       options.push({ label: 'Machine ' + MACHINE, value: MACHINE });

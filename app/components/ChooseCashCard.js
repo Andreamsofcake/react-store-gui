@@ -12,7 +12,8 @@ import {
 	updateCredit,
 	emptyCart,
 	gotoDefaultIdlePage,
-	startGeneralIdleTimer,
+	GuiTimer,
+	KillGuiTimer
 } from '../utils/TsvUtils'
 
 
@@ -51,7 +52,7 @@ class ChooseCashCard extends Component {
   // Add change listeners to stores
 	componentDidMount() {
 		TsvStore.addChangeListener(this._onTsvChange);
-		startGeneralIdleTimer(this.props.location.pathname);
+		GuiTimer();
 	}
 
 	// Remove change listers from stores

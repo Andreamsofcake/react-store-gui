@@ -14,13 +14,13 @@ import TsvActions from '../actions/TsvActions'
 import {
 	resetPaymentTimer,
 	vendResponse,
-	killTimers,
 	startPaymentTimer,
 	gotoDefaultIdlePage,
 	cardTransaction,
 	updateCredit,
 	emptyCart,
-	startGeneralIdleTimer,
+	GuiTimer,
+	KillGuiTimer
 } from '../utils/TsvUtils'
 
 import Log from '../utils/BigLogger'
@@ -57,7 +57,7 @@ class CashVending extends Component {
 
     if (TsvSettingsStore.getSession('bVendingInProcess')) {
 
-        killTimers('paymentTimer');
+        KillGuiTimer();
 
         this.state.showSpinner = true;
         this.state.hintMsg = Translate.translate('CashVending','HintMessageVending');
@@ -77,7 +77,7 @@ class CashVending extends Component {
   	// only in cash.js:
     //TsvSettingsStore.setSession('insertedAmount', 0);
     TsvActions.apiCall('disablePaymentDevice');
-    killTimers('paymentTimer');
+    KillGuiTimer();
     emptyCart();
   	// only in cash.js:
     //browserHistory.push("/View1");
@@ -144,7 +144,7 @@ class CashVending extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
-		startGeneralIdleTimer(this.props.location.pathname);
+		GuiTimer();
 		TsvStore.addChangeListener(this._onTsvChange);
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		// let's check the balance at module load:
@@ -224,7 +224,7 @@ class CashVending extends Component {
 
 				case 'vendResponse':
 				  	vendResponse(event.data[0]);
-				  	killTimers('paymentTimer');
+				  	KillGuiTimer();
 					break;
 				
 				case 'notifyVendingItem':

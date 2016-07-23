@@ -12,7 +12,7 @@ import CardScanTest from '../Biometrics/MembershipCardScanTest'
 
 import { uniq } from '../../utils'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -37,7 +37,6 @@ class Admin_CardScanTester extends Component {
 // Add change listeners to stores
   componentDidMount() {
     //AdminStore.addChangeListener(this._onStoreChange);
-	startGeneralIdleTimer(this.props.location.pathname);
   }
 
   // Remove change listers from stores

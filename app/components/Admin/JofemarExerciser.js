@@ -8,8 +8,7 @@ import * as _E from 'elemental'
 import TsvStore from '../../stores/TsvStore'
 import TsvActions from '../../actions/TsvActions'
 import {
-	emptyCart,
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -45,7 +44,6 @@ class AdminJofemarExerciser extends Component {
   }
 
   vend(){
-  	startGeneralIdleTimer(this.props.location.pathname);
     TsvActions.apiCall('vendProduct', this.state.machineNumber, parseInt(this.state.num) + this.state.machineNumber * 100);
     this.setState({
       num: "",
@@ -54,24 +52,20 @@ class AdminJofemarExerciser extends Component {
   }
 
   lightOn() {
-  	startGeneralIdleTimer(this.props.location.pathname);
     TsvActions.apiCall('setLights', this.state.machineNumber, true);
   }
 
   lightOff() {
-  	startGeneralIdleTimer(this.props.location.pathname);
     TsvActions.apiCall('setLights', this.state.machineNumber, false);
   }
 
   clear() {
-  	startGeneralIdleTimer(this.props.location.pathname);
     this.setState({
       num: ""
     })
   }
 
   press(digit) {
-  	startGeneralIdleTimer(this.props.location.pathname);
   	var num = this.state.num + digit.toString();
     if (this.state.num.length < this.state.maxChars){
         this.setState({
@@ -82,7 +76,6 @@ class AdminJofemarExerciser extends Component {
 
     // Add change listeners to stores
   componentDidMount() {
-	startGeneralIdleTimer(this.props.location.pathname);
   	TsvStore.addChangeListener(this._onTsvChange);
   }
 
@@ -92,7 +85,6 @@ class AdminJofemarExerciser extends Component {
   }
   
     _onTsvChange(event) {
-    	startGeneralIdleTimer(this.props.location.pathname);
     	if (event && event.method == 'notifyVmsEvent') {
     		Big.log('TSV event');
     		Big.log(event);

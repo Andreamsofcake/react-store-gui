@@ -9,7 +9,7 @@ import { Link, browserHistory } from 'react-router'
 import TsvStore from '../../stores/TsvStore'
 import TsvActions from '../../actions/TsvActions'
 import {
-	startGeneralIdleTimer,
+	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -39,7 +39,6 @@ class AdminAutoMap extends Component {
   }
 
   mapMachine(machineID){
-  	startGeneralIdleTimer(this.props.location.pathname);
     if (!TsvSettingsStore.getSession('bRunningAutoMap')) {
         TsvSettingsStore.setSession('bRunningAutoMap', true);
         TsvActions.apiCall('runAutoMap', machineID, -1);
@@ -55,7 +54,6 @@ class AdminAutoMap extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
-		startGeneralIdleTimer(this.props.location.pathname);
 		TsvStore.addChangeListener(this._onTsvChange);
         TsvSettingsStore.setSession('bRunningAutoMap', false);
 	}
@@ -66,7 +64,6 @@ class AdminAutoMap extends Component {
 	}
 	
 	_onTsvChange(event) {
-		startGeneralIdleTimer(this.props.location.pathname);
 		if (event && event.method === 'notifyMapStatusChange') {
 
 			let status = event.data[0];
