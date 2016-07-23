@@ -10,6 +10,8 @@ import appConstants from '../constants/appConstants'
 import CL_Actions from '../actions/CustomerLoginActions'
 import CL_Store from '../stores/CustomerStore'
 
+import PrintMatch from './Biometrics/PrintMatch'
+
 import {
 	gotoDefaultIdlePage,
 	thankYouTimer,
@@ -17,6 +19,8 @@ import {
 	GuiTimer,
 	KillGuiTimer
 } from '../utils/TsvUtils'
+
+import { uniq } from '../utils'
 
 class ThankYouMsg extends Component {
 
@@ -36,6 +40,10 @@ class ThankYouMsg extends Component {
   	CL_Store.addChangeListener( this._onCLStoreChange );
     TsvSettingsStore.setSession('bVendingInProcess', false);
     thankYouTimer();
+    this.setState({
+    	token: uniq(),
+    	customer: CL_Store.getCustomer()
+    });
   }
 
   // Remove change listers from stores
@@ -49,8 +57,27 @@ class ThankYouMsg extends Component {
   		browserHistory.push('/PageIdle');
   	}
   }
+  
+  shopAgainPrintCheck() {
+  	if (this.state.customer) {
+		this.setState({
+			showPrintMatcher: true
+		})
+	} else {
+		alert('unknown error, cannot continue');
+	}
+  }
+  
+  shopAgain(matched) {
+  	if (matched) {
+  		browserHistory.push('/Storefront');
+  	}
+  }
 
   render() {
+
+//          	<_E.Button size="lg" type="success" onClick={() => { browserHistory.push('/Storefront') }}>Shop Again</_E.Button>
+
     return (
       <_E.Row className="PageIdle">
         <_E.Col>
@@ -58,10 +85,21 @@ class ThankYouMsg extends Component {
           <h2 style={{textAlign:'center'}}>Looking forward to seeing you again.....</h2>
           <p>{' '}</p>
           <p style={{textAlign:'center', margin: '2em auto'}}>
-          	<_E.Button size="lg" type="success" onClick={() => { browserHistory.push('/Storefront') }}>Shop Again</_E.Button>
+          	{this.state.showPrintMatcher ? (
+			<PrintMatch
+				autostart={true}
+				canRetry={true}
+				showMessages={true}
+				user={this.state.customer}
+				token={this.state.token}
+				matchCallback={this.shopAgain.bind(this)}
+				/>
+          	) : (
+          	<_E.Button size="lg" type="success" onClick={this.shopAgainPrintCheck.bind(this)}>Shop Again</_E.Button>
+          	)}
           </p>
           <p style={{textAlign:'center'}}>
-          	<_E.Button size="lg" type="primary" onClick={() => { CL_Actions.customerLogout() }}>Logout</_E.Button>
+          	<_E.Button size="lg" type="primary" onClick={CL_Actions.customerLogout}>Logout</_E.Button>
           </p>
         </_E.Col>
       </_E.Row>

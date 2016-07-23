@@ -9,7 +9,7 @@ import PrintReaderStore from '../../stores/PrintReaderStore'
 
 import { uniq } from '../../utils'
 import {
-	startGeneralIdleTimer,
+	GuiTimer,
 } from '../../utils/TsvUtils'
 
 import Log from '../../utils/BigLogger'
@@ -75,6 +75,12 @@ class PrintMatch extends Component {
 		//} else {
 			//Big.error('what, no autostart???');
 			//Big.log(this.props);
+		}
+		// allow self-setting of token for occasional stand-alone use
+		if (this.state.user && this.state.token === true) {
+			this.setState({
+				token: uniq()
+			});
 		}
 	}
 

@@ -12206,7 +12206,13 @@
 
 	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
 
+	var _PrintMatch = __webpack_require__(92);
+
+	var _PrintMatch2 = _interopRequireDefault(_PrintMatch);
+
 	var _TsvUtils = __webpack_require__(75);
+
+	var _utils = __webpack_require__(5);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -12246,6 +12252,10 @@
 	      _CustomerStore2.default.addChangeListener(this._onCLStoreChange);
 	      _TsvSettingsStore2.default.setSession('bVendingInProcess', false);
 	      (0, _TsvUtils.thankYouTimer)();
+	      this.setState({
+	        token: (0, _utils.uniq)(),
+	        customer: _CustomerStore2.default.getCustomer()
+	      });
 	    }
 
 	    // Remove change listers from stores
@@ -12264,8 +12274,29 @@
 	      }
 	    }
 	  }, {
+	    key: 'shopAgainPrintCheck',
+	    value: function shopAgainPrintCheck() {
+	      if (this.state.customer) {
+	        this.setState({
+	          showPrintMatcher: true
+	        });
+	      } else {
+	        alert('unknown error, cannot continue');
+	      }
+	    }
+	  }, {
+	    key: 'shopAgain',
+	    value: function shopAgain(matched) {
+	      if (matched) {
+	        _reactRouter.browserHistory.push('/Storefront');
+	      }
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
+
+	      //          	<_E.Button size="lg" type="success" onClick={() => { browserHistory.push('/Storefront') }}>Shop Again</_E.Button>
+
 	      return _react2.default.createElement(
 	        _E.Row,
 	        { className: 'PageIdle' },
@@ -12290,11 +12321,16 @@
 	          _react2.default.createElement(
 	            'p',
 	            { style: { textAlign: 'center', margin: '2em auto' } },
-	            _react2.default.createElement(
+	            this.state.showPrintMatcher ? _react2.default.createElement(_PrintMatch2.default, {
+	              autostart: true,
+	              canRetry: true,
+	              showMessages: true,
+	              user: this.state.customer,
+	              token: this.state.token,
+	              matchCallback: this.shopAgain.bind(this)
+	            }) : _react2.default.createElement(
 	              _E.Button,
-	              { size: 'lg', type: 'success', onClick: function onClick() {
-	                  _reactRouter.browserHistory.push('/Storefront');
-	                } },
+	              { size: 'lg', type: 'success', onClick: this.shopAgainPrintCheck.bind(this) },
 	              'Shop Again'
 	            )
 	          ),
@@ -12303,9 +12339,7 @@
 	            { style: { textAlign: 'center' } },
 	            _react2.default.createElement(
 	              _E.Button,
-	              { size: 'lg', type: 'primary', onClick: function onClick() {
-	                  _CustomerLoginActions2.default.customerLogout();
-	                } },
+	              { size: 'lg', type: 'primary', onClick: _CustomerLoginActions2.default.customerLogout },
 	              'Logout'
 	            )
 	          )
@@ -20278,6 +20312,12 @@
 					//} else {
 					//Big.error('what, no autostart???');
 					//Big.log(this.props);
+				}
+				// allow self-setting of token for occasional stand-alone use
+				if (this.state.user && this.state.token === true) {
+					this.setState({
+						token: (0, _utils.uniq)()
+					});
 				}
 			}
 
