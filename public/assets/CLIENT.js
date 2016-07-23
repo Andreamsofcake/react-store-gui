@@ -12306,7 +12306,7 @@
 	        { className: 'PageIdle' },
 	        _react2.default.createElement(
 	          _E.Col,
-	          null,
+	          { style: { maxWidth: '60%', margin: '1em auto' } },
 	          _react2.default.createElement(
 	            'h1',
 	            { style: { textAlign: 'center' } },
@@ -12316,6 +12316,20 @@
 	            'h2',
 	            { style: { textAlign: 'center' } },
 	            'Looking forward to seeing you again.....'
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            null,
+	            ' '
+	          ),
+	          _react2.default.createElement(
+	            'p',
+	            { style: { textAlign: 'center' } },
+	            _react2.default.createElement(
+	              _E.Button,
+	              { size: 'lg', type: 'primary', onClick: _CustomerLoginActions2.default.customerLogout },
+	              'Logout'
+	            )
 	          ),
 	          _react2.default.createElement(
 	            'p',
@@ -12345,15 +12359,6 @@
 	              _E.Button,
 	              { size: 'lg', type: 'success', onClick: this.shopAgainPrintCheck.bind(this) },
 	              'Shop Again'
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            { style: { textAlign: 'center' } },
-	            _react2.default.createElement(
-	              _E.Button,
-	              { size: 'lg', type: 'primary', onClick: _CustomerLoginActions2.default.customerLogout },
-	              'Logout'
 	            )
 	          )
 	        )

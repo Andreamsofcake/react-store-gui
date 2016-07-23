@@ -84,9 +84,16 @@ class ThankYouMsg extends Component {
 
     return (
       <_E.Row className="PageIdle">
-        <_E.Col>
+        <_E.Col style={{maxWidth:'60%', margin: '1em auto'}}>
           <h1 style={{textAlign:'center'}}>Thanks for your business!</h1>
           <h2 style={{textAlign:'center'}}>Looking forward to seeing you again.....</h2>
+
+          <p>{' '}</p>
+
+          <p style={{textAlign:'center'}}>
+          	<_E.Button size="lg" type="primary" onClick={CL_Actions.customerLogout}>Logout</_E.Button>
+          </p>
+
           <p>{' '}</p>
 
           	{this.state.showPrintMatcher ? (
@@ -107,9 +114,6 @@ class ThankYouMsg extends Component {
 	          </p>
           	)}
 
-          <p style={{textAlign:'center'}}>
-          	<_E.Button size="lg" type="primary" onClick={CL_Actions.customerLogout}>Logout</_E.Button>
-          </p>
         </_E.Col>
       </_E.Row>
 
