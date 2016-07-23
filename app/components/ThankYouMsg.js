@@ -55,7 +55,6 @@ class ThankYouMsg extends Component {
       <_E.Row className="PageIdle">
         <_E.Col>
           <h1 style={{textAlign:'center'}}>Thanks for your business!</h1>
-          <p>{' '} bVendingInProcess: {TsvSettingsStore.getSession('bVendingInProcess')}</p>
           <h2 style={{textAlign:'center'}}>Looking forward to seeing you again.....</h2>
           <p>{' '}</p>
           <p style={{textAlign:'center', margin: '2em auto'}}>

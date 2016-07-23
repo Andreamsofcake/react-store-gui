@@ -494,6 +494,8 @@ export function killTimers(timerList) {
 }
 
 export function startPaymentTimer( idlePage ){
+	return GuiTimer(TsvSettingsStore.getCache('custommachinesettings.paymentPageTimeout', 120000));
+
 	var timeoutLength = TsvSettingsStore.getCache('custommachinesettings.paymentPageTimeout');
 /*
 	// allow override to /View1

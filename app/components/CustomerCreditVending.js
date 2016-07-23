@@ -342,7 +342,6 @@ class CustomerCreditVending extends Component {
   		return (
   			<div>
 	  			<h1>Vending complete!</h1>
-				<p> bVendingInProcess: {TsvSettingsStore.getSession('bVendingInProcess')}</p>
   			</div>
   		);
   	}

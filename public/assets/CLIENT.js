@@ -9943,12 +9943,6 @@
 							'h1',
 							null,
 							'Vending complete!'
-						),
-						_react2.default.createElement(
-							'p',
-							null,
-							' bVendingInProcess: ',
-							_TsvSettingsStore2.default.getSession('bVendingInProcess')
 						)
 					);
 				}
@@ -12282,13 +12276,6 @@
 	            'h1',
 	            { style: { textAlign: 'center' } },
 	            'Thanks for your business!'
-	          ),
-	          _react2.default.createElement(
-	            'p',
-	            null,
-	            ' ',
-	            ' bVendingInProcess: ',
-	            _TsvSettingsStore2.default.getSession('bVendingInProcess')
 	          ),
 	          _react2.default.createElement(
 	            'h2',
@@ -16227,6 +16214,8 @@
 	}
 
 	function startPaymentTimer(idlePage) {
+		return GuiTimer(_TsvSettingsStore2.default.getCache('custommachinesettings.paymentPageTimeout', 120000));
+
 		var timeoutLength = _TsvSettingsStore2.default.getCache('custommachinesettings.paymentPageTimeout');
 		/*
 	 	// allow override to /View1
