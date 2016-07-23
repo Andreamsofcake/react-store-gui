@@ -12238,6 +12238,10 @@
 
 	    (0, _TsvUtils.updateCredit)();
 
+	    _this.state = {
+	      showPrintMatcher: false
+	    };
+
 	    _this._onCLStoreChange = _this._onCLStoreChange.bind(_this);
 
 	    return _this;

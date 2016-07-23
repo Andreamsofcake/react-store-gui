@@ -31,6 +31,10 @@ class ThankYouMsg extends Component {
     //TsvSettingsStore.setConfig("bDisplayCgryNavigation2", TsvSettingsStore.getConfig('bDisplayCgryNavigation'));
     updateCredit();
     
+    this.state = {
+    	showPrintMatcher: false
+    }
+    
     this._onCLStoreChange = this._onCLStoreChange.bind(this);
 
   };
