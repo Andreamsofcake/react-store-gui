@@ -6631,6 +6631,9 @@
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				(0, _TsvUtils.GuiTimer)();
+				this.setState({
+					machineInfo: _TsvStore2.default.getMachineInfo()
+				});
 			}
 
 			// Remove change listers from stores

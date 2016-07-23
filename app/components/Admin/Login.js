@@ -97,6 +97,9 @@ class AdminLogin extends Component {
     // Add change listeners to stores
   componentDidMount() {
 	GuiTimer();
+	this.setState({
+		machineInfo: TsvStore.getMachineInfo()
+	});
   }
 
   // Remove change listers from stores
