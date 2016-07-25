@@ -277,7 +277,9 @@ img.boxShadowed {
 }
 
 /* need to organize all the inline styles we have floating around for page positioning!!!!! */
-.ShoppingCart {
+.ShoppingCart,
+.CustomerCheckout
+{
 	width: 80%;
 	margin-top: 4em;
 	margin-left: auto;

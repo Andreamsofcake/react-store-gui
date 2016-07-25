@@ -380,6 +380,7 @@ class CustomerCreditVending extends Component {
   	}
 	return (
 		<_E.Row>
+			<div className="CustomerCheckout">
 			<_E.Col>
 	 
 				<h2 className="mainHeaderText">Use your Customer Credit to complete your purchase</h2>
@@ -426,6 +427,8 @@ class CustomerCreditVending extends Component {
 			{/*<_E.Col sm="1/2">
 				{ this.state.showSpinner ? this.renderSpinner() : null }
 			</_E.Col>*/}
+			
+			</div>
 
 		</_E.Row>
 	);

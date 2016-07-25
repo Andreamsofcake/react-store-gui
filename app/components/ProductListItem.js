@@ -45,8 +45,10 @@ class ProductListItem extends Component {
   renderProductImage(product) {
   	var images = StorefrontStore.getImagesForProduct(product);
   	if (images && images.length) {
+  		// no image title needed, there is no spoon. (hover)
+  		// title={product.description}
 		return (
-			<img src={images[0].fileData} title={product.description} className="boxShadowed" />
+			<img src={images[0].fileData} className="boxShadowed" />
 		);
   	}
   	return (

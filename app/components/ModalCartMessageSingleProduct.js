@@ -47,7 +47,7 @@ class ModalCartMessage extends Component {
 
 	render() {
 		return (
-			<_E.Modal isOpen={this.state.showModalSingleProductMessage} width={600} backdropClosesModal={true} onCancel={this.resetCartMessageModal.bind(this)}>
+			<_E.Modal className="ModalSystemMessage" isOpen={this.state.showModalSingleProductMessage} width={600} backdropClosesModal={true} onCancel={this.resetCartMessageModal.bind(this)}>
 				<_E.ModalHeader text="Cart Restriction" onClose={this.resetCartMessageModal.bind(this)} showCloseButton={true} />
 				<_E.ModalBody>
 					<p style={{fontSize: '1.5em'}}>You already have this item in your cart. Currently we only are able to support single quantity of each product for each purchase.</p>

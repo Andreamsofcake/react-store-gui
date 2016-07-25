@@ -42,7 +42,9 @@ h2, h3 { margin-top: 0.5em; }
 		;
 }
 
-.CustomerStatusDisplay .Button {
+.CustomerStatusDisplay .Button,
+.StorefrontCategorySelectors .Button
+{
 	box-shadow: none;
 }
 
@@ -54,12 +56,16 @@ h2, h3 { margin-top: 0.5em; }
 	color: #FFEB00;
 }
 
-.interfaceBox h3, .interfaceBox h4 {
+.interfaceBox h3, .interfaceBox h4,
+input[type="text"], select, textarea,
+.product-list-item-add-to-cart,
+.ModalSystemMessage
+{
 	color: #333;
 }
 
 .product-list-item-add-to-cart {
-	color: #333;
+
 }
 
 .product-list-item .product-name {
@@ -93,8 +99,4 @@ img.boxShadowed {
 
 .Row.shoppingCartItem {
 	background-color: rgba(0, 0, 0, 0.5)
-}
-
-input[type="text"], select, textarea {
-	color: #333;
 }

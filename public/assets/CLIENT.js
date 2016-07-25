@@ -10114,97 +10114,101 @@
 					_E.Row,
 					null,
 					_react2.default.createElement(
-						_E.Col,
-						null,
-						_react2.default.createElement(
-							'h2',
-							{ className: 'mainHeaderText' },
-							'Use your Customer Credit to complete your purchase'
-						),
+						'div',
+						{ className: 'CustomerCheckout' },
 						_react2.default.createElement(
 							_E.Col,
 							null,
-							this.state.cart.map(function (prd, $index) {
-								return _react2.default.createElement(_VendCartItem2.default, {
-									key: $index,
-									data: prd
-								});
-							})
-						)
-					),
-					this.hintMsg ? _react2.default.createElement(
-						'p',
-						{ id: 'hint' },
-						this.hintMsg
-					) : null,
-					_react2.default.createElement(
-						_E.Col,
-						{ xs: '1/6', sm: '1/6', md: '1/6', lg: '1/6' },
-						' '
-					),
-					_react2.default.createElement(
-						_E.Col,
-						{ xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
-						_react2.default.createElement(
-							'p',
-							{ style: { fontSize: '2em', textAlign: 'center' } },
-							Translate.translate('CashVending', 'TotalAmountLabel'),
-							' ',
 							_react2.default.createElement(
-								'strong',
+								'h2',
+								{ className: 'mainHeaderText' },
+								'Use your Customer Credit to complete your purchase'
+							),
+							_react2.default.createElement(
+								_E.Col,
 								null,
-								(0, _TsvUtils.currencyFilter)(this.state.summary.TotalPrice)
+								this.state.cart.map(function (prd, $index) {
+									return _react2.default.createElement(_VendCartItem2.default, {
+										key: $index,
+										data: prd
+									});
+								})
 							)
-						)
-					),
-					_react2.default.createElement(
-						_E.Col,
-						{ xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
-						this.renderPayCreditsOption()
-					),
-					_react2.default.createElement(
-						_E.Col,
-						{ xs: '1/6', sm: '1/6', md: '1/6', lg: '1/6' },
-						' '
-					),
-					this.state.showCancelBtnCash ? _react2.default.createElement(
-						_E.Col,
-						{ style: { marginTop: '3em' } },
+						),
+						this.hintMsg ? _react2.default.createElement(
+							'p',
+							{ id: 'hint' },
+							this.hintMsg
+						) : null,
 						_react2.default.createElement(
-							_E.Row,
-							null,
+							_E.Col,
+							{ xs: '1/6', sm: '1/6', md: '1/6', lg: '1/6' },
+							' '
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
 							_react2.default.createElement(
-								_E.Col,
-								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
-								' '
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+								'p',
+								{ style: { fontSize: '2em', textAlign: 'center' } },
+								Translate.translate('CashVending', 'TotalAmountLabel'),
+								' ',
 								_react2.default.createElement(
-									_E.Button,
-									{ type: 'primary', size: 'lg', onClick: this.keepShopping.bind(this) },
-									Translate.translate('ShoppingCart', 'Shop_More')
+									'strong',
+									null,
+									(0, _TsvUtils.currencyFilter)(this.state.summary.TotalPrice)
 								)
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
-								_react2.default.createElement(
-									_E.Button,
-									{ type: 'danger', size: 'lg', onClick: this.cancel.bind(this) },
-									_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
-									'Cancel Transaction'
-								)
-							),
-							_react2.default.createElement(
-								_E.Col,
-								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
-								' '
 							)
-						)
-					) : null,
-					this.renderVendingItem()
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
+							this.renderPayCreditsOption()
+						),
+						_react2.default.createElement(
+							_E.Col,
+							{ xs: '1/6', sm: '1/6', md: '1/6', lg: '1/6' },
+							' '
+						),
+						this.state.showCancelBtnCash ? _react2.default.createElement(
+							_E.Col,
+							{ style: { marginTop: '3em' } },
+							_react2.default.createElement(
+								_E.Row,
+								null,
+								_react2.default.createElement(
+									_E.Col,
+									{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+									' '
+								),
+								_react2.default.createElement(
+									_E.Col,
+									{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+									_react2.default.createElement(
+										_E.Button,
+										{ type: 'primary', size: 'lg', onClick: this.keepShopping.bind(this) },
+										Translate.translate('ShoppingCart', 'Shop_More')
+									)
+								),
+								_react2.default.createElement(
+									_E.Col,
+									{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+									_react2.default.createElement(
+										_E.Button,
+										{ type: 'danger', size: 'lg', onClick: this.cancel.bind(this) },
+										_react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
+										'Cancel Transaction'
+									)
+								),
+								_react2.default.createElement(
+									_E.Col,
+									{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+									' '
+								)
+							)
+						) : null,
+						this.renderVendingItem()
+					)
 				);
 			}
 		}, {
@@ -12090,7 +12094,7 @@
 	      if (this.state.categories && this.state.categories.length) {
 	        return _react2.default.createElement(
 	          _E.ButtonGroup,
-	          null,
+	          { className: 'StorefrontCategorySelectors' },
 	          this.state.categories.map(function (category, $index) {
 	            var type = _this2.state.categoryIdFilter.indexOf(category._id) > -1 ? "primary" : "hollow-primary";
 	            return _react2.default.createElement(
@@ -22450,7 +22454,9 @@
 	    value: function renderProductImage(product) {
 	      var images = _StorefrontStore2.default.getImagesForProduct(product);
 	      if (images && images.length) {
-	        return _react2.default.createElement('img', { src: images[0].fileData, title: product.description, className: 'boxShadowed' });
+	        // no image title needed, there is no spoon. (hover)
+	        // title={product.description}
+	        return _react2.default.createElement('img', { src: images[0].fileData, className: 'boxShadowed' });
 	      }
 	      return _react2.default.createElement('img', { src: '/gfx/ProductImageNotFound.png', title: product.description, className: 'boxShadowed' });
 	    }
@@ -22759,7 +22765,7 @@
 			value: function render() {
 				return _react2.default.createElement(
 					_E.Modal,
-					{ isOpen: this.state.showModalSingleProductMessage, width: 600, backdropClosesModal: true, onCancel: this.resetCartMessageModal.bind(this) },
+					{ className: 'ModalSystemMessage', isOpen: this.state.showModalSingleProductMessage, width: 600, backdropClosesModal: true, onCancel: this.resetCartMessageModal.bind(this) },
 					_react2.default.createElement(_E.ModalHeader, { text: 'Cart Restriction', onClose: this.resetCartMessageModal.bind(this), showCloseButton: true }),
 					_react2.default.createElement(
 						_E.ModalBody,

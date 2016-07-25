@@ -223,7 +223,7 @@ class Storefront extends Component {
 	renderCategories() {
 		if (this.state.categories && this.state.categories.length) {
 			return (
-				<_E.ButtonGroup>
+				<_E.ButtonGroup className="StorefrontCategorySelectors">
 				{this.state.categories.map((category, $index) => {
 					let type=this.state.categoryIdFilter.indexOf(category._id) > -1 ? "primary": "hollow-primary"
 					return (
