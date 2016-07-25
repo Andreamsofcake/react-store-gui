@@ -5,6 +5,7 @@ var baseRoutes = require('./base-routes')
 	, customerRoutes = require('./customer-routes')
 	, interfaceRoutes = require('./interface-routes')
 	, sessionRoutes = require('./session-routes')
+	, transactionRoutes = require('./transaction-routes')
 	, tsvRoutes = require('./tsv-proxy-routes')
 	, storefrontRoutes = require('./storefront-routes')
 
@@ -55,4 +56,4 @@ var devRoutes = [
 ]
 
 // order is important! cascading route matching (I think)
-module.exports = [].concat(tsvRoutes, interfaceRoutes, customerRoutes, sessionRoutes, storefrontRoutes, adminRoutes, devRoutes, baseRoutes);
+module.exports = [].concat(tsvRoutes, interfaceRoutes, customerRoutes, sessionRoutes, transactionRoutes, storefrontRoutes, adminRoutes, devRoutes, baseRoutes);

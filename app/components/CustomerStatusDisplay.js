@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import * as _E from 'elemental'
 import { browserHistory } from 'react-router'
 
-//import CL_Store from '../stores/CL_Store'
+//import CustomerStore from '../stores/CustomerStore'
 
-import CL_Actions from '../actions/CustomerLoginActions'
-import CL_Store from '../stores/CustomerStore'
+import CustomerActions from '../actions/CustomerActions'
+import CustomerStore from '../stores/CustomerStore'
 
 //import TsvSettingsStore from '../stores/TsvSettingsStore'
 import TsvStore from '../stores/TsvStore'
@@ -20,7 +20,7 @@ class CustomerStatusDisplay extends Component {
 	constructor(props, context) {
 		super(props, context);
 		this.state = {
-			customer: CL_Store.getCustomer(),
+			customer: CustomerStore.getCustomer(),
 			adminInPath: this.props.adminInPath,
 			generalTimeoutRemaining: 0
 		}
@@ -31,8 +31,8 @@ class CustomerStatusDisplay extends Component {
 	
 	// Add change listeners to stores
 	componentDidMount() {
-		CL_Store.addChangeListener(this._onCLStoreChange);
-		CL_Actions.refreshCustomer();
+		CustomerStore.addChangeListener(this._onCLStoreChange);
+		CustomerActions.refreshCustomer();
 		this.startInterval(this.state.adminInPath);
 	}
 	
@@ -59,7 +59,7 @@ class CustomerStatusDisplay extends Component {
 		if (this.timer) {
 			clearInterval(this.timer);
 		}
-		CL_Store.removeChangeListener(this._onCLStoreChange);
+		CustomerStore.removeChangeListener(this._onCLStoreChange);
 	}
 	
 	componentWillReceiveProps(nextprops) {
@@ -82,8 +82,8 @@ class CustomerStatusDisplay extends Component {
 
 	_onCLStoreChange(event) {
 		this.setState({
-			customer: CL_Store.getCustomer(),
-			customerCredit: CL_Store.getCustomerCredit()
+			customer: CustomerStore.getCustomer(),
+			customerCredit: CustomerStore.getCustomerCredit()
 		});
 	}
 	
@@ -124,7 +124,7 @@ class CustomerStatusDisplay extends Component {
 	renderLoggedIn() {
 		return (
 			<p style={{marginBottom: 0}}>Welcome Back, {this.state.customer.firstname}! ... Credit Balance: {this.displayCreditBalance()}
-				{' '}<_E.Button size="xs" type="success" onClick={() => { CL_Actions.customerLogout() }}>Logout</_E.Button>
+				{' '}<_E.Button size="xs" type="success" onClick={() => { CustomerActions.customerLogout() }}>Logout</_E.Button>
 			</p>
 		);
 	}

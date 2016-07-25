@@ -10,13 +10,16 @@ import { currencyFilter } from '../utils/TsvUtils'
 import VendCartItem from './VendCartItem'
 import StorefrontStore from '../stores/StorefrontStore'
 
-import CL_Actions from '../actions/CustomerLoginActions'
-import CL_Store from '../stores/CustomerStore'
+import CustomerActions from '../actions/CustomerActions'
+import CustomerStore from '../stores/CustomerStore'
 
 import appConstants from '../constants/appConstants'
 
 import SessionActions from '../actions/SessionActions'
 import SessionStore from '../stores/SessionStore'
+
+import TransactionActions from '../actions/TransactionActions'
+import TransactionStore from '../stores/TransactionStore'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
@@ -55,8 +58,8 @@ class CustomerCreditVending extends Component {
       //salesTaxAmount: TsvSettingsStore.getCache('shoppingCart.summary.salesTaxAmount'),
       showCancelBtnCash: true,
       cart: TsvSettingsStore.getCache('shoppingCart.detail'),
-      customer: CL_Store.getCustomer(),
-      customerCredit: CL_Store.getCustomerCredit(),
+      customer: CustomerStore.getCustomer(),
+      customerCredit: CustomerStore.getCustomerCredit(),
       transactionComplete: false
       
       // only in cash.js:
@@ -88,16 +91,18 @@ class CustomerCreditVending extends Component {
 
   }
 
-  cancel(){
-  	// only in cash.js:
-    //TsvSettingsStore.setSession('insertedAmount', 0);
-    TsvActions.apiCall('disablePaymentDevice');
-    KillGuiTimer();
-    emptyCart();
-  	// only in cash.js:
-    //browserHistory.push("/View1");
-    gotoDefaultIdlePage();
-  }
+	cancel() {
+		SessionActions.closeSessionTransaction({ event: 'CANCEL_TRANSACTION' });
+		TsvActions.apiCall('disablePaymentDevice');
+		KillGuiTimer();
+		emptyCart();
+		gotoDefaultIdlePage();
+	}
+
+	keepShopping() {
+		SessionActions.addShopEvent({ event: 'KEEP_SHOPPING_FROM_CHECKOUT' });
+		browserHistory.push('/Storefront');
+	}
 
   checkBalance(calculatedBalance){
 	  var total = TsvSettingsStore.getCache('shoppingCart.summary.TotalPrice')
@@ -160,6 +165,10 @@ class CustomerCreditVending extends Component {
   }
   
   _onSessionStoreChange(event) {
+  
+  }
+
+  _onTransactionStoreChange(event) {
   	if (event && event.type === appConstants.CREDIT_PURCHASE_COMPLETED) {
 		var state = {
 			insertedAmount: this.state.summary.TotalPrice,
@@ -170,14 +179,17 @@ class CustomerCreditVending extends Component {
 		Big.log('payFullWithCustomerCredit');
 		Big.log(state);
 
-		resetPaymentTimer();
+		// let's not time out on a vend, yo!
+		//resetPaymentTimer();
+		//KillGuiTimer(); // <<<< this gets called down below on first (and thus every) notifyVend event.
+
 		TsvSettingsStore.setSession('creditBalance', state.insertedAmount);
 		this.checkBalance(state.insertedAmount);
 		
 		// FIXME: need a server method to refresh the credits, this is ok for now, as it passes through returned credit obj from API/PROXY
 		// dang invariants
 		setTimeout(() => {
-			SessionActions.updateCurrentCustomerCredit(event.customerCredit);
+			CustomerActions.updateCurrentCustomerCredit(event.customerCredit);
 		}, 150);
   	}
   }
@@ -202,6 +214,8 @@ class CustomerCreditVending extends Component {
 		TsvStore.addChangeListener(this._onTsvChange);
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		SessionStore.addChangeListener(this._onSessionStoreChange);
+		
+		SessionActions.addShopEvent({ event: 'CREDITS_CHECKOUT_VIEW' });
 
 		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
 			if (err) Big.throw(err);
@@ -213,9 +227,14 @@ class CustomerCreditVending extends Component {
 				insertedAmount: TsvSettingsStore.getSession('creditBalance'),
 				summary: data.summary,
 				cart: data.detail,
-				customer: CL_Store.getCustomer(),
-				customerCredit: CL_Store.getCustomerCredit(),
+				customer: CustomerStore.getCustomer(),
+				customerCredit: CustomerStore.getCustomerCredit(),
 			}, () => this.checkBalance);
+			
+			// only create transactions for a non-empty cart
+			if (data && data.detail && data.detail.length) {
+				TransactionActions.createTransaction();
+			}
 		});
 	}
 
@@ -306,10 +325,10 @@ class CustomerCreditVending extends Component {
 
 				case 'vendResponse':
 				  	vendResponse(event.data[0]);
-				  	KillGuiTimer();
 					break;
 				
 				case 'notifyVendingItem':
+				  	KillGuiTimer();
 					Big.log('vendingItem');
 					var data = event.data[0]
 						, productImages;
@@ -335,6 +354,7 @@ class CustomerCreditVending extends Component {
   	if (this.storefrontTimeout) {
   		clearTimeout(this.storefrontTimeout);
   	}
+
   	if (this.state.vendingComplete) {
   		TsvSettingsStore.setSession('bVendingInProcess', false);
   		TsvSettingsStore.setSession('creditBalance', 0);
@@ -345,6 +365,7 @@ class CustomerCreditVending extends Component {
   			</div>
   		);
   	}
+
   	if (!this.state.cart || !this.state.cart.length) {
   		this.storefrontTimeout = setTimeout(() => {
 	  		browserHistory.push('/Storefront');
@@ -357,57 +378,57 @@ class CustomerCreditVending extends Component {
   			</div>
   		);
   	}
-    return (
-      <_E.Row>
-		<_E.Col>
-		
-			<h2>Use your Customer Credit to complete your purchase</h2>
-			<p> bVendingInProcess: {TsvSettingsStore.getSession('bVendingInProcess')}</p>
-
-			  <_E.Col>
-			{this.state.cart.map( (prd, $index) => {
-				return (
-				  <VendCartItem
-				   key={$index}
-				   data={prd}
-				  />
-				)
-			  })
-			}
-			  </_E.Col>
-
-		</_E.Col>
-
-        { this.hintMsg ? (<p id="hint">{this.hintMsg}</p>) : null }
-
-		<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
-		<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
-			<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
-		</_E.Col>
-		<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
-			{this.renderPayCreditsOption()}
-		</_E.Col>
-		<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
-
-		{ this.state.showCancelBtnCash ? (
-		<_E.Col style={{marginTop: '3em'}}>
+	return (
 		<_E.Row>
-			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
-			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
-			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="danger" size="lg" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />Cancel Transaction</_E.Button></_E.Col>
-			<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+			<_E.Col>
+	 
+				<h2>Use your Customer Credit to complete your purchase</h2>
+				{/*<p> bVendingInProcess: {TsvSettingsStore.getSession('bVendingInProcess')}</p>*/}
+
+				<_E.Col>
+				{this.state.cart.map( (prd, $index) => {
+					return (
+					  <VendCartItem
+					   key={$index}
+					   data={prd}
+					  />
+					)
+				  })
+				}
+				</_E.Col>
+
+			</_E.Col>
+
+			{ this.hintMsg ? (<p id="hint">{this.hintMsg}</p>) : null }
+
+			<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
+			<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
+				<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
+			</_E.Col>
+			<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
+				{this.renderPayCreditsOption()}
+			</_E.Col>
+			<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
+
+			{ this.state.showCancelBtnCash ? (
+			<_E.Col style={{marginTop: '3em'}}>
+			<_E.Row>
+				<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+				<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="primary" size="lg" onClick={this.keepShopping.bind(this)}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
+				<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4"><_E.Button type="danger" size="lg" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />Cancel Transaction</_E.Button></_E.Col>
+				<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+			</_E.Row>
+			</_E.Col>
+			) : null }
+	 
+			{this.renderVendingItem()}
+
+			{/*<_E.Col sm="1/2">
+				{ this.state.showSpinner ? this.renderSpinner() : null }
+			</_E.Col>*/}
+
 		</_E.Row>
-		</_E.Col>
-		) : null }
-		
-		{this.renderVendingItem()}
-
-		{/*<_E.Col sm="1/2">
-			{ this.state.showSpinner ? this.renderSpinner() : null }
-		</_E.Col>*/}
-
-      </_E.Row>
-    );
+	);
 
   }
   

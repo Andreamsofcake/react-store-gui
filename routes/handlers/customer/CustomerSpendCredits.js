@@ -1,6 +1,7 @@
 //import SDK from 'sdk-core-lib'
 import path from 'path'
 import fs from 'fs'
+import uuid from 'node-uuid'
 
 import { ProxyCall, CheckRegistration } from '../../../lib/Bootup'
 
@@ -24,26 +25,26 @@ module.exports = function(request, reply) {
 	if (MI && MI.registrationData && MI.registrationData.client) {
 		if (customer && amount_cents) {
 
-var tx_data = {
-	customer: customer,
-	client: MI.registrationData.client,
-	location: MI.registrationData.location,
-	machine: MI.registrationData._id,
-	vend_session: null,
-	data_blob: null,
-	transactionOriginatedFrom: 'avt',
-	products: []
-}
+			var tx_data = {
+				customer: customer,
+				client: MI.registrationData.client,
+				location: MI.registrationData.location,
+				machine: MI.registrationData._id,
+				vend_session: null,
+				data_blob: null,
+				transactionOriginatedFrom: 'avt',
+				products: []
+			}
 
-, sesh_data = {
-	customer: customer,
-	// sessionNew() picks these up from the public machine ID:
-	// client: MI.registrationData.client,
-	// location: MI.registrationData.location,
-	// machine: MI.registrationData._id,
-	public_machine_id: MI.registrationData.vendor_id,
-	remote_session_id: 'test-sesh-id-' + (Math.random().toFixed(12) * 10)
-}
+			, sesh_data = {
+				customer: customer,
+				// sessionNew() picks these up from the public machine ID:
+				// client: MI.registrationData.client,
+				// location: MI.registrationData.location,
+				// machine: MI.registrationData._id,
+				public_machine_id: MI.registrationData.vendor_id,
+				remote_session_id: uuid.v1() // 'test-sesh-id-' + (Math.random().toFixed(12) * 10)
+			}
 
 			ProxyCall('vendSessionNew', {
 				remoteSessionId: sesh_data.remote_session_id,

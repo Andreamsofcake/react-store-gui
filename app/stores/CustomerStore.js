@@ -169,11 +169,11 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			CustomerStore.emitChange({ type: appConstants.LICENSE_SCANNED_LOGIN, status: action.data.status });
 			break;
 		
-		case appConstants.MEMBERSHIP_CARD_SCANNED_LOGIN:
+		case appConstants.MEMBERSHIP_CARD_SCANNED_TESTLOOP:
 			if (action.data.status === 'ok') {
 				//pushStep('login', appConstants.LICENSE_SCANNED_LOGIN);
 			}
-			CustomerStore.emitChange({ type: appConstants.MEMBERSHIP_CARD_SCANNED_LOGIN, status: action.data.status, membership_id: action.data.status == 'ok' ? action.data.membership_id : null });
+			CustomerStore.emitChange({ type: appConstants.MEMBERSHIP_CARD_SCANNED_TESTLOOP, status: action.data.status, membership_id: action.data.status == 'ok' ? action.data.membership_id : null });
 			break;
 
 		case appConstants.PRINT_SCANNED_LOGIN:
@@ -211,6 +211,7 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOADED, status: action.data.status });
 			break;
 		
+		// local loop update, doesn't ping server:
 		case appConstants.UPDATE_CURRENT_CUSTOMER_CREDIT:
 			setCustomerCredit(action.data);
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOADED, status: 'ok' });

@@ -23,38 +23,23 @@ var appConstants = keyMirror({
 	UPDATE_ROOT_SESSION: null,
 
 // Storefront:
+	STOREFRONT_DATA_RECEIVED: null,
 	TOGGLE_CATEGORY_ID_TO_FILTER: null,
 	CLEAR_CATEGORY_FILTER: null,
-	STOREFRONT_DATA_RECEIVED: null,
 	SINGLE_PRODUCTS_ONLY: null, // flag used by our temporary restriction on number of products a person can buy
+	PRODUCT_ADDED_TO_CART: null,
+	PRODUCT_REMOVED_FROM_CART: null,
+	PRODUCT_QUANTITY_INCREASED: null,
+	PRODUCT_QUANTITY_DECREASED: null,
 	
 // Customer loads and unloads and stuff
 	CUSTOMER_LOADED: null, // "load by membership id"
 	CUSTOMER_VERIFIED_AND_LOADED: null, // "admin verify and load by membership id"
 	CUSTOMER_LOGOUT: null,
+	UPDATE_CURRENT_CUSTOMER_CREDIT: null,
+	CUSTOMER_REGISTRATION_CANCELLED: null,
+	CUSTOMER_LOGIN_CANCELLED: null,
 
-///// >> need a lot of action name clean up here! a lot of testing crap laying around
-/*
-	LICENSE_SCANNED_LOGIN: null,
-	PRINT_SCANNED_LOGIN: null,
-	CUSTOMER_MATCHED_LOGIN: null,
-	CUSTOMER_RESET_LOGIN: null,
-	MEMBERSHIP_CARD_SCANNED_LOGIN: null,
-
-	LICENSE_SCANNED_SIGNUP: null,
-//	PRINT_SCANNED_SIGNUP: null,
-	PRINT_1SCANNED_SIGNUP: null,
-	PRINT_2SCANNED_SIGNUP: null,
-	PRINT_3SCANNED_SIGNUP: null,
-	MOBILE_NUMBER_CAPTURED_SIGNUP: null,
-	EMAIL_CAPTURED_SIGNUP: null,
-	PHOTO_TAKEN_SIGNUP: null,
-	CUSTOMER_REGISTERED_SIGNUP: null,
-	CUSTOMER_RESET_SIGNUP: null,
-	CUSTOMER_REFRESH: null,
-	ADMIN_VERIFIED_SIGNUP: null,
-*/
-	
 // REAL print scan/match actions:
 	PRINT_SCANNED_1: null,
 	PRINT_SCANNED_2: null,
@@ -81,18 +66,29 @@ var appConstants = keyMirror({
 // Session
 	SESSION_CREATED: null,
 	SESSION_UPDATED: null,
-	ADDED_USER_TO_SESSION: null,
+	ADDED_USER_TO_SESSION: null, // not sure we need this, user is added to session at login at this time (must be logged in to shop) ... keep for future I guess.
 	SESSION_CLOSED: null,
 	SESSION_DROPPED: null,
+	KILL_SESSION: null,
+	TRANSACTION_AND_SESSION_CLOSED: null,
+	TRANSACTION_AND_SESSION_DROPPED: null,
 	
 // Transactions
 	TRANSACTION_CREATED: null,
 	TRANSACTION_UPDATED: null,
+	TRANSACTION_FAILED: null,
+	TRANSACTION_COMPLETED: null,
+	TRANSACTION_CANCELLED: null,
 	CREDIT_PURCHASE_COMPLETED: null,
+	CASH_PURCHASE_COMPLETED: null,
+	CREDITCARD_PURCHASE_COMPLETED: null,
+	BITCOIN_PURCHASE_COMPLETED: null,
+	KILL_TRANSACTION: null,
 
 // Emulator / GUI testing:
 	TEST_EMULATOR_RESULT: null,
 	TEST_CUSTOMERS_RECEIVED: null,
+	MEMBERSHIP_CARD_SCANNED_TESTLOOP: null,
 
 // Admin panel:
 	TEST_REGISTER_PRINT: null,
@@ -111,6 +107,28 @@ var appConstants = keyMirror({
 // TSV:
 	FLASH_API_MULTIEVENT: null,
 	FLASH_API: null,
+
+///// >> need a lot of action name clean up here! a lot of testing crap laying around
+/*
+	LICENSE_SCANNED_LOGIN: null,
+	PRINT_SCANNED_LOGIN: null,
+	CUSTOMER_MATCHED_LOGIN: null,
+	CUSTOMER_RESET_LOGIN: null,
+
+	LICENSE_SCANNED_SIGNUP: null,
+//	PRINT_SCANNED_SIGNUP: null,
+	PRINT_1SCANNED_SIGNUP: null,
+	PRINT_2SCANNED_SIGNUP: null,
+	PRINT_3SCANNED_SIGNUP: null,
+	MOBILE_NUMBER_CAPTURED_SIGNUP: null,
+	EMAIL_CAPTURED_SIGNUP: null,
+	PHOTO_TAKEN_SIGNUP: null,
+	CUSTOMER_REGISTERED_SIGNUP: null,
+	CUSTOMER_RESET_SIGNUP: null,
+	CUSTOMER_REFRESH: null,
+	ADMIN_VERIFIED_SIGNUP: null,
+*/
+	
 
 });
 

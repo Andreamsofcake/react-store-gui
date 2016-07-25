@@ -7,6 +7,8 @@ import { browserHistory, Link } from 'react-router'
 import ShoppingCartMini from './ShoppingCartMini'
 import * as _E from 'elemental'
 
+import SessionActions from '../actions/SessionActions'
+
 import Log from '../utils/BigLogger'
 var Big = new Log('ProductDetail');
 
@@ -22,21 +24,25 @@ class ProductDetail extends Component {
      super(props, context);
      this.state = {
 		loadedAtLeastOnce: false,
-		modalIsOpen: false,
+		modaIsOpen: false,
 		product : {}
      }
      this._onStoreFrontChange = this._onStoreFrontChange.bind(this);
    };
 
    // Add change listeners to stores
-   componentDidMount() {
-     StorefrontStore.addChangeListener(this._onStoreFrontChange);
-     this.setState({
-     	loadedAtLeastOnce: true,
-		product: StorefrontStore.decorateProducts( StorefrontStore.getProductById(this.props.params.productID) )
-     })
-     GuiTimer();
-   }
+	componentDidMount() {
+		StorefrontStore.addChangeListener(this._onStoreFrontChange);
+		GuiTimer();
+		let PRODUCT = StorefrontStore.decorateProducts( StorefrontStore.getProductById(this.props.params.productID) );
+		if (PRODUCT) {
+			SessionActions.addShopEvent({ event: 'VIEW_PRODUCT', product: this.props.params.productID });
+		}
+		this.setState({
+			loadedAtLeastOnce: true,
+			product: PRODUCT
+		})
+	}
 
    // Remove change listers from stores
    componentWillUnmount() {
@@ -50,14 +56,27 @@ class ProductDetail extends Component {
 		}
    }
 
-   _onStoreFrontChange() {
+	 _onStoreFrontChange(event) {
+		switch (event.type) {
+	
+			case appConstants.PRODUCT_ADDED_TO_CART:
+			//case appConstants.PRODUCT_REMOVED_FROM_CART:
+			//case appConstants.PRODUCT_QUANTITY_INCREASED:
+			//case appConstants.PRODUCT_QUANTITY_DECREASED:
+				let PID = event.product;
+				if (typeof PID === 'object') {
+					PID = PID._id
+				}
+				SessionActions.addShopEvent({ event: event.type, product: PID });
+				break;
 
-   }
+		}
+	}
    
    toggleModal() {
    	GuiTimer();
 	this.setState({
-		modalIsOpen: !(this.state.modalIsOpen)
+		modaIsOpen: !(this.state.modaIsOpen)
 	});
    }
 
@@ -121,7 +140,7 @@ class ProductDetail extends Component {
            </div>
          </_E.Col>
          {prod.imagePath ? (
-         	<_E.Modal isOpen={this.state.modalIsOpen} backdropClosesModal={true}>
+         	<_E.Modal isOpen={this.state.modaIsOpen} backdropClosesModal={true}>
          		<_E.ModalHeader text="Image Detail" showCloseButton={true} onClose={this.toggleModal.bind(this)} />
          		<_E.ModalBody>
 	         		<img src={prod.imagePath} title={prod.description} className="productImageModalDetailView" />
@@ -157,13 +176,6 @@ class ProductDetail extends Component {
 		);
 	}
 
-   renderMiniCart() {
-	   /**** TODO: FIXME: this needs to be a css class, not embedded: ************/
-	   /**** ALSO: FIXME: ShoppingCartMini has the same problem: ************/
-   	return (
-          <ShoppingCartMini className="scart-mini" />
-		);
-   }
    renderBack() {
      return (
        <_E.Row>

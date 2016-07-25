@@ -142,7 +142,7 @@ StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 
 		case appConstants.TOGGLE_CATEGORY_ID_TO_FILTER:
 			toggleIDtoCategoryFilter(action.data);
-			StorefrontStore.emitChange({ type: action.actionType });
+			StorefrontStore.emitChange({ type: action.actionType, category: action.data });
 			break;
 
 		case appConstants.CLEAR_CATEGORY_FILTER:
@@ -157,6 +157,16 @@ StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 
 		case appConstants.SINGLE_PRODUCTS_ONLY:
 			StorefrontStore.emitChange({ type: action.actionType });
+			break;
+
+// tracking cart actions, mainly for session event tracking
+		case appConstants.PRODUCT_ADDED_TO_CART:
+		case appConstants.PRODUCT_REMOVED_FROM_CART:
+		case appConstants.PRODUCT_QUANTITY_INCREASED:
+		case appConstants.PRODUCT_QUANTITY_DECREASED:
+			console.warn(action.actionType)
+			console.log(action);
+			StorefrontStore.emitChange({ type: action.actionType, product: action.data.product });
 			break;
 
 		default:

@@ -7,8 +7,8 @@ import * as _E from 'elemental'
 
 import appConstants from '../constants/appConstants'
 
-import CL_Actions from '../actions/CustomerLoginActions'
-import CL_Store from '../stores/CustomerStore'
+import CustomerActions from '../actions/CustomerActions'
+import CustomerStore from '../stores/CustomerStore'
 
 import PrintMatch from './Biometrics/PrintMatch'
 
@@ -41,18 +41,18 @@ class ThankYouMsg extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-  	CL_Store.addChangeListener( this._onCLStoreChange );
+  	CustomerStore.addChangeListener( this._onCLStoreChange );
     TsvSettingsStore.setSession('bVendingInProcess', false);
     thankYouTimer();
     this.setState({
     	token: uniq(),
-    	customer: CL_Store.getCustomer()
+    	customer: CustomerStore.getCustomer()
     });
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-	CL_Store.removeChangeListener( this._onCLStoreChange );
+	CustomerStore.removeChangeListener( this._onCLStoreChange );
   }
   
   _onCLStoreChange(event) {
@@ -91,7 +91,7 @@ class ThankYouMsg extends Component {
           <p>{' '}</p>
 
           <p style={{textAlign:'center'}}>
-          	<_E.Button size="lg" type="primary" onClick={CL_Actions.customerLogout}>Logout</_E.Button>
+          	<_E.Button size="lg" type="primary" onClick={CustomerActions.customerLogout}>Logout</_E.Button>
           </p>
 
           <p>{' '}</p>

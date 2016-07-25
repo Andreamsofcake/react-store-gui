@@ -4,6 +4,9 @@ import appConstants from '../constants/appConstants'
 import axios from 'axios'
 //import { browserHistory } from 'react-router'
 
+import SessionStore from '../stores/SessionStore'
+import CustomerStore from '../stores/CustomerStore'
+import TransactionStore from '../stores/TransactionStore'
 import TsvSettingsStore from '../stores/TsvSettingsStore'
 
 import Log from '../utils/BigLogger'
@@ -38,9 +41,12 @@ var SessionActions = {
 		})
 	},
 
-	updateSession( session, sessionData ) {
+	updateSession( sessionData ) {
+
+		let session = SessionStore.getCurrentSession();
+
 		axios.post('/api/vend-session/update', 
-			{ session, sessionData }
+			{ sessionData, session }
 		)
 		.then(response => {
 			if (response.data && response.data.status && response.data.status == 'ok') {
@@ -65,37 +71,14 @@ var SessionActions = {
 		})
 	},
 
-	addProductView( session, product ) {
-		throw new Error('not ready yet, probably will stick in the cart somehow?');
-		axios.post('/api/vend-session/update', 
-			{ session, sessionData }
-		)
-		.then(response => {
-			if (response.data && response.data.status && response.data.status == 'ok') {
-				AppDispatcher.handleServerAction({
-					actionType: appConstants.SESSION_UPDATED,
-					data: response.data
-				});
-			} else {
-				if (response.data && response.data.error) {
-					Big.error('failed to update session, error:');
-					Big.log(response.data.error);
-				} else {
-					Big.error('failed to update session, no data returned. full response:');
-					Big.log(response);
-				}
-			}
-		})
-		.catch(error => {
-			Big.error('failed to update session, call chain error probably check component tree');
-			Big.log(error);
-			Big.throw(error);
-		})
-	},
-
-	addUserToSession( session, user ) {
+	addUserToSession() {
+		
+		let session = SessionStore.getCurrentSession()
+			, user = CustomerStore.getCustomer()
+			;
+		
 		axios.post('/api/vend-session/add-user', 
-			{ session, user }
+			{ user, session }
 		)
 		.then(response => {
 			if (response.data && response.data.status && response.data.status == 'ok') {
@@ -120,14 +103,54 @@ var SessionActions = {
 		})
 	},
 
-	closeSession( session, cart, transaction ) {
-		axios.post('/api/vend-session/close', 
-			{ session, cart, transaction }
+	addShopEvent( event ) {
+
+		let session = SessionStore.getCurrentSession();
+
+		axios.post('/api/vend-session/add-shop-event', 
+			{ event, session }
 		)
 		.then(response => {
 			if (response.data && response.data.status && response.data.status == 'ok') {
 				AppDispatcher.handleServerAction({
-					actionType: appConstants.SESSION_CLOSED,
+					actionType: appConstants.SESSION_UPDATED, // don't think we need a separate action type tracker for this.
+					data: response.data
+				});
+			} else {
+				if (response.data && response.data.error) {
+					Big.error('failed to update session, error:');
+					Big.log(response.data.error);
+				} else {
+					Big.error('failed to update session, no data returned. full response:');
+					Big.log(response);
+				}
+			}
+		})
+		.catch(error => {
+			Big.error('failed to update session, call chain error probably check component tree');
+			Big.log(error);
+			Big.throw(error);
+		})
+	},
+
+	closeSession( event, action ) {
+
+		let session = SessionStore.getCurrentSession()
+			, transaction = TransactionStore.getCurrentTransaction()
+			, cart = TsvSettingsStore.getCache('shoppingCart')
+
+			// allow override on close response action, mainly for reg and login cancellations
+			, ACTION = action || appConstants.SESSION_CLOSED
+
+			;
+
+		axios.post('/api/vend-session/close', 
+			{ event, session, cart, transaction }
+		)
+		.then(response => {
+			if (response.data && response.data.status && response.data.status == 'ok') {
+				AppDispatcher.handleServerAction({
+					actionType: ACTION,
 					data: response.data
 				});
 			} else {
@@ -147,9 +170,16 @@ var SessionActions = {
 		})
 	},
 
-	dropSession( session, cart ) {
+	// should happen on a Shop Timeout
+	dropSession( event ) {
+
+		let session = SessionStore.getCurrentSession()
+			, transaction = TransactionStore.getCurrentTransaction()
+			, cart = TsvSettingsStore.getCache('shoppingCart')
+			;
+
 		axios.post('/api/vend-session/drop', 
-			{ session, cart }
+			{ event, session, cart, transaction }
 		)
 		.then(response => {
 			if (response.data && response.data.status && response.data.status == 'ok') {
@@ -174,102 +204,81 @@ var SessionActions = {
 		})
 	},
 
-	createTransaction( transactionData, session ) {
-		axios.post('/api/transaction/new',
-			{ transactionData, session }
+	closeSessionTransaction( event ) {
+
+		let session = SessionStore.getCurrentSession()
+			, transaction = TransactionStore.getCurrentTransaction()
+			, cart = TsvSettingsStore.getCache('shoppingCart')
+			;
+
+		axios.post('/api/vend-session/close-session-transaction', 
+			{ event, session, cart, transaction }
 		)
 		.then(response => {
 			if (response.data && response.data.status && response.data.status == 'ok') {
+				response.data.transaction = transaction; // pass through
 				AppDispatcher.handleServerAction({
-					actionType: appConstants.TRANSACTION_CREATED,
+					actionType: appConstants.TRANSACTION_AND_SESSION_CLOSED,
 					data: response.data
 				});
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to create transaction, error:');
+					Big.error('failed to close session, error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to create transaction, no data returned. full response:');
+					Big.error('failed to close session, no data returned. full response:');
 					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			Big.error('failed to create transaction, call chain error probably check component tree');
+			Big.error('failed to close session, call chain error probably check component tree');
 			Big.log(error);
 			Big.throw(error);
 		})
 	},
 
-	updateTransaction( transaction, transactionData ) {
-		axios.post('/api/transaction/update', 
-			{ transaction, transactionData }
+	// should happen on a Shop Timeout
+	dropSessionTransaction( event ) {
+
+		let session = SessionStore.getCurrentSession()
+			, transaction = TransactionStore.getCurrentTransaction()
+			, cart = TsvSettingsStore.getCache('shoppingCart')
+			;
+
+		axios.post('/api/vend-session/drop-session-transaction', 
+			{ event, session, cart, transaction }
 		)
 		.then(response => {
 			if (response.data && response.data.status && response.data.status == 'ok') {
+				response.data.transaction = transaction; // pass through
 				AppDispatcher.handleServerAction({
-					actionType: appConstants.TRANSACTION_UPDATED,
+					actionType: appConstants.TRANSACTION_AND_SESSION_DROPPED,
 					data: response.data
 				});
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to update transaction, error:');
+					Big.error('failed to drop session, error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to update transaction, no data returned. full response:');
+					Big.error('failed to drop session, no data returned. full response:');
 					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			Big.error('failed to update transaction, call chain error probably check component tree');
-			Big.log(error);
-			Big.throw(error);
-		})
-	},
-	
-	// temporary method, may become permanent with correct logic changes:
-	spendCustomerCredit(customer, amount_cents, transaction) {
-
-/***
-construct some temporary objects for testing here...
-**/
-
-		var cart = TsvSettingsStore.getCache('shoppingCart');
-		
-		axios.post('/api/spend-customer-credit',
-			{ customer, amount_cents, cart } // transaction taken out, we are quickly generating on the server
-		)
-		.then(response => {
-			if (response.data && response.data.status && response.data.status == 'ok') {
-				AppDispatcher.handleServerAction({
-					actionType: appConstants.CREDIT_PURCHASE_COMPLETED,
-					data: response.data
-				});
-			} else {
-				if (response.data && response.data.error) {
-					Big.error('failed to update transaction, error:');
-					Big.log(response.data.error);
-				} else {
-					Big.error('failed to update transaction, no data returned. full response:');
-					Big.log(response);
-				}
-			}
-		})
-		.catch(error => {
-			Big.error('failed to update transaction, call chain error probably check component tree');
+			Big.error('failed to drop session, call chain error probably check component tree');
 			Big.log(error);
 			Big.throw(error);
 		})
 	},
 	
-	updateCurrentCustomerCredit(credit) {
+	kill() {
 		AppDispatcher.handleServerAction({
-			actionType: appConstants.UPDATE_CURRENT_CUSTOMER_CREDIT,
-			data: credit
+			actionType: appConstants.KILL_SESSION,
+			data: null
 		});
 	}
-
 
 };
 

@@ -6,6 +6,9 @@ import { forceBoolean, moneyformat, timer } from './index'
 import * as Translate from '../../lib/Translate'
 import { browserHistory } from 'react-router'
 
+import SessionActions from '../actions/SessionActions'
+import TransactionActions from '../actions/TransactionActions'
+
 import Log from './BigLogger'
 var Big = new Log('TsvUtils');
 
@@ -114,6 +117,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 					Big.log("Full Vend Success!");
 					browserHistory.push("/ThankYouMsg");
 					// moved here from below, but this is questionable
+					SessionActions.closeSessionTransaction({ event: 'SHOPPING_AND_TRANSACTION_COMPLETE' });
 					emptyCart();
 
 				} else {
@@ -131,6 +135,7 @@ export function vendResponse(processStatus) { //, $location, $rootScope) {
 						vendErrorMsg2: Translate.translate("Vending", "YouHaveBeenCharged") + currencyFilter( TsvSettingsStore.getSession('vendSettleTotal') )
 					});
 					browserHistory.push("/VendError");
+					SessionActions.closeSessionTransaction({ event: 'SHOPPING_AND_TRANSACTION_COMPLETE', error: 'partial vend error' });
 				}
 				break;
 
@@ -341,6 +346,7 @@ export function onGeneralTimeout() {
 	}
 
 	if (gotoDef) {
+		SessionActions.dropSessionTransaction({ event: 'IDLE_TIMEOUT' });
 		gotoDefaultIdlePage();
 	} else {
 		//startGeneralIdleTimer(currentPageView); //$location, $rootScope);//Ping added on 1016/2015

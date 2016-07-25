@@ -1,27 +1,30 @@
 import React, { Component } from 'react'
-import * as Translate from '../../lib/Translate'
+import * as Translate from '../../../lib/Translate'
 
-import TsvSettingsStore from '../stores/TsvSettingsStore'
+import TsvSettingsStore from '../../stores/TsvSettingsStore'
 
-import CL_Actions from '../actions/CustomerLoginActions'
-import CL_Store from '../stores/CustomerStore'
+import CustomerActions from '../../actions/CustomerActions'
+import CustomerStore from '../../stores/CustomerStore'
 
-import A_Actions from '../actions/AdminActions'
-import A_Store from '../stores/AdminStore'
+import A_Actions from '../../actions/AdminActions'
+import A_Store from '../../stores/AdminStore'
 
-import TsvStore from '../stores/TsvStore'
+import SessionActions from '../../actions/SessionActions'
+import SessionStore from '../../stores/SessionStore'
 
-import appConstants from '../constants/appConstants'
+import TsvStore from '../../stores/TsvStore'
+
+import appConstants from '../../constants/appConstants'
 import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 
-import { uniq } from '../utils'
+import { uniq } from '../../utils'
 
 import {
 	GuiTimer,
-} from '../utils/TsvUtils'
+} from '../../utils/TsvUtils'
 
-import Log from '../utils/BigLogger'
+import Log from '../../utils/BigLogger'
 var Big = new Log('CustomerLoginTESTER');
 
 class CustomerLoginTest extends Component {
@@ -43,25 +46,28 @@ class CustomerLoginTest extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
-  	CL_Store.addChangeListener( this._onCLStoreChange );
+  	CustomerStore.addChangeListener( this._onCLStoreChange );
   	A_Store.addChangeListener( this._onAStoreChange );
   	A_Actions.getTestCustomers();
-  	CL_Actions.clearSteps();
+
+	//if (!SessionStore.getCurrentSession()) {
+		SessionActions.createSession(); // make a new one! << createSession() will also customerLogout()
+	//}
+
   	// reset the login token on mount, should take care of retries, timeouts, etc
   	this.setState({
   		loginToken: uniq()
   	});
 	GuiTimer();
+	
+	window.SessionStore = SessionStore;
 
   }
 
   // Remove change listers from stores
   componentWillUnmount() {
-  	CL_Store.removeChangeListener( this._onCLStoreChange );
+  	CustomerStore.removeChangeListener( this._onCLStoreChange );
   	A_Store.removeChangeListener( this._onAStoreChange );
-  	// causing invariant error (dispatch problem)...
-  	// moving to componentDidMount()
-  	//CL_Actions.clearSteps();
   }
   
   componentWillReceiveProps(nextProps) {
@@ -81,7 +87,7 @@ class CustomerLoginTest extends Component {
   			this.setState({
   				testCustomers: A_Store.getTestCustomers()
   			});
-  			CL_Actions.membershipCardSwipe(this.state.loginToken);
+  			CustomerActions.membershipCardSwipe(this.state.loginToken);
   			break;
   	}
   }
@@ -90,8 +96,11 @@ class CustomerLoginTest extends Component {
   	if (e) e.preventDefault();
   	var id = C.client_membership_ids.filter( ID => { return ID.client === this.state.machineInfo.client });
   	if (id && id.length) {
-	  	//CL_Actions.loadCustomerByMembershipId(C.membership_id);
-	  	CL_Actions.loadCustomerByMembershipId(id[0].id);
+		this.setState({
+			loadingUser: true
+		});
+	  	//CustomerActions.loadCustomerByMembershipId(C.membership_id);
+	  	CustomerActions.loadCustomerByMembershipId(id[0].id);
 	}
   }
   
@@ -100,14 +109,19 @@ class CustomerLoginTest extends Component {
   	switch (event.type) {
   		case appConstants.CUSTOMER_LOADED:
 			if (event.status === 'ok') {
-				console.warn(appConstants.CUSTOMER_LOADED + ': customer then credit');
-				console.log(CL_Store.getCustomer());
-				console.log(CL_Store.getCustomerCredit());
-				browserHistory.push('/Storefront');
+				//Big.warn(appConstants.CUSTOMER_LOADED + ': customer then credit');
+				//Big.log(CustomerStore.getCustomer());
+				//Big.log(CustomerStore.getCustomerCredit());
+				//browserHistory.push('/Storefront');
+				this.setState({
+					customer: CustomerStore.getCustomer(),
+					loadingUser: false
+				});
+				SessionActions.addUserToSession();
 			}
   			break;
   		
-  		case appConstants.MEMBERSHIP_CARD_SCANNED_LOGIN:
+  		case appConstants.MEMBERSHIP_CARD_SCANNED_TESTLOOP:
   			if (event.membership_id) { // eventually check for loginToken? maybe not needed
   				this.loadTestCustomer({ membership_id: event.membership_id });
   			}
@@ -116,6 +130,26 @@ class CustomerLoginTest extends Component {
   }
   
   render() {
+
+	if (this.state.loadingUser) {
+		return (
+			<div style={{maxWidth:'60%',margin: '10em auto 1em', textAlign: 'center'}}>
+				<h1>One Moment Please....</h1>
+				<div><_E.Spinner size="lg" /></div>
+			</div>
+		);
+	}
+
+	if (this.state.customer) {
+		return (
+			<div style={{maxWidth:'60%',margin: '10em auto 1em'}}>
+				<h1>Welcome back {this.state.customer.firstname}</h1>
+				<p style={{textAlign: 'center'}}><_E.Button type="success" component={(<Link to="/Storefront">Let's go shopping!</Link>)} /></p>
+			</div>
+		);
+	}
+
+
     return (
     	<div>
 		  <_E.Row >

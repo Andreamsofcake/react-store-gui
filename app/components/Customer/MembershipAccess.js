@@ -19,9 +19,10 @@ if both card is matched and fingerprint is matched, then load user
 ***/
 import React, { Component } from 'react'
 
-import CL_Actions from '../../actions/CustomerLoginActions' // for logout() call
-import CL_Store from '../../stores/CustomerStore'
+import CustomerActions from '../../actions/CustomerActions' // for logout() call
+import CustomerStore from '../../stores/CustomerStore'
 import TsvStore from '../../stores/TsvStore' // for retrieving machine config
+import SessionActions from '../../actions/SessionActions'
 
 //import Step1 from './Customer_MembershipAccess/Step1'
 //import Step2 from './Customer_MembershipAccess/Step2'
@@ -66,7 +67,8 @@ class Customer_MembershipAccess extends Component {
 			membership_id: null,
 			isPrintVerified: false,
 			isUserVerified: false,
-			loadingUser: false
+			loadingUser: false,
+			loginCancelled: false
 		}
 		if (obj && typeof obj === 'object') {
 			Object.keys(obj).forEach( K => { def[K] = obj[K] } );
@@ -76,15 +78,16 @@ class Customer_MembershipAccess extends Component {
 
 	// Add change listeners to stores
 	componentDidMount() {
-		CL_Store.addChangeListener( this._onCLStoreChange );
-		CL_Actions.customerLogout(); // make sure we dump any session!
+		CustomerStore.addChangeListener( this._onCLStoreChange );
+		//CustomerActions.customerLogout(); // make sure we dump any session!
+		SessionActions.createSession(); // make a new one! << createSession() will also customerLogout()
 		this.setState(this.getDefaultState());
 		GuiTimer();
 	}
 
 	// Remove change listers from stores
 	componentWillUnmount() {
-		CL_Store.removeChangeListener( this._onCLStoreChange );
+		CustomerStore.removeChangeListener( this._onCLStoreChange );
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -98,6 +101,14 @@ class Customer_MembershipAccess extends Component {
 		}
 		*/
 	}
+	
+	_onSessionStoreChange(event) {
+		switch (event.type) {
+			case appConstants.SESSION_CREATED:
+				CustomerActions.refreshCustomer();
+				break;
+		}
+	}
 
 	_onCLStoreChange(event) {
 		GuiTimer();
@@ -105,12 +116,19 @@ class Customer_MembershipAccess extends Component {
 			case appConstants.CUSTOMER_LOADED:
 				if (event.status === 'ok') {
 					//console.warn(appConstants.CUSTOMER_LOADED + ': customer then credit');
-					//console.log(CL_Store.getCustomer());
-					//console.log(CL_Store.getCustomerCredit());
+					//console.log(CustomerStore.getCustomer());
+					//console.log(CustomerStore.getCustomerCredit());
 					//browserHistory.push('/Storefront');
 					this.setState({
 						loadingUser: false
 					});
+					SessionActions.addUserToSession();
+				}
+				break;
+
+			case appConstants.CUSTOMER_LOGIN_CANCELLED:
+				if (event.status === 'ok') {
+					browserHistory.push('/PageIdle');
 				}
 				break;
 		}
@@ -163,7 +181,7 @@ class Customer_MembershipAccess extends Component {
 		if (state.isUserVerified && state.isPrintVerified && state.membership_id) {
 			state.loadingUser = true;
 			Big.log('OK! loading customer!');
-			CL_Actions.loadCustomerByMembershipId(this.state.membership_id);
+			CustomerActions.loadCustomerByMembershipId(this.state.membership_id);
 		} else {
 			Big.log('boo, not loading customer');
 		}
@@ -173,8 +191,24 @@ class Customer_MembershipAccess extends Component {
 	tryAgain() {
 		this.setState( this.getDefaultState() );
 	}
+	
+	cancelLogin() {
+		this.setState({
+			loginCancelled: true
+		});
+		SessionActions.closeSession( { ts: Date.now(), msg: 'customer cancelled login' }, appConstants.CUSTOMER_LOGIN_CANCELLED );
+	}
 
 	render() {
+		
+		if (this.state.loginCancelled) {
+			return (
+				<div style={{maxWidth:'60%',margin: '10em auto 1em', textAlign: 'center'}}>
+					<h1>One Moment Please....</h1>
+					<div><_E.Spinner size="lg" /></div>
+				</div>
+			);
+		}
 		
 		// FIXME: someday, this should be a switch, whether or not we need to verify-by-admin or not
 		if (this.state.matchedUser && !this.state.isUserVerified) {
@@ -237,6 +271,9 @@ class Customer_MembershipAccess extends Component {
 					matchCallback={this.printMatchCallback.bind(this)}
 				  	/>
 				  	</div>
+				</_E.Col>
+				<_E.Col>
+					<p style={{textAlign: 'center'}}><_E.Button type="danger" onClick={this.cancelLogin.bind(this)}>Cancel Login</_E.Button></p>
 				</_E.Col>
 			  </_E.Row>
 			</div>

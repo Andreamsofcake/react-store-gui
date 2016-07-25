@@ -32,136 +32,145 @@ var StorefrontActions = {
 		})
 	},
   
-  minusQty(product) { // coil
-  	let coil = product.coilNumber;
+	addToCart(product, e) {
 
-  	Big.log('removeOneQty ///////');
-  	Big.log(product, coil);
+		let cart = TsvSettingsStore.getCache('shoppingCart');
 
-  	TsvActions.apiCall('removeFromCartByCoilNo', coil, (err, ok) => {
-  		if (err) Big.throw(err);
-  		if (ok && ok.shoppingCart) {
-  			TsvSettingsStore.setCache('shoppingCart', ok.shoppingCart);
-  		} else {
-			TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-				if (err) Big.throw(err);
-				TsvSettingsStore.setCache('shoppingCart', data);
-			});
+		Big.log('addToCart ///////');
+		Big.log({ product, cart });
+
+		// FIXME: temporary... TSV responsible for this.
+		if (cart && cart.detail && cart.detail.length) {
+			let alreadyInCart = cart.detail.filter( P => { return P.productID === product.productID } );
+			if (alreadyInCart && alreadyInCart.length) {
+				AppDispatcher.handleServerAction({
+					actionType: appConstants.SINGLE_PRODUCTS_ONLY,
+					data: null
+				});
+				return;
+			}
 		}
-  	});
-  },
 
-  removeAllQty(product) { // coil, qty
+		if(product.stockCount > 0){
+		  TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
+			if (err) Big.throw(err);
+			TsvSettingsStore.setConfig('pvr', response);
+			if (response && response.shoppingCart) {
+				TsvSettingsStore.setCache('shoppingCart', response.shoppingCart);
+			} else {
+				TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+					if (err) Big.throw(err);
+					TsvSettingsStore.setCache('shoppingCart', data);
+				});
+			}
+			AppDispatcher.handleServerAction({
+				actionType: appConstants.PRODUCT_ADDED_TO_CART,
+				data: { product }
+			});
+		  });
+		}
+	},
 
-  	let coil = product.coilNumber
-  		, qty = product.qtyInCart
-  		;
+	addQty(product) { // coil
 
-  	Big.log('removeAllQty ///////');
-  	Big.log(product, coil, qty);
+		let coil = product.coilNumber;
 
-    TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-      if (err) Big.throw(err);
-      TsvSettingsStore.setCache('shoppingCart', data);
+		Big.log('addQty ///////');
+		Big.log(product, coil);
 
-      let removeQty = (qty) => {
-        if (qty > 0) {
-          qty -= 1;
-          TsvActions.apiCall('removeFromCartByCoilNo', coil, (err, ok) => {
-            if (err) Big.throw(err);
+		TsvActions.apiCall('addToCartByCoil', coil, (err, ok) => {
+			if (err) Big.throw(err);
 			if (ok && ok.shoppingCart) {
 				TsvSettingsStore.setCache('shoppingCart', ok.shoppingCart);
 			} else {
 				TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-				  if (err) Big.throw(err);
-				  TsvSettingsStore.setCache('shoppingCart', data);
-				  removeQty(qty);
+					if (err) Big.throw(err);
+					TsvSettingsStore.setCache('shoppingCart', data);
 				});
 			}
-          });
-        // don't think we need to do the last cart retrieval...
-        /*
-        } else {
-          TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-            if (err) Big.throw(err);
-            TsvSettingsStore.setCache('shoppingCart', data);
-          });
-          */
-        }
-      }
-
-      removeQty(qty);
-    });
-  },
-
-  addQty(product) { // coil
-
-  	let coil = product.coilNumber;
-
-  	Big.log('addQty ///////');
-  	Big.log(product, coil);
-
-  	TsvActions.apiCall('addToCartByCoil', coil, (err, ok) => {
-  		if (err) Big.throw(err);
-  		if (ok && ok.shoppingCart) {
-  			TsvSettingsStore.setCache('shoppingCart', ok.shoppingCart);
-  		} else {
-			TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-				if (err) Big.throw(err);
-				TsvSettingsStore.setCache('shoppingCart', data);
+			AppDispatcher.handleServerAction({
+				actionType: appConstants.PRODUCT_QUANTITY_INCREASED,
+				data: { product }
 			});
-		}
-  	});
-  },
+		});
+	},
 
-  toggleIDtoCategoryFilter(ID) {
-    AppDispatcher.handleServerAction({
-      actionType: appConstants.TOGGLE_CATEGORY_ID_TO_FILTER,
-      data: ID
-    });
-  },
+	minusQty(product) { // coil
+		let coil = product.coilNumber;
 
-  clearCategoryFilter() {
+		Big.log('removeOneQty ///////');
+		Big.log(product, coil);
+
+		TsvActions.apiCall('removeFromCartByCoilNo', coil, (err, ok) => {
+			if (err) Big.throw(err);
+			if (ok && ok.shoppingCart) {
+				TsvSettingsStore.setCache('shoppingCart', ok.shoppingCart);
+			} else {
+				TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+					if (err) Big.throw(err);
+					TsvSettingsStore.setCache('shoppingCart', data);
+				});
+			}
+			AppDispatcher.handleServerAction({
+				actionType: appConstants.PRODUCT_QUANTITY_DECREASED,
+				data: { product }
+			});
+		});
+	},
+
+	removeAllQty(product) { // coil, qty
+
+		let coil = product.coilNumber
+			, qty = product.qtyInCart
+			;
+
+		Big.log('removeAllQty ///////');
+		Big.log(product, coil, qty);
+
+		TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+			if (err) Big.throw(err);
+			TsvSettingsStore.setCache('shoppingCart', data);
+
+			let removeQty = (qty) => {
+				if (qty > 0) {
+					qty -= 1;
+					TsvActions.apiCall('removeFromCartByCoilNo', coil, (err, ok) => {
+						if (err) Big.throw(err);
+						if (ok && ok.shoppingCart) {
+							TsvSettingsStore.setCache('shoppingCart', ok.shoppingCart);
+						} else {
+							TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
+								if (err) Big.throw(err);
+								TsvSettingsStore.setCache('shoppingCart', data);
+								removeQty(qty);
+							});
+						}
+					});
+				} else {
+					AppDispatcher.handleServerAction({
+						actionType: appConstants.PRODUCT_REMOVED_FROM_CART,
+						data: { product }
+					});
+				}
+			}
+
+			removeQty(qty);
+		});
+	},
+
+	toggleIDtoCategoryFilter(ID) {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.TOGGLE_CATEGORY_ID_TO_FILTER,
+			data: ID
+		});
+	},
+
+	clearCategoryFilter() {
 		AppDispatcher.handleServerAction({
 			actionType: appConstants.CLEAR_CATEGORY_FILTER,
 			data: null
 		});
 	},
-
-  addToCart(product, e) {
-
-  	let cart = TsvSettingsStore.getCache('shoppingCart');
-
-  	Big.log('addToCart ///////');
-  	Big.log({ product, cart });
-  	
-  	if (cart && cart.detail && cart.detail.length) {
-  		let alreadyInCart = cart.detail.filter( P => { return P.productID === product.productID } );
-  		if (alreadyInCart && alreadyInCart.length) {
-			AppDispatcher.handleServerAction({
-				actionType: appConstants.SINGLE_PRODUCTS_ONLY,
-				data: null
-			});
-  			return;
-  		}
-  	}
-  	
-    if(product.stockCount > 0){
-      TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
-        if (err) Big.throw(err);
-        TsvSettingsStore.setConfig('pvr', response);
-  		if (response && response.shoppingCart) {
-  			TsvSettingsStore.setCache('shoppingCart', response.shoppingCart);
-  		} else {
-			TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-			  if (err) Big.throw(err);
-			  TsvSettingsStore.setCache('shoppingCart', data);
-			});
-		}
-      });
-    }
-  }
-
 
 };
 

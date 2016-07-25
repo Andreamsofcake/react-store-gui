@@ -1,55 +1,61 @@
 import Joi from 'joi'
 
-var SessionHandler = require('./handlers/session/SessionHandler')
-	, TransactionHandler = require('./handlers/session/TransactionHandler')
-	, PostTransactionInventoryCleanup = require('./handlers/session/PostTransactionInventoryCleanup')
+var New = require('./handlers/session/New')
+	, Update = require('./handlers/session/Update')
+	, AddShopEvent = require('./handlers/session/AddShopEvent')
+//	, AddCart = require('./handlers/session/AddCart') // just do this with Update for now
+	, AddUser = require('./handlers/session/AddUser')
+	, Close = require('./handlers/session/Close')
+	, Drop = require('./handlers/session/Drop')
 	;
 
 module.exports = [
 	{
 		method: 'post',
-		path: '/api/vend-session/{action}',
-		handler: SessionHandler,
-		/*config: {
-			plugins: {
-				'hapi-io': {
-					event: 'session-handler'
-					, mapping: {
-
-					},
-					post: (ctx, next) => {
-						ctx.socket.emit(ctx.event, ctx.result);
-						next();
-					}
-				}
-			}
-		}*/
+		path: '/api/vend-session/new',
+		handler: New,
 	},
 
 	{
 		method: 'post',
-		path: '/api/transaction/{action}',
-		handler: TransactionHandler,
-		/*config: {
-			plugins: {
-				'hapi-io': {
-					event: 'transaction-handler'
-					, mapping: {
+		path: '/api/vend-session/update',
+		handler: Update,
+	},
 
-					},
-					post: (ctx, next) => {
-						ctx.socket.emit(ctx.event, ctx.result);
-						next();
-					}
-				}
-			}
-		}*/
+	{
+		method: 'post',
+		path: '/api/vend-session/add-shop-event',
+		handler: AddShopEvent,
+	},
+
+	{
+		method: 'post',
+		path: '/api/vend-session/add-user',
+		handler: AddUser,
+	},
+
+	{
+		method: 'post',
+		path: '/api/vend-session/close',
+		handler: Close,
+	},
+
+	{
+		method: 'post',
+		path: '/api/vend-session/drop',
+		handler: Drop,
 	},
 	
 	{
 		method: 'post',
-		path: '/api/post-transaction-inventory-cleanup',
-		handler: PostTransactionInventoryCleanup,
+		path: '/api/vend-session/close-session-transaction',
+		handler: Close,
+	},
+
+	{
+		method: 'post',
+		path: '/api/vend-session/drop-session-transaction',
+		handler: Drop,
 	},
 	
 		

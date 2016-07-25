@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 
-import CL_Actions from '../../actions/CustomerLoginActions' // for logout() call
-import CL_Store from '../../stores/CustomerStore'
+import CustomerActions from '../../actions/CustomerActions' // for logout() call
+import CustomerStore from '../../stores/CustomerStore'
 import TsvStore from '../../stores/TsvStore' // for retrieving machine config
+import SessionActions from '../../actions/SessionActions'
+import SessionStore from '../../stores/SessionStore'
 
 import CardMatch from '../Biometrics/MembershipCardMatch'
 import PrintMatchAdmin from '../Biometrics/AdminPrintMatch'
@@ -59,7 +61,8 @@ class Customer_MembershipRegister extends Component {
 			loadCustomerCheckFailed: false,
 			registrationInProcess: false,
 			registrationFinished: false,
-			loadingUser: false
+			loadingUser: false,
+			registerCancelled: false
 		}
 		if (obj && typeof obj === 'object') {
 			Object.keys(obj).forEach( K => { def[K] = obj[K] } );
@@ -69,12 +72,13 @@ class Customer_MembershipRegister extends Component {
 
 	// Add change listeners to stores
 	componentDidMount() {
-		CL_Store.addChangeListener( this._onCLStoreChange );
-		//CL_Actions.customerLogout(); // make sure we dump any session!
+		CustomerStore.addChangeListener( this._onCLStoreChange );
+		//CustomerActions.customerLogout(); // make sure we dump any session!
+		if (!SessionStore.getCurrentSession()) {
+			SessionActions.createSession(); // make a new one! << createSession() will also customerLogout()
+		}
 		let state = this.setupMatchedUserData();
 		this.setState( this.getDefaultState(state) );
-		Big.log('try to start idle timer.... props.location?');
-		Big.log(this.props);
 		GuiTimer();
 	}
 	
@@ -92,16 +96,16 @@ class Customer_MembershipRegister extends Component {
 
 	// Remove change listers from stores
 	componentWillUnmount() {
-		CL_Store.removeChangeListener( this._onCLStoreChange );
+		CustomerStore.removeChangeListener( this._onCLStoreChange );
 	}
 
 	componentWillReceiveProps(nextProps) {
 		/*
-		Big.log('componentWillReceiveProps(nextProps)');
-		Big.log(nextProps);
-		if (nextProps.params) {
+		//Big.log('componentWillReceiveProps(nextProps)');
+		//Big.log(nextProps);
+		if (nextProps.session) {
 			this.setState({
-				params: nextProps.params
+				session: nextProps.session
 			});	
 		}
 		*/
@@ -154,13 +158,25 @@ class Customer_MembershipRegister extends Component {
 			case appConstants.CUSTOMER_VERIFIED_AND_LOADED:
 				if (event.status === 'ok') {
 					Big.warn(appConstants.CUSTOMER_VERIFIED_AND_LOADED + ': customer then credit');
-					Big.log(CL_Store.getCustomer());
-					Big.log(CL_Store.getCustomerCredit());
+					Big.log(CustomerStore.getCustomer());
+					Big.log(CustomerStore.getCustomerCredit());
 					//browserHistory.push('/Storefront');
 					this.setState({
 						loadingUser: false,
 						registrationFinished: true
 					});
+					SessionActions.addUserToSession();
+				}
+				break;
+			case appConstants.CUSTOMER_REGISTRATION_CANCELLED:
+				if (event.status === 'ok') {
+					browserHistory.push('/PageIdle');
+					/*
+					this.setState({
+						loadingUser: false,
+						registrationFinished: true
+					});
+					*/
 				}
 				break;
 		}
@@ -171,7 +187,7 @@ class Customer_MembershipRegister extends Component {
 		if (state.isUserVerified && state.membership_id && state.adminEndMatched) {
 			Big.warn('checkForCustomerLoad ... load the user!');
 			state.loadingUser = true;
-			CL_Actions.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
+			CustomerActions.adminVerifyAndLoadCustomerByMembershipId(this.state.matchedUser, this.state.adminEndUser, this.state.membership_id);
 		} else {
 			state.loadingUser = false;
 			state.loadCustomerCheckFailed = true;
@@ -210,8 +226,24 @@ class Customer_MembershipRegister extends Component {
 		}
 	}
 	
+	cancelRegistration() {
+		this.setState({
+			registerCancelled: true
+		});
+		SessionActions.closeSession( { ts: Date.now(), msg: 'customer cancelled registration' }, appConstants.CUSTOMER_REGISTRATION_CANCELLED );
+	}
+
 	render() {
 
+		if (this.state.registerCancelled) {
+			return (
+				<div style={{maxWidth:'60%',margin: '10em auto 1em', textAlign: 'center'}}>
+					<h1>One Moment Please....</h1>
+					<div><_E.Spinner size="lg" /></div>
+				</div>
+			);
+		}
+		
 		if (!this.state.machineInfo) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
@@ -325,7 +357,7 @@ class Customer_MembershipRegister extends Component {
 
 3. get admin verification to close and finish
 
-4. CL_Actions.loadCustomerByMembershipId()
+4. CustomerActions.loadCustomerByMembershipId()
 
 */
 

@@ -6,6 +6,8 @@ import { browserHistory, Link } from 'react-router'
 import * as _E from 'elemental'
 import ShoppingCartItem from './ShoppingCartItem'
 
+import SessionActions from '../actions/SessionActions'
+
 import TsvSettingsStore from '../stores/TsvSettingsStore'
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
@@ -57,13 +59,18 @@ class ShoppingCart extends Component {
     this._onTsvChange = this._onTsvChange.bind(this);
   }
 
-  cancel(){
-    emptyCart();
-    //TsvSettingsStore.setConfig('itemsInCart', 0);
-    //gotoDefaultIdlePage();
-    browserHistory.push('/Storefront');
+	cancel() {
+		emptyCart();
+		//TsvSettingsStore.setConfig('itemsInCart', 0);
+		//gotoDefaultIdlePage();
+		browserHistory.push('/PageIdle');
+		SessionActions.closeSessionTransaction({ event: 'SHOP_CANCEL_FROM_CART' });
+	}
 
-  }
+	keepShopping() {
+		browserHistory.push('/Storefront');
+		SessionActions.addShopEvent({ event: 'KEEP_SHOPPING_FROM_CART' });
+	}
 
 	componentDidMount() {
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
@@ -73,6 +80,7 @@ class ShoppingCart extends Component {
 			TsvSettingsStore.setCache('shoppingCart', data);
 		});
 		GuiTimer();
+		SessionActions.addShopEvent({ event: 'SHOPPING_CART_VIEW' });
 	}
 	
 	componentWillUnmount() {
@@ -130,9 +138,9 @@ class ShoppingCart extends Component {
 
             <_E.Row>
 
-                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="primary" size="lg" onClick={() => { browserHistory.push('/Storefront') }}>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
+                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="primary" size="lg" onClick={ this.keepShopping.bind(this) }>{Translate.translate('ShoppingCart','Shop_More')}</_E.Button></_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">{this.renderCheckoutButton()}</_E.Col>
-                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="danger" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />{Translate.translate('ShoppingCart','Cancel')}</_E.Button></_E.Col>
+                <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3"><_E.Button type="danger" onClick={this.cancel.bind(this)}><_E.Glyph icon="circle-slash" />Cancel My Shop Session</_E.Button></_E.Col>
                 <_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3" style={{marginTop:'4em'}}>{ this.state.bShowCouponBtn ? this.renderCouponButton() : null }</_E.Col>
 
             </_E.Row>

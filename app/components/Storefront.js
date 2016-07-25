@@ -6,6 +6,9 @@ import TsvSettingsStore from '../stores/TsvSettingsStore'
 import StorefrontActions from '../actions/StorefrontActions'
 import StorefrontStore from '../stores/StorefrontStore'
 
+import SessionActions from '../actions/SessionActions'
+import SessionStore from '../stores/SessionStore'
+
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 import ProductListItem from './ProductListItem'
@@ -35,7 +38,7 @@ Big.setOptions({
 });
 */
 
-import CL_Store from '../stores/CustomerStore'
+import CustomerStore from '../stores/CustomerStore'
 
 import TsvStore from '../stores/TsvStore'
 import TsvActions from '../actions/TsvActions'
@@ -54,7 +57,7 @@ class Storefront extends Component {
       categoryIdFilter:[],
       products: [],
       categories: [],
-      customer: CL_Store.getCustomer()
+      customer: CustomerStore.getCustomer()
     }
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
@@ -76,12 +79,16 @@ class Storefront extends Component {
 
     TsvSettingsStore.addChangeListener(this._onRootstoreChange);
     StorefrontStore.addChangeListener(this._onStoreFrontChange);
-	CL_Store.addChangeListener(this._onCLStoreChange);
+	CustomerStore.addChangeListener(this._onCLStoreChange);
 
     TsvActions.apiCall('fetchProduct', (err, data) => {
       if (err) Big.throw(err);
       TsvSettingsStore.setSession('products', data)
     });
+    
+	if (SessionStore.getCurrentSession()) {
+		SessionActions.addShopEvent({ event: 'LOAD_STOREFRONT' });
+	}
 
 /*
 // using own categories now
@@ -110,13 +117,13 @@ class Storefront extends Component {
   componentWillUnmount() {
     TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
     StorefrontStore.removeChangeListener(this._onStoreFrontChange);
-	CL_Store.removeChangeListener(this._onCLStoreChange);
+	CustomerStore.removeChangeListener(this._onCLStoreChange);
   }
 
 	_onCLStoreChange(event) {
 		this.setState({
-			customer: CL_Store.getCustomer()
-			//customerCredit: CL_Store.getCustomerCredit()
+			customer: CustomerStore.getCustomer()
+			//customerCredit: CustomerStore.getCustomerCredit()
 		});
 	}
 	
@@ -138,11 +145,34 @@ class Storefront extends Component {
   	// }
   }
 
-  _onStoreFrontChange(event) {
-	this.setState({
-	  categoryIdFilter: StorefrontStore.getCategoryFilter()
-	})
-  }
+	_onStoreFrontChange(event) {
+		switch (event.type) {
+	
+			case appConstants.PRODUCT_ADDED_TO_CART:
+			//case appConstants.PRODUCT_REMOVED_FROM_CART:
+			//case appConstants.PRODUCT_QUANTITY_INCREASED:
+			//case appConstants.PRODUCT_QUANTITY_DECREASED:
+				Big.warn('added to cart. event, then PID twice, then make event');
+				Big.log(event);
+				let PID = StorefrontStore.decorateProducts( event.product );
+				Big.log(PID);
+				if (PID && typeof PID === 'object') {
+					PID = PID._id
+				}
+				Big.log(PID);
+				Big.log({ event: event.type, product: PID });
+				Big.log('---------------');
+				SessionActions.addShopEvent({ event: event.type, product: PID });
+				break;
+
+			default: // TOGGLE_CATEGORY_ID_TO_FILTER, CLEAR_CATEGORY_FILTER
+				this.setState({
+					categoryIdFilter: StorefrontStore.getCategoryFilter()
+				})
+				SessionActions.addShopEvent({ event: event.type, category: event.category });
+				break;
+		}
+	}
   
   categoryClick(categoryID) {
   	GuiTimer();
@@ -154,7 +184,7 @@ class Storefront extends Component {
 
   addToCart(product, e) {
   	GuiTimer();
-    StorefrontActions.addToCart(product, e)
+	StorefrontActions.addToCart(product, e)
   }
   
   renderPleaseLogin() {

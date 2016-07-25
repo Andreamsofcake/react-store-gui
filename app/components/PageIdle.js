@@ -5,6 +5,10 @@ import TsvSettingsStore from '../stores/TsvSettingsStore'
 import { browserHistory } from 'react-router'
 import * as _E from 'elemental'
 
+import CustomerActions from '../actions/CustomerActions'
+import SessionActions from '../actions/SessionActions'
+import TransactionActions from '../actions/TransactionActions'
+
 import TsvActions from '../actions/TsvActions'
 import {
 	idleClicked,
@@ -34,6 +38,9 @@ class PageIdle extends Component {
 
   // Add change listeners to stores
   componentDidMount() {
+  	CustomerActions.customerLogout();
+  	SessionActions.kill();
+  	TransactionActions.kill();
   }
 
   // Remove change listers from stores

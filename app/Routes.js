@@ -33,7 +33,7 @@ import ChooseCashCard from './components/ChooseCashCard'
 import CustomerCreditVending from './components/CustomerCreditVending'
 //import CustomerLogin from './components/CustomerLogin'
 //import CustomerSignup from './components/CustomerSignup'
-import CustomerLoginTest from './components/CustomerLoginTest'
+import CustomerLoginTest from './components/Customer/LoginTest'
 import CustomerMembershipAccess from './components/Customer/MembershipAccess'
 import ProductDetail from './components/ProductDetail'
 import ShoppingCart from './components/ShoppingCart'
@@ -52,6 +52,8 @@ import NoMatch from './components/NoMatch'
 export default (
 	<Route path='/' component={App}>
 
+		<IndexRoute component={PageIdle}/>
+		
 		<Route path='View0' component={View0} />
 		<Route path='View2' component={View2} />
 		

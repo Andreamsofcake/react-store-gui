@@ -160,7 +160,7 @@ var CustomerLoginActions = {
 				// we're not validating here, either the scan completed or failed... pass it through.
 				// CustomerStore will decide if the event is ok or err
 				AppDispatcher.handleServerAction({
-					actionType: appConstants.MEMBERSHIP_CARD_SCANNED_LOGIN,
+					actionType: appConstants.MEMBERSHIP_CARD_SCANNED_TESTLOOP,
 					data: data
 				});
 			}
@@ -186,7 +186,6 @@ var CustomerLoginActions = {
 			Big.log(error);
 		})
 	}
-
 
 };
 

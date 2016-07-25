@@ -163,7 +163,7 @@ var TsvActions = {
 
 	},
 
-	// FIXME / DEVNOTE: this is duplicated from CustomerLoginActions, due to module load race condition
+	// FIXME / DEVNOTE: this is duplicated from CustomerLoginActions / CustomerActions, due to module load race condition
 	customerLogout() {
 		//emptyCart(); // << done in TsvUtils call
 		axios.get('/api/reset-current-customer')

@@ -67,7 +67,7 @@ module.exports = function(request, reply) {
 					return reply({ status: 'err', msg: 'failed to create the transaction' }).code(500);	
 				}
 				TRANSACTION = TRANSACTION.data && TRANSACTION.data.item ? TRANSACTION.data.item : TRANSACTION;
-				return reply({ status: 'ok', data: { TRANSACTION } }).code(200);
+				return reply({ status: 'ok', data: TRANSACTION }).code(200);
 			});
 			*/
 
@@ -100,7 +100,7 @@ module.exports = function(request, reply) {
 					return reply({ status: 'ok', data: { SESSION } }).code(200);
 				});
 				*/
-				return reply({ status: 'ok', data: { TRANSACTION } }).code(200);
+				return reply({ status: 'ok', data: TRANSACTION }).code(200);
 			});
 			//*/
 			break;
@@ -119,7 +119,7 @@ module.exports = function(request, reply) {
 					return reply({ status: 'err', msg: 'failed to update the transaction' }).code(500);	
 				}
 				TRANSACTION = TRANSACTION.data && TRANSACTION.data.item ? TRANSACTION.data.item : TRANSACTION;
-				return reply({ status: 'ok', data: { TRANSACTION } }).code(200);
+				return reply({ status: 'ok', data: TRANSACTION }).code(200);
 			});
 			break;
 
