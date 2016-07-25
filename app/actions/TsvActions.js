@@ -64,6 +64,14 @@ var TsvActions = {
 		})
 	},
 
+	// this is used predominantly by admin refresh of cloud config, to pass through and update GUI
+	setMachineInfo( data ) {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.MACHINE_INFO,
+			data: { data }
+		});
+	},
+
 	serverHandshake() {
 		// essentially, registers a handler for this event by sending to it once:
 		SocketAPI.send('flash-api-multi-event', { _ws_args: { subscribe_to_externals: true } }, (response) => {

@@ -51,10 +51,10 @@ module.exports = function(request, reply) {
 		if (err) return reply({ status: 'err', error: err }).code(500);
 
 		if (!response || !response.data || !response.data.item) {
-			return reply({ status: 'ok', msg: 'failed to add shop event to session!' }).code(404);
+			return reply({ status: 'ok', msg: 'failed to close session!' }).code(404);
 		}
 		
-		reply({ status: 'ok', msg: 'added shop event to session', data: response.data.item }).code(200);
+		reply({ status: 'ok', msg: 'closed current session', data: response.data.item }).code(200);
 	
 	});
 }

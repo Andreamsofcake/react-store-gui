@@ -18,6 +18,15 @@ import appConstants from '../constants/appConstants'
 
 import ModalCartMessageSingleProduct from './ModalCartMessageSingleProduct'
 
+import CustomerStore from '../stores/CustomerStore'
+
+import TsvStore from '../stores/TsvStore'
+import TsvActions from '../actions/TsvActions'
+import {
+	GuiTimer,
+	KillGuiTimer
+} from '../utils/TsvUtils'
+
 import Log from '../utils/BigLogger'
 var Big = new Log('Storefront');
 /*
@@ -37,15 +46,6 @@ Big.setOptions({
 	}} ]
 });
 */
-
-import CustomerStore from '../stores/CustomerStore'
-
-import TsvStore from '../stores/TsvStore'
-import TsvActions from '../actions/TsvActions'
-import {
-	GuiTimer,
-	KillGuiTimer
-} from '../utils/TsvUtils'
 
 class Storefront extends Component {
 
@@ -71,54 +71,35 @@ class Storefront extends Component {
   }
 
   // Add change listeners to stores
-  componentDidMount() {
-  	Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
-  	GuiTimer();
+	componentDidMount() {
+		Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
+		GuiTimer();
   	
-  	var state = {}
+		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
+		StorefrontStore.addChangeListener(this._onStoreFrontChange);
+		CustomerStore.addChangeListener(this._onCLStoreChange);
 
-    TsvSettingsStore.addChangeListener(this._onRootstoreChange);
-    StorefrontStore.addChangeListener(this._onStoreFrontChange);
-	CustomerStore.addChangeListener(this._onCLStoreChange);
-
-    TsvActions.apiCall('fetchProduct', (err, data) => {
-      if (err) Big.throw(err);
-      TsvSettingsStore.setSession('products', data)
-    });
-    
-	if (SessionStore.getCurrentSession()) {
-		SessionActions.addShopEvent({ event: 'LOAD_STOREFRONT' });
-	}
-
-/*
-// using own categories now
-    if (!TsvSettingsStore.getConfig('categories')) {
-		TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
+		TsvActions.apiCall('fetchProduct', (err, data) => {
 			if (err) Big.throw(err);
-			Big.log('fetchProductCategoriesByParentCategoryID');
-			Big.log(err);
-			Big.log(data);
-			TsvSettingsStore.setConfig('categories', data);
+			TsvSettingsStore.setSession('products', data)
 		});
-	} else {
-		state.categories = TsvSettingsStore.getConfig('categories');
-	}
-*/
-	state.categories = StorefrontStore.getStorefrontData('categories');
-/*
-	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-		if (err) Big.throw(err);
-		TsvSettingsStore.setCache('shoppingCart', data);
-	});
-*/
-  }
 
-  // Remove change listers from stores
-  componentWillUnmount() {
-    TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
-    StorefrontStore.removeChangeListener(this._onStoreFrontChange);
-	CustomerStore.removeChangeListener(this._onCLStoreChange);
-  }
+		if (SessionStore.getCurrentSession()) {
+			SessionActions.addShopEvent({ event: 'LOAD_STOREFRONT' });
+		}
+		
+		this.setState({
+			machineInfo: TsvStore.getMachineInfo(),
+			planogram: StorefrontStore.getStorefrontData('planogram') || {}
+		});
+	}
+
+	// Remove change listers from stores
+	componentWillUnmount() {
+		TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
+		StorefrontStore.removeChangeListener(this._onStoreFrontChange);
+		CustomerStore.removeChangeListener(this._onCLStoreChange);
+	}
 
 	_onCLStoreChange(event) {
 		this.setState({
@@ -167,11 +148,17 @@ class Storefront extends Component {
 
 			default: // TOGGLE_CATEGORY_ID_TO_FILTER, CLEAR_CATEGORY_FILTER
 				this.setState({
-					categoryIdFilter: StorefrontStore.getCategoryFilter()
+					categoryIdFilter: StorefrontStore.getCategoryFilter(),
+					categories: StorefrontStore.getStorefrontData('categories') || [],
+					planogram: StorefrontStore.getStorefrontData('planogram') || {},
 				})
 				SessionActions.addShopEvent({ event: event.type, category: event.category });
 				break;
 		}
+	}
+	
+	getStorefrontName() {
+		return this.state.planogram && this.state.planogram.storefrontName || 'Storefront';
 	}
   
   categoryClick(categoryID) {
@@ -192,7 +179,7 @@ class Storefront extends Component {
     	<div>
 		  <_E.Row >
 			<_E.Col style={{textAlign: 'center'}}>
-			  <h1 style={{marginTop: '10em', textAlign: 'center'}}>You must login before you can shop</h1>
+			  <h1 className="mainHeaderText page-centered">You must login before you can shop</h1>
 			  <p style={{fontSize: '1.3em', textAlign: 'center'}}><_E.Button size="lg" type="success" onClick={() => {browserHistory.push('/CustomerMembershipAccess')}}>Customer Login</_E.Button></p>
 			</_E.Col>
 		  </_E.Row>
@@ -212,7 +199,7 @@ class Storefront extends Component {
         <_E.Col>
 		        <ShoppingCartMini className="scart-mini" />
           <_E.Row>
-              <h2>Storefront</h2>
+              <h2 className="mainHeaderText">{this.getStorefrontName()}</h2>
           </_E.Row>
           <_E.Row>
             <_E.Col>

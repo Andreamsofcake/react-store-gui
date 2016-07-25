@@ -50,7 +50,7 @@ class PageIdle extends Component {
   render() {
     return (
       <div className="PageIdle" onClick={this.active}>
-      	<h1 style={{textAlign:'center', fontSize: '3em'}}>Touch<br />anywhere<br />to<br />shop....</h1>
+      	<h1 className="mainHeaderText page-centered" style={{textAlign:'center', fontSize: '3em'}}>Touch<br />anywhere<br />to<br />shop....</h1>
       </div>
     );
   }

@@ -201,7 +201,7 @@ class PrintRegister extends Component {
 		if (this.state.enrollmentFailed) {
 			return (
 				<div style={{textAlign:'center', marginTop: '1em'}}>
-					<h1>Sorry, we have a problem.</h1>
+					<h1 className="mainHeaderText">Sorry, we have a problem.</h1>
 					<p>Let's start over with that same finger (or thumb).</p>
 					
 					<p><_E.Button type="primary" size="lg" onClick={this.tryAgain.bind(this)}>Try Again</_E.Button></p>
@@ -212,7 +212,7 @@ class PrintRegister extends Component {
 		if (this.state.alreadyRegisteredPrint) {
 			return (
 				<div style={{textAlign:'center', marginTop: '1em'}}>
-					<h1>Hey now, it looks like you have already registered that print for yourself.</h1>
+					<h1 className="mainHeaderText">Hey now, it looks like you have already registered that print for yourself.</h1>
 					<p>You don't need to re-register the same finger or thumb, please use another.</p>
 					
 					<p><_E.Button type="primary" size="lg" onClick={this.tryAgain.bind(this)}>Try Again</_E.Button></p>

@@ -361,7 +361,7 @@ class CustomerCreditVending extends Component {
   		browserHistory.push('/ThankYouMsg');
   		return (
   			<div>
-	  			<h1>Vending complete!</h1>
+	  			<h1 className="mainHeaderText">Vending complete!</h1>
   			</div>
   		);
   	}
@@ -372,7 +372,7 @@ class CustomerCreditVending extends Component {
 	  	}, 5000);
   		return (
   			<div>
-				<h1>Error: no cart items found to purchase, sorry!</h1>
+				<h1 className="mainHeaderText">Error: no cart items found to purchase, sorry!</h1>
 				{/*<pre>{ JSON.stringify(this.state.cart, null, 4) }</pre>*/}
 				<_E.Button component={(<Link to="/Storefront">Storefront</Link>)} />
   			</div>
@@ -382,7 +382,7 @@ class CustomerCreditVending extends Component {
 		<_E.Row>
 			<_E.Col>
 	 
-				<h2>Use your Customer Credit to complete your purchase</h2>
+				<h2 className="mainHeaderText">Use your Customer Credit to complete your purchase</h2>
 				{/*<p> bVendingInProcess: {TsvSettingsStore.getSession('bVendingInProcess')}</p>*/}
 
 				<_E.Col>

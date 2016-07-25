@@ -185,7 +185,7 @@ class View2 extends Component {
               { this.state.bShowCouponBtn ? this.renderCouponButton() : null }
                <_E.Row id="View2Title">
 
-                    <h1>{Translate.translate('View2', 'instructionMessage')}</h1> {/*what are these: data-fittext="1" data-fittext-min="20" data-fittext-max="36" */}
+                    <h1 className="mainHeaderText">{Translate.translate('View2', 'instructionMessage')}</h1> {/*what are these: data-fittext="1" data-fittext-min="20" data-fittext-max="36" */}
 
                </_E.Row>
 

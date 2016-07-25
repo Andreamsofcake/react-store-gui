@@ -10,6 +10,9 @@ import TsvSettingsStore from './TsvSettingsStore'
 
 import { isClient } from '../utils'
 
+import Log from '../utils/BigLogger'
+var Big = new Log('CustomerStore');
+
 var CHANGE_EVENT = 'change'
 	, _store = {
 		loginStepsComplete: [],
@@ -209,6 +212,12 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 				clearCustomer();
 			}
 			CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOADED, status: action.data.status });
+			break;
+		
+		case appConstants.CUSTOMER_LOGIN_CANCELLED:
+			Big.log('CUSTOMER_LOGIN_CANCELLED .... clear and emit.');
+			clearCustomer();
+			CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOGIN_CANCELLED, status: 'ok' });
 			break;
 		
 		// local loop update, doesn't ping server:

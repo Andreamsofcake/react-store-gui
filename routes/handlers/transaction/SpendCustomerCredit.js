@@ -22,8 +22,8 @@ module.exports = function(request, reply) {
 
 	ProxyCall('creditCustomerSpend', {
 		customer,
-		client: MI.registrationData.client,
-		machine: MI.registrationData._id,
+		client: MI.client,
+		machine: MI._id,
 		amount_cents,
 		transaction: transaction._id
 

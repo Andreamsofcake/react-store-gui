@@ -156,6 +156,8 @@ var SessionActions = {
 		)
 		.then(response => {
 			if (response.data && response.data.status && response.data.status == 'ok') {
+				Big.error('CLOSE THE SESSION! action:');
+				Big.log(ACTION);
 				AppDispatcher.handleServerAction({
 					actionType: ACTION,
 					data: response.data
@@ -173,7 +175,7 @@ var SessionActions = {
 		.catch(error => {
 			Big.error('failed to close session, call chain error probably check component tree');
 			Big.log(error);
-			Big.throw(error);
+			throw(error);
 		})
 	},
 

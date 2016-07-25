@@ -134,7 +134,7 @@ class CustomerLoginTest extends Component {
 	if (this.state.loadingUser) {
 		return (
 			<div style={{maxWidth:'60%',margin: '10em auto 1em', textAlign: 'center'}}>
-				<h1>One Moment Please....</h1>
+				<h1 className="mainHeaderText">One Moment Please....</h1>
 				<div><_E.Spinner size="lg" /></div>
 			</div>
 		);
@@ -143,7 +143,7 @@ class CustomerLoginTest extends Component {
 	if (this.state.customer) {
 		return (
 			<div style={{maxWidth:'60%',margin: '10em auto 1em'}}>
-				<h1>Welcome back {this.state.customer.firstname}</h1>
+				<h1 className="mainHeaderText">Welcome back {this.state.customer.firstname}</h1>
 				<p style={{textAlign: 'center'}}><_E.Button type="success" component={(<Link to="/Storefront">Let's go shopping!</Link>)} /></p>
 			</div>
 		);
@@ -154,7 +154,7 @@ class CustomerLoginTest extends Component {
     	<div>
 		  <_E.Row >
 			<_E.Col>
-			  <h1>TEST Customer Login</h1>
+			  <h1 className="mainHeaderText">TEST Customer Login</h1>
 			  <p style={{fontSize: '1.3em'}}>This module is for quick testing of the system while we're finishing support for the membership cards.</p>
 			  <p style={{fontSize: '1.3em'}}>Choose a customer below to shop with.</p>
 			  <p style={{fontSize: '1.3em'}}><strong>Don't worry, this will ONLY be here when the machine is in test mode!</strong></p>

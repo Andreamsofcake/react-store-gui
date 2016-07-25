@@ -5,7 +5,7 @@ class NoMatch extends Component {
 	render() {
 		return (
 			<div>
-				<h1>Sorry! Page or module was not found.</h1>
+				<h1 className="mainHeaderText">Sorry! Page or module was not found.</h1>
 			</div>
 		)
 	}

@@ -883,7 +883,7 @@
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -913,15 +913,15 @@
 		}
 
 		_createClass(NoMatch, [{
-			key: 'render',
+			key: "render",
 			value: function render() {
 				return _react2.default.createElement(
-					'div',
+					"div",
 					null,
 					_react2.default.createElement(
-						'h1',
-						null,
-						'Sorry! Page or module was not found.'
+						"h1",
+						{ className: "mainHeaderText" },
+						"Sorry! Page or module was not found."
 					)
 				);
 			}
@@ -1968,7 +1968,7 @@
 	                        { id: 'View2Title' },
 	                        _react2.default.createElement(
 	                            'h1',
-	                            null,
+	                            { className: 'mainHeaderText' },
 	                            Translate.translate('View2', 'instructionMessage')
 	                        ),
 	                        ' '
@@ -2175,7 +2175,7 @@
 	        { className: 'PageIdle', onClick: this.active },
 	        _react2.default.createElement(
 	          'h1',
-	          { style: { textAlign: 'center', fontSize: '3em' } },
+	          { className: 'mainHeaderText page-centered', style: { textAlign: 'center', fontSize: '3em' } },
 	          'Touch',
 	          _react2.default.createElement('br', null),
 	          'anywhere',
@@ -7577,7 +7577,7 @@
 						),
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Manage Employee Fingerprints'
 						),
 						this.renderGuiState()
@@ -7919,6 +7919,13 @@
 	        this.setState({
 	          cloudRefreshing: false
 	        });
+	        Big.log('shall we push the new info over?');
+	        if (event.data && event.data.registrationData) {
+	          Big.log('YES');
+	          setTimeout(function () {
+	            _TsvActions2.default.setMachineInfo(event.data.registrationData);
+	          }, 250);
+	        }
 	      }
 	    }
 	  }, {
@@ -9246,7 +9253,7 @@
 						null,
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Vending complete!'
 						)
 					);
@@ -9260,7 +9267,7 @@
 						null,
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Error: no cart items found to purchase, sorry!'
 						),
 						_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
@@ -10078,7 +10085,7 @@
 						null,
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Vending complete!'
 						)
 					);
@@ -10093,7 +10100,7 @@
 						null,
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Error: no cart items found to purchase, sorry!'
 						),
 						_react2.default.createElement(_E.Button, { component: _react2.default.createElement(
@@ -10111,7 +10118,7 @@
 						null,
 						_react2.default.createElement(
 							'h2',
-							null,
+							{ className: 'mainHeaderText' },
 							'Use your Customer Credit to complete your purchase'
 						),
 						_react2.default.createElement(
@@ -10500,7 +10507,7 @@
 	          { style: { maxWidth: '60%', margin: '10em auto 1em', textAlign: 'center' } },
 	          _react2.default.createElement(
 	            'h1',
-	            null,
+	            { className: 'mainHeaderText' },
 	            'One Moment Please....'
 	          ),
 	          _react2.default.createElement(
@@ -10517,7 +10524,7 @@
 	          { style: { maxWidth: '60%', margin: '10em auto 1em' } },
 	          _react2.default.createElement(
 	            'h1',
-	            null,
+	            { className: 'mainHeaderText' },
 	            'Welcome back ',
 	            this.state.customer.firstname
 	          ),
@@ -10544,7 +10551,7 @@
 	            null,
 	            _react2.default.createElement(
 	              'h1',
-	              null,
+	              { className: 'mainHeaderText' },
 	              'TEST Customer Login'
 	            ),
 	            _react2.default.createElement(
@@ -10832,7 +10839,10 @@
 
 					case _appConstants2.default.CUSTOMER_LOGIN_CANCELLED:
 						if (event.status === 'ok') {
-							_reactRouter.browserHistory.push('/PageIdle');
+							// INVARIANT!!!!!
+							setTimeout(function () {
+								_reactRouter.browserHistory.push('/PageIdle');
+							}, 250);
 						}
 						break;
 				}
@@ -10922,7 +10932,7 @@
 						{ style: { maxWidth: '60%', margin: '10em auto 1em', textAlign: 'center' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'One Moment Please....'
 						),
 						_react2.default.createElement(
@@ -10949,7 +10959,7 @@
 							{ style: { maxWidth: '60%', margin: '10em auto 1em', textAlign: 'center' } },
 							_react2.default.createElement(
 								'h1',
-								null,
+								{ className: 'mainHeaderText' },
 								'One Moment Please....'
 							),
 							_react2.default.createElement(
@@ -10964,7 +10974,7 @@
 						{ style: { maxWidth: '60%', margin: '10em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Welcome back ',
 							this.state.matchedUser.firstname
 						),
@@ -10991,7 +11001,7 @@
 							null,
 							_react2.default.createElement(
 								'h1',
-								null,
+								{ className: 'mainHeaderText' },
 								'Customer Access'
 							),
 							_react2.default.createElement(
@@ -11050,7 +11060,7 @@
 							null,
 							_react2.default.createElement(
 								'p',
-								{ style: { textAlign: 'center' } },
+								{ style: { textAlign: 'center', marginTop: '2em' } },
 								_react2.default.createElement(
 									_E.Button,
 									{ type: 'danger', onClick: this.cancelLogin.bind(this) },
@@ -11255,7 +11265,7 @@
 	            _react2.default.createElement(_ShoppingCartMini2.default, { className: 'scart-mini' }),
 	            _react2.default.createElement(
 	              'h1',
-	              null,
+	              { className: 'mainHeaderText' },
 	              'Searching, one moment please...'
 	            ),
 	            _react2.default.createElement(_E.Spinner, null)
@@ -11569,63 +11579,67 @@
 
 	      return _react2.default.createElement(
 	        _E.Row,
-	        { className: 'ShoppingCart' },
+	        null,
 	        _react2.default.createElement(
-	          'h2',
-	          null,
-	          Translate.translate('ShoppingCart', 'ShoppingCart')
-	        ),
-	        _react2.default.createElement(
-	          _E.Col,
-	          { className: 'wrapper' },
-	          this.renderShoppingCart(),
-	          this.state.cart && this.state.cart.length ? _react2.default.createElement(
-	            _E.Row,
-	            { className: 'row-border shopping-cart-table' },
-	            this.state.bShowTax ? this.renderShowTax() : null,
-	            _react2.default.createElement(
-	              'p',
-	              null,
-	              Translate.translate('ShoppingCart', 'TotalPrice'),
-	              ': ',
-	              this.getTotalPrice()
-	            )
-	          ) : _react2.default.createElement(
-	            'p',
-	            { style: { margin: '40px auto' } },
-	            ' '
+	          'div',
+	          { className: 'ShoppingCart' },
+	          _react2.default.createElement(
+	            'h2',
+	            null,
+	            Translate.translate('ShoppingCart', 'ShoppingCart')
 	          ),
 	          _react2.default.createElement(
-	            _E.Row,
-	            null,
-	            _react2.default.createElement(
-	              _E.Col,
-	              { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
+	            _E.Col,
+	            { className: 'wrapper' },
+	            this.renderShoppingCart(),
+	            this.state.cart && this.state.cart.length ? _react2.default.createElement(
+	              _E.Row,
+	              { className: 'row-border shopping-cart-table' },
+	              this.state.bShowTax ? this.renderShowTax() : null,
 	              _react2.default.createElement(
-	                _E.Button,
-	                { type: 'primary', size: 'lg', onClick: this.keepShopping.bind(this) },
-	                Translate.translate('ShoppingCart', 'Shop_More')
+	                'p',
+	                null,
+	                Translate.translate('ShoppingCart', 'TotalPrice'),
+	                ': ',
+	                this.getTotalPrice()
 	              )
+	            ) : _react2.default.createElement(
+	              'p',
+	              { style: { margin: '40px auto' } },
+	              ' '
 	            ),
 	            _react2.default.createElement(
-	              _E.Col,
-	              { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
-	              this.renderCheckoutButton()
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
+	              _E.Row,
+	              null,
 	              _react2.default.createElement(
-	                _E.Button,
-	                { type: 'danger', onClick: this.cancel.bind(this) },
-	                _react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
-	                'Cancel My Shop Session'
+	                _E.Col,
+	                { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { type: 'primary', size: 'lg', onClick: this.keepShopping.bind(this) },
+	                  Translate.translate('ShoppingCart', 'Shop_More')
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
+	                this.renderCheckoutButton()
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
+	                _react2.default.createElement(
+	                  _E.Button,
+	                  { type: 'danger', onClick: this.cancel.bind(this) },
+	                  _react2.default.createElement(_E.Glyph, { icon: 'circle-slash' }),
+	                  'Cancel My Shop Session'
+	                )
+	              ),
+	              _react2.default.createElement(
+	                _E.Col,
+	                { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3', style: { marginTop: '4em' } },
+	                this.state.bShowCouponBtn ? this.renderCouponButton() : null
 	              )
-	            ),
-	            _react2.default.createElement(
-	              _E.Col,
-	              { xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3', style: { marginTop: '4em' } },
-	              this.state.bShowCouponBtn ? this.renderCouponButton() : null
 	            )
 	          )
 	        )
@@ -11786,10 +11800,6 @@
 
 	var _ModalCartMessageSingleProduct2 = _interopRequireDefault(_ModalCartMessageSingleProduct);
 
-	var _BigLogger = __webpack_require__(1);
-
-	var _BigLogger2 = _interopRequireDefault(_BigLogger);
-
 	var _CustomerStore = __webpack_require__(92);
 
 	var _CustomerStore2 = _interopRequireDefault(_CustomerStore);
@@ -11803,6 +11813,10 @@
 	var _TsvActions2 = _interopRequireDefault(_TsvActions);
 
 	var _TsvUtils = __webpack_require__(80);
+
+	var _BigLogger = __webpack_require__(1);
+
+	var _BigLogger2 = _interopRequireDefault(_BigLogger);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -11870,8 +11884,6 @@
 	      Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: ' + this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
 	      (0, _TsvUtils.GuiTimer)();
 
-	      var state = {};
-
 	      _TsvSettingsStore2.default.addChangeListener(this._onRootstoreChange);
 	      _StorefrontStore2.default.addChangeListener(this._onStoreFrontChange);
 	      _CustomerStore2.default.addChangeListener(this._onCLStoreChange);
@@ -11885,27 +11897,10 @@
 	        _SessionActions2.default.addShopEvent({ event: 'LOAD_STOREFRONT' });
 	      }
 
-	      /*
-	      // using own categories now
-	          if (!TsvSettingsStore.getConfig('categories')) {
-	      		TsvActions.apiCall('fetchProductCategoriesByParentCategoryID', 0, (err, data) => {
-	      			if (err) Big.throw(err);
-	      			Big.log('fetchProductCategoriesByParentCategoryID');
-	      			Big.log(err);
-	      			Big.log(data);
-	      			TsvSettingsStore.setConfig('categories', data);
-	      		});
-	      	} else {
-	      		state.categories = TsvSettingsStore.getConfig('categories');
-	      	}
-	      */
-	      state.categories = _StorefrontStore2.default.getStorefrontData('categories');
-	      /*
-	      	TsvActions.apiCall('fetchShoppingCart2', (err, data) => {
-	      		if (err) Big.throw(err);
-	      		TsvSettingsStore.setCache('shoppingCart', data);
-	      	});
-	      */
+	      this.setState({
+	        machineInfo: _TsvStore2.default.getMachineInfo(),
+	        planogram: _StorefrontStore2.default.getStorefrontData('planogram') || {}
+	      });
 	    }
 
 	    // Remove change listers from stores
@@ -11968,11 +11963,18 @@
 	        default:
 	          // TOGGLE_CATEGORY_ID_TO_FILTER, CLEAR_CATEGORY_FILTER
 	          this.setState({
-	            categoryIdFilter: _StorefrontStore2.default.getCategoryFilter()
+	            categoryIdFilter: _StorefrontStore2.default.getCategoryFilter(),
+	            categories: _StorefrontStore2.default.getStorefrontData('categories') || [],
+	            planogram: _StorefrontStore2.default.getStorefrontData('planogram') || {}
 	          });
 	          _SessionActions2.default.addShopEvent({ event: event.type, category: event.category });
 	          break;
 	      }
+	    }
+	  }, {
+	    key: 'getStorefrontName',
+	    value: function getStorefrontName() {
+	      return this.state.planogram && this.state.planogram.storefrontName || 'Storefront';
 	    }
 	  }, {
 	    key: 'categoryClick',
@@ -12003,7 +12005,7 @@
 	            { style: { textAlign: 'center' } },
 	            _react2.default.createElement(
 	              'h1',
-	              { style: { marginTop: '10em', textAlign: 'center' } },
+	              { className: 'mainHeaderText page-centered' },
 	              'You must login before you can shop'
 	            ),
 	            _react2.default.createElement(
@@ -12042,8 +12044,8 @@
 	            null,
 	            _react2.default.createElement(
 	              'h2',
-	              null,
-	              'Storefront'
+	              { className: 'mainHeaderText' },
+	              this.getStorefrontName()
 	            )
 	          ),
 	          _react2.default.createElement(
@@ -16155,7 +16157,7 @@
 			value: function render() {
 				return _react2.default.createElement(
 					'div',
-					{ style: { backgroundColor: '#000', padding: '0.5em', fontSize: '0.85em', color: '#fff', textTransform: 'uppercase', textAlign: 'right', marginBottom: 0 } },
+					{ className: 'CustomerStatusDisplay' },
 					this._render()
 				);
 			}
@@ -16579,6 +16581,15 @@
 				Big.error('failed to get machine info, call chain error probably check component tree');
 				Big.log(error);
 				Big.throw(error);
+			});
+		},
+
+
+		// this is used predominantly by admin refresh of cloud config, to pass through and update GUI
+		setMachineInfo: function setMachineInfo(data) {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.MACHINE_INFO,
+				data: { data: data }
 			});
 		},
 		serverHandshake: function serverHandshake() {
@@ -17997,6 +18008,8 @@
 
 			_axios2.default.post('/api/vend-session/close', { event: event, session: session, cart: cart, transaction: transaction }).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {
+					Big.error('CLOSE THE SESSION! action:');
+					Big.log(ACTION);
 					_AppDispatcher2.default.handleServerAction({
 						actionType: ACTION,
 						data: response.data
@@ -18013,7 +18026,7 @@
 			}).catch(function (error) {
 				Big.error('failed to close session, call chain error probably check component tree');
 				Big.log(error);
-				Big.throw(error);
+				throw error;
 			});
 		},
 
@@ -18436,9 +18449,9 @@
 				break;
 
 			case _appConstants2.default.MACHINE_CLOUD_CONFIG_REFRESHED:
-				Big.log('MACHINE_CLOUD_CONFIG_REFRESHED');
-				Big.log(action);
-				AdminStore.emitChange({ type: action.actionType });
+				//Big.log('MACHINE_CLOUD_CONFIG_REFRESHED');
+				//Big.log(action);
+				AdminStore.emitChange({ type: action.actionType, data: action.data });
 				break;
 
 			case _appConstants2.default.INVENTORY_SLOTMAP_CLEAR:
@@ -18622,7 +18635,7 @@
 				if (response.data && response.data.status && response.data.status == 'ok') {
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.MACHINE_CLOUD_CONFIG_REFRESHED,
-						data: response.data
+						data: response.data.data
 					});
 				} else {
 					if (response.data && response.data.error) {
@@ -19549,6 +19562,13 @@
 
 			case _appConstants2.default.STOREFRONT_DATA_RECEIVED:
 				setStorefrontData(action.data);
+				if (_store.storefrontData.planogram && _store.storefrontData.planogram.css_file) {
+					var link = document.getElementById('GUIStyles');
+					if (link) {
+						var css_file = _store.storefrontData.planogram && _store.storefrontData.planogram.css_file ? _store.storefrontData.planogram.css_file : 'styles.css';
+						link.href = '/css/' + css_file;
+					}
+				}
 				StorefrontStore.emitChange({ type: _appConstants2.default.STOREFRONT_DATA_RECEIVED });
 				break;
 
@@ -19844,7 +19864,7 @@
 						{ style: { textAlign: 'center', marginTop: '1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Sorry, we have a problem.'
 						),
 						_react2.default.createElement(
@@ -19870,7 +19890,7 @@
 						{ style: { textAlign: 'center', marginTop: '1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Hey now, it looks like you have already registered that print for yourself.'
 						),
 						_react2.default.createElement(
@@ -20258,8 +20278,13 @@
 
 	var _utils = __webpack_require__(5);
 
+	var _BigLogger = __webpack_require__(1);
+
+	var _BigLogger2 = _interopRequireDefault(_BigLogger);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	var Big = new _BigLogger2.default('CustomerStore');
 	//import muDB from '../../lib/muDB'
 
 	//import * as Translate from '../../lib/Translate'
@@ -20462,6 +20487,12 @@
 					clearCustomer();
 				}
 				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_LOADED, status: action.data.status });
+				break;
+
+			case _appConstants2.default.CUSTOMER_LOGIN_CANCELLED:
+				Big.log('CUSTOMER_LOGIN_CANCELLED .... clear and emit.');
+				clearCustomer();
+				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_LOGIN_CANCELLED, status: 'ok' });
 				break;
 
 			// local loop update, doesn't ping server:
@@ -21977,7 +22008,7 @@
 						{ style: { maxWidth: '60%', margin: '10em auto 1em', textAlign: 'center' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'One Moment Please....'
 						),
 						_react2.default.createElement(
@@ -21994,7 +22025,7 @@
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Loading machine info, one moment please...'
 						),
 						_react2.default.createElement(_E.Spinner, { size: 'lg' })
@@ -22007,7 +22038,7 @@
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Please swipe your membership card to get started.'
 						),
 						_react2.default.createElement(_MembershipCardMatch2.default, {
@@ -22026,7 +22057,7 @@
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Hello, ',
 							this.state.matchedUser.firstname,
 							'!',
@@ -22053,7 +22084,7 @@
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Let\'s record your finger prints. This is finger (or thumb) #',
 							this.state.numPrintsCaptured + 1,
 							'.'
@@ -22068,7 +22099,7 @@
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'OK we\'re done recording your prints, let\'s verify an admin is still with you.'
 						),
 						_react2.default.createElement(_AdminPrintMatch2.default, {
@@ -22085,7 +22116,7 @@
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'Processing your registration, one moment please...'
 						)
 					);
@@ -22097,7 +22128,7 @@
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'All done!'
 						),
 						_react2.default.createElement(
@@ -22125,7 +22156,7 @@
 						{ style: { textAlign: 'center', maxWidth: '60%', margin: '6em auto 1em' } },
 						_react2.default.createElement(
 							'h1',
-							null,
+							{ className: 'mainHeaderText' },
 							'You\'re already registered!'
 						),
 						_react2.default.createElement(
@@ -27158,7 +27189,8 @@
 					}
 				}
 			}).catch(function (error) {
-				if (error.data && error.data.apiResponse.indexOf('retry scan') > -1) {
+				var apiResponse = error.data && error.data.apiResponse && typeof error.data.apiResponse === 'string' ? error.data.apiResponse : '';
+				if (apiResponse.indexOf('retry scan') > -1) {
 
 					Big.warn('PRINT_SCAN_FAILED');
 					Big.log(error.data);
@@ -27167,7 +27199,7 @@
 						actionType: _appConstants2.default.PRINT_SCAN_FAILED,
 						data: error.data
 					});
-				} else if (error.data && error.data.apiResponse.indexOf('retry from start') > -1) {
+				} else if (apiResponse.indexOf('retry from start') > -1) {
 
 					Big.warn('PRINT_SCAN_ENROLLENT_FAILED');
 					Big.log(error.data);

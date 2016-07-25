@@ -101,9 +101,9 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 			break;
 
 		case appConstants.MACHINE_CLOUD_CONFIG_REFRESHED:
-			Big.log('MACHINE_CLOUD_CONFIG_REFRESHED');
-			Big.log(action);
-			AdminStore.emitChange({ type: action.actionType });
+			//Big.log('MACHINE_CLOUD_CONFIG_REFRESHED');
+			//Big.log(action);
+			AdminStore.emitChange({ type: action.actionType, data: action.data });
 			break;
 
 		case appConstants.INVENTORY_SLOTMAP_CLEAR:

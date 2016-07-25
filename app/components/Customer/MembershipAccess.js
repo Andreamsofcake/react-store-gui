@@ -128,7 +128,10 @@ class Customer_MembershipAccess extends Component {
 
 			case appConstants.CUSTOMER_LOGIN_CANCELLED:
 				if (event.status === 'ok') {
-					browserHistory.push('/PageIdle');
+					// INVARIANT!!!!!
+					setTimeout(() => {
+						browserHistory.push('/PageIdle');
+					}, 250);
 				}
 				break;
 		}
@@ -204,7 +207,7 @@ class Customer_MembershipAccess extends Component {
 		if (this.state.loginCancelled) {
 			return (
 				<div style={{maxWidth:'60%',margin: '10em auto 1em', textAlign: 'center'}}>
-					<h1>One Moment Please....</h1>
+					<h1 className="mainHeaderText">One Moment Please....</h1>
 					<div><_E.Spinner size="lg" /></div>
 				</div>
 			);
@@ -225,14 +228,14 @@ class Customer_MembershipAccess extends Component {
 			if (this.state.loadingUser) {
 				return (
 					<div style={{maxWidth:'60%',margin: '10em auto 1em', textAlign: 'center'}}>
-						<h1>One Moment Please....</h1>
+						<h1 className="mainHeaderText">One Moment Please....</h1>
 						<div><_E.Spinner size="lg" /></div>
 					</div>
 				);
 			}
 			return (
 				<div style={{maxWidth:'60%',margin: '10em auto 1em'}}>
-					<h1>Welcome back {this.state.matchedUser.firstname}</h1>
+					<h1 className="mainHeaderText">Welcome back {this.state.matchedUser.firstname}</h1>
 					<p style={{textAlign: 'center'}}><_E.Button type="success" component={(<Link to="/Storefront">Let's go shopping!</Link>)} /></p>
 				</div>
 			);
@@ -242,7 +245,7 @@ class Customer_MembershipAccess extends Component {
 			<div style={{maxWidth:'60%',margin: '10em auto 1em'}}>
 			  <_E.Row >
 				<_E.Col>
-				  <h1>Customer Access</h1>
+				  <h1 className="mainHeaderText">Customer Access</h1>
 				  <h3>Before you can pick products and check out, we need to know who you are. :-)</h3>
 				</_E.Col>
 			  </_E.Row>
@@ -273,7 +276,7 @@ class Customer_MembershipAccess extends Component {
 				  	</div>
 				</_E.Col>
 				<_E.Col>
-					<p style={{textAlign: 'center'}}><_E.Button type="danger" onClick={this.cancelLogin.bind(this)}>Cancel Login</_E.Button></p>
+					<p style={{textAlign: 'center', marginTop: '2em'}}><_E.Button type="danger" onClick={this.cancelLogin.bind(this)}>Cancel Login</_E.Button></p>
 				</_E.Col>
 			  </_E.Row>
 			</div>

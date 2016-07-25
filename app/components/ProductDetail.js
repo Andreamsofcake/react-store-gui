@@ -103,7 +103,7 @@ class ProductDetail extends Component {
 			   <_E.Row >
 				 <_E.Col>
 				 <ShoppingCartMini className="scart-mini" />
-				 <h1>Searching, one moment please...</h1>
+				 <h1 className="mainHeaderText">Searching, one moment please...</h1>
 				 <_E.Spinner />
 				 </_E.Col>
 			   </_E.Row>

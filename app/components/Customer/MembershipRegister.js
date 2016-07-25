@@ -238,7 +238,7 @@ class Customer_MembershipRegister extends Component {
 		if (this.state.registerCancelled) {
 			return (
 				<div style={{maxWidth:'60%',margin: '10em auto 1em', textAlign: 'center'}}>
-					<h1>One Moment Please....</h1>
+					<h1 className="mainHeaderText">One Moment Please....</h1>
 					<div><_E.Spinner size="lg" /></div>
 				</div>
 			);
@@ -247,7 +247,7 @@ class Customer_MembershipRegister extends Component {
 		if (!this.state.machineInfo) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>Loading machine info, one moment please...</h1>
+					<h1 className="mainHeaderText">Loading machine info, one moment please...</h1>
 					<_E.Spinner size="lg" />
 				</div>
 			);
@@ -256,7 +256,7 @@ class Customer_MembershipRegister extends Component {
 		if (!this.state.matchedUser) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>Please swipe your membership card to get started.</h1>
+					<h1 className="mainHeaderText">Please swipe your membership card to get started.</h1>
 					  <CardMatch
 						autostart={true}
 						canRetry={true}
@@ -271,7 +271,7 @@ class Customer_MembershipRegister extends Component {
 		if (!this.state.adminBeginMatched) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>Hello, {this.state.matchedUser.firstname}!
+					<h1 className="mainHeaderText">Hello, {this.state.matchedUser.firstname}!
 						<br />Let's get your biometrics registered properly.</h1>
 					<h3>OK before we get started, let's verify an admin is with you.</h3>
 					<PrintMatchAdmin
@@ -287,7 +287,7 @@ class Customer_MembershipRegister extends Component {
 		if (!this.state.printRegistered1 || !this.state.printRegistered2 || !this.state.printRegistered3) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>Let's record your finger prints. This is finger (or thumb) #{this.state.numPrintsCaptured + 1}.</h1>
+					<h1 className="mainHeaderText">Let's record your finger prints. This is finger (or thumb) #{this.state.numPrintsCaptured + 1}.</h1>
 					{this.renderCapturePrint()}
 				</div>
 			);
@@ -296,7 +296,7 @@ class Customer_MembershipRegister extends Component {
 		if (!this.state.adminEndMatched) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>OK we're done recording your prints, let's verify an admin is still with you.</h1>
+					<h1 className="mainHeaderText">OK we're done recording your prints, let's verify an admin is still with you.</h1>
 					<PrintMatchAdmin
 						token={this.state.token}
 						autostart={false}
@@ -309,7 +309,7 @@ class Customer_MembershipRegister extends Component {
 		if (this.state.loadingUser) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>Processing your registration, one moment please...</h1>
+					<h1 className="mainHeaderText">Processing your registration, one moment please...</h1>
 				</div>
 			);
 		}
@@ -317,7 +317,7 @@ class Customer_MembershipRegister extends Component {
 		if (this.state.registrationFinished) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>All done!</h1>
+					<h1 className="mainHeaderText">All done!</h1>
 					<h3>Your registration is complete</h3>
 					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
 				</div>
@@ -329,7 +329,7 @@ class Customer_MembershipRegister extends Component {
 		if (!this.state.loadCustomerCheckFailed && this.state.matchedUser && this.state.isUserVerified) {
 			return (
 				<div style={{textAlign: 'center', maxWidth:'60%', margin: '6em auto 1em'}}>
-					<h1>You're already registered!</h1>
+					<h1 className="mainHeaderText">You're already registered!</h1>
 					<h3>It appears you have already completed this process and you can access the store.</h3>
 					<p><_E.Button type="success" size="lg" component={(<Link to="/Storefront">Let's go Shopping!</Link>)} /></p>
 					<pre style={{fontSize: '0.85em'}}>

@@ -1,0 +1,285 @@
+#backgroundImage {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    /*
+    background-image: url('/gfx/marijuana_leaves_plants_drugs_420_rasta_3000x2000vertical.jpg');
+    */
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    -ms-background-size: cover;
+    -o-background-size: cover;
+    -moz-background-size: cover;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+
+.CustomerStatusDisplay {
+	background-color: #000;
+	padding: 0.5em;
+	font-size: 0.85em;
+	color: #fff;
+	text-transform: uppercase;
+	text-align: right;
+	margin-bottom: 0
+}
+
+.mainHeaderText.page-centered {
+	margin-top: 10em;
+	text-align: center;
+}
+
+.product-container{
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.productDetailBody {
+	font-size: 1.5em;
+	padding: 10px;
+}
+
+.Product_Search .flex-item {
+	overflow-x: hidden;
+}
+
+.Product_Search img,  .productDetailBody > img {
+	max-width: 95% !important;
+}
+
+.productDetailHeader p {
+	margin-top: 1em;
+	margin-right: 6em;
+	font-size: 1.35em;
+	display: inline-block;
+}
+
+.product-list-item {
+	padding: 1em;
+	/*
+	height: 12em;
+	max-height: 12em;
+	*/
+}
+
+.slick-slide {
+	height: auto !important;
+}
+
+.storefront-product-carousel-group > div {
+	width: 33%;
+	float: left;
+}
+
+.product-list-item-add-to-cart {
+	background-color: #fff;
+	padding: 0.3em;
+	padding-top: 0.6em;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+	border-top-left-radius: 8px 8px;
+	border-top-right-radius: 8px 8px;
+	border-bottom-left-radius: 4px 4px;
+	border-bottom-right-radius: 4px 4px;
+}
+
+.product-list-item-add-to-cart > div {
+	width: 100%;
+	display: inline-block;
+}
+
+.product-list-item .product-name {
+	height: 4em;
+	max-height: 4em;
+	margin-bottom: 0.5em;
+}
+
+.product-list-item .prdPrice {
+	font-weight: bold;
+	font-size: 1.8em;
+	margin-bottom: 0;
+}
+
+.storefront-product-carousel-group .product-list-item .prdPrice {
+	margin-left: 0.35em;
+	font-size: 2em;
+}
+
+.storefront-product-carousel-group .product-list-item .product-button {
+	float: right;
+}
+
+.product-list-item .product-name h3 {
+	font-weight: normal;
+	text-align: center;
+	font-size: 2em;
+	overflow: hidden;
+	font-weight: bold;
+	font-style: italic;
+	text-shadow: 1px 1px 4px rgba(255, 255, 255, 0.7);
+	/*height: 3em;*/
+}
+
+.row-border {
+	 border-top: thin solid black;
+}
+
+.shopping-cart-item {
+	font-size: 1.5em;
+	text-align: center;
+}
+
+.shopping-cart-table {
+	font-size: 2em;
+}
+
+.shopping-cart-list-image img {
+	max-width: 95% !important;
+	max-height: 6em;
+}
+
+.product-button {
+}
+
+.product-preview img {
+	max-width: 95%
+}
+
+.product-list-item .image-container {
+	text-align: center;
+}
+
+.product-list-item .image-container img {
+	max-width: 95%;
+	max-height: 100%;
+	margin: 0 auto;
+	display: inline-block;
+}
+
+img.boxShadowed {
+	border: 1px solid #aaa;
+	box-shadow: 0 0 8px rgba(0,0,0,0.2);
+	background-color: #fff;
+}
+
+.columnHeader {
+	font-size: 0.65em;
+	text-transform: uppercase;
+	font-style: 'italic' !important;
+	color: '#555' !important,
+	margin-bottom: 4em !important;
+}
+
+.shoppingCartItem {
+	margin: 0.5em auto;
+	padding: 1em;
+	border-top: 1px solid #ddd;
+}
+
+.shoppingCartItem .productQuantity {
+	font-size: 1.5em;
+}
+
+.productImageModalDetailView {
+	max-width: 98%;
+}
+
+.scart-mini {
+	float: right;
+	margin-top: 1em;
+	padding: 0.65em;
+	background-color: #E6F9E7;
+	border-radius: 1em;
+	box-shadow:
+		2px 2px 12px rgba(255, 255, 255, 0.4),
+		-2px -2px 12px rgba(255, 255, 255, 0.4),
+		2px 2px 8px rgba(255, 255, 255, 0.7),
+		-2px -2px 8px rgba(255, 255, 255, 0.7),
+		2px 2px 4px rgba(255, 255, 255, 1),
+		-2px -2px 4px rgba(255, 255, 255, 1)
+		;
+}
+
+.scart-mini p {
+	margin-bottom: 0;
+	font-size: 1.8em;
+	font-weight: light;
+	font-style: italic;
+	/*color: #fff !important;*/
+	vertical-align: bottom;
+	white-space: nowrap;
+	text-align: left;
+}
+
+.scart-mini p a {
+	display: inline-block;
+	max-height: 1.8em;
+}
+
+.scart-mini p a img {
+	max-height: 1.5em;
+}
+
+#ComEmulator {
+	position: fixed;
+	bottom: 10px;
+	right: 0;
+	margin: 10px;
+	background-color: rgba(255, 255, 255, 0.65);
+	border: 1px solid #dfdfdf;
+	border-radius: 5px;
+	padding: 10px;
+	max-width: 260px;
+}
+
+
+.PageIdle {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	/*padding: 4em;*/
+}
+
+.machineIdTag {
+	position: fixed;
+	bottom: 5.5em;
+	left: -3.5em;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 0.70em;
+	color: rgba(0,0,0,0.25);
+	transform: rotate(-90deg);
+	text-shadow: 0 0 4px rgba(255, 255, 255, 0.5);
+}
+
+.admin-inventory-product-node {
+	background-color: #fff;
+	padding: 0.3em;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+	border-top-left-radius: 8px 8px;
+	border-top-right-radius: 8px 8px;
+	border-bottom-left-radius: 4px 4px;
+	border-bottom-right-radius: 4px 4px;
+	margin-bottom: 1em;
+	width: 100%;
+}
+
+.interfaceBox {
+	background-color: #fff;
+	padding: 1em;
+	padding-bottom: 2em;
+	border-radius: 6px;
+	border: 1px solid #444;
+}
+
+/* need to organize all the inline styles we have floating around for page positioning!!!!! */
+.ShoppingCart {
+	width: 80%;
+	margin-top: 4em;
+	margin-left: auto;
+	margin-right: auto;
+}

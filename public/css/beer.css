@@ -1,0 +1,75 @@
+body {
+	color: #fff;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+	color: #FFEB00;
+}
+
+.mainHeaderText {
+	text-shadow: 
+		2px 2px 12px rgba(75, 75, 75, 0.4),
+		-2px -2px 12px rgba(75, 75, 75, 0.4),
+		2px 2px 8px rgba(75, 75, 75, 0.4),
+		-2px -2px 8px rgba(75, 75, 75, 0.4),
+		2px 2px 4px rgba(75, 75, 75, 1),
+		-2px -2px 4px rgba(75, 75, 75, 1)
+		;
+}
+
+#backgroundImage {
+    background-image: url('/gfx/beer-background-2000x3000.jpg');
+}
+
+h2, h3 { margin-top: 0.5em; }
+
+.slider-rows {
+/*
+	padding-left: 30px;
+	padding-right: 20px;
+*/
+}
+
+.Button {
+	box-shadow:
+		2px 2px 12px rgba(75, 75, 75, 0.4),
+		-2px -2px 12px rgba(75, 75, 75, 0.4),
+		2px 2px 8px rgba(75, 75, 75, 0.4),
+		-2px -2px 8px rgba(75, 75, 75, 0.4),
+		2px 2px 4px rgba(75, 75, 75, 1),
+		-2px -2px 4px rgba(75, 75, 75, 1)
+		;
+}
+
+.CustomerStatusDisplay .Button {
+	box-shadow: none;
+}
+
+.scart-mini {
+	background-color: #ED8B0E;
+}
+
+.scart-mini p {
+	color: #FFEB00;
+}
+
+.interfaceBox h3, .interfaceBox h4 {
+	color: #333;
+}
+
+.product-list-item-add-to-cart {
+	color: #333;
+}
+
+.product-list-item .product-name {
+	height: 3em;
+}
+
+.product-list-item .product-name h3 {
+	margin-bottom: 0;
+}
+
+.Row.shoppingCartItem {
+	background-color: rgba(0, 0, 0, 0.5)
+}

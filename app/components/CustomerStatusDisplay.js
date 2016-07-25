@@ -89,7 +89,7 @@ class CustomerStatusDisplay extends Component {
 	
 	render() {
 		return (
-			<div style={{backgroundColor: '#000', padding: '0.5em', fontSize: '0.85em', color: '#fff', textTransform: 'uppercase', textAlign: 'right', marginBottom: 0}}>
+			<div className="CustomerStatusDisplay">
 				{this._render()}
 			</div>
 		);

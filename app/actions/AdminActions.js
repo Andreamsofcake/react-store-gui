@@ -165,7 +165,7 @@ var AdminActions = {
 			if (response.data && response.data.status && response.data.status == 'ok') {
 				AppDispatcher.handleServerAction({
 					actionType: appConstants.MACHINE_CLOUD_CONFIG_REFRESHED,
-					data: response.data
+					data: response.data.data
 				});
 			} else {
 				if (response.data && response.data.error) {

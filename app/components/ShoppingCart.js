@@ -119,7 +119,8 @@ class ShoppingCart extends Component {
 
     return (
 
-      <_E.Row className="ShoppingCart" >
+      <_E.Row >
+      	<div className="ShoppingCart">
         <h2>{Translate.translate('ShoppingCart', 'ShoppingCart')}</h2>
         <_E.Col className="wrapper">
 
@@ -146,6 +147,7 @@ class ShoppingCart extends Component {
             </_E.Row>
 
             </_E.Col>
+            </div>
 
       </_E.Row>
     );
