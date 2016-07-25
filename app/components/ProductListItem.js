@@ -57,7 +57,7 @@ class ProductListItem extends Component {
   }
   
   renderAddToCart() {
-  	if (false && this.props.data.stockCount > 0) {
+  	if (this.props.data.stockCount > 0) {
   		return (
   			<_E.Button className="product-button" size="lg" type="success" onClick={this.clickHandler.bind(this)}>+ Add</_E.Button>
   		);

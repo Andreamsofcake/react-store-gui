@@ -58,8 +58,8 @@ var StorefrontActions = {
 				return;
 			}
 		}
-
-		if(product.stockCount > 0){
+		
+		if (product.stockCount > 0){
 		  TsvActions.apiCall('addToCartByProductID', product.productID, (err, response) => {
 			if (err) Big.throw(err);
 			TsvSettingsStore.setConfig('pvr', response);

@@ -22499,7 +22499,7 @@
 	  }, {
 	    key: 'renderAddToCart',
 	    value: function renderAddToCart() {
-	      if (false) {
+	      if (this.props.data.stockCount > 0) {
 	        return _react2.default.createElement(
 	          _E.Button,
 	          { className: 'product-button', size: 'lg', type: 'success', onClick: this.clickHandler.bind(this) },
