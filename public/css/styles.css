@@ -1,6 +1,23 @@
+body {
+	opacity: 0.1;
+	background-image: url('/gfx/marijuana_leaves_plants_drugs_420_rasta_3000x2000vertical.jpg');
+	background-attachment: fixed;
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-position: 50% 0;
+	-ms-background-size: cover;
+	-o-background-size: cover;
+	-moz-background-size: cover;
+	-webkit-background-size: cover;
+	background-size: cover;
+}
+
 #backgroundImage {
-    opacity: 0.1;
-    background-image: url('/gfx/marijuana_leaves_plants_drugs_420_rasta_3000x2000vertical.jpg');
+/*
+	opacity: 0.1;
+	background-image: url('/gfx/marijuana_leaves_plants_drugs_420_rasta_3000x2000vertical.jpg');
+*/
+	display: none;
 }
 
 h2, h3 { margin-top: 0.5em; }
