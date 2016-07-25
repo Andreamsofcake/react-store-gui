@@ -9904,7 +9904,7 @@
 			key: 'completeCreditPurchase',
 			value: function completeCreditPurchase() {
 				if (this.state.summary.TotalPrice && this.state.customer && this.state.customerCredit && this.state.customerCredit.current_credit_cents && this.state.summary.TotalPrice * 100 <= this.state.customerCredit.current_credit_cents) {
-					_SessionActions2.default.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100);
+					_TransactionActions2.default.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100);
 				} else {
 					alert('Sorry, something happened there, you don\'t appear to have enough credits now.');
 				}
