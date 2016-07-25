@@ -34,21 +34,13 @@ module.exports = function(request, reply) {
 				data_blob: null,
 				transactionOriginatedFrom: 'avt',
 				products: []
-			}
-
-			, sesh_data = {
-				customer: customer,
-				// sessionNew() picks these up from the public machine ID:
-				// client: MI.registrationData.client,
-				// location: MI.registrationData.location,
-				// machine: MI.registrationData._id,
-				public_machine_id: MI.registrationData.vendor_id,
-				remote_session_id: uuid.v1() // 'test-sesh-id-' + (Math.random().toFixed(12) * 10)
-			}
+			};
 
 			ProxyCall('vendSessionNew', {
-				remoteSessionId: sesh_data.remote_session_id,
+				remoteSessionId:  uuid.v1(),
+				machinePublicId: MI.registrationData.vendor_id,
 				machine: MI.registrationData.vendor_id
+
 			}, (err, SESSION) => {
 
 				if (err) throw err;
@@ -57,7 +49,9 @@ module.exports = function(request, reply) {
 
 				ProxyCall('vendSessionUpdate', {
 					session: SESSION._id,
-					sessionData: sesh_data
+					sessionData: {
+						customer
+					}
 
 				}, (err, ok) => {
 
@@ -76,6 +70,7 @@ module.exports = function(request, reply) {
 						summary: cart.summary
 					}
 					tx_data.total_amount_charged_cents = cart.summary.TotalPrice * 100;
+
 					tx_data.total_amount_paid_cents = amount_cents;
 
 					tx_data.payments = [ {
@@ -84,7 +79,7 @@ module.exports = function(request, reply) {
 					} ];
 				
 					tx_data.local_ts = Date.now();
-					tx_data.local_data = new Date(tx_data.local_ts).toUTCString();
+					tx_data.local_date = new Date(tx_data.local_ts).toUTCString();
 				
 					ProxyCall('transactionNew', {
 						session: tx_data.vend_session,

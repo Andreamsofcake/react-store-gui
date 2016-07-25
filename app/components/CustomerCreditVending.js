@@ -201,7 +201,7 @@ class CustomerCreditVending extends Component {
   		&& this.state.customerCredit.current_credit_cents
   		&& this.state.summary.TotalPrice * 100 <= this.state.customerCredit.current_credit_cents
   	) {
-  		TransactionActions.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100);
+  		TransactionActions.spendCustomerCredit(this.state.summary.TotalPrice * 100);
 
   	} else {
   		alert('Sorry, something happened there, you don\'t appear to have enough credits now.');
@@ -402,14 +402,16 @@ class CustomerCreditVending extends Component {
 
 			{ this.hintMsg ? (<p id="hint">{this.hintMsg}</p>) : null }
 
-			<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
-			<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
-				<p style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></p>
-			</_E.Col>
-			<_E.Col xs="1/3" sm="1/3" md="1/3" lg="1/3">
-				{this.renderPayCreditsOption()}
-			</_E.Col>
-			<_E.Col xs="1/6" sm="1/6" md="1/6" lg="1/6">&nbsp;</_E.Col>
+			<_E.Row>
+				<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+				<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">
+					<span style={{fontSize:'2em',textAlign:'center'}}>{Translate.translate('CashVending', 'TotalAmountLabel')} <strong>{ currencyFilter(this.state.summary.TotalPrice) }</strong></span>
+				</_E.Col>
+				<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">
+					{this.renderPayCreditsOption()}
+				</_E.Col>
+				<_E.Col xs="1/4" sm="1/4" md="1/4" lg="1/4">&nbsp;</_E.Col>
+			</_E.Row>
 
 			{ this.state.showCancelBtnCash ? (
 			<_E.Col style={{marginTop: '3em'}}>
@@ -438,7 +440,7 @@ class CustomerCreditVending extends Component {
   renderPayCreditsOption() {
   	if (this.state.transactionComplete) {
   		return (
-  			<p style={{fontSize:'2em',textAlign:'center'}}>Payment complete, thanks!</p>
+  			<span style={{fontSize:'2em',textAlign:'center'}}>Payment complete, thanks!</span>
   		);
   	}
   	if (this.state.summary.TotalPrice

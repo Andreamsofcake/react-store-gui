@@ -92,8 +92,8 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 		if (_store.storefrontData.products.length) {
 			var stack = [];
 			avtProducts.forEach( AP => {
-				Big.log('looking for product...');
-				Big.log(AP);
+				//Big.log('looking for product...');
+				//Big.log(AP);
 				let thisProd = _store.storefrontData.products.filter( P => { return P._id == AP.productName; });
 				if (thisProd && thisProd.length) {
 					thisProd = JSON.parse( JSON.stringify( thisProd[0] ));
@@ -112,8 +112,8 @@ var StorefrontStore = objectAssign({}, EventEmitter.prototype, {
 						}
 					});
 					stack.push(thisProd);
-				} else {
-					Big.warn('cannot find the product info for name: ' + AP.productName);
+				//} else {
+					//Big.warn('cannot find the product info for name: ' + AP.productName);
 				}
 			});
 			return isSingle ? stack.pop() : stack;

@@ -9911,7 +9911,7 @@
 			key: 'completeCreditPurchase',
 			value: function completeCreditPurchase() {
 				if (this.state.summary.TotalPrice && this.state.customer && this.state.customerCredit && this.state.customerCredit.current_credit_cents && this.state.summary.TotalPrice * 100 <= this.state.customerCredit.current_credit_cents) {
-					_TransactionActions2.default.spendCustomerCredit(this.state.customer._id, this.state.summary.TotalPrice * 100);
+					_TransactionActions2.default.spendCustomerCredit(this.state.summary.TotalPrice * 100);
 				} else {
 					alert('Sorry, something happened there, you don\'t appear to have enough credits now.');
 				}
@@ -10141,34 +10141,38 @@
 							this.hintMsg
 						) : null,
 						_react2.default.createElement(
-							_E.Col,
-							{ xs: '1/6', sm: '1/6', md: '1/6', lg: '1/6' },
-							' '
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
+							_E.Row,
+							null,
 							_react2.default.createElement(
-								'p',
-								{ style: { fontSize: '2em', textAlign: 'center' } },
-								Translate.translate('CashVending', 'TotalAmountLabel'),
-								' ',
+								_E.Col,
+								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+								' '
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
 								_react2.default.createElement(
-									'strong',
-									null,
-									(0, _TsvUtils.currencyFilter)(this.state.summary.TotalPrice)
+									'span',
+									{ style: { fontSize: '2em', textAlign: 'center' } },
+									Translate.translate('CashVending', 'TotalAmountLabel'),
+									' ',
+									_react2.default.createElement(
+										'strong',
+										null,
+										(0, _TsvUtils.currencyFilter)(this.state.summary.TotalPrice)
+									)
 								)
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+								this.renderPayCreditsOption()
+							),
+							_react2.default.createElement(
+								_E.Col,
+								{ xs: '1/4', sm: '1/4', md: '1/4', lg: '1/4' },
+								' '
 							)
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ xs: '1/3', sm: '1/3', md: '1/3', lg: '1/3' },
-							this.renderPayCreditsOption()
-						),
-						_react2.default.createElement(
-							_E.Col,
-							{ xs: '1/6', sm: '1/6', md: '1/6', lg: '1/6' },
-							' '
 						),
 						this.state.showCancelBtnCash ? _react2.default.createElement(
 							_E.Col,
@@ -10216,7 +10220,7 @@
 			value: function renderPayCreditsOption() {
 				if (this.state.transactionComplete) {
 					return _react2.default.createElement(
-						'p',
+						'span',
 						{ style: { fontSize: '2em', textAlign: 'center' } },
 						'Payment complete, thanks!'
 					);
@@ -16683,7 +16687,7 @@
 				Big.warn("Flash call failed - error:");
 				Big.log(error);
 				Big.log(args);
-				Big.throw(error);
+				throw error;
 				_callbackError(error);
 			});
 		},
@@ -19501,8 +19505,8 @@
 			if (_store.storefrontData.products.length) {
 				var stack = [];
 				avtProducts.forEach(function (AP) {
-					Big.log('looking for product...');
-					Big.log(AP);
+					//Big.log('looking for product...');
+					//Big.log(AP);
 					var thisProd = _store.storefrontData.products.filter(function (P) {
 						return P._id == AP.productName;
 					});
@@ -19523,8 +19527,8 @@
 							}
 						});
 						stack.push(thisProd);
-					} else {
-						Big.warn('cannot find the product info for name: ' + AP.productName);
+						//} else {
+						//Big.warn('cannot find the product info for name: ' + AP.productName);
 					}
 				});
 				return isSingle ? stack.pop() : stack;
@@ -23068,6 +23072,10 @@
 
 	var _SessionActions2 = _interopRequireDefault(_SessionActions);
 
+	var _appConstants = __webpack_require__(86);
+
+	var _appConstants2 = _interopRequireDefault(_appConstants);
+
 	var _reactRouter = __webpack_require__(9);
 
 	var _BigLogger = __webpack_require__(1);
@@ -23139,9 +23147,9 @@
 				switch (event.type) {
 
 					//case appConstants.PRODUCT_ADDED_TO_CART:
-					case appConstants.PRODUCT_REMOVED_FROM_CART:
-					case appConstants.PRODUCT_QUANTITY_INCREASED:
-					case appConstants.PRODUCT_QUANTITY_DECREASED:
+					case _appConstants2.default.PRODUCT_REMOVED_FROM_CART:
+					case _appConstants2.default.PRODUCT_QUANTITY_INCREASED:
+					case _appConstants2.default.PRODUCT_QUANTITY_DECREASED:
 						var PID = event.product;
 						if ((typeof PID === 'undefined' ? 'undefined' : _typeof(PID)) === 'object') {
 							PID = PID._id;
@@ -23199,12 +23207,7 @@
 						' ',
 						prd.qtyInCart,
 						' ',
-						' ',
-						_react2.default.createElement(
-							_E.Button,
-							{ type: 'primary', size: 'sm', onClick: this.addQty.bind(this) },
-							_react2.default.createElement(_E.Glyph, { icon: 'plus' })
-						)
+						' '
 					)
 				);
 			}

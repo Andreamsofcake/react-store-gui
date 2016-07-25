@@ -165,7 +165,7 @@ var TsvActions = {
 			Big.warn("Flash call failed - error:");
 			Big.log(error);
 			Big.log(args);
-			Big.throw(error);
+			throw(error);
 			_callbackError(error);
 		})
 

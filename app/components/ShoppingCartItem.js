@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import * as _E from 'elemental'
 import StorefrontActions from '../actions/StorefrontActions'
 import StorefrontStore from '../stores/StorefrontStore'
-
 import SessionActions from '../actions/SessionActions'
+import appConstants from '../constants/appConstants'
 
 import { browserHistory } from 'react-router'
 
@@ -89,7 +89,7 @@ class ShoppingCartItem extends Component {
 
 					<_E.Button type="primary" size="sm" onClick={this.minusQty.bind(this)}><_E.Glyph icon="dash" /></_E.Button>
 					&nbsp;{' '}{ prd.qtyInCart }{' '}&nbsp;
-					<_E.Button  type="primary" size="sm" onClick={this.addQty.bind(this)}><_E.Glyph icon="plus" /></_E.Button>
+					{/*<_E.Button  type="primary" size="sm" onClick={this.addQty.bind(this)}><_E.Glyph icon="plus" /></_E.Button>*/}
 
 				</_E.Col>
 
