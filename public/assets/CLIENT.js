@@ -17905,6 +17905,7 @@
 		updateSession: function updateSession(sessionData) {
 
 			var session = _SessionStore2.default.getCurrentSession();
+			if (!session) return false;
 
 			_axios2.default.post('/api/vend-session/update', { sessionData: sessionData, session: session }).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {
@@ -17932,6 +17933,8 @@
 			var session = _SessionStore2.default.getCurrentSession(),
 			    user = _CustomerStore2.default.getCustomer();
 
+			if (!session || !user) return false;
+
 			_axios2.default.post('/api/vend-session/add-user', { user: user, session: session }).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {
 					_AppDispatcher2.default.handleServerAction({
@@ -17956,6 +17959,7 @@
 		addShopEvent: function addShopEvent(event) {
 
 			var session = _SessionStore2.default.getCurrentSession();
+			if (!session) return false;
 
 			_axios2.default.post('/api/vend-session/add-shop-event', { event: event, session: session }).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {
@@ -17988,6 +17992,9 @@
 			,
 			    ACTION = action || _appConstants2.default.SESSION_CLOSED;
 
+			// should throw an error here instead:
+			if (!session) return false;
+
 			_axios2.default.post('/api/vend-session/close', { event: event, session: session, cart: cart, transaction: transaction }).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {
 					_AppDispatcher2.default.handleServerAction({
@@ -18018,6 +18025,9 @@
 			    transaction = _TransactionStore2.default.getCurrentTransaction(),
 			    cart = _TsvSettingsStore2.default.getCache('shoppingCart');
 
+			// should throw an error here instead:
+			if (!session) return false;
+
 			_axios2.default.post('/api/vend-session/drop', { event: event, session: session, cart: cart, transaction: transaction }).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {
 					_AppDispatcher2.default.handleServerAction({
@@ -18044,6 +18054,9 @@
 			var session = _SessionStore2.default.getCurrentSession(),
 			    transaction = _TransactionStore2.default.getCurrentTransaction(),
 			    cart = _TsvSettingsStore2.default.getCache('shoppingCart');
+
+			// should throw an error here instead:
+			if (!session) return false;
 
 			_axios2.default.post('/api/vend-session/close-session-transaction', { event: event, session: session, cart: cart, transaction: transaction }).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {
@@ -18075,6 +18088,9 @@
 			var session = _SessionStore2.default.getCurrentSession(),
 			    transaction = _TransactionStore2.default.getCurrentTransaction(),
 			    cart = _TsvSettingsStore2.default.getCache('shoppingCart');
+
+			// should throw an error here instead:
+			if (!session) return false;
 
 			_axios2.default.post('/api/vend-session/drop-session-transaction', { event: event, session: session, cart: cart, transaction: transaction }).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {

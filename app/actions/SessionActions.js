@@ -44,6 +44,7 @@ var SessionActions = {
 	updateSession( sessionData ) {
 
 		let session = SessionStore.getCurrentSession();
+		if (!session) return false;
 
 		axios.post('/api/vend-session/update', 
 			{ sessionData, session }
@@ -77,6 +78,8 @@ var SessionActions = {
 			, user = CustomerStore.getCustomer()
 			;
 		
+		if (!session || !user) return false;
+
 		axios.post('/api/vend-session/add-user', 
 			{ user, session }
 		)
@@ -106,6 +109,7 @@ var SessionActions = {
 	addShopEvent( event ) {
 
 		let session = SessionStore.getCurrentSession();
+		if (!session) return false;
 
 		axios.post('/api/vend-session/add-shop-event', 
 			{ event, session }
@@ -144,6 +148,9 @@ var SessionActions = {
 
 			;
 
+		// should throw an error here instead:
+		if (!session) return false;
+
 		axios.post('/api/vend-session/close', 
 			{ event, session, cart, transaction }
 		)
@@ -178,6 +185,9 @@ var SessionActions = {
 			, cart = TsvSettingsStore.getCache('shoppingCart')
 			;
 
+		// should throw an error here instead:
+		if (!session) return false;
+
 		axios.post('/api/vend-session/drop', 
 			{ event, session, cart, transaction }
 		)
@@ -210,6 +220,9 @@ var SessionActions = {
 			, transaction = TransactionStore.getCurrentTransaction()
 			, cart = TsvSettingsStore.getCache('shoppingCart')
 			;
+
+		// should throw an error here instead:
+		if (!session) return false;
 
 		axios.post('/api/vend-session/close-session-transaction', 
 			{ event, session, cart, transaction }
@@ -245,6 +258,9 @@ var SessionActions = {
 			, transaction = TransactionStore.getCurrentTransaction()
 			, cart = TsvSettingsStore.getCache('shoppingCart')
 			;
+
+		// should throw an error here instead:
+		if (!session) return false;
 
 		axios.post('/api/vend-session/drop-session-transaction', 
 			{ event, session, cart, transaction }
