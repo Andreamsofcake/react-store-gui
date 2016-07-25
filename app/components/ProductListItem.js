@@ -57,13 +57,14 @@ class ProductListItem extends Component {
   }
   
   renderAddToCart() {
-  	if (this.props.data.stockCount > 0) {
+  	if (false && this.props.data.stockCount > 0) {
   		return (
   			<_E.Button className="product-button" size="lg" type="success" onClick={this.clickHandler.bind(this)}>+ Add</_E.Button>
   		);
   	}
   	return (
-  		<span style={{fontSize: '0.75em', textTransform: 'uppercase', textAlign: 'center', display: 'block', float: 'right'}}>out<br />of stock</span>
+  		<_E.Button className="product-button" size="lg"><span style={{fontSize: '0.75em', textTransform: 'uppercase', textAlign: 'center', display: 'block'}}>out of stock</span></_E.Button>
+  		
   	);
   }
 

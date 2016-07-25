@@ -22499,7 +22499,7 @@
 	  }, {
 	    key: 'renderAddToCart',
 	    value: function renderAddToCart() {
-	      if (this.props.data.stockCount > 0) {
+	      if (false) {
 	        return _react2.default.createElement(
 	          _E.Button,
 	          { className: 'product-button', size: 'lg', type: 'success', onClick: this.clickHandler.bind(this) },
@@ -22507,11 +22507,13 @@
 	        );
 	      }
 	      return _react2.default.createElement(
-	        'span',
-	        { style: { fontSize: '0.75em', textTransform: 'uppercase', textAlign: 'center', display: 'block', float: 'right' } },
-	        'out',
-	        _react2.default.createElement('br', null),
-	        'of stock'
+	        _E.Button,
+	        { className: 'product-button', size: 'lg' },
+	        _react2.default.createElement(
+	          'span',
+	          { style: { fontSize: '0.75em', textTransform: 'uppercase', textAlign: 'center', display: 'block' } },
+	          'out of stock'
+	        )
 	      );
 	    }
 	  }]);
