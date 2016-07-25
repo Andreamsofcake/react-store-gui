@@ -32,6 +32,14 @@ var StorefrontActions = {
 		})
 	},
   
+	// this is used predominantly by admin refresh of storefront data, to pass through and update GUI
+	setStorefrontData( data ) {
+		AppDispatcher.handleServerAction({
+			actionType: appConstants.STOREFRONT_DATA_RECEIVED,
+			data: data
+		});
+	},
+
 	addToCart(product, e) {
 
 		let cart = TsvSettingsStore.getCache('shoppingCart');

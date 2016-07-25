@@ -155,16 +155,19 @@ StorefrontStore.dispatch = AppDispatcher.register(function(payload){
 			break;
 
 		case appConstants.STOREFRONT_DATA_RECEIVED:
+			Big.log('STOREFRONT_DATA_RECEIVED.... set data:');
+			Big.log(action.data);
 			setStorefrontData(action.data);
-			if (_store.storefrontData.planogram && _store.storefrontData.planogram.css_file) {
-				let link = document.getElementById('GUIStyles');
-				if (link) {
-					let css_file = _store.storefrontData.planogram && _store.storefrontData.planogram.css_file
-						? _store.storefrontData.planogram.css_file
-						: 'styles.css';
-					link.href = '/css/' + css_file;
-				}
+
+			// dynamic styles....
+			let link = document.getElementById('GUIStyles');
+			if (link) {
+				let css_file = _store.storefrontData.planogram && _store.storefrontData.planogram.css_file
+					? _store.storefrontData.planogram.css_file
+					: 'styles.css';
+				link.href = '/css/' + css_file;
 			}
+
 			StorefrontStore.emitChange({ type: appConstants.STOREFRONT_DATA_RECEIVED });
 			break;
 

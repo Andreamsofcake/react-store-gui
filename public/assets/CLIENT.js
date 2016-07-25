@@ -2157,6 +2157,7 @@
 	  _createClass(PageIdle, [{
 	    key: 'componentDidMount',
 	    value: function componentDidMount() {
+	      (0, _TsvUtils.emptyCart)();
 	      _CustomerActions2.default.customerLogout();
 	      _SessionActions2.default.kill();
 	      _TransactionActions2.default.kill();
@@ -7919,9 +7920,7 @@
 	        this.setState({
 	          cloudRefreshing: false
 	        });
-	        Big.log('shall we push the new info over?');
 	        if (event.data && event.data.registrationData) {
-	          Big.log('YES');
 	          setTimeout(function () {
 	            _TsvActions2.default.setMachineInfo(event.data.registrationData);
 	          }, 250);
@@ -8210,6 +8209,10 @@
 
 	var _TsvUtils = __webpack_require__(80);
 
+	var _BigLogger = __webpack_require__(1);
+
+	var _BigLogger2 = _interopRequireDefault(_BigLogger);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -8219,6 +8222,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Big = new _BigLogger2.default('AdminStorefrontData');
 
 	var AdminStorefrontData = function (_Component) {
 	  _inherits(AdminStorefrontData, _Component);
@@ -8262,8 +8267,18 @@
 	        this.setState({
 	          refreshingData: false
 	        });
+	        Big.log('do we refresh or load???');
+	        Big.log(event);
 	        // refresh the client once this is done:
-	        _StorefrontActions2.default.loadStorefrontData();
+	        if (event.data) {
+	          Big.log('refresh!');
+	          setTimeout(function () {
+	            _StorefrontActions2.default.setStorefrontData(event.data.data);
+	          }, 250);
+	        } else {
+	          Big.log('load');
+	          _StorefrontActions2.default.loadStorefrontData();
+	        }
 	      }
 	    }
 	  }, {
@@ -16782,6 +16797,15 @@
 				Big.log(error);
 			});
 		},
+
+
+		// this is used predominantly by admin refresh of storefront data, to pass through and update GUI
+		setStorefrontData: function setStorefrontData(data) {
+			_AppDispatcher2.default.handleServerAction({
+				actionType: _appConstants2.default.STOREFRONT_DATA_RECEIVED,
+				data: data
+			});
+		},
 		addToCart: function addToCart(product, e) {
 
 			var cart = _TsvSettingsStore2.default.getCache('shoppingCart');
@@ -18445,7 +18469,7 @@
 
 			case _appConstants2.default.STOREFRONT_DATA_REFRESHED:
 				//_store.clientUsers = action.data.clientUsers;
-				AdminStore.emitChange({ type: action.actionType });
+				AdminStore.emitChange({ type: action.actionType, data: action.data });
 				break;
 
 			case _appConstants2.default.CLEAR_TEST_PRINT_API_RESPONSES:
@@ -19578,14 +19602,17 @@
 				break;
 
 			case _appConstants2.default.STOREFRONT_DATA_RECEIVED:
+				Big.log('STOREFRONT_DATA_RECEIVED.... set data:');
+				Big.log(action.data);
 				setStorefrontData(action.data);
-				if (_store.storefrontData.planogram && _store.storefrontData.planogram.css_file) {
-					var link = document.getElementById('GUIStyles');
-					if (link) {
-						var css_file = _store.storefrontData.planogram && _store.storefrontData.planogram.css_file ? _store.storefrontData.planogram.css_file : 'styles.css';
-						link.href = '/css/' + css_file;
-					}
+
+				// dynamic styles....
+				var link = document.getElementById('GUIStyles');
+				if (link) {
+					var css_file = _store.storefrontData.planogram && _store.storefrontData.planogram.css_file ? _store.storefrontData.planogram.css_file : 'styles.css';
+					link.href = '/css/' + css_file;
 				}
+
 				StorefrontStore.emitChange({ type: _appConstants2.default.STOREFRONT_DATA_RECEIVED });
 				break;
 

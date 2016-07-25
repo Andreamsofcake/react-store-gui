@@ -16,6 +16,9 @@ import {
 	KillGuiTimer,
 } from '../../utils/TsvUtils'
 
+import Log from '../../utils/BigLogger'
+var Big = new Log('AdminStorefrontData');
+
 class AdminStorefrontData extends Component {
 
   constructor(props, context) {
@@ -45,11 +48,21 @@ class AdminStorefrontData extends Component {
   		this.setState({
   			refreshingData: false
   		});
+  		Big.log('do we refresh or load???');
+  		Big.log(event);
   		// refresh the client once this is done:
-  		StorefrontActions.loadStorefrontData();
+		if (event.data) {
+			Big.log('refresh!');
+			setTimeout(() => {
+				StorefrontActions.setStorefrontData(event.data.data);
+			}, 250);
+		} else {
+			Big.log('load');
+	  		StorefrontActions.loadStorefrontData();
+	  	}
   	}
   }
-  
+
   startRefresh(e) {
   	if (e) e.preventDefault();
 	this.setState({

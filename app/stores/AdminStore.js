@@ -84,7 +84,7 @@ AdminStore.dispatch = AppDispatcher.register(function(payload){
 			
 		case appConstants.STOREFRONT_DATA_REFRESHED:
 			//_store.clientUsers = action.data.clientUsers;
-			AdminStore.emitChange({ type: action.actionType });
+			AdminStore.emitChange({ type: action.actionType, data: action.data });
 			break;
 
 		case appConstants.CLEAR_TEST_PRINT_API_RESPONSES:

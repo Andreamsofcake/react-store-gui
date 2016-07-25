@@ -12,6 +12,7 @@ import TransactionActions from '../actions/TransactionActions'
 import TsvActions from '../actions/TsvActions'
 import {
 	idleClicked,
+	emptyCart
 } from '../utils/TsvUtils'
 
 class PageIdle extends Component {
@@ -36,12 +37,13 @@ class PageIdle extends Component {
 	});
   }
 
-  // Add change listeners to stores
-  componentDidMount() {
-  	CustomerActions.customerLogout();
-  	SessionActions.kill();
-  	TransactionActions.kill();
-  }
+	// Add change listeners to stores
+	componentDidMount() {
+		emptyCart();
+		CustomerActions.customerLogout();
+		SessionActions.kill();
+		TransactionActions.kill();
+	}
 
   // Remove change listers from stores
   componentWillUnmount() {

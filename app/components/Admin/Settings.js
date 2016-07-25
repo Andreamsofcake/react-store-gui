@@ -69,9 +69,7 @@ class AdminSettings extends Component {
   			this.setState({
   				cloudRefreshing: false
   			});
-  			Big.log('shall we push the new info over?');
   			if (event.data && event.data.registrationData) {
-  				Big.log('YES');
   				setTimeout(() => {
 		  			TsvActions.setMachineInfo(event.data.registrationData);
 		  		}, 250);
