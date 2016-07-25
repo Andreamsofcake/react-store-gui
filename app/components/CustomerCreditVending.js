@@ -86,6 +86,7 @@ class CustomerCreditVending extends Component {
       this._onRootstoreChange = this._onRootstoreChange.bind(this);
       this._onTsvChange = this._onTsvChange.bind(this);
       this._onSessionStoreChange = this._onSessionStoreChange.bind(this);
+      this._onTransactionStoreChange = this._onTransactionStoreChange.bind(this);
       this.completeCreditPurchase = this.completeCreditPurchase.bind(this);
       this.storefrontTimeout = null;
 
@@ -214,6 +215,7 @@ class CustomerCreditVending extends Component {
 		TsvStore.addChangeListener(this._onTsvChange);
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
 		SessionStore.addChangeListener(this._onSessionStoreChange);
+		TransactionStore.addChangeListener(this._onTransactionStoreChange);
 		
 		SessionActions.addShopEvent({ event: 'CREDITS_CHECKOUT_VIEW' });
 
@@ -243,6 +245,7 @@ class CustomerCreditVending extends Component {
 		TsvStore.removeChangeListener(this._onTsvChange);
 		TsvSettingsStore.removeChangeListener(this._onRootstoreChange);
 		SessionStore.removeChangeListener(this._onSessionStoreChange);
+		TransactionStore.removeChangeListener(this._onTransactionStoreChange);
 	}
 
   _onRootstoreChange() {

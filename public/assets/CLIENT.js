@@ -9796,6 +9796,7 @@
 			_this._onRootstoreChange = _this._onRootstoreChange.bind(_this);
 			_this._onTsvChange = _this._onTsvChange.bind(_this);
 			_this._onSessionStoreChange = _this._onSessionStoreChange.bind(_this);
+			_this._onTransactionStoreChange = _this._onTransactionStoreChange.bind(_this);
 			_this.completeCreditPurchase = _this.completeCreditPurchase.bind(_this);
 			_this.storefrontTimeout = null;
 
@@ -9928,6 +9929,7 @@
 				_TsvStore2.default.addChangeListener(this._onTsvChange);
 				_TsvSettingsStore2.default.addChangeListener(this._onRootstoreChange);
 				_SessionStore2.default.addChangeListener(this._onSessionStoreChange);
+				_TransactionStore2.default.addChangeListener(this._onTransactionStoreChange);
 
 				_SessionActions2.default.addShopEvent({ event: 'CREDITS_CHECKOUT_VIEW' });
 
@@ -9962,6 +9964,7 @@
 				_TsvStore2.default.removeChangeListener(this._onTsvChange);
 				_TsvSettingsStore2.default.removeChangeListener(this._onRootstoreChange);
 				_SessionStore2.default.removeChangeListener(this._onSessionStoreChange);
+				_TransactionStore2.default.removeChangeListener(this._onTransactionStoreChange);
 			}
 		}, {
 			key: '_onRootstoreChange',
@@ -18254,21 +18257,23 @@
 			_axios2.default.post('/api/transaction/spend-customer-credit', { amount_cents: amount_cents, customer: customer, transaction: transaction } // transaction taken out, we are quickly generating on the server
 			).then(function (response) {
 				if (response.data && response.data.status && response.data.status == 'ok') {
+					Big.error('customer credit spent!');
+					Big.log(response.data);
 					_AppDispatcher2.default.handleServerAction({
 						actionType: _appConstants2.default.CREDIT_PURCHASE_COMPLETED,
 						data: response.data
 					});
 				} else {
 					if (response.data && response.data.error) {
-						Big.error('failed to update transaction, error:');
+						Big.error('failed to spend customer credit, error:');
 						Big.log(response.data.error);
 					} else {
-						Big.error('failed to update transaction, no data returned. full response:');
+						Big.error('failed to spend customer credit, no data returned. full response:');
 						Big.log(response);
 					}
 				}
 			}).catch(function (error) {
-				Big.error('failed to update transaction, call chain error probably check component tree');
+				Big.error('failed to spend customer credit, call chain error probably check component tree');
 				Big.log(error);
 				Big.throw(error);
 			});

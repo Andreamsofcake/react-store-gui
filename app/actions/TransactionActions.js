@@ -89,22 +89,24 @@ var TransactionActions = {
 		)
 		.then(response => {
 			if (response.data && response.data.status && response.data.status == 'ok') {
+				Big.error('customer credit spent!');
+				Big.log(response.data);
 				AppDispatcher.handleServerAction({
 					actionType: appConstants.CREDIT_PURCHASE_COMPLETED,
 					data: response.data
 				});
 			} else {
 				if (response.data && response.data.error) {
-					Big.error('failed to update transaction, error:');
+					Big.error('failed to spend customer credit, error:');
 					Big.log(response.data.error);
 				} else {
-					Big.error('failed to update transaction, no data returned. full response:');
+					Big.error('failed to spend customer credit, no data returned. full response:');
 					Big.log(response);
 				}
 			}
 		})
 		.catch(error => {
-			Big.error('failed to update transaction, call chain error probably check component tree');
+			Big.error('failed to spend customer credit, call chain error probably check component tree');
 			Big.log(error);
 			Big.throw(error);
 		})
