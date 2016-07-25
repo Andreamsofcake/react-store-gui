@@ -39,8 +39,8 @@ var SessionStore = objectAssign({}, EventEmitter.prototype, {
 	},
 	
 	getCurrentSession: function() {
-		console.log('getCurrentSession()')
-		console.log(_store.session);
+		//console.log('getCurrentSession()')
+		//console.log(_store.session);
 		return _store.session;
 	}
 
@@ -55,11 +55,11 @@ SessionStore.dispatch = AppDispatcher.register(function(payload){
 		case appConstants.ADDED_USER_TO_SESSION:
 			if (action.data) {
 				_store.session = action.data.data;
-				console.log('set session data:');
-				console.log(_store.session);
-			} else {
-				console.warn(action);
-				throw new Error(action.actionType + ': no session found?');
+				//console.log('set session data:');
+				//console.log(_store.session);
+			//} else {
+				//console.warn(action);
+				//throw new Error(action.actionType + ': no session found?');
 			}
 			SessionStore.emitChange({ type: action.actionType });
 			break;

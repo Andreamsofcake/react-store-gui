@@ -6861,7 +6861,7 @@
 									{ sm: '1/3', md: '1/3', lg: '1/3', style: { textAlign: 'center' } },
 									_react2.default.createElement(
 										'div',
-										{ style: { backgroundColor: '#fff', width: '100%', fontSize: '1.5em', padding: '0.45em', border: '1px solid #ddd', borderRadius: '4px', margin: '0 auto' } },
+										{ style: { color: '#333', backgroundColor: '#fff', width: '100%', fontSize: '1.5em', padding: '0.45em', border: '1px solid #ddd', borderRadius: '4px', margin: '0 auto' } },
 										' ',
 										this.state.num,
 										' '
@@ -19497,6 +19497,8 @@
 			if (_store.storefrontData.products.length) {
 				var stack = [];
 				avtProducts.forEach(function (AP) {
+					Big.log('looking for product...');
+					Big.log(AP);
 					var thisProd = _store.storefrontData.products.filter(function (P) {
 						return P._id == AP.productName;
 					});
@@ -19517,6 +19519,8 @@
 							}
 						});
 						stack.push(thisProd);
+					} else {
+						Big.warn('cannot find the product info for name: ' + AP.productName);
 					}
 				});
 				return isSingle ? stack.pop() : stack;
@@ -22854,8 +22858,8 @@
 		},
 
 		getCurrentSession: function getCurrentSession() {
-			console.log('getCurrentSession()');
-			console.log(_store.session);
+			//console.log('getCurrentSession()')
+			//console.log(_store.session);
 			return _store.session;
 		}
 
@@ -22870,11 +22874,11 @@
 			case _appConstants2.default.ADDED_USER_TO_SESSION:
 				if (action.data) {
 					_store.session = action.data.data;
-					console.log('set session data:');
-					console.log(_store.session);
-				} else {
-					console.warn(action);
-					throw new Error(action.actionType + ': no session found?');
+					//console.log('set session data:');
+					//console.log(_store.session);
+					//} else {
+					//console.warn(action);
+					//throw new Error(action.actionType + ': no session found?');
 				}
 				SessionStore.emitChange({ type: action.actionType });
 				break;

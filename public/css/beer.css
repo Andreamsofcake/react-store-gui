@@ -70,6 +70,31 @@ h2, h3 { margin-top: 0.5em; }
 	margin-bottom: 0;
 }
 
+.product-list-item .image-container {
+	text-align: center;
+	max-height: 300px;
+}
+
+.product-list-item .image-container img {
+	display: block;
+	height: 300px;
+	/*
+	max-width: 95%;
+	max-height: 100%;
+	margin: 0 auto;
+	*/
+}
+
+img.boxShadowed {
+	border: 0;
+	box-shadow: none;
+	background-color: transparent;
+}
+
 .Row.shoppingCartItem {
 	background-color: rgba(0, 0, 0, 0.5)
+}
+
+input[type="text"], select, textarea {
+	color: #333;
 }

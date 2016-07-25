@@ -33,7 +33,8 @@ var Candyland = CandyLand({
 			{"productID":1000,"price":10,"productName":"573b7e98985faf200d57c85b"},
 			{"productID":1001,"price":25,"productName":"573b7f85985faf200d57c85c"},
 			{"productID":1002,"price":15,"productName":"573b7f99985faf200d57c85d"},
-			{"productID":1003,"price":7,"productName":"573b828efd00106510f7c17f"}
+			{"productID":1003,"price":7,"productName":"573b828efd00106510f7c17f"},
+			{"productID":1004,"price":7,"productName":"579676402ef908951ffdb627"},
 		]
 
 		, prodExtras: { "stockCount": 30, "inventoryCount": 30, "isEmpty": false, "coilNumber": "N/A", "productCategory": null, "productType": "PRODUCT_RECORD", "Attributes": {} }
