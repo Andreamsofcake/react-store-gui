@@ -380,10 +380,13 @@ class Customer_MembershipRegister extends Component {
 /**** below here, methods imported from Admin/PrintRegistration *****/
 
 	printRegistrationFinished(sequence, apiResponses) {
+		Big.log('printRegistrationFinished, sequence: ' + sequence);
+		Big.log(apiResponses);
 		GuiTimer();
 		let state = this.state;
-		state['printRegistered' + sequence] = true;
 		state.numPrintsCaptured += 1;
+		state['printRegistered' + state.numPrintsCaptured] = true;
+		//state['printRegistered' + sequence] = true;
 		//state.loadingUser = false;
 		//this.checkForCustomerLoad(state);
 		this.setState(state);

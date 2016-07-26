@@ -19853,6 +19853,8 @@
 
 					if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
 						this.props.registrationCallback(state.apiResponses);
+					} else {
+						Big.error('HAY NOW no registrationCallback for finishing print registration???');
 					}
 
 					state.registrationIsFinished = true;
@@ -22278,10 +22280,13 @@
 		}, {
 			key: 'printRegistrationFinished',
 			value: function printRegistrationFinished(sequence, apiResponses) {
+				Big.log('printRegistrationFinished, sequence: ' + sequence);
+				Big.log(apiResponses);
 				(0, _TsvUtils.GuiTimer)();
 				var state = this.state;
-				state['printRegistered' + sequence] = true;
 				state.numPrintsCaptured += 1;
+				state['printRegistered' + state.numPrintsCaptured] = true;
+				//state['printRegistered' + sequence] = true;
 				//state.loadingUser = false;
 				//this.checkForCustomerLoad(state);
 				this.setState(state);

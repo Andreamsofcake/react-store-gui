@@ -158,6 +158,8 @@ class PrintRegister extends Component {
 
 			if (this.props.registrationCallback && typeof this.props.registrationCallback === 'function') {
 				this.props.registrationCallback(state.apiResponses);
+			} else {
+				Big.error('HAY NOW no registrationCallback for finishing print registration???');
 			}
 			
 			state.registrationIsFinished = true;
