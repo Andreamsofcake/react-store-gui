@@ -369,6 +369,7 @@ class Customer_MembershipRegister extends Component {
 		GuiTimer();
 		if (result) {
 			let state = this.state;
+			state.registrationInProcess = false;
 			state.numPrintsCaptured += 1;
 			state['printRegistered' + state.numPrintsCaptured] = true;
 			this.setState(state);
@@ -384,6 +385,7 @@ class Customer_MembershipRegister extends Component {
 		Big.log(apiResponses);
 		GuiTimer();
 		let state = this.state;
+		state.registrationInProcess = false;
 		state.numPrintsCaptured += 1;
 		state['printRegistered' + state.numPrintsCaptured] = true;
 		//state['printRegistered' + sequence] = true;

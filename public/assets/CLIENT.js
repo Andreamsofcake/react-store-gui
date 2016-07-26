@@ -22267,6 +22267,7 @@
 				(0, _TsvUtils.GuiTimer)();
 				if (result) {
 					var state = this.state;
+					state.registrationInProcess = false;
 					state.numPrintsCaptured += 1;
 					state['printRegistered' + state.numPrintsCaptured] = true;
 					this.setState(state);
@@ -22284,6 +22285,7 @@
 				Big.log(apiResponses);
 				(0, _TsvUtils.GuiTimer)();
 				var state = this.state;
+				state.registrationInProcess = false;
 				state.numPrintsCaptured += 1;
 				state['printRegistered' + state.numPrintsCaptured] = true;
 				//state['printRegistered' + sequence] = true;
