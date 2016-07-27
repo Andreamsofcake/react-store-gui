@@ -211,7 +211,8 @@ CustomerStore.dispatch = AppDispatcher.register(function(payload){
 			} else {
 				clearCustomer();
 			}
-			CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOADED, status: action.data.status });
+			//CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOADED, status: action.data.status });
+			CustomerStore.emitChange({ type: action.actionType, status: action.data.status });
 			break;
 		
 		case appConstants.CUSTOMER_LOGIN_CANCELLED:

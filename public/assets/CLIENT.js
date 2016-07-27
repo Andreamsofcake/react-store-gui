@@ -20532,7 +20532,8 @@
 				} else {
 					clearCustomer();
 				}
-				CustomerStore.emitChange({ type: _appConstants2.default.CUSTOMER_LOADED, status: action.data.status });
+				//CustomerStore.emitChange({ type: appConstants.CUSTOMER_LOADED, status: action.data.status });
+				CustomerStore.emitChange({ type: action.actionType, status: action.data.status });
 				break;
 
 			case _appConstants2.default.CUSTOMER_LOGIN_CANCELLED:
