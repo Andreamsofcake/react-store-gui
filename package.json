@@ -11,14 +11,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sdkcore/vending-app-gui.git"
+    "url": "git+https://github.com/Andreamsofcake/react-store-gui.git"
   },
   "author": "sdkcore",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sdkcore/vending-app-gui/issues"
+    "url": "https://github.com/Andreamsofcake/react-store-gui/issues"
   },
-  "homepage": "https://github.com/sdkcore/vending-app-gui#readme",
   "dependencies": {
     "axios": "^0.9.1",
     "babel": "^6.5.2",

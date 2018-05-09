@@ -62,7 +62,7 @@ class Storefront extends Component {
 
     this._onRootstoreChange = this._onRootstoreChange.bind(this);
     this._onStoreFrontChange = this._onStoreFrontChange.bind(this);
-	this._onCLStoreChange = this._onCLStoreChange.bind(this);
+		this._onCLStoreChange = this._onCLStoreChange.bind(this);
     
     if (window) {
     	window.SFS = StorefrontStore;
@@ -72,7 +72,7 @@ class Storefront extends Component {
 
   // Add change listeners to stores
 	componentDidMount() {
-		Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: '+this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
+		Big.log(' >>>>>>>>>>>>>> STOREFRONT mounted... route: ' + this.props.location.pathname + ' <<<<<<<<<<<<<<<<<');
 		GuiTimer();
   	
 		TsvSettingsStore.addChangeListener(this._onRootstoreChange);
