@@ -1,6 +1,6 @@
-# vending-app-gui
+react-store-gui
 
-<<<<<<< HEAD
+
 ### how to run for dev:
 
 1. clone repo
@@ -25,7 +25,6 @@ App "init" module (probably App.js) should:
 
 =======
 GUI refactor for the vending machine!
->>>>>>> 1885a0461224d2ba0f6fe1e6e5fb489f3e6b7d85
 
 ### .env file in root
 
@@ -35,10 +34,14 @@ the app needs a .env file to run, these are default settings:
 CANNED_API_DATA=false
 COOKIE_PASSWORD=justthevendingappguiembeddedlocalsitedoesnotneedacomplexcookiepassword
 USE_HARDWARE_API=true
-DATA_API_PROXY_URL=http://clients.sdkcore.com
+<!-- DATA_API_PROXY_URL=http://clients.sdkcore.com -->
 MYSQL_USER=
 MYSQL_PASSWORD=
 MACHINE_TYPE=avt
 # delay time for bootup / loader re-run:
 BOOTUP_DELAY_TIME_MS=300000
 ```
+=======
+# react-store-gui
+shopping interface
+
