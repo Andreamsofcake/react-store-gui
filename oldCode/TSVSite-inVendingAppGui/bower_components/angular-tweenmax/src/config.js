@@ -1,1 +1,0 @@
-var tweenmaxApp = angular.module('tweenmaxApp', []);
