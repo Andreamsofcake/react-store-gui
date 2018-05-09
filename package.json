@@ -11,12 +11,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Andreamsofcake/react-store-gui.git"
+    "url": "git+https://github.com:Andreamsofcake/react-store-gui.git"
   },
   "author": "sdkcore",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Andreamsofcake/react-store-gui/issues"
+    "url": "https://github.com:Andreamsofcake/react-store-gui/issues"
   },
   "dependencies": {
     "axios": "^0.9.1",
